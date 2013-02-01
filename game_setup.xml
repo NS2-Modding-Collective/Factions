@@ -1,0 +1,9 @@
+<game>
+	<name>Titan</name>
+	<description>Project Titan</description>
+	<client>lua/Client_Modded.lua</client>
+	<server>lua/Server_Modded.lua</server>
+	<predict>lua/Predict_Modded.lua</predict>
+	<loading>lua/Loading.lua</loading>
+    <soundinfo>sound/NS2.soundinfo</soundinfo>
+</game>
