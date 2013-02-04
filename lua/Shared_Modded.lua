@@ -11,3 +11,5 @@ Script.Load("lua/ModUtility.lua")
 // Hooks for stuff that goes in Shared.lua go here...
 Script.Load("lua/Locale/OverrideLocale.lua")
 Script.Load("lua/ProjectTitan/Titan_Balance.lua")
+
+Script.Load("lua/ProjectTitan/Titan_Marine.lua")
