@@ -76,6 +76,7 @@ Marine.kWallJumpYBoost = 2.5
 Marine.kWallJumpYDirection = 5
 
 Marine.kMaxVerticalAirAccel = 12
+Marine.kVerticalAcceleration = 7
 
 Marine.kWallJumpForce = 1.2
 Marine.kMinWallJumpSpeed = 9

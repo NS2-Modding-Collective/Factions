@@ -450,7 +450,7 @@ function CombatMovementMixin:ModifyVelocity(input, velocity)
 	// accelerate XZ speed when falling down
 	if not self:GetIsOnSurface() and velocity:GetLengthXZ() < Marine.kMaxVerticalAirAccel then
 	
-		local acceleration = 9
+		local acceleration = Marine.kVerticalAcceleration
 		local accelFraction = Clamp( (-velocity.y - 3.5) / 7, 0, 1)
 		
 		local addAccel = GetNormalizedVectorXZ(velocity) * accelFraction * input.time * acceleration
