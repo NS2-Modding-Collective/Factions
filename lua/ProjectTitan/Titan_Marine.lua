@@ -37,12 +37,16 @@ function Marine:OnCreate()
 end
 
 // Balance, movement, animation
-Marine.kAcceleration = 100
+Marine.kSprintAcceleration = 180
+Marine.kSprintInfestationAcceleration = 150
+Marine.kAcceleration = 120
 Marine.kGroundFriction = 13
-Marine.kGroundWalkFriction = 24
+Marine.kGroundWalkFriction = 22
 
-Marine.kWalkMaxSpeed = 6.0                // Four miles an hour = 6,437 meters/hour = 1.8 meters/second (increase for FPS tastes)
-Marine.kRunMaxSpeed = 7.0               // 10 miles an hour = 16,093 meters/hour = 4.4 meters/second (increase for FPS tastes)
+Marine.kCrouchSpeedScalar = 0.4
+
+Marine.kWalkMaxSpeed = 5.0                // Four miles an hour = 6,437 meters/hour = 1.8 meters/second (increase for FPS tastes)
+Marine.kRunMaxSpeed = 9.0               // 10 miles an hour = 16,093 meters/hour = 4.4 meters/second (increase for FPS tastes)
 Marine.kRunInfestationMaxSpeed = Marine.kRunMaxSpeed - 0.5
 Marine.kWalkBackwardSpeedScalar = 0.75
 
@@ -96,6 +100,10 @@ function Marine:GetAngleSmoothRate()
 
 	return 7
 	
+end
+
+function Marine:GetCrouchSpeedScalar()
+    return Marine.kCrouchSpeedScalar
 end
 
 function Marine:GetRollSmoothRate()

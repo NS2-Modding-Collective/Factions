@@ -11,3 +11,7 @@
 
 // Version number
 kTitanVersion = "0.1"
+
+// Sprinting
+SprintMixin.kMaxSprintTime = 6 // 1 sec
+SprintMixin.kSprintRecoveryRate = .5 // 0.5 sec
