@@ -17,17 +17,16 @@ SprintMixin.kMaxSprintTime = 6 // 1 sec
 SprintMixin.kSprintRecoveryRate = .5 // 0.5 sec
 
 // MARINE DAMAGE
-kRifleDamage = 10
+kRifleDamage = 15
 kRifleDamageType = kDamageType.Normal
 kRifleClipSize = 50
-
 
 kRifleMeleeDamage = 20
 kRifleMeleeDamageType = kDamageType.Normal
 
 
-kPistolDamage = 25
-kPistolDamageType = kDamageType.Light
+kPistolDamage = 30
+kPistolDamageType = kDamageType.Normal
 kPistolClipSize = 10
 
 kPistolAltDamage = 40
@@ -40,18 +39,17 @@ kWelderFireDelay = 0.2
 kAxeDamage = 25
 kAxeDamageType = kDamageType.Structural
 
-
 kGrenadeLauncherGrenadeDamage = 130
 kGrenadeLauncherGrenadeDamageType = kDamageType.Structural
 kGrenadeLauncherClipSize = 4
-kGrenadeLauncherGrenadeDamageRadius = 6
+kGrenadeLauncherGrenadeDamageRadius = 8
 kGrenadeLifetime = 2.0
 
-kShotgunDamage = 11
+kShotgunDamage = 15
 kShotgunDamageType = kDamageType.Normal
 kShotgunClipSize = 8
 kShotgunBulletsPerShot = 17
-kShotgunRange = 30
+kShotgunRange = 40
 
 kNadeLauncherClipSize = 4
 
