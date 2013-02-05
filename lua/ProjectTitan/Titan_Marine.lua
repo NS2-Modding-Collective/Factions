@@ -37,12 +37,20 @@ function Marine:OnCreate()
 end
 
 // Balance, movement, animation
+Marine.kAcceleration = 100
+Marine.kGroundFriction = 13
+Marine.kGroundWalkFriction = 24
+
+Marine.kWalkMaxSpeed = 6.0                // Four miles an hour = 6,437 meters/hour = 1.8 meters/second (increase for FPS tastes)
+Marine.kRunMaxSpeed = 7.0               // 10 miles an hour = 16,093 meters/hour = 4.4 meters/second (increase for FPS tastes)
+Marine.kRunInfestationMaxSpeed = Marine.kRunMaxSpeed - 0.5
+Marine.kWalkBackwardSpeedScalar = 0.75
+
+Marine.kJumpHeight = 2
+
+// Wall walking logic.
 Marine.kJumpRepeatTime = 0.1
 Marine.kWallJumpInterval = 0.3
-
-Marine.kAcceleration = 100
-Marine.kGroundFriction = 16
-Marine.kGroundWalkFriction = 28
 
 Marine.kWallWalkCheckInterval = .1
 // This is how quickly the 3rd person model will adjust to the new normal.
@@ -70,7 +78,7 @@ Marine.kMinWallJumpSpeed = 9
 
 Marine.kAirZMoveWeight = 5
 Marine.kAirStrafeWeight = 2.5
-Marine.kAirAccelerationFraction = 0.5
+Marine.kAirAccelerationFraction = 0.6
 
 Marine.kAirMoveMinVelocity = 8
 
@@ -99,7 +107,11 @@ function Marine:GetPitchSmoothRate()
 end
 
 function Marine:GetAirFrictionForce()
-	return 0.25
+	return 0.2
 end 
+
+function Marine:GetJumpHeight()
+    return Marine.kJumpHeight - Marine.kJumpHeight * self.slowAmount * 0.8
+end
 
 Class_Reload("Marine", networkVars)
