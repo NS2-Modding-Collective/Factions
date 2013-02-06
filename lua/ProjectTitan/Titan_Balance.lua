@@ -16,45 +16,39 @@ kTitanVersion = "0.1"
 SprintMixin.kMaxSprintTime = 6 // 1 sec
 SprintMixin.kSprintRecoveryRate = .5 // 0.5 sec
 
-// MARINE DAMAGE
-kRifleDamage = 15
+// MARINE DAMAGE VALUES
+kRifleDamage = 25
 kRifleDamageType = kDamageType.Normal
+SetCachedTechData(kTechId.Rifle, kTechDataDamageType, kRifleDamageType)
 kRifleClipSize = 50
 
-kRifleMeleeDamage = 20
-kRifleMeleeDamageType = kDamageType.Normal
-
-
-kPistolDamage = 30
+kPistolDamage = 50
 kPistolDamageType = kDamageType.Normal
+SetCachedTechData(kTechId.Pistol, kTechDataDamageType, kPistolDamageType)
 kPistolClipSize = 10
 
-kPistolAltDamage = 40
-
-
-kWelderDamagePerSecond = 30
+kWelderDamagePerSecond = 50
 kWelderDamageType = kDamageType.Flame
+SetCachedTechData(kTechId.Welder, kTechDataDamageType, kWelderDamageType)
 kWelderFireDelay = 0.2
 
-kAxeDamage = 25
+kAxeDamage = 70
 kAxeDamageType = kDamageType.Structural
+SetCachedTechData(kTechId.Axe, kTechDataDamageType, kAxeDamageType)
 
-kGrenadeLauncherGrenadeDamage = 130
-kGrenadeLauncherGrenadeDamageType = kDamageType.Structural
+kGrenadeLauncherGrenadeDamage = 150
 kGrenadeLauncherClipSize = 4
 kGrenadeLauncherGrenadeDamageRadius = 8
 kGrenadeLifetime = 2.0
 
-kShotgunDamage = 15
-kShotgunDamageType = kDamageType.Normal
-kShotgunClipSize = 8
+kShotgunDamage = 20
+kShotgunClipSize = 2
 kShotgunBulletsPerShot = 17
 kShotgunRange = 40
 
 kNadeLauncherClipSize = 4
 
 kFlamethrowerDamage = 7.5
-kFlamethrowerDamageType = kDamageType.Flame
 kFlamethrowerClipSize = 30
 
 kBurnDamagePerStackPerSecond = 3
@@ -75,26 +69,14 @@ kRailgunDamage = 50
 kRailgunChargeDamage = 100
 kRailgunDamageType = kDamageType.Puncture
 
-kMACAttackDamage = 5
-kMACAttackDamageType = kDamageType.Normal
-kMACAttackFireDelay = 0.6
-
-
 kMineDamage = 125
-kMineDamageType = kDamageType.Light
 
-kSentryAttackDamageType = kDamageType.Normal
 kSentryAttackBaseROF = .15
 kSentryAttackRandROF = 0.0
 kSentryAttackBulletsPerSalvo = 1
 kConfusedSentryBaseROF = 2.0
 
 kSentryDamage = 5
-
-kARCDamage = 450
-kARCDamageType = kDamageType.Splash // splash damage hits friendly arcs as well
-kARCRange = 26
-kARCMinRange = 7
 
 kWeapons1DamageScalar = 1.1
 kWeapons2DamageScalar = 1.2
