@@ -168,7 +168,7 @@ end
 
 function CombatMovementMixin:GetCanWallJump()
 
-	return self:GetIsWallWalking() or (not self:GetIsOnGround() and self:GetAverageWallWalkingNormal(Marine.kJumpWallRange, Marine.kJumpWallFeelerSize) ~= nil)
+	return self:GetHasMagnoBoots() and (self:GetIsWallWalking() or (not self:GetIsOnGround() and self:GetAverageWallWalkingNormal(Marine.kJumpWallRange, Marine.kJumpWallFeelerSize) ~= nil))
 	
 end
 

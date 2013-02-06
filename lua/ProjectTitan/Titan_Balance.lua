@@ -17,12 +17,12 @@ SprintMixin.kMaxSprintTime = 6 // 1 sec
 SprintMixin.kSprintRecoveryRate = .5 // 0.5 sec
 
 // MARINE DAMAGE VALUES
-kRifleDamage = 25
+kRifleDamage = 35
 kRifleDamageType = kDamageType.Normal
 SetCachedTechData(kTechId.Rifle, kTechDataDamageType, kRifleDamageType)
 kRifleClipSize = 30
 
-kPistolDamage = 50
+kPistolDamage = 60
 kPistolDamageType = kDamageType.Normal
 SetCachedTechData(kTechId.Pistol, kTechDataDamageType, kPistolDamageType)
 kPistolClipSize = 8
@@ -32,7 +32,7 @@ kWelderDamageType = kDamageType.Flame
 SetCachedTechData(kTechId.Welder, kTechDataDamageType, kWelderDamageType)
 kWelderFireDelay = 0.2
 
-kAxeDamage = 70
+kAxeDamage = 100
 kAxeDamageType = kDamageType.Structural
 SetCachedTechData(kTechId.Axe, kTechDataDamageType, kAxeDamageType)
 
@@ -42,7 +42,7 @@ kGrenadeLauncherGrenadeDamageRadius = 8
 kGrenadeLifetime = 2.0
 
 kShotgunDamage = 20
-kShotgunClipSize = 2
+kShotgunClipSize = 5
 kShotgunBulletsPerShot = 17
 kShotgunRange = 40
 

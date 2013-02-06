@@ -38,4 +38,7 @@ Script.Load("lua/ExtraEntitiesMod/PortalGun.lua")
 
 Script.Load("lua/ExtraEntitiesMod/eem_MovementModifier.lua")
 
+// Class overrides here
 Script.Load("lua/ProjectTitan/Titan_Marine.lua")
+Script.Load("lua/ProjectTitan/Titan_Pistol.lua")
+Script.Load("lua/ProjectTitan/Titan_Shotgun.lua")
