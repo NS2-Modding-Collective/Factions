@@ -50,7 +50,7 @@ Marine.kRunMaxSpeed = 9.0               // 10 miles an hour = 16,093 meters/hour
 Marine.kRunInfestationMaxSpeed = Marine.kRunMaxSpeed - 0.5
 Marine.kWalkBackwardSpeedScalar = 0.75
 
-Marine.kJumpHeight = 2.3
+Marine.kJumpHeight = 2.5
 
 // Wall walking logic.
 Marine.kJumpRepeatTime = 0.1
