@@ -20,12 +20,12 @@ SprintMixin.kSprintRecoveryRate = .5 // 0.5 sec
 kRifleDamage = 25
 kRifleDamageType = kDamageType.Normal
 SetCachedTechData(kTechId.Rifle, kTechDataDamageType, kRifleDamageType)
-kRifleClipSize = 50
+kRifleClipSize = 30
 
 kPistolDamage = 50
 kPistolDamageType = kDamageType.Normal
 SetCachedTechData(kTechId.Pistol, kTechDataDamageType, kPistolDamageType)
-kPistolClipSize = 10
+kPistolClipSize = 8
 
 kWelderDamagePerSecond = 50
 kWelderDamageType = kDamageType.Flame
