@@ -12,6 +12,7 @@ Script.Load("lua/ModUtility.lua")
 Script.Load("lua/Locale/OverrideLocale.lua")
 
 // Then any files that adjust values go before the rest.
+Script.Load("lua/ProjectTitan/Titan_Globals.lua")
 Script.Load("lua/ProjectTitan/Titan_Balance.lua")
 
 // Extra Entities
@@ -39,6 +40,10 @@ Script.Load("lua/ExtraEntitiesMod/PortalGun.lua")
 Script.Load("lua/ExtraEntitiesMod/eem_MovementModifier.lua")
 
 // Class overrides here
+Script.Load("lua/ProjectTitan/Titan_NS2Gamerules.lua")
 Script.Load("lua/ProjectTitan/Titan_Marine.lua")
 Script.Load("lua/ProjectTitan/Titan_Pistol.lua")
 Script.Load("lua/ProjectTitan/Titan_Shotgun.lua")
+
+// New classes here
+Script.Load("lua/ProjectTitan/Titan_CombatDeathmatchGamerules.lua")
