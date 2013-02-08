@@ -17,24 +17,21 @@ local networkVars = {
 AddMixinNetworkVars(IronSightMixin, networkVars)
 
 Rifle.kIronSightTexture = "ui/ProjectTitan/testing_ironsights.png"
-Rifle.kIronSightActivateTime = 0.3
-Rifle.kIronSightDeactivateTime = 0.3
+Rifle.kIronSightZoomFOV = 55
+Rifle.kIronSightActivateTime = 0.15
 
-// Use the new Mixins here.
+// Iron Sights
 local overrideOnCreate = Rifle.OnCreate
 function Rifle:OnCreate()
 
 	overrideOnCreate(self)
 
-	// Init mixins on client.
-	if Client then
-		local ironSightParameters = { kIronSightTexture = Rifle.kIronSightTexture,
-									  kIronSightActivateTime = Rifle.kIronSightActivateTime,
-									  kIronSightDeactivateTime = Rifle.kIronSightDeactivateTime }
-		InitMixin(self, IronSightMixin, ironSightParameters)
-		
-		assert(HasMixin(self, "IronSight"))
-	end
+	local ironSightParameters = { kIronSightTexture = Rifle.kIronSightTexture,
+								  kIronSightZoomFOV = Rifle.kIronSightZoomFOV,
+								  kIronSightActivateTime = Rifle.kIronSightActivateTime }
+	InitMixin(self, IronSightMixin, ironSightParameters)
+	
+	assert(HasMixin(self, "IronSight"))
 end
 
 Class_Reload("Rifle", networkVars)

@@ -14,13 +14,15 @@ Script.Load("lua/GUIAnimatedScript.lua")
 class 'Titan_GUIIronSight' (GUIAnimatedScript)
 
 Titan_GUIIronSight.kBackgroundTexture = PrecacheAsset("ui/ProjectTitan/testing_ironsights.png")
-Titan_GUIIronSight.kMaskTexture = PrecacheAsset("ui/white.png")
+Titan_GUIIronSight.kMaskTexture = PrecacheAsset("ui/ProjectTitan/white.png")
 
 Titan_GUIIronSight.kBackgroundWidth = GUIScale(1500)
 Titan_GUIIronSight.kBackgroundHeight = GUIScale(1500)
 Titan_GUIIronSight.kBackgroundOffsetX = GUIScale(0)
 Titan_GUIIronSight.kBackgroundOffsetY = GUIScale(0)
 
+Titan_GUIIronSight.kMaxAlpha = 1
+Titan_GUIIronSight.kMinAlpha = 0
 
 function Titan_GUIIronSight:Initialize()
 
@@ -32,13 +34,15 @@ function Titan_GUIIronSight:Initialize()
     self.background:SetSize( Vector(Client.GetScreenWidth(), Client.GetScreenHeight(), 0) )
     self.background:SetAnchor(GUIItem.Top, GUIItem.Top)
     self.background:SetPosition( Vector(0, 0, 0) ) 
+	self.background:SetColor( Color(1, 1, 1, 0) )
     self.background:SetTexture(Titan_GUIIronSight.kBackgroundTexture)
     //self.background:SetLayer(kGUILayerDebugText)    
-    self.background:SetShader("shaders/GUIWavy.surface_shader")
-    self.background:SetAdditionalTexture("wavyMask", Titan_GUIIronSight.kMaskTexture)
-    self.background:SetIsVisible(true)
+    //self.background:SetShader("shaders/GUIWavy.surface_shader")
+    //self.background:SetAdditionalTexture("wavyMask", Titan_GUIIronSight.kMaskTexture)
+    self.background:SetIsVisible(false)
 	
-    self:Update(0)
+	// Control logic for fade in/out
+	self.transitionTime = Rifle.kIronSightActivateTime
 	
 end
 	
@@ -48,20 +52,30 @@ function Titan_GUIIronSight:Uninitialize()
 	
 end
 
-function Titan_GUIIronSight:Update(deltaTime)
+// Set the texture. All iron sight weapons should call this via IronSightMixin.
+function Titan_GUIIronSight:SetTexture(texture)
 
-	local player = Client.GetLocalPlayer()
+	self.background:SetTexture(texture)
 	
-	if player.ironSightStatus == kIronSightStatus.Active then
-		self.background:SetIsVisible(true)
-	else
-		self.background:SetIsVisible(false)
-	end
+end
+
+// Calculate the transition rate for the zoom in/out effect.
+function Titan_GUIIronSight:SetTransitionTime(seconds)
+
+	self.transitionTime = seconds
 
 end
 
-function Titan_GUIIronSight:SetIronSightTexture(texture)
+function Titan_GUIIronSight:ShowIronSight()
 
-	self.background:SetTexture(texture)
+	self.background:SetIsVisible(true)
+	self.background:FadeIn(self.transitionTime, nil, AnimateLinear, nil)
+	
+end
+
+function Titan_GUIIronSight:HideIronSight()
+
+	local hideFunc = function() self.background:SetIsVisible(false) end
+	self.background:FadeOut(self.transitionTime, nil, AnimateLinear, hideFunc)
 	
 end

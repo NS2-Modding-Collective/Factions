@@ -11,14 +11,11 @@
 
 Script.Load("lua/FunctionContracts.lua")
 
-kIronSightStatus = enum({ 'Inactive', 'Activating', 'Active', 'Deactivating', 'EndInactiveAnimation' })
-
 IronSightMixin = CreateMixin( IronSightMixin )
 IronSightMixin.type = "IronSight"
 
 IronSightMixin.expectedMixins =
 {
-	ClientWeaponEffects = "Needed to detect whether the secondary fire is being triggered",
 }
 
 IronSightMixin.expectedCallbacks =
@@ -31,13 +28,14 @@ IronSightMixin.overrideFunctions =
 {
     "GetHasSecondary",
 	"OnSecondaryAttack",
+	"OnSecondaryAttackEnd",
 }
 
 IronSightMixin.expectedConstants =
 {
 	kIronSightTexture = "The texture to use for the iron sight.",
+	kIronSightZoomFOV = "The FOV to use when zoomed",
 	kIronSightActivateTime = "The amount of time the iron sight takes to activate",
-	kIronSightDeactivateTime = "The amount of time the iron sight takes to deactivate",
 }
 
 IronSightMixin.networkVars =
@@ -48,7 +46,9 @@ function IronSightMixin:__initmixin()
 
     self.secondaryAttacking = false
     self.lastSecondaryAttackTime = 0
-	self.ironSightStatus = kIronSightStatus.Inactive
+	self.ironSightActive = false
+	self.ironSightZoom = kDefaultFov
+	self.ironSightZoomRate = (kDefaultFov - Rifle.kIronSightZoomFOV) / Rifle.kIronSightActivateTime
 
 end
 
@@ -56,13 +56,39 @@ end
 function IronSightMixin:OnSetActive() 
 
 	local player = self:GetParent()
+	local mixinConstants = self:GetMixinConstants()
 	
-	if player.ironSightGUI and self:GetMixinConstants().kIronSightTexture then
+	if player.ironSightGUI then
         
-		player.ironSightGUI:SetIronSightTexture(texture)
+		player.ironSightGUI:SetTexture(mixinConstants.kIronSightTexture)
+		player.ironSightGUI:SetTransitionTime(mixinConstants.kIronSightActivateTime)
+		player.ironSightGUI:HideIronSight()
             
 	end
 	
+	self.ironSightZoomRate = (kDefaultFov - mixinConstants.kIronSightZoomFOV) / mixinConstants.kIronSightActivateTime
+	self.ironSightZoom = kDefaultFov
+	player.ironSightActive = false
+	
+end
+
+// Set the field of vision on each frame, only for the client...
+function IronSightMixin:ProcessMoveOnWeapon(player, input)
+
+	local newFov = kDefaultFov
+	if Client and player.ironSightGUI then
+	
+		if player.ironSightActive then
+			newFov = math.round(Slerp(self.ironSightZoom, self:GetMixinConstants().kIronSightZoomFOV, self.ironSightZoomRate*input.time))
+		else
+			newFov = math.round(Slerp(self.ironSightZoom, kDefaultFov, self.ironSightZoomRate*input.time))
+		end
+		
+		self.ironSightZoom = newFov
+		player:SetFov(newFov)
+		
+	end
+
 end
 
 function IronSightMixin:GetHasSecondary(player)
@@ -71,67 +97,24 @@ end
 
 function IronSightMixin:OnSecondaryAttack(player)
 
-    if not self.blockingSecondary and not player:GetIsSprinting() and player:GetSecondaryAttackLastFrame() then
-		self.secondaryAttacking = true
-		self.ironSightStatus = kIronSightStatus.Activating
-	
-		local enoughTimePassed = (Shared.GetTime() - self.lastSecondaryAttackTime) > self:GetSecondaryAttackDelay()
-		if enoughTimePassed then
-    
-			self.ironSightStatus = kIronSightStatus.Active
-		
-		end
-
-    end
-    
-end
-
-function IronSightMixin:OnUpdateAnimationInput(modelMixin)
-
 	local player = self:GetParent()
+	player.ironSightActive = true
+	// Override any default secondary attacking behaviour here (e.g. rifle butt).
+	player.secondaryAttacking = false
 	
-	// Set animation inputs for activating/deactivating here.
-	if player.ironSightStatus ~= kIronSightStatus.Inactive then
-	
-		if player.ironSightStatus == kIronSightStatus.Activating then 
-				
-			modelMixin:SetAnimationInput("activity", "ironsightactivate")
-		
-		elseif player.ironSightStatus == kIronSightStatus.Deactivating then
-		
-			modelMixin:SetAnimationInput("activity", "ironsightdeactivate")
-		
-		// Check whether player just released the button here and set the relevant status.
-		elseif player.ironSightActive and not player:GetSecondaryAttackLastFrame() and player.ironSightStatus ~= kIronSightStatus.Deactivating then
-			
-			player.ironSightStatus = kIronSightStatus.Deactivating 
-			modelMixin:SetAnimationInput("activity", "ironsightdeactivate")
-		
-		elseif player.ironSightStatus == kIronSightStatus.EndInactiveAnimation then
-		
-			player.ironSightStatus = kIronSightStatus.Inactive
-			modelMixin:SetAnimationInput("activity", "none")
-		
-		end
-		
+	if player.ironSightGUI then
+		player.ironSightGUI:ShowIronSight()
 	end
-	
-end
-
-function IronSightMixin:PerformSecondaryAttack(player)
-    self.secondaryAttacking = true
-end
-
-function IronSightMixin:GetSecondaryAttackDelay()
-    return self:GetMixinConstants().kIronSightActivateTime
+    
 end
 
 function IronSightMixin:OnSecondaryAttackEnd(player)
-
-    Ability.OnSecondaryAttackEnd(self, player)
     
-	self.ironSightActive = false
-	self.ironSightStatus = kIronSightStatus.EndInactiveAnimation
-    self.secondaryAttacking = false
+	player.ironSightActive = false
+	player.secondaryAttacking = false
+	
+	if player.ironSightGUI then
+		player.ironSightGUI:HideIronSight()
+	end
 
 end
