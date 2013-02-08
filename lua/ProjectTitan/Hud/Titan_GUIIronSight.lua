@@ -7,22 +7,22 @@
 //  Licensed under LGPL v3.0
 //________________________________
 
-// Titan_GUIIronSight.lua
+// Titan_Titan_GUIIronSight.lua
 
 Script.Load("lua/GUIAnimatedScript.lua")
 
-class 'GUIIronSight' (GUIAnimatedScript)
+class 'Titan_GUIIronSight' (GUIAnimatedScript)
 
-GUIIronSight.kBackgroundTexture = PrecacheAsset("ui/ProjectTitan/testing_ironsights.png")
-GUIIronSight.kMaskTexture = PrecacheAsset("ui/white.png")
+Titan_GUIIronSight.kBackgroundTexture = PrecacheAsset("ui/ProjectTitan/testing_ironsights.png")
+Titan_GUIIronSight.kMaskTexture = PrecacheAsset("ui/white.png")
 
-GUIIronSight.kBackgroundWidth = GUIScale(1500)
-GUIIronSight.kBackgroundHeight = GUIScale(1500)
-GUIIronSight.kBackgroundOffsetX = GUIScale(0)
-GUIIronSight.kBackgroundOffsetY = GUIScale(0)
+Titan_GUIIronSight.kBackgroundWidth = GUIScale(1500)
+Titan_GUIIronSight.kBackgroundHeight = GUIScale(1500)
+Titan_GUIIronSight.kBackgroundOffsetX = GUIScale(0)
+Titan_GUIIronSight.kBackgroundOffsetY = GUIScale(0)
 
 
-function GUIIronSight:Initialize()
+function Titan_GUIIronSight:Initialize()
 
 	GUIAnimatedScript.Initialize(self)
     
@@ -32,37 +32,35 @@ function GUIIronSight:Initialize()
     self.background:SetSize( Vector(Client.GetScreenWidth(), Client.GetScreenHeight(), 0) )
     self.background:SetAnchor(GUIItem.Top, GUIItem.Top)
     self.background:SetPosition( Vector(0, 0, 0) ) 
-    self.background:SetTexture(GUIIronSight.kBackgroundTexture)
+    self.background:SetTexture(Titan_GUIIronSight.kBackgroundTexture)
     //self.background:SetLayer(kGUILayerDebugText)    
     self.background:SetShader("shaders/GUIWavy.surface_shader")
-    self.background:SetAdditionalTexture("wavyMask", GUIIronSight.kMaskTexture)
+    self.background:SetAdditionalTexture("wavyMask", Titan_GUIIronSight.kMaskTexture)
     self.background:SetIsVisible(true)
 	
     self:Update(0)
 	
 end
 	
-function GUIIronSight:Uninitialize()    
+function Titan_GUIIronSight:Uninitialize()    
 
     GUI.DestroyItem(self.background)
 	
 end
 
-function GUIIronSight:Update(deltaTime)
+function Titan_GUIIronSight:Update(deltaTime)
 
 	local player = Client.GetLocalPlayer()
 	
-		if player.ironSightActive then
-			self.background:SetIsVisible(true)
-		else
-			self.background:SetIsVisible(false)
-		end
-	
+	if player.ironSightStatus == kIronSightStatus.Active then
+		self.background:SetIsVisible(true)
+	else
+		self.background:SetIsVisible(false)
 	end
 
 end
 
-function GUIIronSight:SetIronSightTexture(texture)
+function Titan_GUIIronSight:SetIronSightTexture(texture)
 
 	self.background:SetTexture(texture)
 	

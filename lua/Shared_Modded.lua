@@ -43,6 +43,7 @@ Script.Load("lua/ExtraEntitiesMod/eem_MovementModifier.lua")
 Script.Load("lua/ProjectTitan/Titan_NS2Gamerules.lua")
 Script.Load("lua/ProjectTitan/Titan_Marine.lua")
 Script.Load("lua/ProjectTitan/Titan_Pistol.lua")
+Script.Load("lua/ProjectTitan/Titan_Rifle.lua")
 Script.Load("lua/ProjectTitan/Titan_Shotgun.lua")
 
 // New classes here

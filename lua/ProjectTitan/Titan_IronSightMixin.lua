@@ -11,14 +11,14 @@
 
 Script.Load("lua/FunctionContracts.lua")
 
-kIronSightStatus = enum({ 'Inactive', 'Activating', 'Active', 'Deactivating' })
+kIronSightStatus = enum({ 'Inactive', 'Activating', 'Active', 'Deactivating', 'EndInactiveAnimation' })
 
 IronSightMixin = CreateMixin( IronSightMixin )
 IronSightMixin.type = "IronSight"
 
 IronSightMixin.expectedMixins =
 {
-	ClientWeaponEffectsMixin = "Needed to detect whether the secondary fire is being triggered",
+	ClientWeaponEffects = "Needed to detect whether the secondary fire is being triggered",
 }
 
 IronSightMixin.expectedCallbacks =
@@ -30,6 +30,7 @@ IronSightMixin.expectedCallbacks =
 IronSightMixin.overrideFunctions =
 {
     "GetHasSecondary",
+	"OnSecondaryAttack",
 }
 
 IronSightMixin.expectedConstants =
@@ -58,7 +59,7 @@ function IronSightMixin:OnSetActive()
 	
 	if player.ironSightGUI and self:GetMixinConstants().kIronSightTexture then
         
-		player.ironSightGUI = ironSightGUI:SetIronSightTexture(texture)
+		player.ironSightGUI:SetIronSightTexture(texture)
             
 	end
 	
@@ -70,7 +71,7 @@ end
 
 function IronSightMixin:OnSecondaryAttack(player)
 
-    if player:GetSecondaryAttackLastFrame() then
+    if not self.blockingSecondary and not player:GetIsSprinting() and player:GetSecondaryAttackLastFrame() then
 		self.secondaryAttacking = true
 		self.ironSightStatus = kIronSightStatus.Activating
 	
@@ -88,14 +89,15 @@ end
 function IronSightMixin:OnUpdateAnimationInput(modelMixin)
 
 	local player = self:GetParent()
+	
 	// Set animation inputs for activating/deactivating here.
 	if player.ironSightStatus ~= kIronSightStatus.Inactive then
 	
 		if player.ironSightStatus == kIronSightStatus.Activating then 
-			
+				
 			modelMixin:SetAnimationInput("activity", "ironsightactivate")
 		
-		elseif player.ironSightStatus == kIronSightStatus.Deactivating
+		elseif player.ironSightStatus == kIronSightStatus.Deactivating then
 		
 			modelMixin:SetAnimationInput("activity", "ironsightdeactivate")
 		
@@ -105,8 +107,13 @@ function IronSightMixin:OnUpdateAnimationInput(modelMixin)
 			player.ironSightStatus = kIronSightStatus.Deactivating 
 			modelMixin:SetAnimationInput("activity", "ironsightdeactivate")
 		
+		elseif player.ironSightStatus == kIronSightStatus.EndInactiveAnimation then
+		
+			player.ironSightStatus = kIronSightStatus.Inactive
+			modelMixin:SetAnimationInput("activity", "none")
+		
 		end
-			
+		
 	end
 	
 end
@@ -124,8 +131,7 @@ function IronSightMixin:OnSecondaryAttackEnd(player)
     Ability.OnSecondaryAttackEnd(self, player)
     
 	self.ironSightActive = false
-	self.ironSightStatus = kIronSightStatus.Inactive
-	modelMixin:SetAnimationInput("activity", "none")
+	self.ironSightStatus = kIronSightStatus.EndInactiveAnimation
     self.secondaryAttacking = false
 
 end

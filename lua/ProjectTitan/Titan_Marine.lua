@@ -18,24 +18,6 @@ local networkVars = {
 AddMixinNetworkVars(MagnoBootsWearerMixin, networkVars)
 AddMixinNetworkVars(CombatMovementMixin, networkVars)
 
-// There are also options you can pass to be able to access the return value and have multiple return arguments,
-// but as they slow down the hooks mechanism slightly you have to set that up specifically.
-local overrideOnCreate = Marine.OnCreate
-
-function Marine:OnCreate()
-
-	overrideOnCreate(self)
-
-	// Init mixins
-    InitMixin(self, WallMovementMixin)
-	InitMixin(self, MagnoBootsWearerMixin)
-	InitMixin(self, CombatMovementMixin)
-	
-	assert(HasMixin(self, "MagnoBootsWearer"))
-	assert(HasMixin(self, "CombatMovement"))
-	
-end
-
 // Balance, movement, animation
 Marine.kSprintAcceleration = 180
 Marine.kSprintInfestationAcceleration = 150
@@ -93,6 +75,34 @@ Marine.kAirMoveMinVelocity = 8
 //Marine.kZExtents = .55
 //SetCachedTechData(kTechId.Marine, kTechDataMaxExtents, Vector(Marine.kXExtents, Marine.kYExtents, Marine.kZExtents))
 
+// Use the new Mixins here.
+local overrideOnCreate = Marine.OnCreate
+function Marine:OnCreate()
+
+	overrideOnCreate(self)
+
+	// Init mixins
+    InitMixin(self, WallMovementMixin)
+	InitMixin(self, MagnoBootsWearerMixin)
+	InitMixin(self, CombatMovementMixin)
+	
+	assert(HasMixin(self, "MagnoBootsWearer"))
+	assert(HasMixin(self, "CombatMovement"))
+	
+end
+
+local overrideOnInitialized = Marine.OnInitialized
+function Marine:OnInitialized()
+
+	overrideOnInitialized(self)
+
+    if Client and Client.GetLocalPlayer() == self then
+        self.ironSightGUI = GetGUIManager():CreateGUIScript("ProjectTitan/Hud/Titan_GUIIronSight")
+    end
+
+end
+
+// Functions to control movement, angles.
 function Marine:GetAngleSmoothRate()
 
 	if self:GetIsWallWalking() then
