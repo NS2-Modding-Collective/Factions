@@ -16,7 +16,7 @@ Shared.PrecacheSurfaceShader("shaders/team_colours.surface_shader")
 TeamColoursMixin = CreateMixin( TeamColoursMixin )
 TeamColoursMixin.type = "TeamColours"
 
-TeamColoursMixin.intensity = 0.25
+TeamColoursMixin.intensity = 0.15
 
 TeamColoursMixin.expectedMixins =
 {
@@ -52,7 +52,7 @@ function TeamColoursMixin:OnUpdateRender()
 	if model then
 	
 		local teamColours = nil
-		if self:GetTeamNumber() == kTeam2Id then
+		if self:GetTeamNumber() == kTeam2Index then
 			teamColours = kAlienTeamColorFloat
 		else
 			teamColours = kMarineTeamColorFloat

@@ -16,11 +16,11 @@ kTitanVersion = "0.1"
 kTeam1Type = kMarineTeamType
 kTeam2Type = kMarineTeamType
 
-kMarineTeamColor = 0x86E4FF
-kMarineTeamColorFloat = Color(0.549, 0.894, 1)
+kMarineTeamColor = 0x3390FF
+kMarineTeamColorFloat = Color(0.2, 0.564, 1)
 
-kAlienTeamColor = 0x95FF8C
-kAlienTeamColorFloat = Color(0.584, 1, 0.549)
+kAlienTeamColor = 0x41FF30
+kAlienTeamColorFloat = Color(0.254, 1, 0.188)
 
 // Used for playing team and scoreboard
 kTeam1Name = "TSA"

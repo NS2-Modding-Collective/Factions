@@ -18,7 +18,7 @@ AddMixinNetworkVars(IronSightMixin, networkVars)
 
 Rifle.kIronSightTexture = "ui/ProjectTitan/testing_ironsights.png"
 Rifle.kIronSightZoomFOV = 55
-Rifle.kIronSightActivateTime = 0.15
+Rifle.kIronSightActivateTime = 0.1
 
 // Iron Sights
 local overrideOnCreate = Rifle.OnCreate

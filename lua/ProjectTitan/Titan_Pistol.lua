@@ -14,7 +14,7 @@ local networkVars = {
 
 Pistol.kIronSightTexture = "ui/ProjectTitan/testing_ironsights.png"
 Pistol.kIronSightZoomFOV = 70
-Pistol.kIronSightActivateTime = 0.15
+Pistol.kIronSightActivateTime = 0.10
 
 // Iron Sights
 local overrideOnCreate = Pistol.OnCreate
