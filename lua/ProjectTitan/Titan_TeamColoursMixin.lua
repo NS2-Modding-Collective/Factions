@@ -48,6 +48,8 @@ end
 // Set the colour for the objects based on the team colours.
 function TeamColoursMixin:OnUpdateRender()
 	
+	// Special thanks to double_hex for showing us how to do this!
+	// Use an emissive map set in a material.
 	local model = self:GetRenderModel()
 	if model then
 	
