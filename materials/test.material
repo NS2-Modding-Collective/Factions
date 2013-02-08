@@ -1,0 +1,4 @@
+shader = "shaders/team_colours.surface_shader"
+greebMap = ""
+noiseMap = "materials/effects/mesh_effects/nanoshield_noise.dds"
+circuitMap = "materials/effects/mesh_effects/nanoshield_circuit.dds"

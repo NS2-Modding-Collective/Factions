@@ -11,6 +11,7 @@
 
 Script.Load("lua/ProjectTitan/Titan_MagnoBootsWearerMixin.lua")
 Script.Load("lua/ProjectTitan/Titan_CombatMovementMixin.lua")
+Script.Load("lua/ProjectTitan/Titan_TeamColoursMixin.lua")
 
 local networkVars = {
 }
@@ -85,12 +86,15 @@ function Marine:OnCreate()
     InitMixin(self, WallMovementMixin)
 	InitMixin(self, MagnoBootsWearerMixin)
 	InitMixin(self, CombatMovementMixin)
+	InitMixin(self, TeamColoursMixin)
 	
 	assert(HasMixin(self, "MagnoBootsWearer"))
 	assert(HasMixin(self, "CombatMovement"))
+	assert(HasMixin(self, "TeamColours"))
 	
 end
 
+// Iron Sights
 local overrideOnInitialized = Marine.OnInitialized
 function Marine:OnInitialized()
 
