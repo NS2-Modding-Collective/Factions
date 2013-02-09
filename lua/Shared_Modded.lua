@@ -48,3 +48,4 @@ Script.Load("lua/ProjectTitan/Titan_Shotgun.lua")
 
 // New classes here
 Script.Load("lua/ProjectTitan/Titan_CombatDeathmatchGamerules.lua")
+Script.Load("lua/ProjectTitan/Titan_XpMixin.lua")
