@@ -41,10 +41,12 @@ Script.Load("lua/ExtraEntitiesMod/eem_MovementModifier.lua")
 
 // Class overrides here
 Script.Load("lua/ProjectTitan/Titan_NS2Gamerules.lua")
+Script.Load("lua/ProjectTitan/Titan_Player.lua")
 Script.Load("lua/ProjectTitan/Titan_Marine.lua")
-Script.Load("lua/ProjectTitan/Titan_Pistol.lua")
-Script.Load("lua/ProjectTitan/Titan_Rifle.lua")
-Script.Load("lua/ProjectTitan/Titan_Shotgun.lua")
+
+Script.Load("lua/ProjectTitan/Weapons/Titan_Pistol.lua")
+Script.Load("lua/ProjectTitan/Weapons/Titan_Rifle.lua")
+Script.Load("lua/ProjectTitan/Weapons/Titan_Shotgun.lua")
 
 // New classes here
 Script.Load("lua/ProjectTitan/Titan_CombatDeathmatchGamerules.lua")

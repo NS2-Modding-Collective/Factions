@@ -9,7 +9,7 @@
 
 // Titan_Rifle.lua
 
-Script.Load("lua/ProjectTitan/Titan_IronSightMixin.lua")
+Script.Load("lua/ProjectTitan/Weapons/Titan_IronSightMixin.lua")
 
 local networkVars = {
 }

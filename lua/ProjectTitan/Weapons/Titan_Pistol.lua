@@ -9,6 +9,8 @@
 
 // Titan_Pistol.lua
 
+Script.Load("lua/ProjectTitan/Weapons/Titan_IronSightMixin.lua")
+
 local networkVars = {
 }
 
