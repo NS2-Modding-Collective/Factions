@@ -48,7 +48,10 @@ end
 	
 function Titan_GUIIronSight:Uninitialize()    
 
+    GUIAnimatedScript.Uninitialize(self)
+
     GUI.DestroyItem(self.background)
+	self.background = nil
 	
 end
 

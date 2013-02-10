@@ -97,7 +97,6 @@ end
 
 function IronSightMixin:OnSecondaryAttack(player)
 
-	local player = self:GetParent()
 	player.ironSightActive = true
 	// Override any default secondary attacking behaviour here (e.g. rifle butt).
 	player.secondaryAttacking = false
@@ -117,4 +116,15 @@ function IronSightMixin:OnSecondaryAttackEnd(player)
 		player.ironSightGUI:HideIronSight()
 	end
 
+end
+
+if Client then
+	function IronSightMixin:OnHolsterClient()
+		
+		local player = self:GetParent()
+		if player.ironSightGUI then
+			player.ironSightGUI:HideIronSight()
+		end
+		
+	end
 end

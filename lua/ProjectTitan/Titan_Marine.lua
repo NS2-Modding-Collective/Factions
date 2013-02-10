@@ -106,6 +106,34 @@ function Marine:OnInitialized()
 
 end
 
+local overrideOnKillClient = Marine.OnKillClient
+function Marine:OnKillClient()
+
+	overrideOnKillClient(self)
+
+	if self.ironSightGUI then
+    
+        GetGUIManager():DestroyGUIScript(self.ironSightGUI)
+        self.ironSightGUI = nil
+        
+    end
+
+end
+
+local overrideOnDestroy = Marine.OnDestroy
+function Marine:OnDestroy()
+
+	overrideOnDestroy(self)
+
+	if self.ironSightGUI then
+    
+        GetGUIManager():DestroyGUIScript(self.ironSightGUI)
+        self.ironSightGUI = nil
+        
+    end
+
+end
+
 // Functions to control movement, angles.
 function Marine:GetAngleSmoothRate()
 
