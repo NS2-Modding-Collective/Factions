@@ -1,13 +1,13 @@
 //________________________________
 //
-//  Project Titan (working title)
+//  Factions
 //	Made by Jibrail, JimWest,
 //  Puschen and Winston Smith (MCMLXXXIV)
 //  
 //  Licensed under LGPL v3.0
 //________________________________
 
-// Titan_Balance.lua
+// Factions_Balance.lua
 
 // Sprinting
 SprintMixin.kMaxSprintTime = 6 // 1 sec

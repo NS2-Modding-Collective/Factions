@@ -1,17 +1,17 @@
 //________________________________
 //
-//  Project Titan (working title)
+//  Factions
 //	Made by Jibrail, JimWest,
 //  Puschen and Winston Smith (MCMLXXXIV)
 //  
 //  Licensed under LGPL v3.0
 //________________________________
 
-// Titan_Marine.lua
+// Factions_Marine.lua
 
-Script.Load("lua/ProjectTitan/Titan_MagnoBootsWearerMixin.lua")
-Script.Load("lua/ProjectTitan/Titan_CombatMovementMixin.lua")
-Script.Load("lua/ProjectTitan/Titan_TeamColoursMixin.lua")
+Script.Load("lua/Factions/Factions_MagnoBootsWearerMixin.lua")
+Script.Load("lua/Factions/Factions_CombatMovementMixin.lua")
+Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
 
 local networkVars = {
 }
@@ -101,7 +101,7 @@ function Marine:OnInitialized()
 	overrideOnInitialized(self)
 
     if Client and Client.GetLocalPlayer() == self then
-        self.ironSightGUI = GetGUIManager():CreateGUIScript("ProjectTitan/Hud/Titan_GUIIronSight")
+        self.ironSightGUI = GetGUIManager():CreateGUIScript("Factions/Hud/Factions_GUIIronSight")
     end
 
 end

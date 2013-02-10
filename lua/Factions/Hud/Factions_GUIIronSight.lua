@@ -1,30 +1,30 @@
 //________________________________
 //
-//  Project Titan (working title)
+//  Factions
 //	Made by Jibrail, JimWest,
 //  Puschen and Winston Smith (MCMLXXXIV)
 //  
 //  Licensed under LGPL v3.0
 //________________________________
 
-// Titan_Titan_GUIIronSight.lua
+// Factions_Factions_GUIIronSight.lua
 
 Script.Load("lua/GUIAnimatedScript.lua")
 
-class 'Titan_GUIIronSight' (GUIAnimatedScript)
+class 'Factions_GUIIronSight' (GUIAnimatedScript)
 
-Titan_GUIIronSight.kBackgroundTexture = PrecacheAsset("ui/ProjectTitan/testing_ironsights.png")
-Titan_GUIIronSight.kMaskTexture = PrecacheAsset("ui/ProjectTitan/white.png")
+Factions_GUIIronSight.kBackgroundTexture = PrecacheAsset("ui/Factions/testing_ironsights.png")
+Factions_GUIIronSight.kMaskTexture = PrecacheAsset("ui/Factions/white.png")
 
-Titan_GUIIronSight.kBackgroundWidth = GUIScale(1500)
-Titan_GUIIronSight.kBackgroundHeight = GUIScale(1500)
-Titan_GUIIronSight.kBackgroundOffsetX = GUIScale(0)
-Titan_GUIIronSight.kBackgroundOffsetY = GUIScale(0)
+Factions_GUIIronSight.kBackgroundWidth = GUIScale(1500)
+Factions_GUIIronSight.kBackgroundHeight = GUIScale(1500)
+Factions_GUIIronSight.kBackgroundOffsetX = GUIScale(0)
+Factions_GUIIronSight.kBackgroundOffsetY = GUIScale(0)
 
-Titan_GUIIronSight.kMaxAlpha = 1
-Titan_GUIIronSight.kMinAlpha = 0
+Factions_GUIIronSight.kMaxAlpha = 1
+Factions_GUIIronSight.kMinAlpha = 0
 
-function Titan_GUIIronSight:Initialize()
+function Factions_GUIIronSight:Initialize()
 
 	GUIAnimatedScript.Initialize(self)
     
@@ -35,10 +35,10 @@ function Titan_GUIIronSight:Initialize()
     self.background:SetAnchor(GUIItem.Top, GUIItem.Top)
     self.background:SetPosition( Vector(0, 0, 0) ) 
 	self.background:SetColor( Color(1, 1, 1, 0) )
-    self.background:SetTexture(Titan_GUIIronSight.kBackgroundTexture)
+    self.background:SetTexture(Factions_GUIIronSight.kBackgroundTexture)
     //self.background:SetLayer(kGUILayerDebugText)    
     //self.background:SetShader("shaders/GUIWavy.surface_shader")
-    //self.background:SetAdditionalTexture("wavyMask", Titan_GUIIronSight.kMaskTexture)
+    //self.background:SetAdditionalTexture("wavyMask", Factions_GUIIronSight.kMaskTexture)
     self.background:SetIsVisible(false)
 	
 	// Control logic for fade in/out
@@ -46,7 +46,7 @@ function Titan_GUIIronSight:Initialize()
 	
 end
 	
-function Titan_GUIIronSight:Uninitialize()    
+function Factions_GUIIronSight:Uninitialize()    
 
     GUIAnimatedScript.Uninitialize(self)
 
@@ -56,27 +56,27 @@ function Titan_GUIIronSight:Uninitialize()
 end
 
 // Set the texture. All iron sight weapons should call this via IronSightMixin.
-function Titan_GUIIronSight:SetTexture(texture)
+function Factions_GUIIronSight:SetTexture(texture)
 
 	self.background:SetTexture(texture)
 	
 end
 
 // Calculate the transition rate for the zoom in/out effect.
-function Titan_GUIIronSight:SetTransitionTime(seconds)
+function Factions_GUIIronSight:SetTransitionTime(seconds)
 
 	self.transitionTime = seconds
 
 end
 
-function Titan_GUIIronSight:ShowIronSight()
+function Factions_GUIIronSight:ShowIronSight()
 
 	self.background:SetIsVisible(true)
 	self.background:FadeIn(self.transitionTime, nil, AnimateLinear, nil)
 	
 end
 
-function Titan_GUIIronSight:HideIronSight()
+function Factions_GUIIronSight:HideIronSight()
 
 	local hideFunc = function() self.background:SetIsVisible(false) end
 	self.background:FadeOut(self.transitionTime, nil, AnimateLinear, hideFunc)

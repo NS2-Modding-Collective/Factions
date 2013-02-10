@@ -12,8 +12,8 @@ Script.Load("lua/ModUtility.lua")
 Script.Load("lua/Locale/OverrideLocale.lua")
 
 // Then any files that adjust values go before the rest.
-Script.Load("lua/ProjectTitan/Titan_Globals.lua")
-Script.Load("lua/ProjectTitan/Titan_Balance.lua")
+Script.Load("lua/Factions/Factions_Globals.lua")
+Script.Load("lua/Factions/Factions_Balance.lua")
 
 // Extra Entities
 Script.Load("lua/ExtraEntitiesMod/eem_Globals.lua")
@@ -40,14 +40,14 @@ Script.Load("lua/ExtraEntitiesMod/PortalGun.lua")
 Script.Load("lua/ExtraEntitiesMod/eem_MovementModifier.lua")
 
 // Class overrides here
-Script.Load("lua/ProjectTitan/Titan_NS2Gamerules.lua")
-Script.Load("lua/ProjectTitan/Titan_Player.lua")
-Script.Load("lua/ProjectTitan/Titan_Marine.lua")
+Script.Load("lua/Factions/Factions_NS2Gamerules.lua")
+Script.Load("lua/Factions/Factions_Player.lua")
+Script.Load("lua/Factions/Factions_Marine.lua")
 
-Script.Load("lua/ProjectTitan/Weapons/Titan_Pistol.lua")
-Script.Load("lua/ProjectTitan/Weapons/Titan_Rifle.lua")
-Script.Load("lua/ProjectTitan/Weapons/Titan_Shotgun.lua")
+Script.Load("lua/Factions/Weapons/Factions_Pistol.lua")
+Script.Load("lua/Factions/Weapons/Factions_Rifle.lua")
+Script.Load("lua/Factions/Weapons/Factions_Shotgun.lua")
 
 // New classes here
-Script.Load("lua/ProjectTitan/Titan_CombatDeathmatchGamerules.lua")
-Script.Load("lua/ProjectTitan/Titan_XpMixin.lua")
+Script.Load("lua/Factions/Factions_CombatDeathmatchGamerules.lua")
+Script.Load("lua/Factions/Factions_XpMixin.lua")

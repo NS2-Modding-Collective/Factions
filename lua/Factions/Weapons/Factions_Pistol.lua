@@ -1,20 +1,20 @@
 //________________________________
 //
-//  Project Titan (working title)
+//  Factions
 //	Made by Jibrail, JimWest,
 //  Puschen and Winston Smith (MCMLXXXIV)
 //  
 //  Licensed under LGPL v3.0
 //________________________________
 
-// Titan_Pistol.lua
+// Factions_Pistol.lua
 
-Script.Load("lua/ProjectTitan/Weapons/Titan_IronSightMixin.lua")
+Script.Load("lua/Factions/Weapons/Factions_IronSightMixin.lua")
 
 local networkVars = {
 }
 
-Pistol.kIronSightTexture = "ui/ProjectTitan/testing_ironsights.png"
+Pistol.kIronSightTexture = "ui/Factions/testing_ironsights.png"
 Pistol.kIronSightZoomFOV = 70
 Pistol.kIronSightActivateTime = 0.10
 

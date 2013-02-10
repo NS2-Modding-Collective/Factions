@@ -1,13 +1,13 @@
 //________________________________
 //
-//  Project Titan (working title)
+//  Factions
 //	Made by Jibrail, JimWest,
 //  Puschen and Winston Smith (MCMLXXXIV)
 //  
 //  Licensed under LGPL v3.0
 //________________________________
 
-// Titan_CombatMovementMixin.lua
+// Factions_CombatMovementMixin.lua
 
 Script.Load("lua/FunctionContracts.lua")
 

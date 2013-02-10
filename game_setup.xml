@@ -1,6 +1,6 @@
 <game>
-	<name>Titan</name>
-	<description>Project Titan</description>
+	<name>Factions</name>
+	<description>Factions</description>
 	<client>lua/Client_Modded.lua</client>
 	<server>lua/Server_Modded.lua</server>
 	<predict>lua/Predict_Modded.lua</predict>

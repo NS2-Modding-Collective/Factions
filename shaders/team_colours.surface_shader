@@ -1,9 +1,7 @@
 <shader>
 
 <inputs>
-//<input name="greebMap" type="texture" address="wrap" srgb="true"/>
-<input name="circuitMap" type="texture" address="wrap" srgb="true"/>
-<input name="noiseMap" type="texture" address="wrap" />
+<input name="albedoMap" type="texture" address="wrap" srgb="true"/>
 <input name="colourR" type="float">0.0</input>
 <input name="colourG" type="float">0.0</input>
 <input name="colourB" type="float">0.0</input>
@@ -23,6 +21,7 @@ void MaterialShader(in Material_Input input, inout Material material)
 {
 
 const float3 tint = float3(colourR, colourG, colourB);
+float3 albedo1 = tex2D( albedoMap, input.texCoord * 6 + float2( time * .02, time * -.02) ).rgb;
 material.emissive = tint * clamp(input.wsNormal.y, 0, 1) * intensity;
 
 }
