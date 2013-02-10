@@ -67,6 +67,12 @@ function TeamColoursMixin:OnUpdateRender()
 			self.teamColourMaterial:SetParameter("colourB", teamColours.b)
 			self.teamColourMaterial:SetParameter("intensity", TeamColoursMixin.intensity)
 		end
+		
+		if not self:GetIsAlive() and self.teamColourMaterial then
+			if RemoveMaterial(model, self.teamColourMaterial) then
+				self.teamColourMaterial = nil
+			end
+		end
 			
 	end
 
