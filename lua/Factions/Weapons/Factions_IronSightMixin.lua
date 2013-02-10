@@ -122,7 +122,7 @@ if Client then
 	function IronSightMixin:OnHolsterClient()
 		
 		local player = self:GetParent()
-		if player.ironSightGUI then
+		if player and player.ironSightGUI then
 			player.ironSightGUI:HideIronSight()
 		end
 		

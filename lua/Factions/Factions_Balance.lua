@@ -19,6 +19,12 @@ kRifleDamageType = kDamageType.Normal
 SetCachedTechData(kTechId.Rifle, kTechDataDamageType, kRifleDamageType)
 kRifleClipSize = 30
 
+kLightMachineGunWeight = 0.05
+kLightMachineGunDamage = 20
+kLightMachineGunClipSize = 50
+kLightMachineGunDamageType = kDamageType.Light
+kLightMachineGunCost = 10
+
 kPistolDamage = 60
 kPistolDamageType = kDamageType.Normal
 SetCachedTechData(kTechId.Pistol, kTechDataDamageType, kPistolDamageType)

@@ -12,6 +12,7 @@ Script.Load("lua/ModUtility.lua")
 Script.Load("lua/Locale/OverrideLocale.lua")
 
 // Then any files that adjust values go before the rest.
+Script.Load("lua/Factions/Factions_TechTreeConstants.lua")
 Script.Load("lua/Factions/Factions_Globals.lua")
 Script.Load("lua/Factions/Factions_Balance.lua")
 
@@ -51,3 +52,7 @@ Script.Load("lua/Factions/Weapons/Factions_Shotgun.lua")
 // New classes here
 Script.Load("lua/Factions/Factions_CombatDeathmatchGamerules.lua")
 Script.Load("lua/Factions/Factions_XpMixin.lua")
+Script.Load("lua/Factions/Weapons/Factions_LightMachineGun.lua")
+
+// TechData
+Script.Load("lua/Factions/Factions_TechData.lua")
