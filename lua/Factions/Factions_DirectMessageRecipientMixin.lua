@@ -65,7 +65,7 @@ end
 	
 function DirectMessageRecipientMixin:BuildAndSendDirectMessage(message)
 
-	local playerName = "Factions: " .. self:GetName()
+	local playerName = "Factions: "
 	local playerLocationId = -1
 	local playerTeamNumber = kTeamReadyRoom
 	local playerTeamType = kNeutralTeamType

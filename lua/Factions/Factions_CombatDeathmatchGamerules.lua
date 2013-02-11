@@ -23,6 +23,15 @@ local networkVars =
 
 if Server then
 
+	function CombatDeathmatchGamerules:GetGameModeName()
+		return "Combat Deathmatch"
+	end
+	
+	function CombatDeathmatchGamerules:GetGameModeText()
+		return { "Both sides fight until the other team's CC is destroyed,",
+                 "or one side runs out of lives!" }
+	end
+
 	local overrideResetGame = GenericGamerules.ResetGame
 	function CombatDeathmatchGamerules:ResetGame()
 		

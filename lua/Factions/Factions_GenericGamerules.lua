@@ -71,8 +71,9 @@ if Server then
 		return "No mode name"
 	end
 	
+	// Note use of a table of messages here.
 	function GenericGamerules:GetGameModeText()
-		return "No mode description"
+		return { "No mode description" }
 	end
 	
 	local overrideOnClientConnect = NS2Gamerules.OnClientConnect
@@ -84,7 +85,9 @@ if Server then
 		
 		player:BuildAndSendDirectMessage("Welcome to Factions v" .. kFactionsVersion .. "!")
 		player:BuildAndSendDirectMessage("Current Game Mode: " .. self:GetGameModeName())
-		player:BuildAndSendDirectMessage(self:GetGameModeText())
+		for index, message in ipairs(self:GetGameModeText()) do
+			player:BuildAndSendDirectMessage(message)
+		end
 		
 	end
 
