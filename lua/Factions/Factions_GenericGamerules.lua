@@ -66,6 +66,22 @@ if Server then
         
     end
 	
+	function GenericGamerules:JoinTeam(player, newTeamNumber, force)
+	
+		local success, newPlayer = NS2Gamerules.JoinTeam(self, player, newTeamNumber, force)
+		
+		if success then
+		
+			//set spawn protect
+			if HasMixin(newPlayer, "SpawnProtect") then
+				newPlayer:SetSpawnProtect()
+			end
+			
+		end
+	
+	end
+	
+	
 	// Make sure to override these in your child class
 	function GenericGamerules:GetGameModeName()
 		return "No mode name"

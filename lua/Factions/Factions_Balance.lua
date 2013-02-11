@@ -16,6 +16,16 @@ kInitialTokenValue = 500
 SprintMixin.kMaxSprintTime = 6 // 1 sec
 SprintMixin.kSprintRecoveryRate = .5 // 0.5 sec
 
+// Spawning logic
+kRespawnTimer = 12
+kSpawnMaxRetries = 50
+kSpawnMinDistance = 2
+kSpawnMaxDistance = 70
+kSpawnMaxVertical = 30
+kSpawnProtectDelay = 0.1
+kSpawnProtectTime = 2
+kNanoShieldDamageReductionDamage = 0.1
+
 // MARINE DAMAGE VALUES
 kRifleDamage = 35
 kRifleDamageType = kDamageType.Normal
