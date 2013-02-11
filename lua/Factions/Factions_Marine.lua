@@ -12,6 +12,7 @@
 Script.Load("lua/Factions/Factions_MagnoBootsWearerMixin.lua")
 Script.Load("lua/Factions/Factions_CombatMovementMixin.lua")
 Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
+Script.Load("lua/Factions/Factions_IronSightViewerMixin.lua")
 
 local networkVars = {
 }
@@ -87,51 +88,13 @@ function Marine:OnCreate()
 	InitMixin(self, MagnoBootsWearerMixin)
 	InitMixin(self, CombatMovementMixin)
 	InitMixin(self, TeamColoursMixin)
+	InitMixin(self, IronSightViewerMixin)
 	
 	assert(HasMixin(self, "MagnoBootsWearer"))
 	assert(HasMixin(self, "CombatMovement"))
 	assert(HasMixin(self, "TeamColours"))
+	assert(HasMixin(self, "IronSightViewer"))
 	
-end
-
-// Iron Sights
-local overrideOnInitialized = Marine.OnInitialized
-function Marine:OnInitialized()
-
-	overrideOnInitialized(self)
-
-    if Client and Client.GetLocalPlayer() == self then
-        self.ironSightGUI = GetGUIManager():CreateGUIScript("Factions/Hud/Factions_GUIIronSight")
-    end
-
-end
-
-local overrideOnKillClient = Marine.OnKillClient
-function Marine:OnKillClient()
-
-	overrideOnKillClient(self)
-
-	if self.ironSightGUI then
-    
-        GetGUIManager():DestroyGUIScript(self.ironSightGUI)
-        self.ironSightGUI = nil
-        
-    end
-
-end
-
-local overrideOnDestroy = Marine.OnDestroy
-function Marine:OnDestroy()
-
-	overrideOnDestroy(self)
-
-	if self.ironSightGUI then
-    
-        GetGUIManager():DestroyGUIScript(self.ironSightGUI)
-        self.ironSightGUI = nil
-        
-    end
-
 end
 
 // Functions to control movement, angles.

@@ -52,6 +52,17 @@ function IronSightMixin:__initmixin()
 
 end
 
+function IronSightMixin:GetIronSightActive()
+
+	local player = self:GetParent()
+	if player and player.ironSightActive then
+		return true
+	end
+	
+	return false
+	
+end
+
 // Set the texture for the iron sight if defined by the weapon.
 function IronSightMixin:OnSetActive() 
 

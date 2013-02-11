@@ -14,4 +14,7 @@ Script.Load("lua/Shared_Modded.lua")
 
 Script.Load("lua/Client.lua")
 
+// Client-specific code goes here
+Script.Load("lua/Factions/Factions_Player_Client.lua")
+
 Script.Load("lua/PostLoadMod.lua")
