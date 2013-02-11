@@ -1,7 +1,7 @@
 //________________________________
 //
 //  Factions
-//	Made by Jibrail, JimWest,
+//	Made by Jibrail, JimWest, Sewlek
 //  Puschen and Winston Smith (MCMLXXXIV)
 //  
 //  Licensed under LGPL v3.0
