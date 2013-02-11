@@ -44,6 +44,7 @@ Script.Load("lua/ExtraEntitiesMod/eem_MovementModifier.lua")
 Script.Load("lua/Factions/Factions_NS2Gamerules.lua")
 Script.Load("lua/Factions/Factions_Player.lua")
 Script.Load("lua/Factions/Factions_Marine.lua")
+Script.Load("lua/Factions/Factions_JetpackMarine.lua")
 
 Script.Load("lua/Factions/Weapons/Factions_Pistol.lua")
 Script.Load("lua/Factions/Weapons/Factions_Rifle.lua")
