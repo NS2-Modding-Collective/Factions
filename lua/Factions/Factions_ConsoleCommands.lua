@@ -18,4 +18,18 @@ function OnCommandGiveMagnoBoots(client)
 
 end
 
+
+function OnCommandGiveXp(client, amount)
+
+    local player = client:GetControllingPlayer()
+	if player and  Shared.GetCheatsEnabled() then
+	    if not amount then
+	        amount = 10
+        end	        
+		player:AddScore(amount)
+	end
+
+end
+
 Event.Hook("Console_magnoboots", OnCommandGiveMagnoBoots) 
+Event.Hook("Console_givexp", OnCommandGiveXp) 

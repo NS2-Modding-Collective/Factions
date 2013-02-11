@@ -7,9 +7,10 @@
 //  Licensed under LGPL v3.0
 //________________________________
 
-// Factions_ScoringMixin.lua
+// Factions_XpMixin.lua
+// Changes everything needed for the xp system
 
-// change the score value of the things
+Script.Load("lua/MixinUtility.lua")
 
 /*
     Classes (base xp you get when you kill someone, 
@@ -33,7 +34,13 @@ kPowerPointPointValue = 0
 kMinePointValue =  kMineCost * buildingXpFactor
 
 // default start xp
-kStartXp = 0
+kPlayerInitialIndivRes = 0
+// default start lvl
+kStartLevel = 1
+
+// Max xp you can get
+kMaxPersonalResources = 9999
+kMaxResources = 9999
 
 // How much lvl you will lose when you rejoin the same team
 kPenaltyLevel = 1
@@ -56,3 +63,124 @@ kXpList[12] = { Level=12, 	XP=4500, 	MarineName="Badass", 				XpMultiplier=2.1}
 kXpList[13] = { Level=13, 	XP=6000, 	MarineName="Rambo", 				XpMultiplier=2.2}
 kMaxLvl = table.maxn(kXpList)
 kMaxXp = kXpList[kMaxLvl]["XP"]
+
+XpMixin = CreateMixin( XpMixin )
+XpMixin.type = "Xp"
+
+XpMixin.optionalCallbacks =
+{
+}
+
+XpMixin.expectedCallbacks = 
+{
+}
+
+XpMixin.networkVars =
+{
+    level = "integer (0 to 99)",
+}
+
+function XpMixin:__initmixin()
+    self.level = kStartLevel
+end
+
+// also adds res when score will be added so you can use them to buy something
+function XpMixin:AddScore(points, res)
+    if Server then
+        if points ~= nil and points ~= 0 then        
+            self:AddResources(points)
+            self:SetScoreboardChanged(true)
+            self:CheckLvlUp()  
+        end    
+    end    
+end
+
+// gives res back when rejoining
+function XpMixin:Reset()     
+    self:AddResources(self.score)
+    self:SetScoreboardChanged(true)
+end
+
+// returns the current lvl
+function XpMixin:GetLvl()
+    if self.level then
+        return self.level
+    else
+        return 0    
+    end  
+end
+
+function XpMixin:GetXp()
+    if self.score then
+        return self.score
+    else
+        return 0    
+    end         
+end
+
+
+function XpMixin:GetLvlForXp(xp)
+
+	local returnlevel = 1
+
+	// Look up the level of this amount of Xp
+	if xp >= kMaxXp then 
+		return maxLvl
+	end
+	
+	// ToDo: Do a faster search instead. We're going to be here a lot!
+	for index, thislevel in ipairs(kXpList) do
+	
+		if xp >= thislevel["XP"] and 
+		   xp < kXpList[index+1]["XP"] then
+		
+			returnlevel = thislevel["Level"]
+		
+		end
+		
+	end
+
+	return returnlevel
+end
+
+// returns the name for the lvl
+function XpMixin:GetLvlName(lvl)
+
+	local LvlName = ""
+	if kXpList[lvl] then
+        LvlName = kXpList[lvl]["MarineName"]	
+    end
+	return LvlName
+	
+end
+
+// returns the needed xp for the lvl
+function XpMixin:XpForLvl(lvl)
+
+	local returnXp = kXpList[1]["XP"]
+
+	if lvl > 0 then
+		returnXp = kXpList[lvl]["XP"]
+	end
+
+	return returnXp
+end
+
+
+function XpMixin:CheckLvlUp()    
+    local xp = self:GetXp()
+    local diffLevels = self:GetLvlForXp(xp) - self:GetLvl()
+    if diffLevels > 0 then
+        //Lvl UP
+        self.level = self:GetLvlForXp(xp)        
+        // Trigger sound on level up
+        //StartSoundEffectAtOrigin(CombatEffects.kMarineLvlUpSound, self:GetOrigin())        
+        local LvlName = self:GetLvlName(self:GetLvl())
+        //self:SendDirectMessage( "!! Level UP !! New Lvl: " .. LvlName .. " (" .. self:GetLvl() .. ")")
+        
+        // Trigger an effect
+        //self:TriggerEffects("combat_level_up") 
+        // For Debugging:
+        Print("Level Up, Name " .. LvlName)       
+    end   
+end  

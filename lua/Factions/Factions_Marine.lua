@@ -13,12 +13,14 @@ Script.Load("lua/Factions/Factions_MagnoBootsWearerMixin.lua")
 Script.Load("lua/Factions/Factions_CombatMovementMixin.lua")
 Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
 Script.Load("lua/Factions/Factions_IronSightViewerMixin.lua")
+Script.Load("lua/Factions/Factions_XpMixin.lua")
 
 local networkVars = {
 }
 
 AddMixinNetworkVars(MagnoBootsWearerMixin, networkVars)
 AddMixinNetworkVars(CombatMovementMixin, networkVars)
+AddMixinNetworkVars(XpMixin, networkVars)
 
 // Balance, movement, animation
 Marine.kSprintAcceleration = 180
@@ -89,11 +91,13 @@ function Marine:OnCreate()
 	InitMixin(self, CombatMovementMixin)
 	InitMixin(self, TeamColoursMixin)
 	InitMixin(self, IronSightViewerMixin)
+	InitMixin(self, XpMixin)
 	
 	assert(HasMixin(self, "MagnoBootsWearer"))
 	assert(HasMixin(self, "CombatMovement"))
 	assert(HasMixin(self, "TeamColours"))
 	assert(HasMixin(self, "IronSightViewer"))
+	assert(HasMixin(self, "Xp"))
 	
 end
 
