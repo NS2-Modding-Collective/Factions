@@ -10,7 +10,7 @@
 // Factions_Globals.lua
 
 // Version number
-kTitanVersion = "0.1"
+kFactionsVersion = "0.1"
 
 // Marines vs. Marines
 kTeam1Type = kMarineTeamType

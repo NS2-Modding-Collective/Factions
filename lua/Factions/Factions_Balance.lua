@@ -9,6 +9,9 @@
 
 // Factions_Balance.lua
 
+// Game rules
+kInitialTokenValue = 500
+
 // Sprinting
 SprintMixin.kMaxSprintTime = 6 // 1 sec
 SprintMixin.kSprintRecoveryRate = .5 // 0.5 sec

@@ -12,7 +12,23 @@
 local networkVars = {
 }
 
+Script.Load("lua/Factions/Factions_DirectMessageRecipientMixin.lua")
+
 if Server then
+
+	// Mixin to allow players to receive direct messages.
+	local overrideOnCreate = Player.OnCreate
+	function Player:OnCreate()
+
+		overrideOnCreate(self)
+
+		// Init mixins
+		InitMixin(self, DirectMessageRecipientMixin)
+		
+		assert(HasMixin(self, "DirectMessageRecipient"))
+		
+	end
+
 	local function UpdateChangeToSpectator(self)
 
 		if not self:GetIsAlive() and not self:isa("Spectator") then
@@ -53,6 +69,7 @@ if Server then
 		end
 		
 	end
+	
 end
 
 Class_Reload("Player", networkVars)

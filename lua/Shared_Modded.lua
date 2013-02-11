@@ -51,6 +51,7 @@ Script.Load("lua/Factions/Weapons/Factions_Rifle.lua")
 Script.Load("lua/Factions/Weapons/Factions_Shotgun.lua")
 
 // New classes here
+Script.Load("lua/Factions/Factions_GenericGamerules.lua")
 Script.Load("lua/Factions/Factions_CombatDeathmatchGamerules.lua")
 Script.Load("lua/Factions/Factions_XpMixin.lua")
 Script.Load("lua/Factions/Weapons/Factions_LightMachineGun.lua")
