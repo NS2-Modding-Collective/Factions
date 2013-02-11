@@ -365,98 +365,106 @@ end
 
 function CombatMovementMixin:ModifyVelocity(input, velocity)
 
-	local viewCoords = self:GetViewCoords()
-
-	if self.jumpLandSpeed and self.timeOfLastJumpLand + 0.3 > Shared.GetTime() and input.move:GetLength() ~= 0 then
+	if self:isa("JetpackMarine") then
 	
-		// check if the current move is in the same direction as the requested move
-		local moveXZ = GetNormalizedVectorXZ( viewCoords:TransformVector(input.move) )
+		JetpackMarine.ModifyVelocity(self, input, velocity)
 		
-		if moveXZ:DotProduct(GetNormalizedVectorXZ(velocity)) > 0.5 then
+	else
+
+		local viewCoords = self:GetViewCoords()
+
+		if self.jumpLandSpeed and self.timeOfLastJumpLand + 0.3 > Shared.GetTime() and input.move:GetLength() ~= 0 then
 		
-			local currentSpeed = velocity:GetLength()
-			local prevY = velocity.y
+			// check if the current move is in the same direction as the requested move
+			local moveXZ = GetNormalizedVectorXZ( viewCoords:TransformVector(input.move) )
 			
-			local scale = math.max(1, self.jumpLandSpeed / currentSpeed)        
-			velocity:Scale(scale)
-			velocity.y = prevY
-		
-		end
-	
-	end
-
-
-	Player.ModifyVelocity(self, input, velocity)
-
-
-	if not self:GetIsOnSurface() and input.move:GetLength() ~= 0 then
-
-		local moveLengthXZ = velocity:GetLengthXZ()
-		local previousY = velocity.y
-		local adjustedZ = false
-
-		if input.move.z ~= 0 then
-		
-			local redirectedVelocityZ = GetNormalizedVectorXZ(self:GetViewCoords().zAxis) * input.move.z
-			redirectedVelocityZ.y = 0
-			redirectedVelocityZ:Normalize()
+			if moveXZ:DotProduct(GetNormalizedVectorXZ(velocity)) > 0.5 then
 			
-			if input.move.z < 0 then
-			
-				if viewCoords:TransformVector(input.move):DotProduct(velocity) > 0 then
+				local currentSpeed = velocity:GetLength()
+				local prevY = velocity.y
 				
-					redirectedVelocityZ = redirectedVelocityZ + GetNormalizedVectorXZ(velocity) * 8
-					redirectedVelocityZ:Normalize()
-					
-					local xzVelocity = Vector(velocity)
-					xzVelocity.y = 0
-					
-					VectorCopy(velocity - (xzVelocity * input.time * 2), velocity)
-					
-				end
-				
-			else
-			
-				redirectedVelocityZ = redirectedVelocityZ * input.time * Marine.kAirZMoveWeight + GetNormalizedVectorXZ(velocity)
-				redirectedVelocityZ:Normalize()                
-				redirectedVelocityZ:Scale(moveLengthXZ)
-				redirectedVelocityZ.y = previousY
-				
-				adjustedZ = true
-				
-				VectorCopy(redirectedVelocityZ,  velocity)
+				local scale = math.max(1, self.jumpLandSpeed / currentSpeed)        
+				velocity:Scale(scale)
+				velocity.y = prevY
 			
 			end
 		
 		end
-		
-		if input.move.x ~= 0  then
-		
-			local redirectedVelocityX = GetNormalizedVectorXZ(self:GetViewCoords().xAxis) * input.move.x
-			redirectedVelocityX.y = 0
-			redirectedVelocityX:Normalize()
+
+
+		Player.ModifyVelocity(self, input, velocity)
+
+
+		if not self:GetIsOnSurface() and input.move:GetLength() ~= 0 then
+
+			local moveLengthXZ = velocity:GetLengthXZ()
+			local previousY = velocity.y
+			local adjustedZ = false
+
+			if input.move.z ~= 0 then
 			
-			redirectedVelocityX = redirectedVelocityX * input.time * Marine.kAirStrafeWeight + GetNormalizedVectorXZ(velocity)
+				local redirectedVelocityZ = GetNormalizedVectorXZ(self:GetViewCoords().zAxis) * input.move.z
+				redirectedVelocityZ.y = 0
+				redirectedVelocityZ:Normalize()
+				
+				if input.move.z < 0 then
+				
+					if viewCoords:TransformVector(input.move):DotProduct(velocity) > 0 then
+					
+						redirectedVelocityZ = redirectedVelocityZ + GetNormalizedVectorXZ(velocity) * 8
+						redirectedVelocityZ:Normalize()
+						
+						local xzVelocity = Vector(velocity)
+						xzVelocity.y = 0
+						
+						VectorCopy(velocity - (xzVelocity * input.time * 2), velocity)
+						
+					end
+					
+				else
+				
+					redirectedVelocityZ = redirectedVelocityZ * input.time * Marine.kAirZMoveWeight + GetNormalizedVectorXZ(velocity)
+					redirectedVelocityZ:Normalize()                
+					redirectedVelocityZ:Scale(moveLengthXZ)
+					redirectedVelocityZ.y = previousY
+					
+					adjustedZ = true
+					
+					VectorCopy(redirectedVelocityZ,  velocity)
+				
+				end
 			
-			redirectedVelocityX:Normalize()            
-			redirectedVelocityX:Scale(moveLengthXZ)
-			redirectedVelocityX.y = previousY            
-			VectorCopy(redirectedVelocityX,  velocity)
-		
+			end
+			
+			if input.move.x ~= 0  then
+			
+				local redirectedVelocityX = GetNormalizedVectorXZ(self:GetViewCoords().xAxis) * input.move.x
+				redirectedVelocityX.y = 0
+				redirectedVelocityX:Normalize()
+				
+				redirectedVelocityX = redirectedVelocityX * input.time * Marine.kAirStrafeWeight + GetNormalizedVectorXZ(velocity)
+				
+				redirectedVelocityX:Normalize()            
+				redirectedVelocityX:Scale(moveLengthXZ)
+				redirectedVelocityX.y = previousY            
+				VectorCopy(redirectedVelocityX,  velocity)
+			
+			end
+			
 		end
 		
-	end
-	
-	// accelerate XZ speed when falling down
-	if not self:GetIsOnSurface() and velocity:GetLengthXZ() < Marine.kMaxVerticalAirAccel then
-	
-		local acceleration = Marine.kVerticalAcceleration
-		local accelFraction = Clamp( (-velocity.y - 3.5) / 7, 0, 1)
+		// accelerate XZ speed when falling down
+		if not self:GetIsOnSurface() and velocity:GetLengthXZ() < Marine.kMaxVerticalAirAccel then
 		
-		local addAccel = GetNormalizedVectorXZ(velocity) * accelFraction * input.time * acceleration
+			local acceleration = Marine.kVerticalAcceleration
+			local accelFraction = Clamp( (-velocity.y - 3.5) / 7, 0, 1)
+			
+			local addAccel = GetNormalizedVectorXZ(velocity) * accelFraction * input.time * acceleration
 
-		velocity.x = velocity.x + addAccel.x
-		velocity.z = velocity.z + addAccel.z
+			velocity.x = velocity.x + addAccel.x
+			velocity.z = velocity.z + addAccel.z
+			
+		end
 		
 	end
 	
@@ -517,6 +525,10 @@ function CombatMovementMixin:AdjustGravityForce(input, gravity)
 	// No gravity when we're sticking to a wall.
 	if self:GetIsWallWalking() then
 		gravity = 0
+	end
+	
+	if self:isa("JetpackMarine") then
+		return JetpackMarine.AdjustGravityForce(self, input, gravity)
 	end
 	
 	return gravity
