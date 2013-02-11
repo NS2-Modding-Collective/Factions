@@ -98,10 +98,6 @@ function LogicMixin:TriggerOutputs(names)
     end
 end
 
-function LogicMixin:SetFindEntity()
-    table.insert(kFindEntitiesAfterLoad, self:GetId())
-end
-
 // needed when we have more than 1 output
 function LogicMixin:GetUsedOutputs()
     local outputs = {}

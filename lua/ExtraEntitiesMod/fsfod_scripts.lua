@@ -30,5 +30,5 @@ function RawPrint(fmt, ...)
 end
 
 // Scripts for Hooking
-Script.Load("lua/ClassHooker.lua")
-Script.Load("lua/LoadTracker.lua")
+Script.Load("lua/ExtraEntitiesMod/ClassHooker.lua")
+Script.Load("lua/ExtraEntitiesMod/LoadTracker.lua")

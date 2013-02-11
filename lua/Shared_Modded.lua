@@ -17,28 +17,8 @@ Script.Load("lua/Factions/Factions_Globals.lua")
 Script.Load("lua/Factions/Factions_Balance.lua")
 
 // Extra Entities
-Script.Load("lua/ExtraEntitiesMod/eem_Globals.lua")
-Script.Load("lua/ExtraEntitiesMod/eem_Utility.lua")
-Script.Load("lua/ExtraEntitiesMod/NS2Gamerules_hook.lua")
-Script.Load("lua/ExtraEntitiesMod/TeleportTrigger.lua")
-Script.Load("lua/ExtraEntitiesMod/FuncTrain.lua")
-Script.Load("lua/ExtraEntitiesMod/FuncTrainWaypoint.lua")
-Script.Load("lua/ExtraEntitiesMod/FuncMoveable.lua")
-Script.Load("lua/ExtraEntitiesMod/FuncDoor.lua")
-Script.Load("lua/ExtraEntitiesMod/PushTrigger.lua")
-Script.Load("lua/ExtraEntitiesMod/PortalGunTeleport.lua")
-Script.Load("lua/ExtraEntitiesMod/LogicTimer.lua")
-Script.Load("lua/ExtraEntitiesMod/LogicMultiplier.lua")
-Script.Load("lua/ExtraEntitiesMod/LogicWeldable.lua")
-Script.Load("lua/ExtraEntitiesMod/LogicFunction.lua")
-Script.Load("lua/ExtraEntitiesMod/LogicCounter.lua")
-Script.Load("lua/ExtraEntitiesMod/LogicTrigger.lua")
-Script.Load("lua/ExtraEntitiesMod/LogicLua.lua")
-Script.Load("lua/ExtraEntitiesMod/MapSettings.lua")
-Script.Load("lua/ExtraEntitiesMod/NobuildArea.lua")
-Script.Load("lua/ExtraEntitiesMod/PortalGun.lua")
-
-Script.Load("lua/ExtraEntitiesMod/eem_MovementModifier.lua")
+// disabled it till I changed the hooking system there, too
+//Script.Load("lua/ExtraEntitiesMod/eem_Shared.lua")
 
 // Class overrides here
 Script.Load("lua/Factions/Factions_NS2Gamerules.lua")

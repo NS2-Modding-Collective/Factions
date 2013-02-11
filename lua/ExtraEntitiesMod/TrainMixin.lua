@@ -264,11 +264,6 @@ function TrainMixin:TrainMoveToTarget(physicsGroupMask, endPoint, movespeed, tim
     
     // update our position to the cursors position, after adjusting for ground or hover
     local newLocation = self.cursor:GetPosition()          
-    //if self:GetIsFlying() then        
-      //  newLocation = GetHoverAt(self, newLocation, EntityFilterMixinAndSelf(self, "Repositioning"))
-    //else
-      //  newLocation = GetGroundAt(self, newLocation, PhysicsMask.Movement, EntityFilterMixinAndSelf(self, "Repositioning"))
-    //end
     self:SetOrigin(newLocation)
          
     // we are done if we have reached the last point in the path or we have a close-enough condition

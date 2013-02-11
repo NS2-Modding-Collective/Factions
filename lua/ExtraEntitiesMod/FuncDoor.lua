@@ -8,8 +8,8 @@
 // ========= For more information, visit us at http://www.unknownworlds.com =====================
 
 Script.Load("lua/Door.lua")
-Script.Load("lua/ObstacleMixin.lua")
 Script.Load("lua/ExtraEntitiesMod/LogicMixin.lua")
+Script.Load("lua/ObstacleMixin.lua")
 Script.Load("lua/ExtraEntitiesMod/ScaledModelMixin.lua")
 
 class 'FuncDoor' (Door)

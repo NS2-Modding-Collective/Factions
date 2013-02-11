@@ -56,7 +56,6 @@ function FuncTrain:OnInitialized()
     
     if Server then
         InitMixin(self, LogicMixin)
-        self:SetFindEntity()
     end
  
     if self.model ~= nil then    

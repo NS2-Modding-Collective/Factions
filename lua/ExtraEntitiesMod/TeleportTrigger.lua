@@ -76,9 +76,7 @@ function TeleportTrigger:OnInitialized()
             DestroyEntity(self)
         end  
         // call it here so we got the correct enabled value
-        InitMixin(self, LogicMixin) 
-        // search destination after MapLoad
-        self:SetFindEntity()        
+        InitMixin(self, LogicMixin)     
     end 
     
 end
