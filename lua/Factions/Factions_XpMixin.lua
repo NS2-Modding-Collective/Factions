@@ -78,6 +78,8 @@ XpMixin.expectedCallbacks =
 XpMixin.networkVars =
 {
     level = "integer (0 to 99)",
+    // score was no networkvar so add it that we can refer on it as client
+    score = "integer (0 to " .. kMaxScore .. ")",
 }
 
 function XpMixin:__initmixin()
@@ -100,6 +102,24 @@ function XpMixin:Reset()
     self:AddResources(self.score)
     self:SetScoreboardChanged(true)
 end
+
+function XpMixin:CheckLvlUp()    
+    local xp = self:GetXp()
+    local diffLevels = self:GetLvlForXp(xp) - self:GetLvl()
+    if diffLevels > 0 then
+        //Lvl UP
+        self.level = self:GetLvlForXp(xp)        
+        // Trigger sound on level up
+        //StartSoundEffectAtOrigin(CombatEffects.kMarineLvlUpSound, self:GetOrigin())        
+        local LvlName = self:GetLvlName(self:GetLvl())
+        //self:SendDirectMessage( "!! Level UP !! New Lvl: " .. LvlName .. " (" .. self:GetLvl() .. ")")
+        
+        // Trigger an effect
+        //self:TriggerEffects("combat_level_up") 
+        // For Debugging:
+        self:SendDirectMessage( "!! Level UP !! New Lvl: " .. LvlName .. " (" .. self:GetLvl() .. ")")      
+    end   
+end  
 
 // returns the current lvl
 function XpMixin:GetLvl()
@@ -166,21 +186,44 @@ function XpMixin:XpForLvl(lvl)
 	return returnXp
 end
 
+function XpMixin:XPUntilNextLevel()
+	
+	local xp = self:GetScore()
+	local lvl = self:GetLvl()
+	
+	if lvl == kMaxLvl then
+		return 0
+	else	
+	    return kXpList[lvl + 1]["XP"] - xp
+    end
 
-function XpMixin:CheckLvlUp()    
-    local xp = self:GetXp()
-    local diffLevels = self:GetLvlForXp(xp) - self:GetLvl()
-    if diffLevels > 0 then
-        //Lvl UP
-        self.level = self:GetLvlForXp(xp)        
-        // Trigger sound on level up
-        //StartSoundEffectAtOrigin(CombatEffects.kMarineLvlUpSound, self:GetOrigin())        
-        local LvlName = self:GetLvlName(self:GetLvl())
-        //self:SendDirectMessage( "!! Level UP !! New Lvl: " .. LvlName .. " (" .. self:GetLvl() .. ")")
-        
-        // Trigger an effect
-        //self:TriggerEffects("combat_level_up") 
-        // For Debugging:
-        Print("Level Up, Name " .. LvlName)       
-    end   
-end  
+end
+
+function XpMixin:GetNextLevelXP()
+
+	local xp = self:GetScore()
+	local lvl = self:GetLvl()
+	
+	if lvl == kMaxLvl then
+		return kMaxXp
+	else	
+	    return kXpList[lvl + 1]["XP"]
+    end
+
+end
+
+// Return the proportion of this level that we've progressed.
+function XpMixin:GetLevelProgression()
+
+	local xp = self:GetScore()
+    local lvl = self:GetLvl()
+    
+	if lvl == kMaxLvl then
+		return 1
+	else	
+        local thisLevel = kXpList[lvl]["XP"]
+        local nextLevel = kXpList[lvl + 1]["XP"]
+        return (xp - thisLevel) / (nextLevel - thisLevel)
+    end
+end
+
