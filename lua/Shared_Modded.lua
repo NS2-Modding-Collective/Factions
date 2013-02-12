@@ -39,3 +39,6 @@ Script.Load("lua/Factions/Weapons/Factions_LightMachineGun.lua")
 
 // TechData
 Script.Load("lua/Factions/Factions_TechData.lua")
+
+// NetworkMessages
+Script.Load("lua/Factions/Factions_NetworkMessages.lua")

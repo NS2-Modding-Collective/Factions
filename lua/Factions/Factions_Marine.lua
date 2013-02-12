@@ -14,8 +14,6 @@ Script.Load("lua/Factions/Factions_CombatMovementMixin.lua")
 Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
 Script.Load("lua/Factions/Factions_IronSightViewerMixin.lua")
 Script.Load("lua/Factions/Factions_SpawnProtectMixin.lua")
-Script.Load("lua/Factions/Factions_XpMixin.lua")
-Script.Load("lua/Factions/Factions_UpgradeMixin.lua")
 
 local networkVars = {
 }
@@ -23,8 +21,7 @@ local networkVars = {
 AddMixinNetworkVars(MagnoBootsWearerMixin, networkVars)
 AddMixinNetworkVars(CombatMovementMixin, networkVars)
 AddMixinNetworkVars(SpawnProtectMixin, networkVars)
-AddMixinNetworkVars(XpMixin, networkVars)
-AddMixinNetworkVars(UpgradeMixin, networkVars)
+
 
 // Balance, movement, animation
 Marine.kSprintAcceleration = 180
@@ -138,6 +135,45 @@ end
 
 function Marine:GetJumpHeight()
     return Marine.kJumpHeight - Marine.kJumpHeight * self.slowAmount * 0.8
+end
+
+if Client then
+    // this ist just dummy to get it fast working
+    function Combat_ResolveString(string)
+        return string
+    end
+    // Terrible Terrible hack. Yuck.
+    local g_MarineBuyMenu = nil
+    
+    // starting the custom buy menu for marines
+    function Marine:Buy()
+
+       // Don't allow display in the ready room, or as phantom
+        if Client.GetLocalPlayer() == self then
+            if self:GetTeamNumber() ~= 0 then
+            
+                if not self.buyMenu then
+                    // open the buy menu
+                    self.combatBuy = true
+                    self.buyMenu = GetGUIManager():CreateGUIScript("Factions/Hud/combat_GUIMarineBuyMenu")
+                    g_MarineBuyMenu = self.buyMenu
+                    MouseTracker_SetIsVisible(true, "ui/Cursor_MenuDefault.dds", true)
+                else
+                    self.combatBuy = false
+                    self:CloseMenu()
+                end               
+
+            end            
+        end
+    end
+    
+    // dont close the menu
+    local overrideCloseMenu = Marine.CloseMenu
+    function Marine:CloseMenu(buyMenu) 
+        if buyMenu then
+            overrideCloseMenu(self)
+        end
+    end
 end
 
 Class_Reload("Marine", networkVars)

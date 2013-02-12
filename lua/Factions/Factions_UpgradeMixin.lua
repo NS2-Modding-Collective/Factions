@@ -1,9 +1,44 @@
 //________________________________
 //
-//   	NS2 Combat Mod     
-//	Made by JimWest and MCMLXXXIV, 2012
-//
+//  Factions
+//	Made by Jibrail, JimWest, Sewlek
+//  Puschen and Winston Smith (MCMLXXXIV)
+//  
+//  Licensed under LGPL v3.0
 //________________________________
+
+// Factions_UpgradeMixin.lua
+
+kAllUpgrades = {}
+kUpgradeTypes = enum({'Class', 'Tech', 'Weapon'})
+kTriggerTypes = enum({'NoTrigger', 'ByTime', 'ByKey'})
+
+// load the upgrade base class
+Script.Load("lua/Factions/Factions_Upgrade.lua")
+
+// build the upgrade list
+
+local function BuildAllUpgrades()
+
+    if #kAllUpgrades == 0 then
+        // load all upgrade files
+        local upgradeFiles = { }
+        local upgradeDirectory = "lua/Factions/Upgrades/"
+        Shared.GetMatchingFileNames( upgradeDirectory .. "*.lua", false, upgradeFiles)
+
+        for _, upgradeFile in pairs(upgradeFiles) do
+            Script.Load(upgradeFile)      
+        end
+        
+        // save all upgrades in a table
+        kAllUpgrades = Script.GetDerivedClasses("FactionsUpgrade")
+    end
+    
+end
+
+if #kAllUpgrades == 0 then
+    BuildAllUpgrades()
+end
   
 UpgradeMixin = CreateMixin(UpgradeMixin)
 UpgradeMixin.type = "Upgrade"
@@ -22,10 +57,140 @@ UpgradeMixin.expectedCallbacks =
 
 
 function UpgradeMixin:__initmixin()
+    if not self.UpgradeList then
+        self.UpgradeList = {}
+    end
 end
 
 
-function UpgradeMixin:Reset()  
+function UpgradeMixin:Reset()
+    // reset all upgrades 
+    //self:ClearUpgrades()
+end
+
+function UpgradeMixin:CopyPlayerDataFrom(player)
+    self.UpgradeList = player.UpgradeList
+    Print(#player.UpgradeList)
+        // give upgrades back
+    if self:GetIsAlive() and self:GetTeamNumber() ~= kNeutralTeamType then
+        for i, entry in ipairs(self.UpgradeList) do
+            self:BuyUpgrade(self:GetUpgradeById(entry.upgrade), true)
+        end
+    end
+end
+
+
+function UpgradeMixin:BuyUpgrade(upgrade, giveBack)
+    if Server then
+        local upgradeOk = self:CheckUpgradeAvailability(upgrade) or giveBack
+        if upgradeOk then        
+            if upgrade:GetUpgradeType() == kUpgradeTypes.Weapon then            
+                local mapName = LookupTechData(upgrade:GetUpgradeTechId(), kTechDataMapName)
+                if mapName then
+                    self:GiveItem(mapName)
+                end            
+            end
+            
+            if not giveBack then
+                // TODO: send upgrade to client
+                self:SetUpgrade(upgrade, 1)
+            end
+        else
+            self:SendDirectMessage("Upgrade not available")
+        end
+    elseif Client then
+        // Send buy message to server
+        Client.SendNetworkMessage("BuyUpgrade", BuildBuyUpgradeMessage(upgrade), true)
+    end
+end
+
+function UpgradeMixin:SetUpgrade(upgrade, level)
+    local upgradeId = upgrade:GetId()
+    table.insert(self.UpgradeList, {
+                                upgrade = upgradeId,
+                                level = level})
+    if Server then
+        self:AddResources(-upgrade:GetCost())
+        Server.SendNetworkMessage(self, "UpdateUpgrade",  BuildUpdateUpgradeMessage(upgradeId, level), true)  
+    end 
+   
+end
+
+function UpgradeMixin:ClearUpgrades()
+    self.UpgradeList = {}
+end
+
+
+function UpgradeMixin:CheckUpgradeAvailability(upgrade)
+    local hasUpgrade = self:HasUpgrade(upgrade)
+    if not hasUpgrade or (hasUpgrade and (self:GetUpgradeLevel(upgrade, hasUpgrade) < upgrade:GetLevels()) )then
+        // upgrade is ok, enough res?
+        if self:GetResources() - upgrade:GetCost() > 0 then
+            return true
+        end
+    end      
+    return false  
+end
+
+// returns the entry in the table or nil if not
+function UpgradeMixin:HasUpgrade(upgrade)
+    local hasUpgrade = nil
+        for i, entry in ipairs(self.UpgradeList) do
+            if entry.upgrade == upgrade:GetId() then
+                hasUpgrade = i
+                break
+            end
+        end    
+    return hasUpgrade
+end
+
+function UpgradeMixin:GetUpgradeLevel(upgrade, number)
+    if number then
+        if self.UpgradeList[number] then
+            return self.UpgradeList[number].level
+        end
+    else
+        for i, entry in ipairs(self.UpgradeList) do
+            if entry.upgrade == upgrade then
+                return entry.level
+            end
+        end
+    end
+end
+
+function UpgradeMixin:GetUpgradeByName(upgradeName)
+    if upgradeName then
+        for i, upgrade in ipairs(self:GetAllUpgrades()) do
+            if _G[upgrade] and _G[upgrade]:GetUpgradeName() == upgradeName then
+                return _G[upgrade]                
+            end
+        end
+    end
+end
+
+
+function UpgradeMixin:GetUpgradeById(id)
+    if id then
+        local allUpgrades = self:GetAllUpgrades()
+        if allUpgrades[id] and _G[allUpgrades[id]] then
+            return _G[allUpgrades[id]]
+        end
+    end
+end
+
+function UpgradeMixin:GetUpgradeByClassName(className)
+    if className then
+        local allUpgrades = self:GetAllUpgrades()
+        for i, upgradeClassName in ipairs(allUpgrades) do
+            if className == upgradeClassName then
+                return _G[allUpgrades[i]]
+            end
+        end
+    end
+end
+
+function UpgradeMixin:GetAllUpgrades()
+    return kAllUpgrades
 end
 
 function UpgradeMixin:spendlvlHints(hint, type)
