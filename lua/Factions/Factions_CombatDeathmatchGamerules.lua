@@ -40,6 +40,10 @@ if Server then
 		self.team1Tokens = kInitialTokenValue
 		self.team2Tokens = kInitialTokenValue
 		
+		// Lock the command chairs and reveal the objectives.
+		self:RevealCommandChairLocations()
+		self:LockCommandChairs()
+		
 	end
 
 end

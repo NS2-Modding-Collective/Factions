@@ -106,6 +106,24 @@ if Server then
 		end
 		
 	end
+	
+	// Reveal the command chair locations with this.
+	function GenericGamerules:RevealCommandChairLocations()
+	
+		for index, commandStructure in ientitylist(Shared.GetEntitiesWithClassname("CommandStructure")) do
+			commandStructure:RevealObjective()
+		end
+	
+	end
+	
+	// Useful for locking the command chairs on game start.
+	function GenericGamerules:LockCommandChairs()
+	
+		for index, commandStructure in ientitylist(Shared.GetEntitiesWithClassname("CommandStructure")) do
+			commandStructure:LockCommandChair()
+		end
+	
+	end
 
 end
 

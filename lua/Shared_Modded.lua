@@ -23,6 +23,7 @@ Script.Load("lua/Factions/Factions_Balance.lua")
 // Class overrides here
 Script.Load("lua/Factions/Factions_NS2Gamerules.lua")
 Script.Load("lua/Factions/Factions_PlayingTeam.lua")
+Script.Load("lua/Factions/Factions_CommandStructure.lua")
 Script.Load("lua/Factions/Factions_Player.lua")
 Script.Load("lua/Factions/Factions_Marine.lua")
 Script.Load("lua/Factions/Factions_JetpackMarine.lua")
