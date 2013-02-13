@@ -599,7 +599,7 @@ function combat_GUIMarineBuyMenu:_UpdateContent(deltaTime)
         local canAfford = PlayerUI_GetPlayerResources() >= itemCost + upgradesCost
 
         // the discription text under the buttons
-        self.itemName:SetText(GetDisplayNameForTechId(techId))
+        self.itemName:SetText(self.hoverUpgrade:GetUpgradeTitle())
         self.itemDescription:SetText(self.hoverUpgrade:GetUpgradeDesc())
         self.itemDescription:SetTextClipped(true, combat_GUIMarineBuyMenu.kItemDescriptionSize.x - 2* combat_GUIMarineBuyMenu.kPadding, combat_GUIMarineBuyMenu.kItemDescriptionSize.y - combat_GUIMarineBuyMenu.kPadding)
 
