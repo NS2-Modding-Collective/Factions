@@ -13,7 +13,7 @@ class 'ShotgunUpgrade' (FactionsUpgrade)
 
 ShotgunUpgrade.upgradeType = kUpgradeTypes.Weapon       	// see combat_UpgradeUtility, the type of the upgrade
 ShotgunUpgrade.cost = 60                              		// cost of the upgrade in xp
-ShotgunUpgrade.upgradeName = "mines"                       	// text code of the upgrade if using it via console
+ShotgunUpgrade.upgradeName = "shotgun"                       	// text code of the upgrade if using it via console
 ShotgunUpgrade.upgradeTitle = "shotgun"               		// Title of the upgrade, e.g. Submachine Gun
 ShotgunUpgrade.upgradeDesc = "Shotgun"             			// discription of the upgrade
 ShotgunUpgrade.upgradeTechId =  kTechId.Shotgun  		    // techId of the upgrade, default is kTechId.Move cause its the first entry
