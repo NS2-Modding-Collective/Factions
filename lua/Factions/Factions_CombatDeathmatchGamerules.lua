@@ -45,6 +45,29 @@ if Server then
 		self:LockCommandChairs()
 		
 	end
+	
+	// Override the game start condition. The games should start when both teams have players.
+	function CombatDeathmatchGamerules:CheckGameStart()
+
+		if self:GetGameState() == kGameState.NotStarted or self:GetGameState() == kGameState.PreGame then
+			
+			// Start pre-game when both teams have players or when once side does if cheats are enabled
+			local team1Players = self.team1:GetNumPlayers()
+			local team2Players = self.team2:GetNumPlayers()
+				
+			if (team1Players > 0 and team2Players > 0) or (Shared.GetCheatsEnabled() and (team1Players > 0 or team2Players > 0)) then
+				
+				if self:GetGameState() == kGameState.NotStarted then
+					self:SetGameState(kGameState.PreGame)
+				end
+					
+			elseif self:GetGameState() == kGameState.PreGame then
+				self:SetGameState(kGameState.NotStarted)
+			end
+				
+		end
+        
+    end
 
 end
 

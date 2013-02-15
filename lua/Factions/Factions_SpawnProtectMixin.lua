@@ -31,12 +31,14 @@ SpawnProtectMixin.networkVars =
 	activeSpawnProtect = "boolean",
     gotSpawnProtect = "boolean",
 	deactivateSpawnProtect = "time",
+	spawnProtectActivateTime = "time",
 }
 
 function SpawnProtectMixin:__initmixin()
 
     self.activeSpawnProtect = false
-    self.deactivateSpawnProtect = nil
+    self.deactivateSpawnProtect = 0
+	self.spawnProtectActivateTime = 0
 	self.gotSpawnProtect = false
 
 end
@@ -44,7 +46,8 @@ end
 function SpawnProtectMixin:SetSpawnProtect()
 
 	self.activeSpawnProtect = true
-    self.deactivateSpawnProtect = nil
+    self.deactivateSpawnProtect = Shared.GetTime() + kSpawnProtectTime
+	self.spawnProtectActivateTime = Shared.GetTime() + kSpawnProtectDelay
 
 end
 
@@ -53,10 +56,6 @@ function SpawnProtectMixin:OnUpdatePlayer()
 	if self.activeSpawnProtect then
 	
 		if self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
-		
-			if not self.deactivateSpawnProtect then
-				self.deactivateSpawnProtect = Shared.GetTime() +  kSpawnProtectTime
-			end
 			
 			if Shared.GetTime() >= self.deactivateSpawnProtect then
 				// end spawn protect
@@ -78,11 +77,7 @@ function SpawnProtectMixin:ActivateSpawnProtect()
 	if not self.gotSpawnProtect then 
 	
 		// Fire the effects on a slight delay because something in the NS2 code normally clears it first!
-		if not self.spawnProtectActivateTime then
-		
-			self.spawnProtectActivateTime = Shared.GetTime() + kSpawnProtectDelay
-		
-		elseif Shared.GetTime() >= self.spawnProtectActivateTime then
+		if Shared.GetTime() >= self.spawnProtectActivateTime then
 
 			if HasMixin(self, "NanoShieldAble") then	
 			

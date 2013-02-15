@@ -12,8 +12,8 @@
 local networkVars = {
 }
 
-// There are also options you can pass to be able to access the return value and have multiple return arguments,
-// but as they slow down the hooks mechanism slightly you have to set that up specifically
+// Link to the original function here so we can use it in GenericGamerules.
+originalNS2GamerulesOnCreate = NS2Gamerules.OnCreate
 function NS2Gamerules:OnCreate()
 
 	// Work out what entity we need to use as the gamerules.
