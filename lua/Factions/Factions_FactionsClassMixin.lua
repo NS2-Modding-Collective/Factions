@@ -14,7 +14,7 @@ Script.Load("lua/FunctionContracts.lua")
 FactionsClassMixin = CreateMixin( FactionsClassMixin )
 FactionsClassMixin.type = "FactionsClass"
 
-enum kFactionsClass = ( { Assault, Support, Scout } )
+enum kFactionsClass = ( { NoneSelected, Assault, Support, Scout } )
 
 FactionsClassMixin.expectedMixins =
 {
@@ -35,13 +35,19 @@ FactionsClassMixin.networkVars =
 
 function FactionsClassMixin:__initmixin()
 
-    factionsClass = kFactionsClass.Assault
+    self.factionsClass = kFactionsClass.NoneSelected
 
 end
 
 function FactionsClassMixin:CopyPlayerDataFrom(player)
 
 	self.factionsClass = player.factionsClass
+
+end
+
+function FactionsClassMixin:GetFactionsClass()
+
+	return self.factionsClass
 
 end
 
