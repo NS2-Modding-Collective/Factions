@@ -1,8 +1,7 @@
-
 //________________________________
 //
-//   	NS2 Combat Mod     
-//	Made by JimWest and MCMLXXXIV, 2012
+//   	NS2 CustomEntitesMod   
+//	Made by JimWest 2012
 //
 //________________________________
 
@@ -46,7 +45,7 @@ end
 function ScaledModelMixin:OnAdjustModelCoords(modelCoords)
 
     local coords = modelCoords
-    if self.scale then
+    if self.scale and self.scale:GetLength() ~= 0 then
         coords.xAxis = coords.xAxis * self.scale.x
         coords.yAxis = coords.yAxis * self.scale.y
         coords.zAxis = coords.zAxis * self.scale.z

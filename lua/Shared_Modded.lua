@@ -17,8 +17,7 @@ Script.Load("lua/Factions/Factions_Globals.lua")
 Script.Load("lua/Factions/Factions_Balance.lua")
 
 // Extra Entities
-// disabled it till I changed the hooking system there, too
-//Script.Load("lua/ExtraEntitiesMod/eem_Shared.lua")
+Script.Load("lua/ExtraEntitiesMod/eem_Shared.lua")
 
 // Class overrides here
 Script.Load("lua/Factions/Factions_NS2Gamerules.lua")

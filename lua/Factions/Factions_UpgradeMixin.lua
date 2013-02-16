@@ -92,7 +92,6 @@ function UpgradeMixin:BuyUpgrade(upgrade, giveBack)
             end
             
             if not giveBack then
-                // TODO: send upgrade to client
                 self:SetUpgrade(upgrade, 1)
             end
         else
@@ -111,6 +110,7 @@ function UpgradeMixin:SetUpgrade(upgrade, level)
                                 level = level})
     if Server then
         self:AddResources(-upgrade:GetCost())
+        // send update to the client
         Server.SendNetworkMessage(self, "UpdateUpgrade",  BuildUpdateUpgradeMessage(upgradeId, level), true)  
     end 
    

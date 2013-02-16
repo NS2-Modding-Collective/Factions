@@ -1,10 +1,9 @@
 //________________________________
 //
-//   	NS2 Combat Mod     
-//	Made by JimWest and MCMLXXXIV, 2012
+//   	NS2 CustomEntitesMod   
+//	Made by JimWest 2012
 //
 //________________________________
-
 // LogicCounter.lua
 // Base entity for LogicCounter things
 

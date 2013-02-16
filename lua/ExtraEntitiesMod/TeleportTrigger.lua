@@ -1,7 +1,7 @@
 //________________________________
 //
-//   	NS2 Combat Mod     
-//	Made by JimWest and MCMLXXXIV, 2012
+//   	NS2 CustomEntitesMod   
+//	Made by JimWest 2012
 //
 //________________________________
 
@@ -76,6 +76,7 @@ function TeleportTrigger:OnInitialized()
             DestroyEntity(self)
         end  
         // call it here so we got the correct enabled value
+        self.searchedEntities = false
         InitMixin(self, LogicMixin)     
     end 
     
@@ -155,7 +156,17 @@ function TeleportTrigger:TeleportEntity(entity)
                     
                 else
                     if not self.exitonly then
-                        Print("Error: TeleportTrigger " .. self.name .. " destination not found")
+                        if not self.searchedEntities then 
+                            // find the entitie once
+                            self:FindEntitys()
+                            self.searchedEntities = true
+                            // call it again
+                            self:TeleportEntity(entity)
+                        else
+                            Print("Error: TeleportTrigger " .. self.name .. " destination not found")
+                            Print("Deleting " ..  self.name .. " !")
+                            DestroyEntity(self)
+                        end
                     end
                 end
             end            

@@ -1,7 +1,7 @@
 //________________________________
 //
-//   	NS2 Combat Mod     
-//	Made by JimWest and MCMLXXXIV, 2012
+//   	NS2 CustomEntitesMod   
+//	Made by JimWest 2012
 //
 //________________________________
 
@@ -84,7 +84,9 @@ function LogicMixin:TriggerOutputs(names)
             end
         else
             if kLogicEntitiesSearched then
-                Print("Error: Can't find " .. name .. " !")
+                Print("Error: Can't find output " .. name .. " for entity " .. self.name)
+                Print("Deleting " .. self.name .. " !")
+                DestroyEntity(self)
             else
                 // Try to search the entities again (doors sometimes change their id)
                searchEntities(self) 

@@ -1,11 +1,9 @@
-// ======= Copyright (c) 2003-2011, Unknown Worlds Entertainment, Inc. All rights reserved. =======
+//________________________________
 //
-// lua\Door.lua
+//   	NS2 CustomEntitesMod   
+//	Made by JimWest 2012
 //
-//    Created by:   Charlie Cleveland (charlie@unknownworlds.com) and
-//                  Max McGuire (max@unknownworlds.com)
-//
-// ========= For more information, visit us at http://www.unknownworlds.com =====================
+//________________________________
 
 Script.Load("lua/Door.lua")
 Script.Load("lua/ExtraEntitiesMod/LogicMixin.lua")

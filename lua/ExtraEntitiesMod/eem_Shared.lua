@@ -5,42 +5,44 @@
 //
 //________________________________
 
-// fsfod hooker files
-Script.Load("lua/ExtraEntitiesMod/PathUtil.lua")
-Script.Load("lua/ExtraEntitiesMod/fsfod_scripts.lua")
+Script.Load("lua/ModUtility.lua")
 
-// add every new class (entity based) here
-
+// Adjust values
 Script.Load("lua/ExtraEntitiesMod/eem_Globals.lua")
 
-LoadTracker:LoadScriptAfter("lua/Shared.lua", "lua/ExtraEntitiesMod/eem_Utility.lua", nil)
-LoadTracker:LoadScriptAfter("lua/Shared.lua", "lua/ExtraEntitiesMod/TeleportTrigger.lua", nil)
-LoadTracker:LoadScriptAfter("lua/Shared.lua", "lua/ExtraEntitiesMod/FuncTrain.lua", nil)
-LoadTracker:LoadScriptAfter("lua/Shared.lua", "lua/ExtraEntitiesMod/FuncTrainWaypoint.lua", nil)
-LoadTracker:LoadScriptAfter("lua/Shared.lua", "lua/ExtraEntitiesMod/FuncMoveable.lua", nil)
-LoadTracker:LoadScriptAfter("lua/Shared.lua", "lua/ExtraEntitiesMod/FuncDoor.lua", nil)
-LoadTracker:LoadScriptAfter("lua/Shared.lua", "lua/ExtraEntitiesMod/PushTrigger.lua", nil)
-LoadTracker:LoadScriptAfter("lua/Shared.lua", "lua/ExtraEntitiesMod/PortalGunTeleport.lua", nil)
-LoadTracker:LoadScriptAfter("lua/Shared.lua", "lua/ExtraEntitiesMod/LogicTimer.lua", nil)
-LoadTracker:LoadScriptAfter("lua/Shared.lua", "lua/ExtraEntitiesMod/LogicMultiplier.lua", nil)
-LoadTracker:LoadScriptAfter("lua/Shared.lua", "lua/ExtraEntitiesMod/LogicWeldable.lua", nil)
-LoadTracker:LoadScriptAfter("lua/Shared.lua", "lua/ExtraEntitiesMod/LogicFunction.lua", nil)
-LoadTracker:LoadScriptAfter("lua/Shared.lua", "lua/ExtraEntitiesMod/LogicCounter.lua", nil)
-LoadTracker:LoadScriptAfter("lua/Shared.lua", "lua/ExtraEntitiesMod/LogicTrigger.lua", nil)
-LoadTracker:LoadScriptAfter("lua/Shared.lua", "lua/ExtraEntitiesMod/LogicLua.lua", nil)
-LoadTracker:LoadScriptAfter("lua/Shared.lua", "lua/ExtraEntitiesMod/MapSettings.lua", nil)
-LoadTracker:LoadScriptAfter("lua/Shared.lua", "lua/ExtraEntitiesMod/NobuildArea.lua", nil)
+// New functions
+Script.Load("lua/ExtraEntitiesMod/eem_Utility.lua")
+
+// Class overrides here
+Script.Load("lua/ExtraEntitiesMod/eem_MovementModifier.lua")
+Script.Load("lua/ExtraEntitiesMod/PathingUtility_Modded.lua")
+
+// New classes
+Script.Load("lua/ExtraEntitiesMod/TeleportTrigger.lua")
+Script.Load("lua/ExtraEntitiesMod/FuncTrain.lua")
+Script.Load("lua/ExtraEntitiesMod/FuncPlatform.lua")
+Script.Load("lua/ExtraEntitiesMod/FuncTrainWaypoint.lua")
+Script.Load("lua/ExtraEntitiesMod/FuncMoveable.lua")
+Script.Load("lua/ExtraEntitiesMod/FuncDoor.lua")
+Script.Load("lua/ExtraEntitiesMod/PushTrigger.lua")
+Script.Load("lua/ExtraEntitiesMod/LogicTimer.lua")
+Script.Load("lua/ExtraEntitiesMod/LogicMultiplier.lua")
+Script.Load("lua/ExtraEntitiesMod/LogicWeldable.lua")
+Script.Load("lua/ExtraEntitiesMod/LogicFunction.lua")
+Script.Load("lua/ExtraEntitiesMod/LogicCounter.lua")
+Script.Load("lua/ExtraEntitiesMod/LogicTrigger.lua")
+Script.Load("lua/ExtraEntitiesMod/LogicLua.lua")
+Script.Load("lua/ExtraEntitiesMod/LogicButton.lua")
+Script.Load("lua/ExtraEntitiesMod/MapSettings.lua")
+Script.Load("lua/ExtraEntitiesMod/NobuildArea.lua")
 
 
-LoadTracker:LoadScriptAfter("lua/weapons/Marine/Rifle.lua", "lua/ExtraEntitiesMod/PortalGun.lua", nil)
-
-// file overrides
-LoadTracker:LoadScriptAfter("lua/Shared.lua", "lua/ExtraEntitiesMod/eem_MovementModifier.lua", nil)
+// disable the portal gun, was just 4 fun, maybe make it later better
+// Script.Load("lua/ExtraEntitiesMod/PortalGunTeleport.lua")
+//Script.Load("lua/ExtraEntitiesMod/PortalGun.lua")
 
 
 if Client then
 //	Script.Load("lua/ExtraEntitiesMod/eem_Player_Client.lua")
 //	Script.Load("lua/ExtraEntitiesMod/Hud/GUIFuncTrain.lua")
 end
-
-
