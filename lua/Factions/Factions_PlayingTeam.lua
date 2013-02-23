@@ -62,7 +62,7 @@ if Server then
 	function PlayingTeam:Update(timePassed)
 
 		if self.timeSinceLastSpawn == nil then 
-			PlayingTeam:ResetSpawnTimer(self)
+			self:ResetSpawnTimer()
 		end
 		
 		// Increment the spawn timer
@@ -79,7 +79,7 @@ if Server then
 			
 			if timeToSpawn then
 				// Reset the spawn timer.
-				PlayingTeam:ResetSpawnTimer(self)
+				self:ResetSpawnTimer()
 				
 				// Loop through the respawn queue and spawn dead players.
 				// Also handle the case where there are too many players to spawn all of them - do it on a FIFO basis.
