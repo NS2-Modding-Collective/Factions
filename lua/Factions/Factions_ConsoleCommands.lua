@@ -45,8 +45,30 @@ if Server then
         end
         
     end
+	
+	function OnCommandClass(client, newClass)
+		
+		local player = client:GetControllingPlayer()
+		if player and HasMixin(player, "FactionsClass") then
+		
+			// If a class is specified then change the class.
+			if newClass then
+				local success = player:ChangeFactionsClassFromString(newClass)
+				if success then 
+					player:SendDirectMessage("Changed your class to " .. player:GetFactionsClassString())
+				else
+					player:SendDirectMessage("Invalid class name: " .. newClass)
+				end
+			else
+				player:SendDirectMessage("Your class is a: " .. player:GetFactionsClassString())
+			end
+			
+		end
+		
+	end
 
     Event.Hook("Console_magnoboots", OnCommandGiveMagnoBoots) 
     Event.Hook("Console_givexp", OnCommandGiveXp) 
+	Event.Hook("Console_class", OnCommandClass) 
     Event.Hook("Console_factions_give", OnCommandGiveUpgrade) 
 end

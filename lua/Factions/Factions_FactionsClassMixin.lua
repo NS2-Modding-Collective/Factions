@@ -14,7 +14,12 @@ Script.Load("lua/FunctionContracts.lua")
 FactionsClassMixin = CreateMixin( FactionsClassMixin )
 FactionsClassMixin.type = "FactionsClass"
 
-enum kFactionsClass = ( { NoneSelected, Assault, Support, Scout } )
+kFactionsClass = enum ( { 'NoneSelected', 'Assault', 'Support', 'Scout' } )
+local kFactionsClassStrings = {}
+kFactionsClassStrings[kFactionsClass.NoneSelected] = "None Selected"
+kFactionsClassStrings[kFactionsClass.Assault] = "Assault"
+kFactionsClassStrings[kFactionsClass.Support] = "Support"
+kFactionsClassStrings[kFactionsClass.Scout] = "Scout"
 
 FactionsClassMixin.expectedMixins =
 {
@@ -32,6 +37,21 @@ FactionsClassMixin.networkVars =
 {
 	factionsClass = "enum kFactionsClass"
 }
+
+// Conversion functions for ease of output/input
+local function FactionsClassToString(enumValue)
+	return kFactionsClassStrings[enumValue]
+end
+
+local function StringToFactionsClass(stringValue)
+	for enumValue, className in pairs(kFactionsClassStrings) do
+		if className:upper() == stringValue:upper() then
+			return enumValue
+		end
+	end
+	
+	return nil
+end
 
 function FactionsClassMixin:__initmixin()
 
@@ -51,13 +71,34 @@ function FactionsClassMixin:GetFactionsClass()
 
 end
 
+function FactionsClassMixin:GetFactionsClassString()
+
+	return FactionsClassToString(self:GetFactionsClass())
+
+end
+
+function FactionsClassMixin:ChangeFactionsClassFromString(newClassString)
+
+	local newClass = StringToFactionsClass(newClassString)
+	local success = false
+	if newClass then
+		self:ChangeFactionsClass(newClass)
+		success = true
+	end
+	
+	return success
+
+end
+
 function FactionsClassMixin:ChangeFactionsClass(newClass)
 
-	self.factionsClass = newClass
-	
-	// Kill the player if they do this while playing.
-	if self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
-		self:Kill(nil, nil, self:GetOrigin())
+	if self.factionsClass ~= newClass then
+		self.factionsClass = newClass
+		
+		// Kill the player if they do this while playing.
+		if self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
+			self:Kill(nil, nil, self:GetOrigin())
+		end
 	end
 
 end

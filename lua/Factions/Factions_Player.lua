@@ -13,9 +13,11 @@ local networkVars = {
 }
 
 Script.Load("lua/Factions/Factions_DirectMessageRecipientMixin.lua")
+Script.Load("lua/Factions/Factions_FactionsClassMixin.lua")
 Script.Load("lua/Factions/Factions_XpMixin.lua")
 Script.Load("lua/Factions/Factions_UpgradeMixin.lua")
 
+AddMixinNetworkVars(FactionsClassMixin, networkVars)
 AddMixinNetworkVars(XpMixin, networkVars)
 AddMixinNetworkVars(UpgradeMixin, networkVars)
 
@@ -24,9 +26,11 @@ local overrideOnCreate = Player.OnCreate
 function Player:OnCreate()
 
 	overrideOnCreate(self)
+	InitMixin(self, FactionsClassMixin)
 	InitMixin(self, XpMixin)
 	InitMixin(self, UpgradeMixin)
 
+	assert(HasMixin(self, "FactionsClass"))
 	assert(HasMixin(self, "Xp"))
 	assert(HasMixin(self, "Upgrade"))
 
