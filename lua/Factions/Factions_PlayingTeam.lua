@@ -107,7 +107,7 @@ if Server then
 				// If there are any players left, send them a message about why they didn't spawn.
 				if (#self.respawnQueue > 0) then
 					for i, player in ipairs(self.respawnQueue) do
-						player:SendDirectMessage("Could not find a valid spawn location for you... You will spawn in the next wave instead!")
+						Shared.GetEntity(player):SendDirectMessage("Could not find a valid spawn location for you... You will spawn in the next wave instead!")
 					end
 				elseif (#players > 0) then
 					for i, player in ipairs(players) do

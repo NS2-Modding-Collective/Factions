@@ -25,6 +25,7 @@ Script.Load("lua/Factions/Factions_PlayingTeam.lua")
 Script.Load("lua/Factions/Factions_CommandStructure.lua")
 Script.Load("lua/Factions/Factions_Player.lua")
 Script.Load("lua/Factions/Factions_Marine.lua")
+Script.Load("lua/Factions/Factions_MarineSpectator.lua")
 Script.Load("lua/Factions/Factions_JetpackMarine.lua")
 
 Script.Load("lua/Factions/Weapons/Factions_Pistol.lua")
