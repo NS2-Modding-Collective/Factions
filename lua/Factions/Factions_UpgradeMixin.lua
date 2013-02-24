@@ -13,8 +13,9 @@ kAllUpgrades = {}
 kUpgradeTypes = enum({'Class', 'Tech', 'Weapon'})
 kTriggerTypes = enum({'NoTrigger', 'ByTime', 'ByKey'})
 
-// load the upgrade base class
+// load the upgrade base classes
 Script.Load("lua/Factions/Factions_Upgrade.lua")
+Script.Load("lua/Factions/Factions_WeaponUpgrade.lua")
 
 // build the upgrade list
 
@@ -31,7 +32,7 @@ local function BuildAllUpgrades()
         end
         
         // save all upgrades in a table
-        kAllUpgrades = Script.GetDerivedClasses("FactionsUpgrade")
+        kAllUpgrades = Script.GetDerivedClasses("FactionsWeaponUpgrade")
     end
     
 end
@@ -79,48 +80,13 @@ function UpgradeMixin:CopyPlayerDataFrom(player)
     end
 end
 
-local function GetIsPrimaryWeapon(kMapName)
-    local isPrimary = false
-    
-    if  kMapName == Shotgun.kMapName or
-        kMapName == Flamethrower.kMapName  or
-        kMapName == GrenadeLauncher.kMapName or
-        kMapName == Rifle.kMapName or 
-		kMapName == LightMachineGun.kMapName then
-        
-        isPrimary = true
-    end
-    
-    return isPrimary
-end
-
-function UpgradeMixin:UpgradeWeapon(upgrade)
-
-	local mapName = LookupTechData(upgrade:GetUpgradeTechId(), kTechDataMapName)
-	if mapName then
-		// if this is a primary weapon, destroy the old one.
-		if GetIsPrimaryWeapon(mapName) then
-			local weapon = self:GetWeaponInHUDSlot(1)
-			if (weapon) then
-				self:RemoveWeapon(weapon)
-				DestroyEntity(weapon)
-			end
-		end
-	
-		self:GiveItem(mapName)
-	end          
-
-end
-
 function UpgradeMixin:BuyUpgrade(upgrade, giveBack)
     if Server then
         local upgradeOk = self:CheckUpgradeAvailability(upgrade) or giveBack
         if upgradeOk then        
-            if upgrade:GetUpgradeType() == kUpgradeTypes.Weapon then            
-				self:UpgradeWeapon(upgrade)
-            end
-            
-            if not giveBack then
+			local success = upgrade:OnAdd(self)
+		
+            if success and not giveBack then
                 self:SetUpgrade(upgrade, 1)
             end
         else

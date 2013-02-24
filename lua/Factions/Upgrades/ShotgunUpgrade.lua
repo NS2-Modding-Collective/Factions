@@ -9,9 +9,8 @@
 
 // MineUpgrade file, weapons will be added directly after upgrading, so nothing to do here
 						
-class 'ShotgunUpgrade' (FactionsUpgrade)
+class 'ShotgunUpgrade' (FactionsWeaponUpgrade)
 
-ShotgunUpgrade.upgradeType = kUpgradeTypes.Weapon       	// see combat_UpgradeUtility, the type of the upgrade
 ShotgunUpgrade.cost = 60                              		// cost of the upgrade in xp
 ShotgunUpgrade.upgradeName = "shotgun"                       	// text code of the upgrade if using it via console
 ShotgunUpgrade.upgradeTitle = "shotgun"               		// Title of the upgrade, e.g. Submachine Gun

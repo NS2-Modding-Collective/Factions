@@ -15,7 +15,7 @@ class 'FactionsUpgrade'
 
 FactionsUpgrade.upgradeType = kUpgradeTypes.Tech        		// the type of the upgrade
 FactionsUpgrade.triggerType = kTriggerTypes.NoTrigger   		// how the upgrade is gonna be triggered
-FactionsUpgrade.levels = 0                                      // if the upgrade has more than one lvl, like weapon or armor ups
+FactionsUpgrade.levels = 1                                      // if the upgrade has more than one lvl, like weapon or armor ups. Default is 1.
 FactionsUpgrade.cost = 9999                                     // cost of the upgrade in xp
 FactionsUpgrade.upgradeName = "nil"                         	// name of the upgrade as used in the console, e.g. smg
 FactionsUpgrade.upgradeTitle = "nil"                         	// Title of the upgrade, e.g. Submachine Gun

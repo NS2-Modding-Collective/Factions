@@ -10,7 +10,6 @@
 // Factions_NetworkMessages.lua
 
 // load the upgrade base class
-Script.Load("lua/Factions/Factions_Upgrade.lua")
 Script.Load("lua/Factions/Factions_UpgradeMixin.lua")
 
 local kUpdateUpgrade =

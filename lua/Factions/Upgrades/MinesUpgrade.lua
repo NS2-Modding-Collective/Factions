@@ -7,9 +7,8 @@
 
 // MineUpgrade file, weapons will be added directly after upgrading, so nothing to do here
 						
-class 'MinesUpgrade' (FactionsUpgrade)
+class 'MinesUpgrade' (FactionsWeaponUpgrade)
 
-MinesUpgrade.upgradeType = kUpgradeTypes.Weapon       		// see combat_UpgradeUtility, the type of the upgrade
 MinesUpgrade.cost = 60                              		// cost of the upgrade in xp
 MinesUpgrade.upgradeName = "mines"                       	// text code of the upgrade if using it via console
 MinesUpgrade.upgradeTitle = "Mines"               			// Title of the upgrade, e.g. Submachine Gun
