@@ -79,16 +79,45 @@ function UpgradeMixin:CopyPlayerDataFrom(player)
     end
 end
 
+local function GetIsPrimaryWeapon(kMapName)
+    local isPrimary = false
+    
+    if  kMapName == Shotgun.kMapName or
+        kMapName == Flamethrower.kMapName  or
+        kMapName == GrenadeLauncher.kMapName or
+        kMapName == Rifle.kMapName or 
+		kMapName == LightMachineGun.kMapName then
+        
+        isPrimary = true
+    end
+    
+    return isPrimary
+end
+
+function UpgradeMixin:UpgradeWeapon(upgrade)
+
+	local mapName = LookupTechData(upgrade:GetUpgradeTechId(), kTechDataMapName)
+	if mapName then
+		// if this is a primary weapon, destroy the old one.
+		if GetIsPrimaryWeapon(mapName) then
+			local weapon = self:GetWeaponInHUDSlot(1)
+			if (weapon) then
+				self:RemoveWeapon(weapon)
+				DestroyEntity(weapon)
+			end
+		end
+	
+		self:GiveItem(mapName)
+	end          
+
+end
 
 function UpgradeMixin:BuyUpgrade(upgrade, giveBack)
     if Server then
         local upgradeOk = self:CheckUpgradeAvailability(upgrade) or giveBack
         if upgradeOk then        
             if upgrade:GetUpgradeType() == kUpgradeTypes.Weapon then            
-                local mapName = LookupTechData(upgrade:GetUpgradeTechId(), kTechDataMapName)
-                if mapName then
-                    self:GiveItem(mapName)
-                end            
+				self:UpgradeWeapon(upgrade)
             end
             
             if not giveBack then

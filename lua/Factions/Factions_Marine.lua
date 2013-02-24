@@ -110,6 +110,23 @@ function Marine:OnCreate()
 	
 end
 
+// Dont' drop weapons after getting killed, but destroy them!
+local originalOnKill = Marine.OnKill
+function Marine:OnKill(damage, attacker, doer, point, direction)
+
+    self:DestroyWeapons()
+	originalOnKill(self, damage, attacker, doer, point, direction)
+	
+end
+
+// Weapons can't be dropped anymore
+function Marine:Drop(weapon, ignoreDropTimeLimit, ignoreReplacementWeapon)
+
+	// Just do nothing
+	// Drop code for replacement weapons is handled in our upgrade system.
+
+end
+
 // Functions to control movement, angles.
 function Marine:GetAngleSmoothRate()
 
