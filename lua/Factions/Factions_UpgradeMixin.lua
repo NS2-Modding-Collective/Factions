@@ -18,6 +18,13 @@ Script.Load("lua/Factions/Factions_Upgrade.lua")
 Script.Load("lua/Factions/Factions_WeaponUpgrade.lua")
 
 // build the upgrade list
+local function AddToTable(originalTable, newValuesTable)
+
+	for index, value in ipairs(newValuesTable) do
+		table.insert(originalTable, value)
+	end
+
+end
 
 local function BuildAllUpgrades()
 
@@ -32,7 +39,8 @@ local function BuildAllUpgrades()
         end
         
         // save all upgrades in a table
-        kAllUpgrades = Script.GetDerivedClasses("FactionsWeaponUpgrade")
+        kAllUpgrades = {}
+		AddToTable(kAllUpgrades, Script.GetDerivedClasses("FactionsWeaponUpgrade"))
     end
     
 end
