@@ -9,26 +9,21 @@
 
 // Factions_UpgradeMixin.lua
 
-kAllUpgrades = {}
+kAllFactionsUpgrades = {}
 kUpgradeTypes = enum({'Class', 'Tech', 'Weapon'})
 kTriggerTypes = enum({'NoTrigger', 'ByTime', 'ByKey'})
 
-// load the upgrade base classes
+// Load utility functions
+Script.Load("lua/Factions/Factions_Utility.lua")
+
+// Load the upgrade base classes
 Script.Load("lua/Factions/Factions_Upgrade.lua")
 Script.Load("lua/Factions/Factions_WeaponUpgrade.lua")
 
 // build the upgrade list
-local function AddToTable(originalTable, newValuesTable)
-
-	for index, value in ipairs(newValuesTable) do
-		table.insert(originalTable, value)
-	end
-
-end
-
 local function BuildAllUpgrades()
 
-    if #kAllUpgrades == 0 then
+    if #kAllFactionsUpgrades == 0 then
         // load all upgrade files
         local upgradeFiles = { }
         local upgradeDirectory = "lua/Factions/Upgrades/"
@@ -39,13 +34,15 @@ local function BuildAllUpgrades()
         end
         
         // save all upgrades in a table
-        kAllUpgrades = {}
-		AddToTable(kAllUpgrades, Script.GetDerivedClasses("FactionsWeaponUpgrade"))
+        kAllFactionsUpgrades = {}
+		MergeToTable(kAllFactionsUpgrades, Script.GetDerivedClasses("FactionsWeaponUpgrade"))
+		
+		// Build the enums for the type field
     end
     
 end
 
-if #kAllUpgrades == 0 then
+if #kAllFactionsUpgrades == 0 then
     BuildAllUpgrades()
 end
   
@@ -193,7 +190,7 @@ function UpgradeMixin:GetUpgradeByClassName(className)
 end
 
 function UpgradeMixin:GetAllUpgrades()
-    return kAllUpgrades
+    return kAllFactionsUpgrades
 end
 
 function UpgradeMixin:spendlvlHints(hint, type)

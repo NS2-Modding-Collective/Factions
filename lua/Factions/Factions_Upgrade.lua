@@ -61,12 +61,24 @@ function FactionsUpgrade:GetRequirements()
     return self.requirements
 end
 
+if kFactionsUpgradeIdCache == nil then
+	kFactionsUpgradeIdCache = {}
+end
+
+// Implement caching to speed up this function call.
 function FactionsUpgrade:GetId()
-    for i, upgrade in ipairs(kAllUpgrades) do
-        if _G[upgrade] and _G[upgrade] == self then
-            return i
-        end
-    end
+	local cachedId = kFactionsUpgradeIdCache[self:GetName()]
+	
+	if cachedId == nil then
+		for i, factionsUpgrade in ipairs(kAllFactionsUpgrades) do
+			if _G[factionsUpgrade] and _G[factionsUpgrade] == self then
+				kFactionsUpgradeIdCache[self:GetName()] = i
+				cachedId = i
+			end
+		end
+	end
+	
+	return cachedId
 end
 
 // called from the UpgradeMixin when the upgraded is added to a player, old upgradeFunc

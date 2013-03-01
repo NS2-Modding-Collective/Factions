@@ -46,6 +46,60 @@ if Server then
         
     end
 	
+	local function FindPlayerByName(playerName)
+	
+		local found = nil
+		for list, victim in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
+
+			if victim:GetName():upper() == playerName:upper() then
+			
+				found = victim
+				break
+				
+			end
+			
+		end
+		
+		return found
+	
+	end
+	
+	function OnCommandForceClass(client, playerName, newClass)
+	
+		if Shared.GetCheatsEnabled() then
+		
+			local found = FindPlayerByName(playerName)
+			
+			if found ~= nil then
+			
+				if HasMixin(found, "FactionsClass") then
+		
+					// If a class is specified then change the class.
+					local player = client:GetControllingPlayer()
+					if newClass then
+						local success = found:ChangeFactionsClassFromString(newClass)
+						if player then
+							if success then 
+								player:SendDirectMessage("Changed " .. found:GetName() .. "'s class to " .. found:GetFactionsClassString())
+							else
+								player:SendDirectMessage("Invalid class name: " .. newClass)
+							end
+						end
+					else
+						if player then
+							player:SendDirectMessage(found:GetName() .. "'s class is a: " .. found:GetFactionsClassString())
+						end
+					end
+					
+				end
+				
+			else
+				Shared.Message("Failed to find player matching name")
+			end
+		end
+			
+	end
+	
 	function OnCommandClass(client, newClass)
 		
 		local player = client:GetControllingPlayer()
@@ -70,5 +124,9 @@ if Server then
     Event.Hook("Console_magnoboots", OnCommandGiveMagnoBoots) 
     Event.Hook("Console_givexp", OnCommandGiveXp) 
 	Event.Hook("Console_class", OnCommandClass) 
-    Event.Hook("Console_factions_give", OnCommandGiveUpgrade) 
+    Event.Hook("Console_giveupgrade", OnCommandGiveUpgrade) 
+	
+	Event.Hook("Console_forceclass", OnCommandForceClass) 
+	Event.Hook("Console_forcegivexp", OnCommandGiveXp) 
+	Event.Hook("Console_forcegiveupgrade", OnCommandGiveUpgrade) 
 end

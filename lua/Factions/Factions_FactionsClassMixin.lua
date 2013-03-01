@@ -11,15 +11,56 @@
 
 Script.Load("lua/FunctionContracts.lua")
 
+if kFactionsClassType == nil then
+	kFactionsClassType = enum({'NoneSelected'})
+	kAllFactionsClasses = {}
+	kFactionsClassStrings = {}
+	kFactionsClassStrings[kFactionsClassType.NoneSelected] = "None Selected"
+end
+
+// load the Factions Class base classes
+Script.Load("lua/Factions/Factions_FactionsClass.lua")
+
+local function RegisterNewClass(classType, className)
+	
+	// We have to reconstruct the kFactionsClassType enum to add values.
+	local enumTable = {}
+	for index, value in ipairs(kFactionsClassType) do
+		table.insert(enumTable, value)
+	end
+	
+	table.insert(enumTable, classType)
+	
+	kFactionsClassType = enum(enumTable)
+	kFactionsClassStrings[kFactionClassTypes["classType"]] = className
+	
+end
+
+// build the FactionsClass list
+local function BuildAllFactionsClasses()
+
+    if #kAllFactionsClasses == 0 then
+        // load all FactionsClass files
+        local factionsClassFiles = { }
+        local factionsClassDirectory = "lua/Factions/Classes/"
+        Shared.GetMatchingFileNames( factionsClassDirectory .. "*.lua", false, factionsClassFiles)
+
+        for _, factionsClassFile in pairs(factionsClassFiles) do
+            Script.Load(factionsClassFile)      
+        end
+        
+        // save all FactionsClasses in a table
+        kAllFactionsClasses = Script.GetDerivedClasses("FactionsClass")
+    end
+    
+end
+
+if #kAllFactionsClasses == 0 then
+    BuildAllFactionsClasses()
+end
+
 FactionsClassMixin = CreateMixin( FactionsClassMixin )
 FactionsClassMixin.type = "FactionsClass"
-
-kFactionsClass = enum ( { 'NoneSelected', 'Assault', 'Support', 'Scout' } )
-local kFactionsClassStrings = {}
-kFactionsClassStrings[kFactionsClass.NoneSelected] = "None Selected"
-kFactionsClassStrings[kFactionsClass.Assault] = "Assault"
-kFactionsClassStrings[kFactionsClass.Support] = "Support"
-kFactionsClassStrings[kFactionsClass.Scout] = "Scout"
 
 FactionsClassMixin.expectedMixins =
 {
@@ -35,7 +76,7 @@ FactionsClassMixin.expectedConstants =
 
 FactionsClassMixin.networkVars =
 {
-	factionsClass = "enum kFactionsClass"
+	factionsClass = "enum kFactionsClassType"
 }
 
 // Conversion functions for ease of output/input
@@ -55,7 +96,7 @@ end
 
 function FactionsClassMixin:__initmixin()
 
-    self.factionsClass = kFactionsClass.NoneSelected
+    self.factionsClass = kFactionsClassType.NoneSelected
 
 end
 
@@ -77,9 +118,9 @@ function FactionsClassMixin:GetFactionsClassString()
 
 end
 
-function FactionsClassMixin:ChangeFactionsClassFromString(newClassString)
+function FactionsClassMixin:ChangeFactionsClassFromString(newClassestring)
 
-	local newClass = StringToFactionsClass(newClassString)
+	local newClass = StringToFactionsClass(newClassestring)
 	local success = false
 	if newClass then
 		self:ChangeFactionsClass(newClass)
