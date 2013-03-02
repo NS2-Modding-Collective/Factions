@@ -36,8 +36,6 @@ local function BuildAllUpgrades()
         // save all upgrades in a table
         kAllFactionsUpgrades = {}
 		MergeToTable(kAllFactionsUpgrades, Script.GetDerivedClasses("FactionsWeaponUpgrade"))
-		
-		// Build the enums for the type field
     end
     
 end

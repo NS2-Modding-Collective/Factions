@@ -32,7 +32,7 @@ local function RegisterNewClass(classType, className)
 	table.insert(enumTable, classType)
 	
 	kFactionsClassType = enum(enumTable)
-	kFactionsClassStrings[kFactionClassTypes["classType"]] = className
+	kFactionsClassStrings[kFactionsClassType[classType]] = className
 	
 end
 
@@ -51,6 +51,11 @@ local function BuildAllFactionsClasses()
         
         // save all FactionsClasses in a table
         kAllFactionsClasses = Script.GetDerivedClasses("FactionsClass")
+		
+		// build the enums for the Type field.
+		for index, classType in ipairs(kAllFactionsClasses) do
+			RegisterNewClass(classType, _G[classType].name)
+		end
     end
     
 end
