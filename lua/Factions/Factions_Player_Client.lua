@@ -9,6 +9,16 @@
 
 // Factions_Player_Client.lua
 
+// Close the menu when a player dies.
+local overrideAddTakeDamageIndicator = Player.AddTakeDamageIndicator
+function Player:AddTakeDamageIndicator(damagePosition)    
+    if not self:GetIsAlive() and not self.deathTriggered then    
+		self:CloseMenu(true)        
+    end
+	
+	overrideAddTakeDamageIndicator(self, damagePosition)
+end
+
 function PlayerUI_GetIsUsingIronSight()
 
 	local player = Client.GetLocalPlayer()

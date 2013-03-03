@@ -8,6 +8,8 @@
 
 Script.Load("lua/PreLoadMod.lua")
 
+Script.Load("lua/ClientResources.lua")
+
 Script.Load("lua/Shared.lua")
 Script.Load("lua/ClassUtility.lua")
 Script.Load("lua/Shared_Modded.lua")

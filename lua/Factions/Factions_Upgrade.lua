@@ -21,9 +21,8 @@ FactionsUpgrade.upgradeName = "nil"                         	// name of the upgr
 FactionsUpgrade.upgradeTitle = "nil"                         	// Title of the upgrade, e.g. Submachine Gun
 FactionsUpgrade.upgradeDesc = "No discription"                  // discription of the upgrade
 FactionsUpgrade.upgradeTechId = kTechId.Move               		// techId of the upgrade, default is kTechId.Move cause its the first entry
-FactionsUpgrade.requirements = nil                              // upgrade you need to buy first before buying this
 FactionsUpgrade.hardCapScale = 0                                // how many people of your team can max. take this upgrade, 1/5 for 1 upgrade per 5 player
-FactionsUpgrade.mutuallyExclusive = nil                         // upgrades that can not bought when you got this (like no jp when have exo)
+FactionsUpgrade.mutuallyExclusive = { }                         // upgrades that can not bought when you got this (like no jp when have exo)
 
 function FactionsUpgrade:GetUpgradeType()
     return self.upgradeType
@@ -57,22 +56,18 @@ function FactionsUpgrade:GetUpgradeTechId()
     return self.upgradeTechId
 end
 
-function FactionsUpgrade:GetRequirements()
-    return self.requirements
-end
-
 if kFactionsUpgradeIdCache == nil then
 	kFactionsUpgradeIdCache = {}
 end
 
 // Implement caching to speed up this function call.
 function FactionsUpgrade:GetId()
-	local cachedId = kFactionsUpgradeIdCache[self:GetName()]
+	local cachedId = kFactionsUpgradeIdCache[self:GetUpgradeName()]
 	
 	if cachedId == nil then
 		for i, factionsUpgrade in ipairs(kAllFactionsUpgrades) do
 			if _G[factionsUpgrade] and _G[factionsUpgrade] == self then
-				kFactionsUpgradeIdCache[self:GetName()] = i
+				kFactionsUpgradeIdCache[self:GetUpgradeName()] = i
 				cachedId = i
 			end
 		end
