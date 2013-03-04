@@ -17,6 +17,7 @@ CombatMovementMixin.type = "CombatMovement"
 CombatMovementMixin.expectedMixins =
 {
 	 WallMovement = "Needed for processing the wall walking.",
+	 FactionsClass = "Needed for changing the movement speed depending on class.",
 	 MagnoBootsWearer = "Needed for detecting whether the player has Magno Boots"
 }
 
@@ -25,6 +26,8 @@ CombatMovementMixin.expectedCallbacks =
 	GetAngleSmoothRate = "The smooth rate for the angle changes as the player moves from wall to wall",
 	GetRollSmoothRate = "The smooth rate for the angle changes as the player moves from wall to wall",
 	GetPitchSmoothRate = "The smooth rate for the angle changes as the player moves from wall to wall",
+	GetRunMaxSpeed = "The speed that the player runs",
+	GetWalkMaxSpeed = "The speed that the player walks",
 	
 	GetAirFrictionForce = "The force of Air Friction for this entity",
 }
@@ -334,14 +337,16 @@ end
 
 function CombatMovementMixin:GetMaxSpeed(possible)
 
+	local maxRunSpeed = self:GetRunMaxSpeed()
+	local maxWalkSpeed = self:GetWalkMaxSpeed()
 	if possible then
-		return Marine.kRunMaxSpeed
+		return maxRunSpeed
 	end
 
 	local onInfestation = self:GetGameEffectMask(kGameEffect.OnInfestation)
 	local sprintingScalar = self:GetSprintingScalar()
-	local maxSprintSpeed = ConditionalValue(onInfestation, Marine.kWalkMaxSpeed + (Marine.kRunInfestationMaxSpeed - Marine.kWalkMaxSpeed)*sprintingScalar, Marine.kWalkMaxSpeed + (Marine.kRunMaxSpeed - Marine.kWalkMaxSpeed)*sprintingScalar)
-	local maxSpeed = ConditionalValue(self:GetIsSprinting(), maxSprintSpeed, Marine.kWalkMaxSpeed)
+	local maxSprintSpeed = maxWalkSpeed + (maxRunSpeed - maxWalkSpeed)*sprintingScalar
+	local maxSpeed = ConditionalValue(self:GetIsSprinting(), maxSprintSpeed, maxWalkSpeed)
 	
 	// Take into account our weapon inventory and current weapon. Assumes a vanilla marine has a scalar of around .8.
 	local inventorySpeedScalar = self:GetInventorySpeedScalar() + .17

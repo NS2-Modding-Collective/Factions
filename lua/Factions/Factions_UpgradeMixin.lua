@@ -9,8 +9,21 @@
 
 // Factions_UpgradeMixin.lua
 
+// Detail about the different kinds of upgrades.
+kUpgradeTypes = enum({'Ability', 'Attribute', 'Tech', 'Weapons'})
 kAllFactionsUpgrades = {}
-kUpgradeTypes = enum({'Class', 'Tech', 'Weapon'})
+kAllFactionsUpgradesByType = {}
+for index, upgradeType in ipairs(kUpgradeTypes) do
+	kAllFactionsUpgradesByType[upgradeType] = {}
+end
+
+kUpgradeTypeStrings = {}
+kUpgradeTypeStrings[kUpgradeTypes.Ability] = "Abilities"
+kUpgradeTypeStrings[kUpgradeTypes.Ability] = "Attributes"
+kUpgradeTypeStrings[kUpgradeTypes.Ability] = "Tech"
+kUpgradeTypeStrings[kUpgradeTypes.Ability] = "Weapons"
+
+// Kinds of triggers
 kTriggerTypes = enum({'NoTrigger', 'ByTime', 'ByKey'})
 
 // Load utility functions
@@ -19,6 +32,11 @@ Script.Load("lua/Factions/Factions_Utility.lua")
 // Load the upgrade base classes
 Script.Load("lua/Factions/Factions_Upgrade.lua")
 Script.Load("lua/Factions/Factions_WeaponUpgrade.lua")
+
+local function RegisterNewUpgrade(upgradeType, className)
+	table.insert(kAllFactionsUpgrades, className)
+	table.insert(kAllFactionsUpgradesByType[upgradeType], className)
+end
 
 // build the upgrade list
 local function BuildAllUpgrades()
@@ -35,8 +53,9 @@ local function BuildAllUpgrades()
         
         // save all upgrades in a table
         kAllFactionsUpgrades = {}
-		//MergeToTable(kAllFactionsUpgrades, Script.GetDerivedClasses("FactionsUpgrade"))
-		MergeToTable(kAllFactionsUpgrades, Script.GetDerivedClasses("FactionsWeaponUpgrade"))
+		for index, classType in ipairs(Script.GetDerivedClasses("FactionsWeaponUpgrade")) do
+			RegisterNewUpgrade(classType, _G[classType].name)
+		end
     end
     
 end

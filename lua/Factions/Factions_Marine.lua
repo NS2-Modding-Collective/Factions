@@ -176,7 +176,7 @@ if Client then
                 if not self.buyMenu then
                     // open the buy menu
                     self.combatBuy = true
-                    self.buyMenu = GetGUIManager():CreateGUIScript("Factions/Hud/combat_GUIMarineBuyMenu")
+                    self.buyMenu = GetGUIManager():CreateGUIScript("Factions/Hud/Factions_GUIMarineBuyMenu")
                     g_MarineBuyMenu = self.buyMenu
                     MouseTracker_SetIsVisible(true, "ui/Cursor_MenuDefault.dds", true)
                 else

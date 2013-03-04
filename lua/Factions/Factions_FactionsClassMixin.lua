@@ -107,7 +107,8 @@ end
 
 function FactionsClassMixin:CopyPlayerDataFrom(player)
 
-	self.factionsClass = player.factionsClass
+	self.factionsClassType = player.factionsClassType
+	self.factionsClass = self:GetClassByType(player.factionsClassType)
 
 end
 
@@ -123,9 +124,9 @@ function FactionsClassMixin:GetFactionsClassString()
 
 end
 
-function FactionsClassMixin:ChangeFactionsClassFromString(newClassestring)
+function FactionsClassMixin:ChangeFactionsClassFromString(newClassString)
 
-	local newClass = StringToFactionsClass(newClassestring)
+	local newClass = StringToFactionsClass(newClassString)
 	local success = false
 	if newClass then
 		self:ChangeFactionsClass(newClass)
@@ -136,15 +137,49 @@ function FactionsClassMixin:ChangeFactionsClassFromString(newClassestring)
 
 end
 
+function FactionsClassMixin:GetAllClasses()
+    return kAllFactionsClasses
+end
+
+function FactionsClassMixin:GetClassByType(classType)
+    if classType then
+        local allClasses = self:GetAllClasses()
+        if allClasses[classType] and _G[allClasses[classType]] then
+            return _G[allClasses[classType]]
+        end
+    end
+end
+
 function FactionsClassMixin:ChangeFactionsClass(newClass)
 
-	if self.factionsClass ~= newClass then
-		self.factionsClass = newClass
+	if self.factionsClassType ~= newClass then
+		self.factionsClassType = newClass
+		self.factionsClass = self:GetClassByType(newClass)
 		
 		// Kill the player if they do this while playing.
 		if self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
 			self:Kill(nil, nil, self:GetOrigin())
 		end
+	end
+
+end
+
+function FactionsClassMixin:GetRunMaxSpeed()
+
+	if self.factionsClassType == kFactionsClassType.NoneSelected then
+		return Marine.kMaxRunSpeed
+	else
+		return self.factionsClass:GetBaseRunSpeed()
+	end
+
+end
+
+function FactionsClassMixin:GetWalkMaxSpeed()
+
+	if self.factionsClassType == kFactionsClassType.NoneSelected then
+		return Marine.kMaxWalkSpeed
+	else
+		return self.factionsClass:GetBaseWalkSpeed()
 	end
 
 end
