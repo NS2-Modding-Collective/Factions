@@ -111,6 +111,7 @@ function UpgradeMixin:BuyUpgrade(upgrade, giveBack)
 		
             if success and not giveBack then
                 self:SetUpgrade(upgrade, 1)
+				self:AddResources(-upgrade:GetCost())
             end
         else
             self:SendDirectMessage("Upgrade not available")
