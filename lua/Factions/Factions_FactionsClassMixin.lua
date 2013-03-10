@@ -81,7 +81,7 @@ FactionsClassMixin.expectedConstants =
 
 FactionsClassMixin.networkVars =
 {
-	factionsClass = "enum kFactionsClassType"
+	factionsClassType = "enum kFactionsClassType"
 }
 
 // Conversion functions for ease of output/input
@@ -101,7 +101,7 @@ end
 
 function FactionsClassMixin:__initmixin()
 
-    self.factionsClass = kFactionsClassType.NoneSelected
+    self.factionsClassType = kFactionsClassType.NoneSelected
 
 end
 
