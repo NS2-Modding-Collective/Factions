@@ -167,9 +167,9 @@ end
 function FactionsClassMixin:GetRunMaxSpeed()
 
 	if self.factionsClassType == kFactionsClassType.NoneSelected then
-		return Marine.kMaxRunSpeed
+		return Marine.kRunMaxSpeed
 	else
-		return self.factionsClass:GetBaseRunSpeed()
+		return self.factionsClass.baseRunSpeed
 	end
 
 end
@@ -177,9 +177,9 @@ end
 function FactionsClassMixin:GetWalkMaxSpeed()
 
 	if self.factionsClassType == kFactionsClassType.NoneSelected then
-		return Marine.kMaxWalkSpeed
+		return Marine.kWalkMaxSpeed
 	else
-		return self.factionsClass:GetBaseWalkSpeed()
+		return self.factionsClass.baseWalkSpeed
 	end
 
 end
