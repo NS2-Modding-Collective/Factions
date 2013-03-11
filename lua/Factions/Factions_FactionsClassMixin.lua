@@ -21,7 +21,7 @@ end
 // load the Factions Class base classes
 Script.Load("lua/Factions/Factions_FactionsClass.lua")
 
-local function RegisterNewClass(classType, className)
+local function RegisterNewClass(classType, className, classEntity)
 	
 	// We have to reconstruct the kFactionsClassType enum to add values.
 	local enumTable = {}
@@ -33,6 +33,7 @@ local function RegisterNewClass(classType, className)
 	
 	kFactionsClassType = enum(enumTable)
 	kFactionsClassStrings[kFactionsClassType[classType]] = className
+	kAllFactionsClasses[kFactionsClassType[classType]] = classEntity
 	
 end
 
@@ -48,13 +49,10 @@ local function BuildAllFactionsClasses()
         for _, factionsClassFile in pairs(factionsClassFiles) do
             Script.Load(factionsClassFile)      
         end
-        
-        // save all FactionsClasses in a table
-        kAllFactionsClasses = Script.GetDerivedClasses("FactionsClass")
 		
-		// build the enums for the Type field.
-		for index, classType in ipairs(kAllFactionsClasses) do
-			RegisterNewClass(classType, _G[classType].name)
+		// Build the enums for the Type field and save all FactionsClasses in a table
+		for index, classType in ipairs(Script.GetDerivedClasses("FactionsClass")) do
+			RegisterNewClass(classType, _G[classType].name, _G[classType])
 		end
     end
     
@@ -118,10 +116,26 @@ function FactionsClassMixin:GetFactionsClass()
 
 end
 
+function FactionsClassMixin:GetFactionsClassType()
+
+	return self.factionsClassType
+
+end
+
 function FactionsClassMixin:GetFactionsClassString()
 
 	return FactionsClassToString(self:GetFactionsClass())
 
+end
+
+function FactionsClassMixin:GetHasFactionsClass()
+
+	local hasClass = true
+	if self.factionsClass == kFactionsClassType.NoneSelected then
+		hasClass = false
+	end
+	return hasClass
+	
 end
 
 function FactionsClassMixin:ChangeFactionsClassFromString(newClassString)
@@ -166,7 +180,7 @@ end
 
 function FactionsClassMixin:GetRunMaxSpeed()
 
-	if self.factionsClassType == kFactionsClassType.NoneSelected then
+	if self:GetFactionsClassType() == kFactionsClassType.NoneSelected then
 		return Marine.kRunMaxSpeed
 	else
 		return self.factionsClass.baseRunSpeed
@@ -176,7 +190,7 @@ end
 
 function FactionsClassMixin:GetWalkMaxSpeed()
 
-	if self.factionsClassType == kFactionsClassType.NoneSelected then
+	if self:GetFactionsClassType() == kFactionsClassType.NoneSelected then
 		return Marine.kWalkMaxSpeed
 	else
 		return self.factionsClass.baseWalkSpeed

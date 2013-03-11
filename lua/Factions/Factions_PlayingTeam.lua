@@ -140,6 +140,11 @@ if Server then
 	// Call with origin and angles, or pass nil to have them determined from team location and spawn points.
 	function PlayingTeam:RespawnPlayer(player, origin, angles)
 
+		// Don't bother trying to spawn the player if they are a human and still yet to choose a class.
+		if not Server.GetOwner(player):GetIsVirtual() and self.GetHasFactionsClass and not self:GetHasFactionsClass() then
+			return false
+		end
+		
 		local success = false
 		local initialTechPoint = Shared.GetEntity(self.initialTechPointId)
 		
