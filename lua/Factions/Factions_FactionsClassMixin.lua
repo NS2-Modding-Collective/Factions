@@ -170,6 +170,10 @@ function FactionsClassMixin:ChangeFactionsClass(newClass)
 		self.factionsClassType = newClass
 		self.factionsClass = self:GetClassByType(newClass)
 		
+		if Server then
+			Server.SendNetworkMessage(self, "ChangeFactionsClass", BuildChangeFactionsClassMessage(newClass), true)
+		end
+		
 		// Kill the player if they do this while playing.
 		if self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
 			self:Kill(nil, nil, self:GetOrigin())

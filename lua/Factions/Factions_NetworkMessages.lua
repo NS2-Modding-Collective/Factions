@@ -11,6 +11,7 @@
 
 // load the upgrade base class
 Script.Load("lua/Factions/Factions_UpgradeMixin.lua")
+Script.Load("lua/Factions/Factions_FactionsClassMixin.lua")
 
 local kUpdateUpgrade =
 {
@@ -41,8 +42,26 @@ function BuildBuyUpgradeMessage(upgrade)
     message.upgradeId = upgrade:GetId() 
     
     return message
+	
 end
 
 Shared.RegisterNetworkMessage( "UpdateUpgrade", kUpdateUpgrade )
 Shared.RegisterNetworkMessage( "BuyUpgrade", kBuyUpgrade )
 Shared.RegisterNetworkMessage( "ClearUpgrades", {} )
+
+local kFactionsClassUpdate =
+{
+    newClass = "enum kFactionsClassType"
+}
+
+function BuildChangeFactionsClassMessage(newClass)
+
+    local message = { }
+    
+    message.newClass = newClass
+    
+    return message
+	
+end
+
+Shared.RegisterNetworkMessage( "ChangeFactionsClass", kFactionsClassUpdate)
