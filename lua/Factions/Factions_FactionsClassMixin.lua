@@ -124,14 +124,14 @@ end
 
 function FactionsClassMixin:GetFactionsClassString()
 
-	return FactionsClassToString(self:GetFactionsClass())
+	return FactionsClassToString(self:GetFactionsClassType())
 
 end
 
 function FactionsClassMixin:GetHasFactionsClass()
 
 	local hasClass = true
-	if self.factionsClass == kFactionsClassType.NoneSelected then
+	if self:GetFactionsClassType() == kFactionsClassType.NoneSelected then
 		hasClass = false
 	end
 	return hasClass
@@ -158,8 +158,8 @@ end
 function FactionsClassMixin:GetClassByType(classType)
     if classType then
         local allClasses = self:GetAllClasses()
-        if allClasses[classType] and _G[allClasses[classType]] then
-            return _G[allClasses[classType]]
+        if allClasses[classType] then
+            return allClasses[classType]
         end
     end
 end
