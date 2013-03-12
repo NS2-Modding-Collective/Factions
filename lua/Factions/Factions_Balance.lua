@@ -17,7 +17,7 @@ SprintMixin.kMaxSprintTime = 6 // 1 sec
 SprintMixin.kSprintRecoveryRate = .5 // 0.5 sec
 
 // Spawning logic
-kRespawnTimer = 12
+kRespawnTimer = 8
 kSpawnMaxRetries = 50
 kSpawnMinDistance = 2
 kSpawnMaxDistance = 70
@@ -27,18 +27,18 @@ kSpawnProtectTime = 2
 kNanoShieldDamageReductionDamage = 0.1
 
 // MARINE DAMAGE VALUES
-kRifleDamage = 35
+kRifleDamage = 25
 kRifleDamageType = kDamageType.Normal
 SetCachedTechData(kTechId.Rifle, kTechDataDamageType, kRifleDamageType)
 kRifleClipSize = 30
 
 kLightMachineGunWeight = 0.05
-kLightMachineGunDamage = 20
+kLightMachineGunDamage = 15
 kLightMachineGunClipSize = 50
 kLightMachineGunDamageType = kDamageType.Light
 kLightMachineGunCost = 10
 
-kPistolDamage = 60
+kPistolDamage = 50
 kPistolDamageType = kDamageType.Normal
 SetCachedTechData(kTechId.Pistol, kTechDataDamageType, kPistolDamageType)
 kPistolClipSize = 8
@@ -48,7 +48,7 @@ kWelderDamageType = kDamageType.Flame
 SetCachedTechData(kTechId.Welder, kTechDataDamageType, kWelderDamageType)
 kWelderFireDelay = 0.2
 
-kAxeDamage = 100
+kAxeDamage = 80
 kAxeDamageType = kDamageType.Structural
 SetCachedTechData(kTechId.Axe, kTechDataDamageType, kAxeDamageType)
 
@@ -57,7 +57,7 @@ kGrenadeLauncherClipSize = 4
 kGrenadeLauncherGrenadeDamageRadius = 8
 kGrenadeLifetime = 2.0
 
-kShotgunDamage = 20
+kShotgunDamage = 15
 kShotgunClipSize = 5
 kShotgunBulletsPerShot = 17
 kShotgunRange = 40

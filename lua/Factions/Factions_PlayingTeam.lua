@@ -58,6 +58,29 @@ if Server then
 		return success
 
 	end
+		
+	function PlayingTeam:GetHasTeamLost()
+	
+		// Don't bother with the original - we just set our own logic here.
+		// You can lose with cheats on (testing purposes)
+		if(GetGamerules():GetGameStarted()) then
+		
+			// Team can't respawn or last Command Station or Hive destroyed
+			local numCommandStructures = self:GetNumCommandStructures()
+			
+			if  ( numCommandStructures == 0 ) or
+				( self:GetNumPlayers() == 0 ) then
+				
+				return true
+				
+			end
+				
+		end
+
+		return false
+
+	end
+
 
 	function PlayingTeam:Update(timePassed)
 
