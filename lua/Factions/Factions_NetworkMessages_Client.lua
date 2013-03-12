@@ -35,11 +35,11 @@ Client.HookNetworkMessage("ClearTechTree", function() end)
 Client.HookNetworkMessage("TechNodeBase", function() end)
 Client.HookNetworkMessage("TechNodeUpdate", function() end)
 
-function OnCommandChangeFactionsClass(newClass)
+function OnCommandChangeFactionsClass(newClassMessage)
 
     // The server will send us this message when we successfully change class.
     player = Client.GetLocalPlayer()
-    player:ChangeFactionsClass(newClass)
+    player:ChangeFactionsClass(newClassMessage.newClass)
 
 end
 
