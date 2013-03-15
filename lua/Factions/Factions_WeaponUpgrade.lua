@@ -37,7 +37,7 @@ end
 // Give the weapon to the player when they buy the upgrade.
 function FactionsWeaponUpgrade:OnAdd(player)
 
-	local mapName = LookupTechData(self:GetUpgradeTechId(), kTechDataMapName)
+	local mapName = LookupTechData(self:GetUpgradeTechId(1), kTechDataMapName)
 	if mapName then
 		// if this is a primary weapon, destroy the old one.
 		if GetIsPrimaryWeapon(mapName) then
