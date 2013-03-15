@@ -48,7 +48,7 @@ kWelderDamageType = kDamageType.Flame
 SetCachedTechData(kTechId.Welder, kTechDataDamageType, kWelderDamageType)
 kWelderFireDelay = 0.2
 
-kAxeDamage = 80
+kAxeDamage = 60
 kAxeDamageType = kDamageType.Structural
 SetCachedTechData(kTechId.Axe, kTechDataDamageType, kAxeDamageType)
 
@@ -85,7 +85,7 @@ kRailgunDamage = 50
 kRailgunChargeDamage = 100
 kRailgunDamageType = kDamageType.Puncture
 
-kMineDamage = 125
+kMineDamage = 100
 
 kSentryAttackBaseROF = .15
 kSentryAttackRandROF = 0.0
