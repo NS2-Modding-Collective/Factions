@@ -60,7 +60,7 @@ end
 
 function UpgradeMixin:GetIsAllowedToBuy(upgradeId)
 	local upgrade = self:GetUpgradeById(upgradeId)
-	if (not upgrade:GetIsAtMaxLevel()) and self.resources >= upgrade:GetCostForNextLevel() then
+	if (not upgrade:GetIsAtMaxLevel()) and self:GetResources() >= upgrade:GetCostForNextLevel() then
 		return true
 	else
 		return false

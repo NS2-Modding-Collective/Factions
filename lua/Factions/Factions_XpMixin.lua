@@ -75,6 +75,13 @@ XpMixin.expectedCallbacks =
 {
 }
 
+XpMixin.overrideFunctions =
+{
+	"SetResources",
+	"GetResources",
+	"GetPersonalResources",
+}
+
 XpMixin.networkVars =
 {
     level = "integer (0 to 99)",
@@ -84,6 +91,29 @@ XpMixin.networkVars =
 
 function XpMixin:__initmixin()
     self.level = kStartLevel
+end
+
+// Resources are divided by 10 as we are limited to 999 max.
+function XpMixin:SetResources(amount)
+
+    local oldVisibleResources = math.floor(self.resources * 10)
+    
+    self.resources = Clamp(amount/10, 0, kMaxPersonalResources)
+    
+    local newVisibleResources = math.floor(self.resources * 10)
+    
+    if oldVisibleResources ~= newVisibleResources then
+        self:SetScoreboardChanged(true)
+    end
+    
+end
+
+function XpMixin:GetResources()
+	return Player.GetResources(self) * 10
+end
+
+function XpMixin:GetPersonalResources()
+	return Player.GetResources(self) * 10
 end
 
 // also adds res when score will be added so you can use them to buy something
