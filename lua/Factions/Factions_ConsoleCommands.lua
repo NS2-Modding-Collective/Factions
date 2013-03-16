@@ -40,7 +40,7 @@ if Server then
             if HasMixin(player, "Upgrade") then
                 local upgrade = player:GetUpgradeByName(upgradeName)
                 // cause it's cheats 1 you just get the upgrade without paying
-                player:BuyUpgrade(upgrade, true)
+                player:BuyUpgrade(upgrade:GetId(), true)
             end
         end
         
@@ -100,7 +100,7 @@ if Server then
 			
 	end
 	
-	function OnCommandClass(client, newClass)
+	local function SwitchClass(client, newClass)
 		
 		local player = client:GetControllingPlayer()
 		if player and HasMixin(player, "FactionsClass") then
@@ -120,10 +120,24 @@ if Server then
 		end
 		
 	end
+	
+	function OnCommandAssault(client)
+		SwitchClass(client, "Assault")
+	end
+	
+	function OnCommandScout(client)
+		SwitchClass(client, "Scout")
+	end
+	
+	function OnCommandSupport(client)
+		SwitchClass(client, "Support")
+	end
 
     Event.Hook("Console_magnoboots", OnCommandGiveMagnoBoots) 
     Event.Hook("Console_givexp", OnCommandGiveXp) 
-	Event.Hook("Console_class", OnCommandClass) 
+	Event.Hook("Console_assault", OnCommandAssault) 
+	Event.Hook("Console_scout", OnCommandScout) 
+	Event.Hook("Console_support", OnCommandSupport) 
     Event.Hook("Console_giveupgrade", OnCommandGiveUpgrade) 
 	
 	Event.Hook("Console_forceclass", OnCommandForceClass) 

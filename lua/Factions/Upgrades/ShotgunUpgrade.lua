@@ -11,10 +11,19 @@
 						
 class 'ShotgunUpgrade' (FactionsWeaponUpgrade)
 
-ShotgunUpgrade.cost = { 150 }                          								// Cost of the upgrade in xp
-ShotgunUpgrade.upgradeName = "shotgun"                      						// text code of the upgrade if using it via console
-ShotgunUpgrade.upgradeTitle = "Shotgun"               								// Title of the upgrade, e.g. Submachine Gun
-ShotgunUpgrade.upgradeDesc = "Does high damage at close range, contains 5 shells."	// Description of the upgrade
-ShotgunUpgrade.upgradeTechId = { kTechId.Shotgun } 		    						// techId of the upgrade, default is kTechId.Move cause its the first entry
-ShotgunUpgrade.primaryWeapon = false												// Is this a primary weapon?
+function MinesUpgrade:Initialize()
 
+	FactionsWeaponUpgrade.Initialize(self)
+	
+	self.cost = { 150 }                          								// Cost of the upgrade in xp
+	self.upgradeName = "shotgun"	                        					// Text code of the upgrade if using it via console
+	self.upgradeTitle = "Shotgun"       										// Title of the upgrade, e.g. Submachine Gun
+	self.upgradeDesc = "Does high damage at close range, contains 5 shells."	// Description of the upgrade
+	self.upgradeTechId = { kTechId.Shotgun } 		    						// TechId of the upgrade, default is kTechId.Move cause its the first entry
+	self.primaryWeapon = true													// Is this a primary weapon?
+	
+end
+
+function ShotgunUpgrade:GetClassName()
+	return "ShotgunUpgrade"
+end

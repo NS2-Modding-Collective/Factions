@@ -324,7 +324,11 @@ function Factions_GUIMarineBuyMenu:_InitializeEquipped()
 end
 
 local function GetHardCapText(upgrade)
-    return ""
+	if upgrade:GetMaxLevels() > 1 then
+		return upgrade:GetCurrentLevel() .. " / " .. upgrade:GetMaxLevels()
+	else
+		return ""
+	end
 end
 
 function Factions_GUIMarineBuyMenu:_InitializeItemButtons()
@@ -355,22 +359,38 @@ function Factions_GUIMarineBuyMenu:_InitializeItemButtons()
     
     self.itemButtons = { }
 	
-	local nextHeadline = 1
-    local allUps = self.player:GetAllAvailableUpgrades()    
     local selectorPosX = -Factions_GUIMarineBuyMenu.kSelectorSize.x + Factions_GUIMarineBuyMenu.kPadding
     local fontScaleVector = Vector(0.8, 0.8, 0)
     local k = 1
     xOffset  = 0
 	
-	for upgradeTypeIndex, upgradeTypeName in ipairs(kUpgradeTypes) do
-    
-	    local itemNr = 1
-		for i, upgradeClassName in ipairs(allUps) do
+	for upgradeTypeIndex, upgradeTypeName in ipairs(kFactionsUpgradeTypes) do
+	
+		local itemNr = 1
+		
+		if upgradeTypeIndex > 1 then
+			xOffset = xOffset + Factions_GUIMarineBuyMenu.kSmallIconOffset_x
+		end
+		
+		// set the headline
+		local graphicItemHeading = GUIManager:CreateTextItem()
+		graphicItemHeading:SetFontName(Factions_GUIMarineBuyMenu.kFont)
+		graphicItemHeading:SetFontIsBold(true)
+		graphicItemHeading:SetAnchor(GUIItem.Middle, GUIItem.Top)
+		graphicItemHeading:SetPosition(Vector((-Factions_GUIMarineBuyMenu.kSmallIconSize.x/ 2) + xOffset, 5, 0))
+		graphicItemHeading:SetTextAlignmentX(GUIItem.Align_Min)
+		graphicItemHeading:SetTextAlignmentY(GUIItem.Align_Min)
+		graphicItemHeading:SetColor(Factions_GUIMarineBuyMenu.kTextColor)
+		graphicItemHeading:SetText(upgradeTypeName)
+		self.menu:AddChild(graphicItemHeading)
+		
+		local allUps = self.player:GetUpgradesByType(upgradeTypeName)
+		
+		for index, upgrade in ipairs(allUps) do
 
 			// only 6 icons per column
-			if (itemNr % 6 ~= 0) then
-				local upgrade = self.player:GetUpgradeByClassName(upgradeClassName)
-				local itemTechId = upgrade:GetUpgradeTechId()
+			if (itemNr < 6) then
+				local itemTechId = upgrade:GetUpgradeTechId(upgrade:GetNextLevel())
 
 				if itemTechId then         
 					
@@ -419,7 +439,7 @@ function Factions_GUIMarineBuyMenu:_InitializeItemButtons()
 					itemCost:SetTextAlignmentY(GUIItem.Align_Center)
 					itemCost:SetScale(fontScaleVector)
 					itemCost:SetColor(Factions_GUIMarineBuyMenu.kTextColor)
-					itemCost:SetText(ToString(upgrade:GetCost()))
+					itemCost:SetText(ToString(upgrade:GetCostForNextLevel()))
 					
 					costIcon:AddChild(itemCost)  
 					
@@ -430,27 +450,6 @@ function Factions_GUIMarineBuyMenu:_InitializeItemButtons()
 					  
 					itemNr = itemNr +1
 				end
-			else
-				// if its first next row, only set the headline
-				if i > 1 then
-					itemNr = 1
-					xOffset = xOffset + Factions_GUIMarineBuyMenu.kSmallIconOffset_x
-				end
-				
-				// set the headline
-				local graphicItemHeading = GUIManager:CreateTextItem()
-				graphicItemHeading:SetFontName(Factions_GUIMarineBuyMenu.kFont)
-				graphicItemHeading:SetFontIsBold(true)
-				graphicItemHeading:SetAnchor(GUIItem.Middle, GUIItem.Top)
-				graphicItemHeading:SetPosition(Vector((-Factions_GUIMarineBuyMenu.kSmallIconSize.x/ 2) + xOffset, 5 + (Factions_GUIMarineBuyMenu.kSmallIconSize.y) * itemNr - Factions_GUIMarineBuyMenu.kSmallIconSize.y, 0))
-				graphicItemHeading:SetTextAlignmentX(GUIItem.Align_Min)
-				graphicItemHeading:SetTextAlignmentY(GUIItem.Align_Min)
-				graphicItemHeading:SetColor(Factions_GUIMarineBuyMenu.kTextColor)
-				graphicItemHeading:SetText(kUpgradeTypeStrings[kUpgradeTypes[nextHeadline]] or "nothing")
-				self.menu:AddChild(graphicItemHeading)
-				
-				nextHeadline = nextHeadline + 1
-				
 			end
 		
 		end
@@ -514,7 +513,7 @@ function Factions_GUIMarineBuyMenu:_UpdateItemButtons(deltaTime)
                item.Highlight:SetIsVisible(false)
            end
            
-           local gotRequirements = self.player:CheckUpgradeAvailability(item.Upgrade)           
+           local gotRequirements = self.player:GetCanBuyUpgrade(item.Upgrade:GetId())
            local useColor = Color(1,1,1,1)
 
             // set grey if player doesn'T have the needed other Up
@@ -523,13 +522,13 @@ function Factions_GUIMarineBuyMenu:_UpdateItemButtons(deltaTime)
 				useColor = Color(1, 0, 0, 1)
                
             // set it blink when we got the upp already
-            elseif  self.player:HasUpgrade(item.Upgrade) then
+            elseif  item.Upgrade:GetIsAtMaxLevel() then
                 
                 local anim = math.cos(Shared.GetTime() * 9) * 0.4 + 0.6
                 useColor = Color(1, 1, anim, 1)
                     
             // set red if can't afford
-            elseif PlayerUI_GetPlayerResources() < item.Upgrade:GetCost() then
+            elseif PlayerUI_GetPlayerResources() < item.Upgrade:GetCostForNextLevel() then
             
                 useColor = Color(0.5, 0.5, 0.5, 1) 
                
@@ -598,8 +597,8 @@ function Factions_GUIMarineBuyMenu:_UpdateContent(deltaTime)
     
     if techId then
     
-        local researched = self.player:CheckUpgradeAvailability(self.hoverUpgrade)                
-        local itemCost = ConditionalValue(self.hoverUpgrade, self.hoverUpgrade:GetCost(), 0)
+        local researched = self.player:GetCanBuyUpgrade(self.hoverUpgrade:GetId())                
+        local itemCost = ConditionalValue(self.hoverUpgrade, self.hoverUpgrade:GetCostForNextLevel(), 0)
         local upgradesCost = 0
         local canAfford = PlayerUI_GetPlayerResources() >= itemCost + upgradesCost
 
@@ -798,15 +797,15 @@ function Factions_GUIMarineBuyMenu:_HandleItemClicked(mouseX, mouseY)
     
         if self:_GetIsMouseOver(item.Button) then
         
-            local researched = self.player:CheckUpgradeAvailability(item.Upgrade)
-            local itemCost = item.Upgrade:GetCost()
+            local researched = self.player:GetCanBuyUpgrade(item.Upgrade:GetId())
+            local itemCost = item.Upgrade:GetCostForNextLevel()
             local upgradesCost = self:_GetSelectedUpgradesCost()
             local canAfford = PlayerUI_GetPlayerResources() >= itemCost + upgradesCost 
-            local hasItem = self.player:HasUpgrade(item.Upgrade)
+            local hasItem = item.Upgrade:GetIsAtMaxLevel()
             
             if researched and canAfford and not hasItem then
             
-                self.player:BuyUpgrade(item.Upgrade)
+                self.player:BuyUpgrade(item.Upgrade:GetId())
                 self:OnClose()
                 
                 return true, true

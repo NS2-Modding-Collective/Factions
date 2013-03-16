@@ -15,11 +15,21 @@ Script.Load("lua/Factions/Factions_Upgrade.lua")
 							
 class 'FactionsWeaponUpgrade' (FactionsUpgrade)
 
-FactionsWeaponUpgrade.upgradeType = kUpgradeTypes.Weapon        		// the type of the upgrade
-FactionsWeaponUpgrade.triggerType = kTriggerTypes.NoTrigger   			// how the upgrade is gonna be triggered
-FactionsWeaponUpgrade.levels = 1                                        // if the upgrade has more than one lvl, like weapon or armor ups. Default is 1.
-FactionsWeaponUpgrade.permanent = true									// Controls whether you get the upgrade back when you respawn
-FactionsWeaponUpgrade.primaryWeapon = false								// Is this a primary weapon?
+function FactionsWeaponUpgrade:Initialize()
+
+	FactionsUpgrade.Initialize(self)
+
+	self.upgradeType = kFactionsUpgradeTypes.Weapon        		// the type of the upgrade
+	self.triggerType = kFactionsTriggerTypes.NoTrigger   		// how the upgrade is gonna be triggered
+	self.levels = 1                                     // if the upgrade has more than one lvl, like weapon or armor ups. Default is 1.
+	self.permanent = true								// Controls whether you get the upgrade back when you respawn
+	self.primaryWeapon = false							// Is this a primary weapon?
+	
+end
+
+function FactionsWeaponUpgrade:GetClassName()
+	return "FactionsWeaponUpgrade"
+end
 
 function FactionsWeaponUpgrade:GetIsPrimaryWeapon()
     return self.primaryWeapon
