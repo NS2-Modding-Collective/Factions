@@ -16,4 +16,5 @@ ShotgunUpgrade.upgradeName = "shotgun"                      						// text code o
 ShotgunUpgrade.upgradeTitle = "Shotgun"               								// Title of the upgrade, e.g. Submachine Gun
 ShotgunUpgrade.upgradeDesc = "Does high damage at close range, contains 5 shells."	// Description of the upgrade
 ShotgunUpgrade.upgradeTechId = { kTechId.Shotgun } 		    						// techId of the upgrade, default is kTechId.Move cause its the first entry
+ShotgunUpgrade.primaryWeapon = false												// Is this a primary weapon?
 

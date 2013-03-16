@@ -16,4 +16,4 @@ WelderUpgrade.upgradeName = "welder"	                       						// text code o
 WelderUpgrade.upgradeTitle = "Welder"       										// Title of the upgrade, e.g. Submachine Gun
 WelderUpgrade.upgradeDesc = "Weld stuff"   											// Description of the upgrade
 WelderUpgrade.upgradeTechId = { kTechId.Welder }		  		    				// TechId of the upgrade, default is kTechId.Move cause its the first entry
-
+WelderUpgrade.primaryWeapon = false													// Is this a primary weapon?

@@ -64,21 +64,29 @@ UpgradeMixin.expectedCallbacks =
 
 
 function UpgradeMixin:__initmixin()
-    if not self.UpgradeList then
-        self.UpgradeList = {}
-    end
+	self:BuildNewUpgradeList()
 end
 
-
 function UpgradeMixin:Reset()
-    // reset all upgrades 
-    //self:ClearUpgrades()
+    self:BuildNewUpgradeList()
+end
+
+local function GetAllAvailableUpgrades()
+	return kAllFactionsUpgrades()
+end
+
+function UpgradeMixin:BuildNewUpgradeList()
+	self.UpgradeList = {}
+	for index, upgrade in ipairs(kAllFactionsUpgrades) do
+		local newUpgrade = upgrade()
+		UpgradeList[upgrade:GetId()] = newUpgrade
+	end
 end
 
 function UpgradeMixin:CopyPlayerDataFrom(player)
     self.UpgradeList = player.UpgradeList
     Print(#player.UpgradeList)
-        // give upgrades back
+    // give upgrades back
     if self:GetIsAlive() and self:GetTeamNumber() ~= kNeutralTeamType then
         for i, entry in ipairs(self.UpgradeList) do
             self:BuyUpgrade(self:GetUpgradeById(entry.upgrade), true)
@@ -86,15 +94,21 @@ function UpgradeMixin:CopyPlayerDataFrom(player)
     end
 end
 
-function UpgradeMixin:BuyUpgrade(upgrade, giveBack)
+function UpgradeMixin:BuyUpgrade(upgrade, freeUpgrade)
     if Server then
         local upgradeOk = self:CheckUpgradeAvailability(upgrade) or giveBack
         if upgradeOk then        
+			local newUpgrade
+			if (self:GetHasUpgrade(upgrade) then
+				newUpgrade = self:GetUpgrade(upgrade)
+			end
+			UpgradeList[upgrade] = newUpgrade
 			local success = upgrade:OnAdd(self)
 		
-            if success and not giveBack then
-                self:SetUpgrade(upgrade, 1)
+            if success and not freeUpgrade then
+                self:BuyUpgrade()
 				self:AddResources(-upgrade:GetCost())
+				Server.SendNetworkMessage(self, "UpdateUpgrade",  BuildUpdateUpgradeMessage(upgradeId, level), true)
             end
         else
             self:SendDirectMessage("Upgrade not available")
@@ -105,23 +119,9 @@ function UpgradeMixin:BuyUpgrade(upgrade, giveBack)
     end
 end
 
-function UpgradeMixin:SetUpgrade(upgrade, level)
-    local upgradeId = upgrade:GetId()
-    table.insert(self.UpgradeList, {
-                                upgrade = upgradeId,
-                                level = level})
-    if Server then
-        self:AddResources(-upgrade:GetCost())
-        // send update to the client
-        Server.SendNetworkMessage(self, "UpdateUpgrade",  BuildUpdateUpgradeMessage(upgradeId, level), true)  
-    end 
-   
-end
-
 function UpgradeMixin:ClearUpgrades()
     self.UpgradeList = {}
 end
-
 
 function UpgradeMixin:CheckUpgradeAvailability(upgrade)
     local hasUpgrade = self:HasUpgrade(upgrade)
@@ -146,23 +146,28 @@ function UpgradeMixin:HasUpgrade(upgrade)
     return hasUpgrade
 end
 
-function UpgradeMixin:GetUpgradeLevel(upgrade, number)
-    if number then
-        if self.UpgradeList[number] then
-            return self.UpgradeList[number].level
-        end
-    else
-        for i, entry in ipairs(self.UpgradeList) do
-            if entry.upgrade == upgrade then
-                return entry.level
-            end
-        end
-    end
+function UpgradeMixin:GetCurrentUpgradeLevel(upgradeId)
+	local upgrade = self.UpgradeList[upgradeId]
+	if upgrade ~= nil then
+		return entry:GetCurrentLevel()
+	else
+		return 0
+	end
 end
 
-function UpgradeMixin:GetUpgradeByName(upgradeName)
+function UpgradeMixin:GetMaxUpgradeLevel(upgradeId)
+	local upgrade = self.UpgradeList[upgradeId]
+	// Try and get this player's version of the upgrade
+	if upgrade then
+		return entry:GetMaxLevel()
+	else
+		return 0
+	end
+end
+
+function UpgradeMixin:GetNewUpgradeByName(upgradeName)
     if upgradeName then
-        for i, upgrade in ipairs(self:GetAllUpgrades()) do
+        for i, upgrade in ipairs(self:GetAllAvailableUpgrades()) do
             if _G[upgrade] and _G[upgrade]:GetUpgradeName() == upgradeName then
                 return _G[upgrade]                
             end
@@ -171,18 +176,18 @@ function UpgradeMixin:GetUpgradeByName(upgradeName)
 end
 
 
-function UpgradeMixin:GetUpgradeById(id)
+function UpgradeMixin:GetNewUpgradeById(id)
     if id then
-        local allUpgrades = self:GetAllUpgrades()
+        local allUpgrades = self:GetAllAvailableUpgrades()
         if allUpgrades[id] and _G[allUpgrades[id]] then
             return _G[allUpgrades[id]]
         end
     end
 end
 
-function UpgradeMixin:GetUpgradeByClassName(className)
+function UpgradeMixin:GetAvailableUpgradesByClassName(className)
     if className then
-        local allUpgrades = self:GetAllUpgrades()
+        local allUpgrades = self:GetAllAvailableUpgrades()
         for i, upgradeClassName in ipairs(allUpgrades) do
             if className == upgradeClassName then
                 return _G[allUpgrades[i]]
@@ -192,7 +197,7 @@ function UpgradeMixin:GetUpgradeByClassName(className)
 end
 
 function UpgradeMixin:GetAllUpgrades()
-    return kAllFactionsUpgrades
+	return self.UpgradeList
 end
 
 function UpgradeMixin:spendlvlHints(hint, type)

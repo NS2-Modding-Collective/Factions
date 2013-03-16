@@ -16,7 +16,8 @@ SpeedUpgrade.upgradeTitle = "Speed Upgrade"               									// Title of t
 SpeedUpgrade.upgradeDesc = "Upgrade your player's speed"									// Description of the upgrade
 SpeedUpgrade.upgradeTechId = { kTechId.Speed1, kTechId.Speed2, kTechId.Speed3 }				// TechId of the upgrade, default is kTechId.Move cause its the first entry
 
-function SpeedUpgrade:UpgradePlayerSpeed(originalSpeed)
-{
-	
-}
+function SpeedUpgrade:OnAdd(player)
+	if player:HasMixin("SpeedUpgrade") then
+		player.upgradeSpeedLevel = self:GetCurrentLevel()
+	end
+end

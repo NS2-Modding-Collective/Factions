@@ -356,7 +356,7 @@ function Factions_GUIMarineBuyMenu:_InitializeItemButtons()
     self.itemButtons = { }
 	
 	local nextHeadline = 1
-    local allUps = self.player:GetAllUpgrades()    
+    local allUps = self.player:GetAllAvailableUpgrades()    
     local selectorPosX = -Factions_GUIMarineBuyMenu.kSelectorSize.x + Factions_GUIMarineBuyMenu.kPadding
     local fontScaleVector = Vector(0.8, 0.8, 0)
     local k = 1
