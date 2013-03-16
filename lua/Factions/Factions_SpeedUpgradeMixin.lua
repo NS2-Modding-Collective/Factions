@@ -58,9 +58,9 @@ end
 function SpeedUpgradeMixin:GetUpgradedSprintAcceleration()
 
 	if self:GetHasFactionsClass() then
-		return Marine.kSprintAcceleration
-	else
 		return self:GetBaseSprintAcceleration()
+	else
+		return Marine.kSprintAcceleration
 	end
 	
 end
@@ -68,9 +68,9 @@ end
 function SpeedUpgradeMixin:GetUpgradedAcceleration()
 
 	if self:GetHasFactionsClass() then
-		return Marine.kAcceleration
+		return self:GetBaseAcceleration()	
 	else
-		return self:GetBaseAcceleration()
+		return Marine.kAcceleration
 	end
 	
 end
@@ -78,9 +78,9 @@ end
 function SpeedUpgradeMixin:GetUpgradedMaxSprintSpeed()
 
 	if self:GetHasFactionsClass() then
-		return Marine.kRunMaxSpeed
-	else
 		return self:GetBaseMaxSprintSpeed()
+	else
+		return Marine.kRunMaxSpeed
 	end
 
 end
@@ -88,9 +88,9 @@ end
 function SpeedUpgradeMixin:GetUpgradedMaxSpeed()
 
 	if self:GetHasFactionsClass() then
-		return Marine.kWalkMaxSpeed
-	else
 		return self:GetBaseMaxSpeed()
+	else
+		return Marine.kWalkMaxSpeed
 	end
 
 end

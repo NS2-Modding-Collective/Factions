@@ -120,6 +120,7 @@ CombatMovementMixin.overrideFunctions =
 	"GetJumpVelocity",
 	"GetPlayJumpSound",
 	"HandleJump",
+	"OnClampSpeed",
 	
 }
 
@@ -677,4 +678,43 @@ function CombatMovementMixin:HandleJump(input, velocity)
 		
 	return success
 	
+end
+
+// Make sure we can't move faster than our max speed (esp. when holding
+// down multiple keys, going down ramps, etc.)
+function CombatMovementMixin:OnClampSpeed(input, velocity)
+
+    PROFILE("CombatMovementMixin:OnClampSpeed")
+    
+    // Don't clamp speed when stunned, so we can go flying
+    if HasMixin(self, "Stun") and self:GetIsStunned() then
+        return velocity
+    end
+    
+    if self:PerformsVerticalMove() then
+        moveSpeed = velocity:GetLength()   
+    else
+        moveSpeed = velocity:GetLengthXZ()   
+    end
+    
+	// TODO: Fix the speed inheritance from class then reenable here.
+	local maxSpeed = 9999
+    //local maxSpeed = self:GetMaxSpeed()
+    
+    // Players moving backwards can't go full speed.
+    if input.move.z < 0 then
+        maxSpeed = maxSpeed * self:GetMaxBackwardSpeedScalar()
+    end
+    
+    if moveSpeed > maxSpeed then
+    
+        local velocityY = velocity.y
+        velocity:Scale(maxSpeed / moveSpeed)
+        
+        if not self:PerformsVerticalMove() then
+            velocity.y = velocityY
+        end
+        
+    end
+    
 end

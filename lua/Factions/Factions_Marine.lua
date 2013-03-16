@@ -27,7 +27,7 @@ AddMixinNetworkVars(SpawnProtectMixin, networkVars)
 // Balance, movement, animation
 Marine.kSprintAcceleration = 180
 Marine.kSprintInfestationAcceleration = 150
-Marine.kAcceleration = 120
+Marine.kAcceleration = 140
 Marine.kGroundFriction = 13
 Marine.kGroundWalkFriction = 22
 
