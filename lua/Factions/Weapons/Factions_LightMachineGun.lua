@@ -32,7 +32,7 @@ local kViewModelName = PrecacheAsset("models/marine/lightmachinegun/lightmachine
 local kAnimationGraph = PrecacheAsset("models/marine/lightmachinegun/lightmachinegun_view.animation_graph")
 
 LightMachineGun.kIronSightTexture = "ui/Factions/testing_ironsights.png"
-LightMachineGun.kIronSightZoomFOV = 45
+LightMachineGun.kIronSightZoomFOV = 80
 LightMachineGun.kIronSightActivateTime = 0.1
 
 local kRange = 250
