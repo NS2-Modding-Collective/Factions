@@ -20,6 +20,5 @@ local function OnCommandBuyUpgrade(client, buyMessage)
     
 end
 
-
 Server.HookNetworkMessage("BuyUpgrade", OnCommandBuyUpgrade)
 

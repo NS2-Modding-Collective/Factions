@@ -18,7 +18,7 @@ FactionsClass.name 						= kFactionsClassStrings[kFactionsClassType.NoneSelected
 FactionsClass.description 				= kFactionsClassStrings[kFactionsClassType.NoneSelected]     		// the description of the FactionsClass
 FactionsClass.baseHealth 				= kMarineHealth											     		// the base health value of this class
 FactionsClass.baseArmor 				= kMarineArmor											     		// the base armor value of this class
-FactionsClass.baseWalkSpeed 			= 5.0                												// the initial walk speed of this class
+FactionsClass.baseWalkSpeed 			= 6.0                												// the initial walk speed of this class
 FactionsClass.baseRunSpeed 				= 9.0                												// the initial run speed of this class
 FactionsClass.baseAcceleration			= 100																// the initial walk acceleration of this class
 FactionsClass.baseSprintAcceleration	= 170																// the initial sprint acceleration of this class
@@ -26,6 +26,22 @@ FactionsClass.icon						= "ui/Factions/badges/badge_assault.dds"							// the ba
 FactionsClass.picture					= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
 FactionsClass.initialUpgrades			= { }																// the upgrades that you start the game with
 FactionsClass.allowedUpgrades			= { }																// the upgrades that you are allowed to buy
+
+function FactionsClass:Initialize()
+	self.type = FactionsClass.type
+	self.name = FactionsClass.name
+	self.description = FactionsClass.description
+	self.baseHealth = FactionsClass.baseHealth
+	self.baseArmor = FactionsClass.baseArmor
+	self.baseWalkSpeed = FactionsClass.baseWalkSpeed
+	self.baseRunSpeed = FactionsClass.baseRunSpeed
+	self.baseAcceleration = FactionsClass.baseAcceleration
+	self.baseSprintAcceleration = FactionsClass.baseSprintAcceleration
+	self.icon = FactionsClass.icon
+	self.picture = FactionsClass.picture
+	self.initialUpgrades = FactionsClass.initialUpgrades
+	self.allowedUpgrades = FactionsClass.allowedUpgrades
+end
 
 function FactionsClass:OnCreate()
 
@@ -57,11 +73,11 @@ function FactionsClass:GetBaseArmor()
     return self.baseArmor
 end
 
-function FactionsClass:GetBaseRunSpeed()
+function FactionsClass:GetBaseSprintSpeed()
     return self.baseRunSpeed
 end
 
-function FactionsClass:GetBaseWalkSpeed()
+function FactionsClass:GetBaseSpeed()
     return self.baseWalkSpeed
 end
 
@@ -73,8 +89,12 @@ function FactionsClass:GetPicture()
 	return self.picture
 end
 
-function FactionsClass:GetTechTree()
-    return self.techTree
+function FactionsClass:GetInitialUpgrades()
+    return self.initialUpgrades
+end
+
+function FactionsClass:GetAllowedUpgrades()
+    return self.allowedUpgrades
 end
 
 if kFactionsClassIdCache == nil then

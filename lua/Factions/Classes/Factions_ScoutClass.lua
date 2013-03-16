@@ -19,11 +19,29 @@ ScoutClass.description				= "Attacks faster and can cloak"						     		// the de
 ScoutClass.baseHealth 				= kMarineHealth	- 20									     		// the base health value of this class
 ScoutClass.baseArmor 				= kMarineArmor - 20										     		// the base armor value of this class
 ScoutClass.baseWalkSpeed 			= 7.0                												// the initial walk speed of this class
-ScoutClass.baseRunSpeed 			= 9.0             													// the initial run speed of this class
+ScoutClass.baseRunSpeed 			= 10.0             													// the initial run speed of this class
 ScoutClass.baseAcceleration			= 140																// the initial walk acceleration of this class
 ScoutClass.baseSprintAcceleration 	= 190																// the initial sprint acceleration of this class
 ScoutClass.icon						= "ui/Factions/badges/badge_assault.dds"							// the badge for this class
 ScoutClass.picture					= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
+ScoutClass.initialUpgrades			= { }																// the upgrades that you start the game with
+ScoutClass.allowedUpgrades			= { }																// the upgrades that you are allowed to buy
+
+function ScoutClass:Initialize()
+	self.type = ScoutClass.type
+	self.name = ScoutClass.name
+	self.description = ScoutClass.description
+	self.baseHealth = ScoutClass.baseHealth
+	self.baseArmor = ScoutClass.baseArmor
+	self.baseWalkSpeed = ScoutClass.baseWalkSpeed
+	self.baseRunSpeed = ScoutClass.baseRunSpeed
+	self.baseAcceleration = ScoutClass.baseAcceleration
+	self.baseSprintAcceleration = ScoutClass.baseSprintAcceleration
+	self.icon = ScoutClass.icon
+	self.picture = ScoutClass.picture
+	self.initialUpgrades = ScoutClass.initialUpgrades
+	self.allowedUpgrades = ScoutClass.allowedUpgrades
+end
 
 // Build the actual tech tree
 function ScoutClass:BuildTechTree()

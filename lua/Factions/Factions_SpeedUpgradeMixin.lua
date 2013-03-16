@@ -23,10 +23,7 @@ SpeedUpgradeMixin.expectedMixins =
 SpeedUpgradeMixin.expectedCallbacks =
 {
 	GetBaseMaxSprintSpeed = "The speed that the player runs",
-	GetBaseSprintAcceleration = "The speed that the player runs",
 	GetBaseMaxSpeed = "The speed that the player walks",
-	GetBaseAcceleration = "The speed that the player walks",
-	
 }
 
 SpeedUpgradeMixin.expectedConstants =
@@ -57,21 +54,13 @@ end
 
 function SpeedUpgradeMixin:GetUpgradedSprintAcceleration()
 
-	if self:GetHasFactionsClass() then
-		return self:GetBaseSprintAcceleration()
-	else
-		return Marine.kSprintAcceleration
-	end
+	return Marine.kSprintAcceleration
 	
 end
 
 function SpeedUpgradeMixin:GetUpgradedAcceleration()
 
-	if self:GetHasFactionsClass() then
-		return self:GetBaseAcceleration()	
-	else
-		return Marine.kAcceleration
-	end
+	return Marine.kAcceleration
 	
 end
 

@@ -15,6 +15,7 @@ class 'FactionsUpgrade'
 kFactionsUpgradeTypes = enum({'Ability', 'Attribute', 'Tech', 'Weapon'})
 kFactionsTriggerTypes = enum({'NoTrigger', 'ByTime', 'ByKey'})
 
+FactionsUpgrade.hideUpgrade = true								// Do not show in the menu
 FactionsUpgrade.upgradeType = kFactionsUpgradeTypes.Tech       	// the type of the upgrade
 FactionsUpgrade.triggerType = kFactionsTriggerTypes.NoTrigger  	// how the upgrade is gonna be triggered
 FactionsUpgrade.currentLevel = 0                               	// The default level of the upgrade. This is incremented when we buy the upgrade
@@ -94,7 +95,11 @@ function FactionsUpgrade:GetCost(level)
 end
 
 function FactionsUpgrade:GetUpgradeName()
-    return self.upgradeName
+	if self.upgradeName == "nil" then
+		return self:GetClassName()
+	else
+		return self.upgradeName
+	end
 end
 
 function FactionsUpgrade:GetUpgradeTitle()

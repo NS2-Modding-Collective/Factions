@@ -88,12 +88,3 @@ function GetTimeDigital(timeInSeconds)
 	return timeLeftText
 
 end
-
-// Used to merge all values from one table into another.
-function MergeToTable(originalTable, newValuesTable)
-
-	for index, value in ipairs(newValuesTable) do
-		table.insert(originalTable, value)
-	end
-
-end

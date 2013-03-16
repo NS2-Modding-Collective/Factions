@@ -19,6 +19,17 @@ Script.Load("lua/Factions/Factions_Utility.lua")
 Script.Load("lua/Factions/Factions_Upgrade.lua")
 Script.Load("lua/Factions/Factions_WeaponUpgrade.lua")
 
+// Used to merge all values from one table into another.
+local function RegisterNewUpgrades(newValuesTable)
+
+	for index, value in ipairs(newValuesTable) do
+		if value ~= "FactionsUpgrade" and value ~= "FactionsWeaponUpgrade" then
+			table.insert(kAllFactionsUpgrades, value)
+		end
+	end
+
+end
+
 // build the upgrade list
 local function BuildAllUpgrades()
 
@@ -34,8 +45,8 @@ local function BuildAllUpgrades()
         
         // save all upgrades in a table
         kAllFactionsUpgrades = {}
-		MergeToTable(kAllFactionsUpgrades, Script.GetDerivedClasses("FactionsUpgrade"))
-		MergeToTable(kAllFactionsUpgrades, Script.GetDerivedClasses("FactionsWeaponUpgrade"))
+		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsUpgrade"))
+		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsWeaponUpgrade"))
     end
     
 end

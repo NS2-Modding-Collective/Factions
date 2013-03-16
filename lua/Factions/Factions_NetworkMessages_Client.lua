@@ -27,21 +27,22 @@ function OnCommandClearUpgrades()
 
 end
 
-Client.HookNetworkMessage("UpdateUpgrade", OnCommandUpdateUpgrade)
-Client.HookNetworkMessage("ClearUpgrades", OnCommandClearUpgrades)
-
-// Do nothing when get the normal ns2 networkmessages, should save some performance
-Client.HookNetworkMessage("ClearTechTree", function() end)
-Client.HookNetworkMessage("TechNodeBase", function() end)
-Client.HookNetworkMessage("TechNodeUpdate", function() end)
-
-function OnCommandChangeFactionsClass(newClassMessage)
-
-    // The server will send us this message when we successfully change class.
-    player = Client.GetLocalPlayer()
-    player:ChangeFactionsClass(newClassMessage.newClass)
-
+if Client then
+	Client.HookNetworkMessage("UpdateUpgrade", OnCommandUpdateUpgrade)
+	Client.HookNetworkMessage("ClearUpgrades", OnCommandClearUpgrades)
+else
+	Predict.HookNetworkMessage("UpdateUpgrade", OnCommandUpdateUpgrade)
+	Predict.HookNetworkMessage("ClearUpgrades", OnCommandClearUpgrades)
 end
 
-Client.HookNetworkMessage("ChangeFactionsClass", OnCommandChangeFactionsClass)
-
+if Client then
+	// Do nothing when get the normal ns2 networkmessages, should save some performance
+	Client.HookNetworkMessage("ClearTechTree", function() end)
+	Client.HookNetworkMessage("TechNodeBase", function() end)
+	Client.HookNetworkMessage("TechNodeUpdate", function() end)
+else
+	// Do nothing when get the normal ns2 networkmessages, should save some performance
+	Predict.HookNetworkMessage("ClearTechTree", function() end)
+	Predict.HookNetworkMessage("TechNodeBase", function() end)
+	Predict.HookNetworkMessage("TechNodeUpdate", function() end)
+end

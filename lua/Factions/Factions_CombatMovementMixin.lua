@@ -698,8 +698,8 @@ function CombatMovementMixin:OnClampSpeed(input, velocity)
     end
     
 	// TODO: Fix the speed inheritance from class then reenable here.
-	local maxSpeed = 9999
-    //local maxSpeed = self:GetMaxSpeed()
+	//local maxSpeed = 9999
+    local maxSpeed = self:GetMaxSpeed()
     
     // Players moving backwards can't go full speed.
     if input.move.z < 0 then
