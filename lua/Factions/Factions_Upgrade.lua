@@ -15,19 +15,32 @@ class 'FactionsUpgrade'
 kFactionsUpgradeTypes = enum({'Ability', 'Attribute', 'Tech', 'Weapon'})
 kFactionsTriggerTypes = enum({'NoTrigger', 'ByTime', 'ByKey'})
 
+FactionsUpgrade.upgradeType = kFactionsUpgradeTypes.Tech       	// the type of the upgrade
+FactionsUpgrade.triggerType = kFactionsTriggerTypes.NoTrigger  	// how the upgrade is gonna be triggered
+FactionsUpgrade.currentLevel = 0                               	// The default level of the upgrade. This is incremented when we buy the upgrade
+FactionsUpgrade.levels = 1                                     	// if the upgrade has more than one lvl, like weapon or armor ups. Default is 1.
+FactionsUpgrade.cost = { 9999 }                                	// cost of each level of the upgrade in xp
+FactionsUpgrade.upgradeName = "nil"                         	// name of the upgrade as used in the console, e.g. smg
+FactionsUpgrade.upgradeTitle = "nil"                         	// Title of the upgrade, e.g. Submachine Gun
+FactionsUpgrade.upgradeDesc = "No discription"                 	// Description of the upgrade
+FactionsUpgrade.upgradeTechId = { kTechId.Move }             	// Table of the techIds of the upgrade
+FactionsUpgrade.hardCapScale = 0                               	// how many people of your team can max. take this upgrade, 1/5 for 1 upgrade per 5 player
+FactionsUpgrade.mutuallyExclusive = { }                        	// upgrades that can not bought when you got this (like no jp when have exo)
+FactionsUpgrade.permanent = true								// Controls whether you get the upgrade back when you respawn
+
 function FactionsUpgrade:Initialize()
-	self.upgradeType = kFactionsUpgradeTypes.Tech       // the type of the upgrade
-	self.triggerType = kFactionsTriggerTypes.NoTrigger  // how the upgrade is gonna be triggered
-	self.currentLevel = 0                               // The default level of the upgrade. This is incremented when we buy the upgrade
-	self.levels = 1                                     // if the upgrade has more than one lvl, like weapon or armor ups. Default is 1.
-	self.cost = { 9999 }                                // cost of each level of the upgrade in xp
-	self.upgradeName = "nil"                         	// name of the upgrade as used in the console, e.g. smg
-	self.upgradeTitle = "nil"                         	// Title of the upgrade, e.g. Submachine Gun
-	self.upgradeDesc = "No discription"                 // discription of the upgrade
-	self.upgradeTechId = { kTechId.Move }             	// Table of the techIds of the upgrade
-	self.hardCapScale = 0                               // how many people of your team can max. take this upgrade, 1/5 for 1 upgrade per 5 player
-	self.mutuallyExclusive = { }                        // upgrades that can not bought when you got this (like no jp when have exo)
-	self.permanent = true								// Controls whether you get the upgrade back when you respawn
+	self.upgradeType = FactionsUpgrade.upgradeType
+	self.triggerType = FactionsUpgrade.triggerType
+	self.currentLevel = FactionsUpgrade.currentLevel
+	self.levels = FactionsUpgrade.levels
+	self.cost = FactionsUpgrade.cost
+	self.upgradeName = FactionsUpgrade.upgradeName
+	self.upgradeTitle = FactionsUpgrade.upgradeTitle
+	self.upgradeDesc = FactionsUpgrade.upgradeDesc
+	self.upgradeTechId = FactionsUpgrade.upgradeTechId
+	self.hardCapScale = FactionsUpgrade.hardCapScale
+	self.mutuallyExclusive = FactionsUpgrade.mutuallyExclusive
+	self.permanent = FactionsUpgrade.permanent
 end
 
 function FactionsUpgrade:GetUpgradeType()

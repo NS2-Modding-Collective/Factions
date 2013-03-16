@@ -13,16 +13,19 @@
 							
 class 'FactionsClass'
 
-FactionsClass.type 			= "NoneSelected"				     								// the type of the FactionsClass
-FactionsClass.name 			= kFactionsClassStrings[kFactionsClassType.NoneSelected]     		// the friendly name of the FactionsClass
-FactionsClass.description 	= kFactionsClassStrings[kFactionsClassType.NoneSelected]     		// the description of the FactionsClass
-FactionsClass.baseHealth 	= kMarineHealth											     		// the base health value of this class
-FactionsClass.baseArmor 	= kMarineArmor											     		// the base armor value of this class
-FactionsClass.baseWalkSpeed = 5.0                												// the initial walk speed of this class
-FactionsClass.baseRunSpeed 	= 9.0                												// the initial run speed of this class
-FactionsClass.icon			= "ui/Factions/badges/badge_assault.dds"							// the badge for this class
-FactionsClass.picture		= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
-FactionsClass.techTree		= { }
+FactionsClass.type 						= "NoneSelected"				     								// the type of the FactionsClass
+FactionsClass.name 						= kFactionsClassStrings[kFactionsClassType.NoneSelected]     		// the friendly name of the FactionsClass
+FactionsClass.description 				= kFactionsClassStrings[kFactionsClassType.NoneSelected]     		// the description of the FactionsClass
+FactionsClass.baseHealth 				= kMarineHealth											     		// the base health value of this class
+FactionsClass.baseArmor 				= kMarineArmor											     		// the base armor value of this class
+FactionsClass.baseWalkSpeed 			= 5.0                												// the initial walk speed of this class
+FactionsClass.baseRunSpeed 				= 9.0                												// the initial run speed of this class
+FactionsClass.baseAcceleration			= 100																// the initial walk acceleration of this class
+FactionsClass.baseSprintAcceleration	= 170																// the initial sprint acceleration of this class
+FactionsClass.icon						= "ui/Factions/badges/badge_assault.dds"							// the badge for this class
+FactionsClass.picture					= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
+FactionsClass.initialUpgrades			= { }																// the upgrades that you start the game with
+FactionsClass.allowedUpgrades			= { }																// the upgrades that you are allowed to buy
 
 function FactionsClass:OnCreate()
 
@@ -92,6 +95,14 @@ function FactionsClass:GetId()
 	end
 	
 	return cachedId
+end
+
+function FactionsClass:IsUpgradeAllowed(upgradeId)
+	if self.allowedUpgrades[upgradeId] then
+		return true
+	else
+		return false
+	end
 end
 
 // called from the FactionsClassMixin when the FactionsClass is added to a player. Override if necessary.

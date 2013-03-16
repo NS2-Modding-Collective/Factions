@@ -34,7 +34,7 @@ local function BuildAllUpgrades()
         
         // save all upgrades in a table
         kAllFactionsUpgrades = {}
-		//MergeToTable(kAllFactionsUpgrades, Script.GetDerivedClasses("FactionsUpgrade"))
+		MergeToTable(kAllFactionsUpgrades, Script.GetDerivedClasses("FactionsUpgrade"))
 		MergeToTable(kAllFactionsUpgrades, Script.GetDerivedClasses("FactionsWeaponUpgrade"))
     end
     

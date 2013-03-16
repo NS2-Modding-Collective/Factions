@@ -105,8 +105,10 @@ end
 
 function FactionsClassMixin:CopyPlayerDataFrom(player)
 
-	self.factionsClassType = player.factionsClassType
-	self.factionsClass = self:GetClassByType(player.factionsClassType)
+	if player.factionsClassType then		
+		self.factionsClassType = player.factionsClassType
+		self.factionsClass = self:GetClassByType(player.factionsClassType)
+	end
 
 end
 
@@ -134,6 +136,7 @@ function FactionsClassMixin:GetHasFactionsClass()
 	if self:GetFactionsClassType() == kFactionsClassType.NoneSelected then
 		hasClass = false
 	end
+	
 	return hasClass
 	
 end
@@ -182,22 +185,42 @@ function FactionsClassMixin:ChangeFactionsClass(newClass)
 
 end
 
-function FactionsClassMixin:GetRunMaxSpeed()
+function FactionsClassMixin:GetBaseSprintAcceleration()
 
-	if self:GetFactionsClassType() == kFactionsClassType.NoneSelected then
-		return Marine.kRunMaxSpeed
+	if self:GetHasFactionsClass() then
+		return self.factionsClass.baseSprintAcceleration
 	else
-		return self.factionsClass.baseRunSpeed
+		return Marine.kSprintAcceleration
 	end
 
 end
 
-function FactionsClassMixin:GetWalkMaxSpeed()
+function FactionsClassMixin:GetBaseAcceleration()
 
-	if self:GetFactionsClassType() == kFactionsClassType.NoneSelected then
-		return Marine.kWalkMaxSpeed
+	if self:GetHasFactionsClass() then
+		return self.factionsClass.baseAcceleration
 	else
-		return self.factionsClass.baseWalkSpeed
+		return Marine.kAcceleration
+	end
+
+end
+
+function FactionsClassMixin:GetBaseMaxSprintSpeed()
+
+	if self:GetHasFactionsClass() then
+		return self.factionsClass.baseRunSpeed
+	else
+		return Marine.kRunMaxSpeed
+	end
+
+end
+
+function FactionsClassMixin:GetBaseMaxSpeed()
+
+	if self:GetHasFactionsClass() then
+		return self.factionsClass.baseWalkSpeed	
+	else
+		return Marine.kWalkMaxSpeed
 	end
 
 end

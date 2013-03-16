@@ -26,8 +26,10 @@ CombatMovementMixin.expectedCallbacks =
 	GetAngleSmoothRate = "The smooth rate for the angle changes as the player moves from wall to wall",
 	GetRollSmoothRate = "The smooth rate for the angle changes as the player moves from wall to wall",
 	GetPitchSmoothRate = "The smooth rate for the angle changes as the player moves from wall to wall",
-	GetRunMaxSpeed = "The speed that the player runs",
-	GetWalkMaxSpeed = "The speed that the player walks",
+	GetUpgradedMaxSprintSpeed = "The speed that the player runs",
+	GetUpgradedSprintAcceleration = "The speed that the player runs",
+	GetUpgradedMaxSpeed = "The speed that the player walks",
+	GetUpgradedAcceleration = "The speed that the player walks",
 	
 	GetAirFrictionForce = "The force of Air Friction for this entity",
 }
@@ -86,6 +88,7 @@ CombatMovementMixin.networkVars =
 // These should completely override any existing function defined in the class.
 CombatMovementMixin.overrideFunctions =
 {
+	"GetAcceleration",
 	"GetAirMoveScalar",
 	"GetIsJumping",
 	"GetMoveSpeedIs2D",
@@ -136,6 +139,28 @@ function CombatMovementMixin:__initmixin()
     
     self.timeLastWallJump = 0
 	
+end
+
+function CombatMovementMixin:GetAcceleration()
+
+    local acceleration = self:GetUpgradedAcceleration()
+    
+    if self:GetIsSprinting() then
+        acceleration = self:GetUpgradedAcceleration() + (self:GetUpgradedSprintAcceleration() - self:GetUpgradedAcceleration()) * self:GetSprintingScalar()
+    end
+
+    // Disable slow speed.... 
+	//acceleration = acceleration * self:GetSlowSpeedModifier()
+    acceleration = acceleration * self:GetInventorySpeedScalar()
+
+    /*
+    if self.timeLastSpitHit + Marine.kSpitSlowDuration > Shared.GetTime() then
+        acceleration = acceleration * 0.5
+    end
+    */
+
+    return acceleration * self:GetCatalystMoveSpeedModifier()
+
 end
 
 function CombatMovementMixin:GetAirMoveScalar()
@@ -337,8 +362,8 @@ end
 
 function CombatMovementMixin:GetMaxSpeed(possible)
 
-	local maxRunSpeed = self:GetRunMaxSpeed()
-	local maxWalkSpeed = self:GetWalkMaxSpeed()
+	local maxRunSpeed = self:GetUpgradedMaxSprintSpeed()
+	local maxWalkSpeed = self:GetUpgradedMaxSpeed()
 	if possible then
 		return maxRunSpeed
 	end
@@ -511,7 +536,7 @@ end
 
 function CombatMovementMixin:GetGravityAllowed()
 
-	return not self:GetIsWallWalking()
+	return not self:GetIsOnLadder() and not self:GetIsOnGround() and not self:GetIsWallWalking()
 	
 end
 
