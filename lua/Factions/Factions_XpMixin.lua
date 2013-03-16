@@ -80,6 +80,7 @@ XpMixin.overrideFunctions =
 	"SetResources",
 	"GetResources",
 	"GetPersonalResources",
+	"GetDisplayResources",
 }
 
 XpMixin.networkVars =
@@ -113,8 +114,13 @@ function XpMixin:GetResources()
 end
 
 function XpMixin:GetPersonalResources()
-	return Player.GetResources(self) * 10
+	return Player.GetPersonalResources(self) * 10
 end
+
+function XpMixin:GetDisplayResources()
+	return Player.GetDisplayResources(self) * 10
+end
+
 
 // also adds res when score will be added so you can use them to buy something
 function XpMixin:AddScore(points, res)
@@ -129,8 +135,6 @@ end
 
 // gives res back when rejoining
 function XpMixin:Reset()     
-    self:AddResources(self.score)
-    self:SetScoreboardChanged(true)
 end
 
 function XpMixin:CheckLvlUp()    

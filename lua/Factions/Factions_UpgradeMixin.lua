@@ -98,7 +98,7 @@ function UpgradeMixin:GetCanBuyUpgrade(upgradeId)
 	local upgrade = self:GetUpgradeById(upgradeId)
     if not hasUpgrade or (hasUpgrade and not upgrade:GetIsAtMaxLevel()) then
         // upgrade is ok, enough res?
-        if self:GetResources() - upgrade:GetCostForNextLevel() > 0 then
+        if self:GetResources() - upgrade:GetCostForNextLevel() >= 0 then
             return true
         end
     end      
