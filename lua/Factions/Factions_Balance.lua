@@ -27,7 +27,7 @@ kSpawnProtectTime = 2
 kNanoShieldDamageReductionDamage = 0.1
 
 // MARINE DAMAGE VALUES
-kRifleDamage = 19
+kRifleDamage = 20
 kRifleDamageType = kDamageType.Normal
 SetCachedTechData(kTechId.Rifle, kTechDataDamageType, kRifleDamageType)
 kRifleClipSize = 30
