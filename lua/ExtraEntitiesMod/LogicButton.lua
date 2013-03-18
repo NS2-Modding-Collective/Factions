@@ -41,15 +41,23 @@ end
 function LogicButton:OnInitialized()
     ScriptActor.OnInitialized(self)
     InitMixin(self, ScaledModelMixin)
+	self:SetScaledModel(self.model)
 
     if Server then
         InitMixin(self, LogicMixin)
+        self.triggered = false
+        self.triggerPlayerList = {}
+        self.timeLastTriggered = 0
+        self.coolDownTime = self.coolDownTime or 0
         self:SetUpdates(true)
     end
 
 end
 
 function LogicButton:Reset()
+    self.triggered = false
+    self.triggerPlayerList = {}
+    self.timeLastTriggered = 0
 end
 
 
@@ -74,15 +82,52 @@ end
 function LogicButton:OnUse(player, elapsedTime, useAttachPoint, usePoint, useSuccessTable)
 
     if Server then   
-        if self.enabled then
-            self:TriggerOutputs()
+        local timeOk = ((Shared.GetTime() + self.coolDownTime) >= self.timeLastTriggered)
+        
+        if self.enabled and timeOk then
+        
+            local teamNumber = player:GetTeamNumber()
+            local teamOk = false
+            if self.teamNumber == 0 or self.teamNumber == nil then
+                teamOk = true
+            elseif self.teamNumber == 1 then
+                if teamNumber == 1 then
+                    teamOk = true
+                end
+            elseif self.teamNumber == 2 then
+            if teamNumber == 2 then
+                    teamOk = true
+                end
+            end
+            
+            if teamOk then        
+                local typeOk = false                
+                if self.teamType == 0 or self.teamType == nil then           // triggers all the time
+                    typeOk = true                
+                elseif self.teamType == 1 then              // trigger once per player
+                    local playerId = player:GetId()
+                    if not table.contains(self.triggerPlayerList, playerId) then
+                        typeOk = true
+                        table.insert(self.triggerPlayerList, playerId)                
+                    end
+                elseif self.teamType == 2 then              // trigger only once 
+                    typeOk = not self.triggered
+                    self.triggered = true
+                end
+                
+                if typeOk then
+                    self:TriggerOutputs(player)
+                    self.timeLastTriggered = Shared.GetTime()
+                end
+            end
         end
+        
     elseif Client then
     end
     
 end
 
-function LogicButton:OnLogicTrigger()
+function LogicButton:OnLogicTrigger(player)
     if self.enabled then
         self.enabled = false 
     else
