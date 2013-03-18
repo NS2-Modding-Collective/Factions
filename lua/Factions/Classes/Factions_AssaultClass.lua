@@ -16,9 +16,9 @@ class 'AssaultClass' (FactionsClass)
 AssaultClass.type 					= "Assault"						     								// the type of the FactionsClass
 AssaultClass.name 					= "Assault"     													// the friendly name of the FactionsClass
 AssaultClass.description 			= "A regular dude"										     		// the description of the FactionsClass
-AssaultClass.baseHealth 			= kMarineHealth											     		// the base health value of this class
-AssaultClass.baseArmor 				= kMarineArmor											     		// the base armor value of this class
-AssaultClass.baseWalkSpeed 			= 6.0                												// the initial walk speed of this class
+AssaultClass.baseHealth 			= kMarineHealth	+ 10										     	// the base health value of this class
+AssaultClass.baseArmor 				= kMarineArmor + 10										     		// the base armor value of this class
+AssaultClass.baseWalkSpeed 			= 5.5                												// the initial walk speed of this class
 AssaultClass.baseRunSpeed 			= 9.0                												// the initial run speed of this class
 AssaultClass.baseAcceleration		= 100																// the initial walk acceleration of this class
 AssaultClass.baseSprintAcceleration = 170																// the initial sprint acceleration of this class
