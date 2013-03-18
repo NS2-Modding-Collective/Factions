@@ -15,21 +15,26 @@ class 'FactionsUpgrade'
 kFactionsUpgradeTypes = enum({'Ability', 'Attribute', 'Tech', 'Weapon'})
 kFactionsTriggerTypes = enum({'NoTrigger', 'ByTime', 'ByKey'})
 
-FactionsUpgrade.hideUpgrade = true								// Do not show in the menu
-FactionsUpgrade.upgradeType = kFactionsUpgradeTypes.Tech       	// the type of the upgrade
-FactionsUpgrade.triggerType = kFactionsTriggerTypes.NoTrigger  	// how the upgrade is gonna be triggered
+FactionsUpgrade.hideUpgrade = true								// Do not show in the menu at all!
+FactionsUpgrade.upgradeType = kFactionsUpgradeTypes.Tech       	// The type of the upgrade
+FactionsUpgrade.triggerType = kFactionsTriggerTypes.NoTrigger  	// How the upgrade is gonna be triggered
 FactionsUpgrade.currentLevel = 0                               	// The default level of the upgrade. This is incremented when we buy the upgrade
-FactionsUpgrade.levels = 1                                     	// if the upgrade has more than one lvl, like weapon or armor ups. Default is 1.
-FactionsUpgrade.cost = { 9999 }                                	// cost of each level of the upgrade in xp
-FactionsUpgrade.upgradeName = "nil"                         	// name of the upgrade as used in the console, e.g. smg
+FactionsUpgrade.levels = 1                                     	// If the upgrade has more than one lvl, like weapon or armor ups. Default is 1.
+FactionsUpgrade.cost = { 9999 }                                	// Cost of each level of the upgrade in xp
+FactionsUpgrade.upgradeName = "nil"                         	// Name of the upgrade as used in the console, e.g. smg
 FactionsUpgrade.upgradeTitle = "nil"                         	// Title of the upgrade, e.g. Submachine Gun
 FactionsUpgrade.upgradeDesc = "No discription"                 	// Description of the upgrade
 FactionsUpgrade.upgradeTechId = { kTechId.Move }             	// Table of the techIds of the upgrade
-FactionsUpgrade.hardCapScale = 0                               	// how many people of your team can max. take this upgrade, 1/5 for 1 upgrade per 5 player
-FactionsUpgrade.mutuallyExclusive = { }                        	// upgrades that can not bought when you got this (like no jp when have exo)
+FactionsUpgrade.hardCapScale = 0                               	// How many people of your team can max. take this upgrade, 1/5 for 1 upgrade per 5 player
+FactionsUpgrade.mutuallyExclusive = { }                        	// Upgrades that can not bought when you got this (like no jp when have exo)
+FactionsUpgrade.requirements = { }                        		// Upgrades you must get before you can get this one.
 FactionsUpgrade.permanent = true								// Controls whether you get the upgrade back when you respawn
 
 function FactionsUpgrade:Initialize()
+	// This is a base class so never show it in the menu.
+	if (self:GetClassName() == "FactionsUpgrade") then
+		self.hideUpgrade = FactionsUpgrade.hideUpgrade
+	end
 	self.upgradeType = FactionsUpgrade.upgradeType
 	self.triggerType = FactionsUpgrade.triggerType
 	self.currentLevel = FactionsUpgrade.currentLevel

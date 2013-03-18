@@ -7,9 +7,9 @@
 //  Licensed under LGPL v3.0
 //________________________________
 
-// Factions_Upgrade.lua
+// Factions_WeaponUpgrade.lua
 
-// Base class for all upgrades
+// Base class for all weapons and their upgrades
 
 Script.Load("lua/Factions/Factions_Upgrade.lua")
 							
@@ -26,6 +26,10 @@ function FactionsWeaponUpgrade:Initialize()
 
 	FactionsUpgrade.Initialize(self)
 
+	// This is a base class so never show it in the menu.
+	if (self:GetClassName() == "FactionsWeaponUpgrade") then
+		self.hideUpgrade = FactionsWeaponUpgrade.hideUpgrade
+	end
 	self.upgradeType = FactionsWeaponUpgrade.upgradeType
 	self.triggerType = FactionsWeaponUpgrade.triggerType
 	self.levels = FactionsWeaponUpgrade.levels

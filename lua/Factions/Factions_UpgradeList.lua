@@ -17,6 +17,7 @@ Script.Load("lua/Factions/Factions_Utility.lua")
 
 // Load the upgrade base classes
 Script.Load("lua/Factions/Factions_Upgrade.lua")
+Script.Load("lua/Factions/Factions_UnlockUpgrade.lua")
 Script.Load("lua/Factions/Factions_WeaponUpgrade.lua")
 
 // Used to merge all values from one table into another.
