@@ -121,6 +121,7 @@ CombatMovementMixin.overrideFunctions =
 	"GetPlayJumpSound",
 	"HandleJump",
 	"OnClampSpeed",
+	"ComputeForwardVelocity",
 	
 }
 
@@ -380,6 +381,11 @@ function CombatMovementMixin:GetMaxSpeed(possible)
 	// Take into account crouching
 	if not self:GetIsJumping() then
 		maxSpeed = ( 1 - self:GetCrouchAmount() * self:GetCrouchSpeedScalar() ) * maxSpeed
+	end
+	
+	// Take into account crouching
+	if self:GetIsWallWalking() then
+		maxSpeed = ( 1 - self:GetWallWalkSpeedScalar() ) * maxSpeed
 	end
 
 	local adjustedMaxSpeed = maxSpeed * self:GetCatalystMoveSpeedModifier() * inventorySpeedScalar 
@@ -717,4 +723,53 @@ function CombatMovementMixin:OnClampSpeed(input, velocity)
         
     end
     
+end
+
+// MoveMixin callbacks.
+// Compute the desired velocity based on the input. Make sure that going off at 45 degree angles
+// doesn't make us faster.
+function CombatMovementMixin:ComputeForwardVelocity(input)
+
+    local forwardVelocity = Vector(0, 0, 0)
+    
+    local move = GetNormalizedVector(input.move)
+    local angles = self:ConvertToViewAngles(input.pitch, input.yaw, 0)
+    local viewCoords = angles:GetCoords()
+    
+    local accel = ConditionalValue(self:GetIsOnLadder(), Marine.kLadderAcceleration, self:GetAcceleration())
+    
+    local moveVelocity = viewCoords:TransformVector(move) * accel
+    if input.move.z < 0 and self:GetVelocity():GetLength() > self:GetMaxSpeed() * 0.4 then
+        moveVelocity = moveVelocity * self:GetMaxBackwardSpeedScalar()
+    end
+
+    self:ConstrainMoveVelocity(moveVelocity)
+    
+    // The active weapon can also constain the move velocity.
+    local activeWeapon = self:GetActiveWeapon()
+    if activeWeapon ~= nil then
+        activeWeapon:ConstrainMoveVelocity(moveVelocity)
+    end
+    
+    // Make sure that moving forward while looking down doesn't slow 
+    // us down (get forward velocity, not view velocity)
+    local moveVelocityLength = moveVelocity:GetLength()
+    
+    if moveVelocityLength > 0 then
+
+        local moveDirection = self:GetMoveDirection(moveVelocity)
+        
+        // Trying to move straight down
+        if not ValidateValue(moveDirection) then
+            moveDirection = Vector(0, -1, 0)
+        end
+        
+        forwardVelocity = moveDirection * moveVelocityLength
+        
+    end
+    
+    local pushVelocity = Vector( self.pushImpulse * ( 1 - Clamp( (Shared.GetTime() - self.pushTime) / Player.kPushDuration, 0, 1) ) )
+    
+    return forwardVelocity + pushVelocity * (self:GetGroundFrictionForce()/7)
+
 end
