@@ -40,7 +40,7 @@ Marine.kRunMaxSpeed = 9.0               // 10 miles an hour = 16,093 meters/hour
 Marine.kRunInfestationMaxSpeed = Marine.kRunMaxSpeed - 0.5
 Marine.kWalkBackwardSpeedScalar = 0.75
 
-Marine.kJumpHeight = 2.5
+Marine.kJumpHeight = 2.3
 
 // Wall walking logic.
 Marine.kJumpRepeatTime = 0.1
@@ -162,7 +162,8 @@ function Marine:GetAirFrictionForce()
 end 
 
 function Marine:GetJumpHeight()
-    return Marine.kJumpHeight - Marine.kJumpHeight * self.slowAmount * 0.8
+    //return Marine.kJumpHeight - Marine.kJumpHeight * self.slowAmount * 0.8
+	return Marine.kJumpHeight
 end
 
 if Client then
