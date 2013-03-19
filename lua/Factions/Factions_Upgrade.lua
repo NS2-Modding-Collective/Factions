@@ -90,12 +90,16 @@ function FactionsUpgrade:GetCostForNextLevel()
 	if self:GetIsAtMaxLevel() then
 		return 9999
 	else
-		return self:GetCost(self:GetCurrentLevel() + 1)
+		return self:GetCost(self:GetNextLevel())
 	end
 end
 
 function FactionsUpgrade:GetCost(level)
-    return self.cost[level]
+	if level > self:GetMaxLevels() then
+		return 9999
+	else
+		return self.cost[level]
+	end
 end
 
 function FactionsUpgrade:GetUpgradeName()

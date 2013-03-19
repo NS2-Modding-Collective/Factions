@@ -132,8 +132,8 @@ Factions_GUIMarineBuyMenu.kResourceDisplayHeight = GUIScale(64)
 Factions_GUIMarineBuyMenu.kResourceIconWidth = GUIScale(32)
 Factions_GUIMarineBuyMenu.kResourceIconHeight = GUIScale(32)
 
-Factions_GUIMarineBuyMenu.kHardCapOffsetX = GUIScale(5)
-Factions_GUIMarineBuyMenu.kHardCapOffsetY = GUIScale(13)
+Factions_GUIMarineBuyMenu.kLevelOffsetX = GUIScale(5)
+Factions_GUIMarineBuyMenu.kLevelOffsetY = GUIScale(13)
 
 Factions_GUIMarineBuyMenu.kMouseOverInfoTextSize = GUIScale(20)
 Factions_GUIMarineBuyMenu.kMouseOverInfoOffset = Vector(GUIScale(-30), GUIScale(-20), 0)
@@ -323,7 +323,7 @@ function Factions_GUIMarineBuyMenu:_InitializeEquipped()
     
 end
 
-local function GetHardCapText(upgrade)
+local function GetLevelText(upgrade)
 	if upgrade:GetMaxLevels() > 1 then
 		return upgrade:GetCurrentLevel() .. " / " .. upgrade:GetMaxLevels()
 	else
@@ -442,12 +442,25 @@ function Factions_GUIMarineBuyMenu:_InitializeItemButtons()
 						itemCost:SetColor(Factions_GUIMarineBuyMenu.kTextColor)
 						itemCost:SetText(ToString(upgrade:GetCostForNextLevel()))
 						
+				
+						local level = GUIManager:CreateTextItem()
+						level:SetFontName(Factions_GUIMarineBuyMenu.kFont)
+						level:SetFontIsBold(true)
+						level:SetAnchor(GUIItem.Left, GUIItem.Top)
+						level:SetPosition(Vector(Factions_GUIMarineBuyMenu.kSmallIconSize.x - Factions_GUIMarineBuyMenu.kLevelOffsetX, Factions_GUIMarineBuyMenu.kLevelOffsetY, 0))
+						level:SetTextAlignmentX(GUIItem.Align_Max)
+						level:SetTextAlignmentY(GUIItem.Align_Center)
+						level:SetScale(fontScaleVector)
+						level:SetColor(Factions_GUIMarineBuyMenu.kTextColor)
+						level:SetText(GetLevelText(upgrade))
+						graphicItem:AddChild(level)
+						
 						costIcon:AddChild(itemCost)  
 						
 						graphicItem:AddChild(costIcon)   
 						
 						self.menu:AddChild(graphicItem)
-						table.insert(self.itemButtons, { Button = graphicItem, Highlight = graphicItemActive, TechId = itemTechId, Cost = itemCost, ResourceIcon = costIcon, Arrow = selectedArrow, HardCapCount = hardCapCount, Upgrade = upgrade} )
+						table.insert(self.itemButtons, { Button = graphicItem, Highlight = graphicItemActive, TechId = itemTechId, Cost = itemCost, ResourceIcon = costIcon, Arrow = selectedArrow, Level = level, Upgrade = upgrade} )
 						  
 						itemNr = itemNr +1
 					end
@@ -540,9 +553,7 @@ function Factions_GUIMarineBuyMenu:_UpdateItemButtons(deltaTime)
             item.Cost:SetColor(useColor)
             item.ResourceIcon:SetColor(useColor)
             item.Arrow:SetIsVisible(self.selectedItem == item.TechId)
-			if (item.HardCapCount) then
-				item.HardCapCount:SetText(GetHardCapText(item.Upgrade))
-			end
+			item.Level:SetText(GetLevelText(item.Upgrade))
             
         end
     end
