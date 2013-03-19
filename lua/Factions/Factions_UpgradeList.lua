@@ -122,14 +122,6 @@ function UpgradeList:GetUpgradeLevel(upgradeId)
 	end
 end
 
-function UpgradeList:ResetNonPermanentUpgrades()
-	for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
-		if not upgrade:GetIsPermanent() then
-			upgrade:ResetLevel()
-		end
-	end
-end
-
 function UpgradeList:GetActiveUpgrades()
 	local activeUpgrades = {}
 	for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do

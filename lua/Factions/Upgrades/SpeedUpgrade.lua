@@ -10,7 +10,7 @@
 class 'SpeedUpgrade' (FactionsUpgrade)
 
 // Define these statically so we can easily access them without instantiating too.
-SpeedUpgrade.cost = { 50, 100, 150 }                              					// Cost of the upgrade in xp
+SpeedUpgrade.cost = { 100, 200, 400 }                              					// Cost of the upgrade in xp
 SpeedUpgrade.levels = 3																// How many levels are there to this upgrade
 SpeedUpgrade.upgradeName = "speed"                     								// Text code of the upgrade if using it via console
 SpeedUpgrade.upgradeTitle = "Speed Upgrade"               							// Title of the upgrade, e.g. Submachine Gun
@@ -35,7 +35,9 @@ function SpeedUpgrade:GetClassName()
 end
 
 function SpeedUpgrade:OnAdd(player)
-	if player:HasMixin("SpeedUpgrade") then
+	if HasMixin(player, "SpeedUpgrade") then
 		player.upgradeSpeedLevel = self:GetCurrentLevel()
+		player:SendDirectMessage("Speed Upgraded to level " .. self:GetCurrentLevel() .. ".")
+		player:SendDirectMessage("You will move " .. self:GetCurrentLevel()*SpeedUpgrade.speedBoostPerLevel*100 .. "% faster")
 	end
 end

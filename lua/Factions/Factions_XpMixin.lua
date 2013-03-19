@@ -31,16 +31,19 @@ kPhaseGatePointValue = kPhaseGateCost * buildingXpFactor
 kSentryPointValue = kSentryCost * buildingXpFactor
 kPowerPointPointValue = 0
 
-kMinePointValue =  kMineCost * buildingXpFactor
+kMinePointValue = kMineCost * buildingXpFactor
 
 // default start xp
 kPlayerInitialIndivRes = 0
 // default start lvl
 kStartLevel = 1
+kStartXPAvailable = 0
 
 // Max xp you can get
-kMaxPersonalResources = 9999
-kMaxResources = 9999
+kMaxXP = 25000
+kMaxScore = kMaxXP
+kMaxPersonalResources = kMaxXP
+kMaxResources = kMaxXP
 
 // How much lvl you will lose when you rejoin the same team
 kPenaltyLevel = 1
@@ -86,22 +89,33 @@ XpMixin.overrideFunctions =
 XpMixin.networkVars =
 {
     level = "integer (0 to 99)",
+	permanentXpAvailable = "integer (0 to " .. kMaxXP .. ")",
     // score was no networkvar so add it that we can refer on it as client
     score = "integer (0 to " .. kMaxScore .. ")",
 }
 
 function XpMixin:__initmixin()
     self.level = kStartLevel
+	self.permanentXpAvailable = kStartXPAvailable
+end
+
+function XpMixin:CopyPlayerDataFrom(player)
+
+	if player.level then		
+		self.level = player.level
+		self.permanentXpAvailable = player.permanentXpAvailable
+	end
+
 end
 
 // Resources are divided by 10 as we are limited to 999 max.
 function XpMixin:SetResources(amount)
 
-    local oldVisibleResources = math.floor(self.resources * 10)
+    local oldVisibleResources = math.floor(self.permanentXpAvailable)
+
+    self.permanentXpAvailable = Clamp(amount, 0, kMaxPersonalResources)
     
-    self.resources = Clamp(amount/10, 0, kMaxPersonalResources)
-    
-    local newVisibleResources = math.floor(self.resources * 10)
+    local newVisibleResources = math.floor(self.permanentXpAvailable)
     
     if oldVisibleResources ~= newVisibleResources then
         self:SetScoreboardChanged(true)
@@ -110,17 +124,16 @@ function XpMixin:SetResources(amount)
 end
 
 function XpMixin:GetResources()
-	return Player.GetResources(self) * 10
+	return self.permanentXpAvailable
 end
 
 function XpMixin:GetPersonalResources()
-	return Player.GetPersonalResources(self) * 10
+	return self.permanentXpAvailable
 end
 
 function XpMixin:GetDisplayResources()
-	return Player.GetDisplayResources(self) * 10
+	return self.permanentXpAvailable
 end
-
 
 // also adds res when score will be added so you can use them to buy something
 function XpMixin:AddScore(points, res)
@@ -134,7 +147,7 @@ function XpMixin:AddScore(points, res)
 end
 
 // gives res back when rejoining
-function XpMixin:Reset()     
+function XpMixin:Reset()
 end
 
 function XpMixin:CheckLvlUp()    

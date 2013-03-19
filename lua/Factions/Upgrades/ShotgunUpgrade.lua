@@ -18,7 +18,7 @@ ShotgunUpgrade.upgradeDesc 		= "Does high damage at close range, contains 5 shel
 ShotgunUpgrade.upgradeTechId 	= { kTechId.Shotgun } 		    							// TechId of the upgrade, default is kTechId.Move cause its the first entry
 ShotgunUpgrade.primaryWeapon 	= true														// Is this a primary weapon?
 
-function MinesUpgrade:Initialize()
+function ShotgunUpgrade:Initialize()
 
 	FactionsWeaponUpgrade.Initialize(self)
 	

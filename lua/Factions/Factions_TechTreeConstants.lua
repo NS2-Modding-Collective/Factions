@@ -27,3 +27,6 @@ local function addTechId(techIdName)
 end
 
 addTechId("LightMachineGun")
+addTechId("Speed1")
+addTechId("Speed2")
+addTechId("Speed3")

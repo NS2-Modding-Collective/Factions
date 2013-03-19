@@ -47,15 +47,20 @@ end
 function UpgradeMixin:CopyPlayerDataFrom(player)
     if player.UpgradeList then 
 		self.UpgradeList = player.UpgradeList
-		self.UpgradeList:ResetNonPermanentUpgrades()
 	end
     
 	// give upgrades back when the player respawns
     if self:GetIsAlive() and self:GetTeamNumber() ~= kNeutralTeamType then
-        for i, entry in ipairs(self.UpgradeList:GetActiveUpgrades()) do
-            upgrade:OnAdd(self)
-        end
+		self:GiveBackPermanentUpgrades()
     end
+end
+
+function UpgradeMixin:GiveBackPermanentUpgrades()
+	for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
+		if upgrade:GetCurrentLevel() > 0 and upgrade:GetIsPermanent() then
+			upgrade:OnAdd(self)
+		end
+	end
 end
 
 function UpgradeMixin:GetIsAllowedToBuy(upgradeId)
@@ -73,17 +78,16 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
     if Server then
         local upgradeOk = self:GetIsAllowedToBuy(upgradeId)
 		
-        if upgradeOk then        
+        if upgradeOk then     
+			if upgrade:GetIsPermanent() then
+				upgrade:AddLevel()
+			end		
 			local success = upgrade:OnAdd(self)
 			
 			if success and not freeUpgrade then
 				self:AddResources(-upgrade:GetCostForNextLevel())
 				Server.SendNetworkMessage(self, "UpdateUpgrade",  BuildUpdateUpgradeMessage(upgradeId, level), true)
             end
-			
-			if upgrade:GetIsPermanent() then
-				upgrade:AddLevel()
-			end
         else
             self:SendDirectMessage("Upgrade not available")
         end

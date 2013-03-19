@@ -42,5 +42,5 @@ end
 
 // TODO: Show something to the player?
 function FactionsUnlockUpgrade:OnAdd(player)
-
+	
 end
