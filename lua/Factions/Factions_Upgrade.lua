@@ -15,7 +15,6 @@ class 'FactionsUpgrade'
 kFactionsUpgradeTypes = enum({'Ability', 'Attribute', 'Tech', 'Weapon'})
 kFactionsTriggerTypes = enum({'NoTrigger', 'ByTime', 'ByKey'})
 
-FactionsUpgrade.hideUpgrade = true								// Do not show in the menu at all!
 FactionsUpgrade.upgradeType = kFactionsUpgradeTypes.Tech       	// The type of the upgrade
 FactionsUpgrade.triggerType = kFactionsTriggerTypes.NoTrigger  	// How the upgrade is gonna be triggered
 FactionsUpgrade.currentLevel = 0                               	// The default level of the upgrade. This is incremented when we buy the upgrade
@@ -33,7 +32,7 @@ FactionsUpgrade.permanent = true								// Controls whether you get the upgrade 
 function FactionsUpgrade:Initialize()
 	// This is a base class so never show it in the menu.
 	if (self:GetClassName() == "FactionsUpgrade") then
-		self.hideUpgrade = FactionsUpgrade.hideUpgrade
+		self.hideUpgrade = true
 	end
 	self.upgradeType = FactionsUpgrade.upgradeType
 	self.triggerType = FactionsUpgrade.triggerType

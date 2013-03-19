@@ -15,7 +15,6 @@ Script.Load("lua/Factions/Factions_Upgrade.lua")
 							
 class 'FactionsWeaponUpgrade' (FactionsUpgrade)
 
-FactionsWeaponUpgrade.hideUpgrade	= true									// Do not show in the buy menu
 FactionsWeaponUpgrade.upgradeType 	= kFactionsUpgradeTypes.Weapon        	// the type of the upgrade
 FactionsWeaponUpgrade.triggerType 	= kFactionsTriggerTypes.NoTrigger   	// how the upgrade is gonna be triggered
 FactionsWeaponUpgrade.levels 		= 1                                    	// if the upgrade has more than one lvl, like weapon or armor ups. Default is 1.
@@ -28,7 +27,7 @@ function FactionsWeaponUpgrade:Initialize()
 
 	// This is a base class so never show it in the menu.
 	if (self:GetClassName() == "FactionsWeaponUpgrade") then
-		self.hideUpgrade = FactionsWeaponUpgrade.hideUpgrade
+		self.hideUpgrade = true
 	end
 	self.upgradeType = FactionsWeaponUpgrade.upgradeType
 	self.triggerType = FactionsWeaponUpgrade.triggerType
