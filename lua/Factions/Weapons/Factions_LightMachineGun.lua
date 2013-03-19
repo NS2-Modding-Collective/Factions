@@ -37,7 +37,7 @@ LightMachineGun.kIronSightActivateTime = 0.1
 
 local kRange = 250
 // 4 degrees in NS1
-local kSpread = ClipWeapon.kCone3Degrees
+local kSpread = ClipWeapon.kCone5Degrees
 
 local kButtRange = 1.1
 
