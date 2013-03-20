@@ -1,13 +1,8 @@
 <options>
-<<<<<<< Updated upstream
     <description>Project Titan Movement Test</description>
     <id>132533274</id>
-=======
-    <description>valid description</description>
-    <id>132015870</id>
->>>>>>> Stashed changes
     <kind>Game</kind>
     <build></build>
     <visibility>Public</visibility>
-    <title>Another Marine Skin</title>
+    <title>Project Titan Movement Test</title>
 </options>
