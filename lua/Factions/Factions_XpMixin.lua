@@ -81,6 +81,7 @@ XpMixin.expectedCallbacks =
 XpMixin.overrideFunctions =
 {
 	"SetResources",
+	"AddResources",
 	"GetResources",
 	"GetPersonalResources",
 	"GetDisplayResources",
@@ -120,6 +121,20 @@ function XpMixin:SetResources(amount)
     if oldVisibleResources ~= newVisibleResources then
         self:SetScoreboardChanged(true)
     end
+    
+end
+
+function XpMixin:AddResources(amount)
+
+    local resReward = math.min(amount, kMaxPersonalResources - self:GetResources())
+    local oldRes = self:GetResources()
+    self:SetResources(self:GetResources() + resReward)
+    
+    if oldRes ~= self:GetResources() then
+        self:SetScoreboardChanged(true)
+    end
+    
+    return resReward
     
 end
 
