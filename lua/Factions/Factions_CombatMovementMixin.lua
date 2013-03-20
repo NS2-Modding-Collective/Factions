@@ -18,7 +18,8 @@ CombatMovementMixin.expectedMixins =
 {
 	 WallMovement = "Needed for processing the wall walking.",
 	 FactionsClass = "Needed for changing the movement speed depending on class.",
-	 MagnoBootsWearer = "Needed for detecting whether the player has Magno Boots"
+	 MagnoBootsWearer = "Needed for detecting whether the player has Magno Boots",
+	 SpeedUpgrade = "Needed to calculate the upgraded speed based on player upgrades",
 }
 
 CombatMovementMixin.expectedCallbacks =

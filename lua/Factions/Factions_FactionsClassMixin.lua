@@ -231,3 +231,23 @@ function FactionsClassMixin:GetBaseMaxSpeed()
 	end
 
 end
+
+function FactionsClassMixin:GetBaseHealth()
+
+	if self:GetHasFactionsClass() then
+		return self.factionsClass:GetBaseHealth()
+	else
+		return Marine.kHealth
+	end
+
+end
+
+function FactionsClassMixin:GetBaseArmor()
+
+	if self:GetHasFactionsClass() then
+		return self.factionsClass:GetBaseArmor()
+	else
+		return Marine.kBaseArmor
+	end
+
+end

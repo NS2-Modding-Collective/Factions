@@ -20,8 +20,6 @@ SupportClass.baseHealth 			= kMarineHealth											     		// the base health v
 SupportClass.baseArmor 				= kMarineArmor											     		// the base armor value of this class
 SupportClass.baseWalkSpeed 			= 6.0                												// the initial walk speed of this class
 SupportClass.baseRunSpeed 			= 9.0                												// the initial run speed of this class
-SupportClass.baseAcceleration		= 110																// the initial walk acceleration of this class
-SupportClass.baseSprintAcceleration = 180																// the initial sprint acceleration of this class
 SupportClass.icon					= "ui/Factions/badges/badge_assault.dds"							// the badge for this class
 SupportClass.picture				= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
 SupportClass.initialUpgrades		= { SMGUpgrade.name }												// the upgrades that you start the game with
@@ -36,8 +34,6 @@ function SupportClass:Initialize()
 	self.baseArmor = SupportClass.baseArmor
 	self.baseWalkSpeed = SupportClass.baseWalkSpeed
 	self.baseRunSpeed = SupportClass.baseRunSpeed
-	self.baseAcceleration = SupportClass.baseAcceleration
-	self.baseSprintAcceleration = SupportClass.baseSprintAcceleration
 	self.icon = SupportClass.icon
 	self.picture = SupportClass.picture
 	self.initialUpgrades = SupportClass.initialUpgrades

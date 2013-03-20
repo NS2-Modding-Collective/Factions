@@ -18,6 +18,7 @@ SpeedUpgrade.speedBoostPerLevel = 0.1
 
 SpeedUpgradeMixin.expectedMixins =
 {
+	FactionsClass = "Needed for changing the movement speed depending on class.",
 }
 
 SpeedUpgradeMixin.expectedCallbacks =

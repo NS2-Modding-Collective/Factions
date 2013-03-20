@@ -20,8 +20,6 @@ AssaultClass.baseHealth 			= kMarineHealth	+ 10										     	// the base healt
 AssaultClass.baseArmor 				= kMarineArmor + 10										     		// the base armor value of this class
 AssaultClass.baseWalkSpeed 			= 5.5                												// the initial walk speed of this class
 AssaultClass.baseRunSpeed 			= 9.0                												// the initial run speed of this class
-AssaultClass.baseAcceleration		= 100																// the initial walk acceleration of this class
-AssaultClass.baseSprintAcceleration = 170																// the initial sprint acceleration of this class
 AssaultClass.icon					= "ui/Factions/badges/badge_assault.dds"							// the badge for this class
 AssaultClass.picture				= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
 AssaultClass.initialUpgrades		= { }																// the upgrades that you start the game with
@@ -35,8 +33,6 @@ function AssaultClass:Initialize()
 	self.baseArmor = AssaultClass.baseArmor
 	self.baseWalkSpeed = AssaultClass.baseWalkSpeed
 	self.baseRunSpeed = AssaultClass.baseRunSpeed
-	self.baseAcceleration = AssaultClass.baseAcceleration
-	self.baseSprintAcceleration = AssaultClass.baseSprintAcceleration
 	self.icon = AssaultClass.icon
 	self.picture = AssaultClass.picture
 	self.initialUpgrades = AssaultClass.initialUpgrades

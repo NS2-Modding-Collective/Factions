@@ -14,16 +14,16 @@ Script.Load("lua/Factions/Factions_FactionsClassMixin.lua")
 HealthUpgradeMixin = CreateMixin( HealthUpgradeMixin )
 HealthUpgradeMixin.type = "HealthUpgrade"
 
-HealthUpgrade.speedBoostPerLevel = 0.1
+HealthUpgrade.healthBoostPerLevel = 0.1
 
 HealthUpgradeMixin.expectedMixins =
 {
+	Live = "For setting the health values",
+	FactionsClass = "For getting the base health and armor values",
 }
 
 HealthUpgradeMixin.expectedCallbacks =
 {
-	GetBaseMaxSprintSpeed = "The speed that the player runs",
-	GetBaseMaxSpeed = "The speed that the player walks",
 }
 
 HealthUpgradeMixin.expectedConstants =
@@ -32,49 +32,24 @@ HealthUpgradeMixin.expectedConstants =
 
 HealthUpgradeMixin.networkVars =
 {
-	upgradeSpeedLevel = "integer (0 to " .. HealthUpgrade.levels .. ")"
+	upgradeHealthLevel = "integer (0 to " .. HealthUpgrade.levels .. ")"
 }
 
 function HealthUpgradeMixin:__initmixin()
 
-	self.upgradeSpeedLevel = 0
+	self.upgradeHealthLevel = 0
 
 end
 
 function HealthUpgradeMixin:CopyPlayerDataFrom(player)
 
-	self.upgradeSpeedLevel = player.upgradeSpeedLevel
+	self.upgradeHealthLevel = player.upgradeHealthLevel
 
 end
 
-function HealthUpgradeMixin:GetUpgradedSprintAcceleration()
-
-	return Marine.kSprintAcceleration
+function HealthUpgradeMixin:UpgradeHealth()
+	local baseMaxHealth = self:GetBaseHealth()
+	local newMaxHealth = baseMaxHealth + baseMaxHealth*self.upgradeHealthLevel*HealthUpgrade.healthBoostPerLevel
 	
-end
-
-function HealthUpgradeMixin:GetUpgradedAcceleration()
-
-	return Marine.kAcceleration
-	
-end
-
-function HealthUpgradeMixin:GetUpgradedMaxSprintSpeed()
-
-	if self:GetHasFactionsClass() then
-		return self:GetBaseMaxSprintSpeed()
-	else
-		return Marine.kRunMaxSpeed
-	end
-
-end
-
-function HealthUpgradeMixin:GetUpgradedMaxSpeed()
-
-	if self:GetHasFactionsClass() then
-		return self:GetBaseMaxSpeed()
-	else
-		return Marine.kWalkMaxSpeed
-	end
-
+	self:SetMaxHealth(newMaxHealth)
 end
