@@ -91,6 +91,11 @@ function FactionsUpgrade:AddLevel()
 	end
 end
 
+function FactionsUpgrade:SetLevel(newLevel)
+	self.currentLevel = newLevel
+end
+
+
 function FactionsUpgrade:ResetLevel()
 	self.currentLevel = 0
 end

@@ -12,10 +12,10 @@
 function OnCommandUpdateUpgrade(msg)
     // The server will send us this message to tell us an ability succeded.
     player = Client.GetLocalPlayer()
-    local upgrade = player:GetUpgradeById(msg.upgradeId)
-    if upgrade then    
-        player:SetUpgrade(upgrade, msg.upgradeLevel)
-    end
+    local success = player:SetUpgradeLevel(msg.upgradeId, msg.upgradeLevel)
+	if not success then
+		Shared.Message("FAILED TO UPGRADE! " .. msg.upgradeId .. " id and level " .. msg.upgradeLevel)
+	end
 
 end
 
@@ -30,9 +30,6 @@ end
 if Client then
 	Client.HookNetworkMessage("UpdateUpgrade", OnCommandUpdateUpgrade)
 	Client.HookNetworkMessage("ClearUpgrades", OnCommandClearUpgrades)
-else
-	Predict.HookNetworkMessage("UpdateUpgrade", OnCommandUpdateUpgrade)
-	Predict.HookNetworkMessage("ClearUpgrades", OnCommandClearUpgrades)
 end
 
 if Client then

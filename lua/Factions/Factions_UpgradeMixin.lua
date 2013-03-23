@@ -89,12 +89,13 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
         if upgradeOk then     
 			if upgrade:GetIsPermanent() then
 				upgrade:AddLevel()
+				Server.SendNetworkMessage(self, "UpdateUpgrade",  BuildUpdateUpgradeMessage(upgradeId, upgrade:GetCurrentLevel()), true)
 			end		
-			local success = upgrade:OnAdd(self)
 			
-			if success and not freeUpgrade then
+			upgrade:OnAdd(self)
+			
+			if not freeUpgrade then
 				self:AddResources(-upgrade:GetCostForNextLevel())
-				Server.SendNetworkMessage(self, "UpdateUpgrade",  BuildUpdateUpgradeMessage(upgradeId, level), true)
             end
         else
             self:SendDirectMessage("Upgrade not available")
@@ -103,6 +104,10 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
         // Send buy message to server
         Client.SendNetworkMessage("BuyUpgrade", BuildBuyUpgradeMessage(upgrade), true)
     end
+end
+
+function UpgradeMixin:SetUpgradeLevel(upgradeId, upgradeLevel)
+	return self.UpgradeList:SetUpgradeLevel(upgradeId, upgradeLevel)
 end
 
 function UpgradeMixin:GetCanBuyUpgrade(upgradeId)

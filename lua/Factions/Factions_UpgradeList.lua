@@ -99,7 +99,6 @@ function UpgradeList:GetUpgradeByName(upgradeName)
     end
 end
 
-// TODO: Implement a cache here.
 function UpgradeList:GetAvailableUpgradesByType(playerClass, upgradeType)
 	local upgradeClassList = {}
 
@@ -116,6 +115,17 @@ end
 
 function UpgradeList:GetAllUpgrades()
 	return self.UpgradeTable
+end
+
+function UpgradeList:SetUpgradeLevel(upgradeId, upgradeLevel)
+	local upgrade = self:GetUpgradeById(upgradeId)
+	local success = false
+	if upgrade then
+		upgrade:SetLevel(upgradeLevel)
+		success = true
+	end
+	
+	return success	
 end
 
 function UpgradeList:GetHasUpgrade(upgradeId)
