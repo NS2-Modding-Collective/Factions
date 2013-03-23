@@ -18,6 +18,9 @@ Script.Load("lua/MixinUtility.lua")
     TODO: Also include every new class
 */
 
+kSkulkPointValue = 50
+kFadePointValue = 150
+kOnosPointValue = 400
 kMarinePointValue = 60
 kJetpackPointValue = 80
 kExosuitPointValue = 120
