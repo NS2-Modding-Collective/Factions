@@ -15,6 +15,7 @@ class 'FactionsUpgrade'
 kFactionsUpgradeTypes = enum({'Ability', 'Attribute', 'Tech', 'Weapon'})
 kFactionsTriggerTypes = enum({'NoTrigger', 'ByTime', 'ByKey'})
 
+FactionsUpgrade.hideUpgrade = true
 FactionsUpgrade.upgradeType = kFactionsUpgradeTypes.Tech       	// The type of the upgrade
 FactionsUpgrade.triggerType = kFactionsTriggerTypes.NoTrigger  	// How the upgrade is gonna be triggered
 FactionsUpgrade.currentLevel = 0                               	// The default level of the upgrade. This is incremented when we buy the upgrade

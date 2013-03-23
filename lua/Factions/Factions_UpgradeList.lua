@@ -49,6 +49,7 @@ local function BuildAllUpgrades()
         kAllFactionsUpgrades = {}
 		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsUpgrade"))
 		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsWeaponUpgrade"))
+		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsUnlockUpgrade"))
     end
     
 end
