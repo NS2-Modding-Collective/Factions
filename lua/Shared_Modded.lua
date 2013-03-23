@@ -46,6 +46,7 @@ Script.Load("lua/Factions/Factions_Extractor.lua")
 Script.Load("lua/Factions/Weapons/Factions_Pistol.lua")
 Script.Load("lua/Factions/Weapons/Factions_Rifle.lua")
 Script.Load("lua/Factions/Weapons/Factions_Shotgun.lua")
+Script.Load("lua/Factions/Factions_Mine.lua")
 
 // New classes here
 Script.Load("lua/Factions/Factions_GenericGamerules.lua")
