@@ -25,7 +25,7 @@ local function RegisterNewUpgrades(newValuesTable)
 
 	for index, value in ipairs(newValuesTable) do
 		// Don't register the base classes.
-		if _G[value].hideUpgrade == nil then
+		if not _G[value]:GetHideUpgrade() then
 			table.insert(kAllFactionsUpgrades, value)
 		end
 	end
@@ -136,8 +136,32 @@ function UpgradeList:GetUpgradeLevel(upgradeId)
 	end
 end
 
-// TODO: Implement a cache here.
+function UpgradeList:GetHasPrerequisites(upgrade)
+	local requirements = upgrade:GetRequirements()
+	for index, requirement in ipairs(requirements) do
+		local requirementId = self:GetUpgradeByClassName(requirement):GetId()
+		if not self:GetHasUpgrade(requirementId) then
+			return false
+		end
+	end
+	
+	return true
+end
+
 function UpgradeList:GetAvailableUpgrades(playerClass)
+	local availableUpgrades = {}
+	for upgradeId, upgrade in pairs(self:GetAvailableUpgradesByClass(playerClass)) do
+		if self:GetHasPrerequisites(upgrade) then
+			table.insert(availableUpgrades, upgrade)
+		end
+	end
+	
+	// TODO: Order these correctly by priority before returning to the user
+	return availableUpgrades
+end
+
+// TODO: Implement a cache here.
+function UpgradeList:GetAvailableUpgradesByClass(playerClass)
 	local availableUpgrades = {}
 	for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
 		if playerClass:GetIsUpgradeAllowed(upgrade) then

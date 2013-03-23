@@ -388,7 +388,7 @@ function Factions_GUIMarineBuyMenu:_InitializeItemButtons()
 		
 		for index, upgrade in ipairs(allUps) do
 
-			if not upgrade.hideUpgrade then
+			if not upgrade:GetHideUpgrade() then
 				// only 6 icons per column
 				if (itemNr < 6) then
 					local itemTechId = upgrade:GetUpgradeTechId(upgrade:GetNextLevel())

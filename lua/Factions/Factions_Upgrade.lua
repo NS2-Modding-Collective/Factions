@@ -15,7 +15,6 @@ class 'FactionsUpgrade'
 kFactionsUpgradeTypes = enum({'Ability', 'Attribute', 'Tech', 'Weapon'})
 kFactionsTriggerTypes = enum({'NoTrigger', 'ByTime', 'ByKey'})
 
-FactionsUpgrade.hideUpgrade = true
 FactionsUpgrade.upgradeType = kFactionsUpgradeTypes.Tech       	// The type of the upgrade
 FactionsUpgrade.triggerType = kFactionsTriggerTypes.NoTrigger  	// How the upgrade is gonna be triggered
 FactionsUpgrade.currentLevel = 0                               	// The default level of the upgrade. This is incremented when we buy the upgrade
@@ -47,6 +46,15 @@ function FactionsUpgrade:Initialize()
 	self.hardCapScale = FactionsUpgrade.hardCapScale
 	self.mutuallyExclusive = FactionsUpgrade.mutuallyExclusive
 	self.permanent = FactionsUpgrade.permanent
+end
+
+function FactionsUpgrade:GetHideUpgrade()
+	// Convert nil to false!
+	if self.hideUpgrade then
+		return true
+	else
+		return false
+	end
 end
 
 function FactionsUpgrade:GetUpgradeType()
@@ -125,6 +133,10 @@ end
 
 function FactionsUpgrade:GetIsPermanent()
 	return self.permanent
+end
+
+function FactionsUpgrade:GetRequirements()
+	return self.requirements
 end
 
 if kFactionsUpgradeIdCache == nil then

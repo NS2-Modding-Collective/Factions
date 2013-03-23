@@ -64,11 +64,16 @@ function UpgradeMixin:GiveBackPermanentUpgrades()
 	end
 end
 
+function UpgradeMixin:GetHasPrerequisites(upgrade)
+	return self.UpgradeList:GetHasPrerequisites(upgrade)
+end
+
 function UpgradeMixin:GetIsAllowedToBuy(upgradeId)
 	local upgrade = self:GetUpgradeById(upgradeId)
 	if (not upgrade:GetIsAtMaxLevel()) 
 		and self:GetResources() >= upgrade:GetCostForNextLevel()
-		and self:GetFactionsClass():GetIsUpgradeAllowed(upgrade) then
+		and self:GetFactionsClass():GetIsUpgradeAllowed(upgrade)
+		and self:GetHasPrerequisites(upgrade) then
 		return true
 	else
 		return false
