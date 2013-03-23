@@ -11,16 +11,6 @@
 
 if Server then
 
-    function OnCommandGiveMagnoBoots(client)
-
-        local player = client:GetControllingPlayer()
-        if (HasMixin(player, "MagnoBootsWearer")) then
-            player:GiveMagnoBoots()
-        end
-
-    end
-
-
     function OnCommandGiveXp(client, amount)
 
         local player = client:GetControllingPlayer()
@@ -133,7 +123,6 @@ if Server then
 		SwitchClass(client, "Support")
 	end
 
-    Event.Hook("Console_magnoboots", OnCommandGiveMagnoBoots) 
     Event.Hook("Console_givexp", OnCommandGiveXp) 
 	Event.Hook("Console_assault", OnCommandAssault) 
 	Event.Hook("Console_scout", OnCommandScout) 
