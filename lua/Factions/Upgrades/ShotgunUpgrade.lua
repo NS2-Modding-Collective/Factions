@@ -15,7 +15,7 @@ ShotgunUpgrade.cost 			= { 150 }                          							// Cost of the 
 ShotgunUpgrade.upgradeName 		= "shotgun"	                        						// Text code of the upgrade if using it via console
 ShotgunUpgrade.upgradeTitle 	= "Shotgun"       											// Title of the upgrade, e.g. Submachine Gun
 ShotgunUpgrade.upgradeDesc 		= "Does high damage at close range, contains 5 shells."		// Description of the upgrade
-ShotgunUpgrade.upgradeTechId 	= { kTechId.Shotgun } 		    							// TechId of the upgrade, default is kTechId.Move cause its the first entry
+ShotgunUpgrade.upgradeTechId 	= kTechId.Shotgun 	 		    							// TechId of the upgrade, default is kTechId.Move cause its the first entry
 ShotgunUpgrade.primaryWeapon 	= true														// Is this a primary weapon?
 
 function ShotgunUpgrade:Initialize()

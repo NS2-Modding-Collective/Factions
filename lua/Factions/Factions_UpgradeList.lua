@@ -19,6 +19,7 @@ Script.Load("lua/Factions/Factions_Utility.lua")
 Script.Load("lua/Factions/Factions_Upgrade.lua")
 Script.Load("lua/Factions/Factions_UnlockUpgrade.lua")
 Script.Load("lua/Factions/Factions_WeaponUpgrade.lua")
+Script.Load("lua/Factions/Factions_TimedUpgrade.lua")
 
 // Used to merge all values from one table into another.
 local function RegisterNewUpgrades(newValuesTable)
@@ -50,6 +51,7 @@ local function BuildAllUpgrades()
 		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsUpgrade"))
 		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsWeaponUpgrade"))
 		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsUnlockUpgrade"))
+		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsTimedUpgrade"))
     end
     
 end

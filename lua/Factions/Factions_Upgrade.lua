@@ -132,8 +132,8 @@ function FactionsUpgrade:GetUpgradeDesc()
     return self.upgradeDesc
 end
 
-function FactionsUpgrade:GetUpgradeTechId(level)
-    return self.upgradeTechId[level]
+function FactionsUpgrade:GetUpgradeTechId()
+    return self.upgradeTechId
 end
 
 function FactionsUpgrade:GetIsPermanent()
@@ -172,10 +172,6 @@ end
 
 // called from the UpgradeMixin when the upgraded is added to a player, old upgradeFunc
 function FactionsUpgrade:OnAdd(player)
-end
-
-// called from the UpgradeMixin when upgrade will be triggered by a key or by time
-function FactionsUpgrade:OnTrigger(player)
 end
 
 // called when the Player is resetted so we can reset all the changes the upgrade has made

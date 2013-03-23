@@ -16,7 +16,7 @@ MagnoBootsUpgrade.levels = 1															// How many levels are there to this 
 MagnoBootsUpgrade.upgradeName = "magnoboots"                     						// Text code of the upgrade if using it via console
 MagnoBootsUpgrade.upgradeTitle = "Magno Boots"               							// Title of the upgrade, e.g. Submachine Gun
 MagnoBootsUpgrade.upgradeDesc = "Allows you to walk on walls"							// Description of the upgrade
-MagnoBootsUpgrade.upgradeTechId = { kTechId.Speed1 }									// TechId of the upgrade, default is kTechId.Move cause its the first entry
+MagnoBootsUpgrade.upgradeTechId = kTechId.Speed1										// TechId of the upgrade, default is kTechId.Move cause its the first entry
 
 function MagnoBootsUpgrade:Initialize()
 

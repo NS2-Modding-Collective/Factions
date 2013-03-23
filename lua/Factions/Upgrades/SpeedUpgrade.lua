@@ -15,7 +15,7 @@ SpeedUpgrade.levels = 3																// How many levels are there to this upgr
 SpeedUpgrade.upgradeName = "speed"                     								// Text code of the upgrade if using it via console
 SpeedUpgrade.upgradeTitle = "Speed Upgrade"               							// Title of the upgrade, e.g. Submachine Gun
 SpeedUpgrade.upgradeDesc = "Upgrade your player's speed"							// Description of the upgrade
-SpeedUpgrade.upgradeTechId = { kTechId.Speed1, kTechId.Speed2, kTechId.Speed3 }		// TechId of the upgrade, default is kTechId.Move cause its the first entry
+SpeedUpgrade.upgradeTechId = kTechId.Speed1											// TechId of the upgrade, default is kTechId.Move cause its the first entry
 
 function SpeedUpgrade:Initialize()
 

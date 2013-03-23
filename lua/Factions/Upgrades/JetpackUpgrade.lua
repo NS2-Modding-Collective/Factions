@@ -16,7 +16,7 @@ JetpackUpgrade.levels = 1															// How many levels are there to this upg
 JetpackUpgrade.upgradeName = "jetpack"                     							// Text code of the upgrade if using it via console
 JetpackUpgrade.upgradeTitle = "Jetpack"               								// Title of the upgrade, e.g. Submachine Gun
 JetpackUpgrade.upgradeDesc = "Allows you to fly like an eagle"						// Description of the upgrade
-JetpackUpgrade.upgradeTechId = { kTechId.Jetpack }									// TechId of the upgrade, default is kTechId.Move cause its the first entry
+JetpackUpgrade.upgradeTechId = kTechId.Jetpack										// TechId of the upgrade, default is kTechId.Move cause its the first entry
 
 function JetpackUpgrade:Initialize()
 

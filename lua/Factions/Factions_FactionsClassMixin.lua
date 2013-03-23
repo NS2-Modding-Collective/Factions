@@ -108,12 +108,17 @@ end
 
 function FactionsClassMixin:GiveStartingUpgrades()
 
-	if self:GetHasFactionsClass() and self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
+	// TODO: Reenable when this is fixed.
+	/*if self:GetHasFactionsClass() and self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
 		for index, upgradeClassName in ipairs(self.factionsClass:GetInitialUpgrades()) do
 			local upgrade = self:GetUpgradeByClassName(upgradeClassName)
-			self:BuyUpgrade(upgrade:GetId(), true)
+			if upgrade then
+				self:BuyUpgrade(upgrade:GetId(), true)
+			else
+				Shared.Message("Could not find initial upgrade " .. upgradeClassName .. " for player " .. self:GetName())
+			end
 		end
-	end
+	end*/
 	
 end
 

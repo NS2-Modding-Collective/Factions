@@ -15,7 +15,7 @@ ArmorUpgrade.levels = 3																// How many levels are there to this upgr
 ArmorUpgrade.upgradeName = "armor"                     								// Text code of the upgrade if using it via console
 ArmorUpgrade.upgradeTitle = "Armor Upgrade"               							// Title of the upgrade, e.g. Submachine Gun
 ArmorUpgrade.upgradeDesc = "Upgrade your player's armor"							// Description of the upgrade
-ArmorUpgrade.upgradeTechId = { kTechId.Armor1, kTechId.Armor2, kTechId.Armor3 }		// TechId of the upgrade, default is kTechId.Move cause its the first entry
+ArmorUpgrade.upgradeTechId = kTechId.Armor1											// TechId of the upgrade, default is kTechId.Move cause its the first entry
 
 function ArmorUpgrade:Initialize()
 

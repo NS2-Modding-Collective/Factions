@@ -13,7 +13,7 @@ MinesUpgrade.cost 				= { 100 }                          	// cost of the upgrade
 MinesUpgrade.upgradeName		= "mines"	                        // text code of the upgrade if using it via console
 MinesUpgrade.upgradeTitle 		= "Mines"       					// Title of the upgrade, e.g. Submachine Gun
 MinesUpgrade.upgradeDesc 		= "Get some Mines"             		// Description of the upgrade
-MinesUpgrade.upgradeTechId 		= { kTechId.LayMines } 				// techId of the upgrade, default is kTechId.Move cause its the first entry
+MinesUpgrade.upgradeTechId 		= kTechId.LayMines  				// techId of the upgrade, default is kTechId.Move cause its the first entry
 MinesUpgrade.primaryWeapon 		= false								// Is this a primary weapon?
 
 function MinesUpgrade:Initialize()

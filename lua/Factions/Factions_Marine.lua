@@ -10,6 +10,7 @@
 // Factions_Marine.lua
 
 Script.Load("lua/Factions/Factions_MagnoBootsWearerMixin.lua")
+Script.Load("lua/Factions/Factions_TimerMixin.lua")
 Script.Load("lua/Factions/Factions_SpeedUpgradeMixin.lua")
 Script.Load("lua/Factions/Factions_HealthUpgradeMixin.lua")
 Script.Load("lua/Factions/Factions_ArmorUpgradeMixin.lua")
@@ -95,7 +96,7 @@ function Marine:OnCreate()
 
 	// Init mixins
     InitMixin(self, WallMovementMixin)
-	InitMixin(self, MagnoBootsWearerMixin)	
+	InitMixin(self, MagnoBootsWearerMixin)
 	InitMixin(self, SpeedUpgradeMixin)
 	InitMixin(self, HealthUpgradeMixin)
 	InitMixin(self, ArmorUpgradeMixin)
@@ -118,6 +119,12 @@ function Marine:OnCreate()
 	assert(HasMixin(self, "SpawnProtect"))
 	assert(HasMixin(self, "Xp"))
 	assert(HasMixin(self, "Upgrade"))
+	
+	// Server-only mixins
+	if Server then
+		InitMixin(self, TimerMixin)
+		assert(HasMixin(self, "Timer"))
+	end
 	
 end
 

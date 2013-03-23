@@ -15,7 +15,7 @@ HealthUpgrade.levels = 3																// How many levels are there to this upg
 HealthUpgrade.upgradeName = "health"                     								// Text code of the upgrade if using it via console
 HealthUpgrade.upgradeTitle = "Health Upgrade"               							// Title of the upgrade, e.g. Submachine Gun
 HealthUpgrade.upgradeDesc = "Upgrade your player's health"								// Description of the upgrade
-HealthUpgrade.upgradeTechId = { kTechId.Health1, kTechId.Health2, kTechId.Health3 }		// TechId of the upgrade, default is kTechId.Move cause its the first entry
+HealthUpgrade.upgradeTechId = kTechId.Health1											// TechId of the upgrade, default is kTechId.Move cause its the first entry
 
 function HealthUpgrade:Initialize()
 

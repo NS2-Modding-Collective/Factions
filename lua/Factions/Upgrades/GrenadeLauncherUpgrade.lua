@@ -16,7 +16,7 @@ GrenadeLauncherUpgrade.cost				= { 300 }                          							// cost
 GrenadeLauncherUpgrade.upgradeName 		= "gl"	                        							// text code of the upgrade if using it via console
 GrenadeLauncherUpgrade.upgradeTitle 	= "Grenade Launcher"       									// Title of the upgrade, e.g. Submachine Gun
 GrenadeLauncherUpgrade.upgradeDesc 		= "Launches grenades... What more do you need to know?"  	// Description of the upgrade
-GrenadeLauncherUpgrade.upgradeTechId	= { kTechId.GrenadeLauncher } 		    					// TechId of the upgrade, default is kTechId.Move cause its the first entry
+GrenadeLauncherUpgrade.upgradeTechId	= kTechId.GrenadeLauncher 		    						// TechId of the upgrade, default is kTechId.Move cause its the first entry
 GrenadeLauncherUpgrade.requirements 	= { "UnlockGrenadeLauncherUpgrade" }						// Any requirements?
 GrenadeLauncherUpgrade.primaryWeapon	= true														// Is this a primary weapon?
 

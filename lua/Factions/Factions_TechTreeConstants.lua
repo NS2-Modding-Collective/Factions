@@ -28,8 +28,5 @@ end
 
 addTechId("LightMachineGun")
 addTechId("Speed1")
-addTechId("Speed2")
-addTechId("Speed3")
 addTechId("Health1")
-addTechId("Health2")
-addTechId("Health3")
+addTechId("Resupply")

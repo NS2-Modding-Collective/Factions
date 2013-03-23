@@ -44,6 +44,15 @@ function FactionsUnlockUpgrade:GetUnlockUpgradeId()
 	return nil
 end
 
+function FactionsUnlockUpgrade:GetHideUpgrade()
+	local hideUpgrade = FactionsUpgrade.GetHideUpgrade(self)
+	if self:GetIsAtMaxLevel() then
+		hideUpgrade = true
+	end
+	
+	return hideUpgrade
+end
+
 // TODO: Show something to the player?
 function FactionsUnlockUpgrade:OnAdd(player)
 	if self:GetUnlockUpgradeId() ~= nil then
