@@ -19,14 +19,6 @@ Script.Load("lua/Factions/Factions_Balance.lua")
 // Extra Entities
 Script.Load("lua/ExtraEntitiesMod/eem_Shared.lua")
 
-// NPCs
-Script.Load("lua/sp/npcs/NpcSkulk.lua")
-Script.Load("lua/sp/npcs/NpcMarine.lua")
-Script.Load("lua/sp/npcs/NpcMarineExo.lua")
-
-Script.Load("lua/sp/npcs/NpcSpawnerMarine.lua")
-Script.Load("lua/sp/npcs/NpcSpawnerMarineExo.lua")
-Script.Load("lua/sp/npcs/NpcSpawnerSkulk.lua")
 
 // Class overrides here
 Script.Load("lua/Factions/Factions_NS2Gamerules.lua")
