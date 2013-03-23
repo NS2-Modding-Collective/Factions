@@ -25,4 +25,12 @@ function Armory:OnCreate()
 	assert(HasMixin(self, "TeamColours"))
 end
 
+function Armory:GetRequiresPower()
+   return false
+end
+
+function Armory:GetCanBeUsedConstructed()
+    return false
+end    
+
 Class_Reload("Armory", networkVars)

@@ -48,6 +48,11 @@ kMaxScore = kMaxXP
 kMaxPersonalResources = kMaxXP
 kMaxResources = kMaxXP
 
+// how much % from the xp are the teammates nearby getting and the range
+mateXpAmount = 0.4
+mateXpRange = 20
+
+
 // How much lvl you will lose when you rejoin the same team
 kPenaltyLevel = 1
 
@@ -159,7 +164,8 @@ function XpMixin:AddScore(points, res)
         if points ~= nil and points ~= 0 then        
             self:AddResources(points)
             self:SetScoreboardChanged(true)
-            self:CheckLvlUp()  
+            self:CheckLvlUp()
+			self:GiveXpMatesNearby(points)
         end    
     end    
 end
@@ -290,5 +296,21 @@ function XpMixin:GetLevelProgression()
         local nextLevel = kXpList[lvl + 1]["XP"]
         return (xp - thisLevel) / (nextLevel - thisLevel)
     end
+end
+
+// Give XP to teammates around you when you kill an enemy
+function Player:GiveXpToTeammatesNearby(xp)
+
+	xp = xp * mateXpAmount
+
+	local playersInRange = GetEntitiesForTeamWithinRange("Player", self:GetTeamNumber(), self:GetOrigin(), mateXpRange)
+	
+	// Only give Xp to players who are alive!
+	for _, player in ipairs(playersInRange) do
+		if self ~= player and player:GetIsAlive() then
+			player:AddResources(xp)    
+		end
+	end
+
 end
 
