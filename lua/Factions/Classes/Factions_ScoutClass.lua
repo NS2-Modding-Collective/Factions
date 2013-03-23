@@ -23,7 +23,7 @@ ScoutClass.baseRunSpeed 			= 10.0             													// the initial run sp
 ScoutClass.icon						= "ui/Factions/badges/badge_assault.dds"							// the badge for this class
 ScoutClass.picture					= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
 ScoutClass.initialUpgrades			= { }																// the upgrades that you start the game with
-ScoutClass.allowedUpgrades			= { }																// the upgrades that you are allowed to buy
+ScoutClass.disallowedUpgrades		= { "UnlockGrenadeLauncherUpgrade" }								// the upgrades that you are not allowed to buy
 
 function ScoutClass:Initialize()
 	self.type = ScoutClass.type
@@ -36,7 +36,7 @@ function ScoutClass:Initialize()
 	self.icon = ScoutClass.icon
 	self.picture = ScoutClass.picture
 	self.initialUpgrades = ScoutClass.initialUpgrades
-	self.allowedUpgrades = ScoutClass.allowedUpgrades
+	self.disallowedUpgrades = ScoutClass.disallowedUpgrades
 end
 
 // Build the actual tech tree

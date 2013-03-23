@@ -384,7 +384,7 @@ function Factions_GUIMarineBuyMenu:_InitializeItemButtons()
 		graphicItemHeading:SetText(upgradeTypeName)
 		self.menu:AddChild(graphicItemHeading)
 		
-		local allUps = self.player:GetUpgradesByType(upgradeTypeName)
+		local allUps = self.player:GetAvailableUpgradesByType(upgradeTypeName)
 		
 		for index, upgrade in ipairs(allUps) do
 

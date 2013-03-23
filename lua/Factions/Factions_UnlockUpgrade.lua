@@ -40,7 +40,16 @@ function FactionsUnlockUpgrade:GetClassName()
 	return "FactionsUnlockUpgrade"
 end
 
+// Override this function to specify which upgrade you're unlocking.
+function FactionsUnlockUpgrade:GetUnlockUpgradeId()
+	return nil
+end
+
 // TODO: Show something to the player?
 function FactionsUnlockUpgrade:OnAdd(player)
-	
+	if self:GetUnlockUpgradeId() ~= nil then
+		local unlockUpgradeId = self:GetUnlockUpgradeId()
+		local unlockUpgrade = player:GetUpgradeById(unlockUpgradeId)
+		player:SendDirectMessage("Unlocked " .. unlockUpgrade:GetUpgradeTitle() .. "!")
+	end
 end

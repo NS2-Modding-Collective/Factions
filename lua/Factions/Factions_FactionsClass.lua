@@ -23,7 +23,7 @@ FactionsClass.baseRunSpeed 				= 9.0                												// the initial r
 FactionsClass.icon						= "ui/Factions/badges/badge_assault.dds"							// the badge for this class
 FactionsClass.picture					= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
 FactionsClass.initialUpgrades			= { }																// the upgrades that you start the game with
-FactionsClass.allowedUpgrades			= { }																// the upgrades that you are allowed to buy
+FactionsClass.disallowedUpgrades		= { }																// the upgrades that you are not allowed to buy
 
 function FactionsClass:Initialize()
 	self.type = FactionsClass.type
@@ -36,7 +36,7 @@ function FactionsClass:Initialize()
 	self.icon = FactionsClass.icon
 	self.picture = FactionsClass.picture
 	self.initialUpgrades = FactionsClass.initialUpgrades
-	self.allowedUpgrades = FactionsClass.allowedUpgrades
+	self.disallowedUpgrades = FactionsClass.disallowedUpgrades
 end
 
 function FactionsClass:OnCreate()
@@ -89,8 +89,8 @@ function FactionsClass:GetInitialUpgrades()
     return self.initialUpgrades
 end
 
-function FactionsClass:GetAllowedUpgrades()
-    return self.allowedUpgrades
+function FactionsClass:GetDisallowedUpgrades()
+    return self.disallowedUpgrades
 end
 
 if kFactionsClassIdCache == nil then
@@ -113,12 +113,15 @@ function FactionsClass:GetId()
 	return cachedId
 end
 
-function FactionsClass:IsUpgradeAllowed(upgradeId)
-	if self.allowedUpgrades[upgradeId] then
-		return true
-	else
-		return false
+function FactionsClass:GetIsUpgradeAllowed(upgrade)
+	for index, disallowedUpgradeClassName in ipairs(self.disallowedUpgrades) do
+		if disallowedUpgradeClassName == upgrade:GetClassName() then
+			return false
+		end
 	end
+	
+	// By default, the upgrade is allowed.
+	return true
 end
 
 // called from the FactionsClassMixin when the FactionsClass is added to a player. Override if necessary.

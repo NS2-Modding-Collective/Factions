@@ -59,32 +59,26 @@ if Server then
 		if Shared.GetCheatsEnabled() then
 		
 			local found = FindPlayerByName(playerName)
-			
 			if found ~= nil then
 			
 				if HasMixin(found, "FactionsClass") then
-		
+				
 					// If a class is specified then change the class.
-					local player = client:GetControllingPlayer()
 					if newClass then
 						local success = found:ChangeFactionsClassFromString(newClass)
-						if player then
-							if success then 
-								player:SendDirectMessage("Changed " .. found:GetName() .. "'s class to " .. found:GetFactionsClassString())
-							else
-								player:SendDirectMessage("Invalid class name: " .. newClass)
-							end
+						if success then 
+							SendGlobalChatMessage("Changed " .. found:GetName() .. "'s class to " .. found:GetFactionsClassString())
+						else
+							SendGlobalChatMessage("Invalid class name: " .. newClass)
 						end
 					else
-						if player then
-							player:SendDirectMessage(found:GetName() .. "'s class is a: " .. found:GetFactionsClassString())
-						end
+						SendGlobalChatMessage(found:GetName() .. "'s class is a: " .. found:GetFactionsClassString())
 					end
 					
 				end
 				
 			else
-				Shared.Message("Failed to find player matching name")
+				SendGlobalChatMessage("Failed to find player matching name")
 			end
 		end
 			

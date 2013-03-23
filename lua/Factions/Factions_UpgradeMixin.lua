@@ -20,6 +20,7 @@ UpgradeMixin.networkVars =
 
 UpgradeMixin.expectedMixins =
 {
+	FactionsClass = "For specifying which upgrades are allowed",
 }
 
 UpgradeMixin.expectedCallbacks =
@@ -65,7 +66,9 @@ end
 
 function UpgradeMixin:GetIsAllowedToBuy(upgradeId)
 	local upgrade = self:GetUpgradeById(upgradeId)
-	if (not upgrade:GetIsAtMaxLevel()) and self:GetResources() >= upgrade:GetCostForNextLevel() then
+	if (not upgrade:GetIsAtMaxLevel()) 
+		and self:GetResources() >= upgrade:GetCostForNextLevel()
+		and self:GetFactionsClass():GetIsUpgradeAllowed(upgrade) then
 		return true
 	else
 		return false
@@ -126,12 +129,16 @@ function UpgradeMixin:GetUpgradeByName(upgradeName)
     return self.UpgradeList:GetUpgradeByName(upgradeName)
 end
 
-function UpgradeMixin:GetUpgradesByType(upgradeType)
-    return self.UpgradeList:GetUpgradesByType(upgradeType)
+function UpgradeMixin:GetAvailableUpgradesByType(upgradeType)
+    return self.UpgradeList:GetAvailableUpgradesByType(self:GetFactionsClass(), upgradeType)
 end
 
 function UpgradeMixin:GetAllUpgrades()
 	return self.UpgradeList:GetAllUpgrades()
+end
+
+function UpgradeMixin:GetAvailableUpgrades()
+	return self.UpgradeList:GetAvailableUpgrades(self:GetFactionsClass())
 end
 
 function UpgradeMixin:spendlvlHints(hint, type)

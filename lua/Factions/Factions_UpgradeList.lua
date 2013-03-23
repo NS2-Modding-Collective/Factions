@@ -24,7 +24,8 @@ Script.Load("lua/Factions/Factions_WeaponUpgrade.lua")
 local function RegisterNewUpgrades(newValuesTable)
 
 	for index, value in ipairs(newValuesTable) do
-		if value ~= "FactionsUpgrade" and value ~= "FactionsWeaponUpgrade" then
+		// Don't register the base classes.
+		if _G[value].hideUpgrade == nil then
 			table.insert(kAllFactionsUpgrades, value)
 		end
 	end
@@ -75,6 +76,18 @@ function UpgradeList:GetUpgradeById(upgradeId)
 end
 
 // TODO: Implement a cache here.
+function UpgradeList:GetUpgradeByClassName(upgradeClassName)
+    if upgradeClassName then
+        for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
+            if upgrade:GetClassName() == upgradeClassName then
+                return upgrade
+            end
+        end
+    end
+end
+
+
+// TODO: Implement a cache here.
 function UpgradeList:GetUpgradeByName(upgradeName)
     if upgradeName then
         for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
@@ -86,11 +99,11 @@ function UpgradeList:GetUpgradeByName(upgradeName)
 end
 
 // TODO: Implement a cache here.
-function UpgradeList:GetUpgradesByType(upgradeType)
+function UpgradeList:GetAvailableUpgradesByType(playerClass, upgradeType)
 	local upgradeClassList = {}
 
     if upgradeType then
-        for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
+        for upgradeId, upgrade in pairs(self:GetAvailableUpgrades(playerClass)) do
             if upgradeType == kFactionsUpgradeTypes[upgrade:GetUpgradeType()] then
                 table.insert(upgradeClassList, upgrade)
             end
@@ -120,6 +133,19 @@ function UpgradeList:GetUpgradeLevel(upgradeId)
 	else
 		return 0
 	end
+end
+
+// TODO: Implement a cache here.
+function UpgradeList:GetAvailableUpgrades(playerClass)
+	local availableUpgrades = {}
+	for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
+		if playerClass:GetIsUpgradeAllowed(upgrade) then
+			table.insert(availableUpgrades, upgrade)
+		end
+	end
+	
+	// TODO: Order these correctly by priority before returning to the user
+	return availableUpgrades
 end
 
 function UpgradeList:GetActiveUpgrades()

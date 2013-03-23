@@ -109,8 +109,8 @@ end
 function FactionsClassMixin:GiveStartingUpgrades()
 
 	if self:GetHasFactionsClass() and self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
-		for index, upgradeName in ipairs(self.factionsClass:GetInitialUpgrades()) do
-			local upgrade = self:GetUpgradeByName(upgradeName)
+		for index, upgradeClassName in ipairs(self.factionsClass:GetInitialUpgrades()) do
+			local upgrade = self:GetUpgradeByClassName(upgradeClassName)
 			self:BuyUpgrade(upgrade:GetId(), true)
 		end
 	end
