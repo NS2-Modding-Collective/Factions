@@ -185,6 +185,13 @@ function UpgradeList:GetAvailableUpgradesByClass(playerClass)
 	return availableUpgrades
 end
 
+function UpgradeList:CopyUpgradeDataFrom(cloneList)
+	for index, upgrade in pairs(cloneList:GetAllUpgrades()) do
+		local cloneUpgrade = self:GetUpgradeById(upgrade:GetId())
+		cloneUpgrade:SetLevel(upgrade:GetCurrentLevel())
+	end
+end
+
 function UpgradeList:GetActiveUpgrades()
 	local activeUpgrades = {}
 	for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
@@ -195,18 +202,4 @@ function UpgradeList:GetActiveUpgrades()
 	
 	// TODO: Order these correctly by priority before returning to the user
 	return activeUpgrades
-end
-
-function UpgradeList:UpdateUpgradeFromNetwork(upgradeUpdateTable)
-
-    local upgradeId = upgradeUpdateTable.upgradeId
-    local upgrade = self:GetUpgrade(upgradeId)
-    
-    if techNode ~= nil then
-        ParseUpgradeUpdateMessage(techNode, upgradeUpdateTable)
-    else
-        Print("UpdateTechNodeFromNetwork(): Couldn't find technode with id %s, skipping update.", ToString(techId))
-    end
-    
-    
 end

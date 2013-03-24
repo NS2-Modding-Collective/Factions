@@ -47,7 +47,7 @@ end
 
 function UpgradeMixin:CopyPlayerDataFrom(player)
     if player.UpgradeList then 
-		self.UpgradeList = player.UpgradeList
+		self.UpgradeList:CopyUpgradeDataFrom(player.UpgradeList)
 	end
     
 	// give upgrades back when the player respawns
