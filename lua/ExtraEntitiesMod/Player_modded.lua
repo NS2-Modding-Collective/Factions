@@ -29,4 +29,7 @@ function Player:OnInitialized()
 end
 
 
+if Server then
+
+
 Class_Reload("Player", networkVars)

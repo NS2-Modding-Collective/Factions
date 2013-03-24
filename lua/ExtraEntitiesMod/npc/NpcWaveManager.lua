@@ -45,6 +45,10 @@ if Server then
         self.lastWaveSpawn = nil
         self.currentWave = 1
     end
+    
+    function NpcManager:GetOutputNames()
+        return {self.output1}
+    end
 
     function NpcManager:OnLogicTrigger(player) 
         self.active = true
@@ -67,6 +71,7 @@ if Server then
                 
                 if self.currentWave >= self.maxWaveNumber then
                     // max wave reached
+                    self:TriggerOutputs()
                     self:Reset()
                 end
                 

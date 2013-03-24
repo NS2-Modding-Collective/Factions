@@ -16,7 +16,10 @@ NpcMixin.lowHealthFactor = 0.2 // if health is 20% we need to do something
 NpcMixin.armorySearchRange = 60 // armory will be searched in this range
 NpcMixin.kPlayerFollowDistance = 3
 NpcMixin.kMaxOrderDistance = 2
-NpcMixin.kUpdateRate = 2 // update rate in sec for bot (searching for enemys), should make it less resource hungry
+
+// update rates to increase performance
+NpcMixin.kUpdateRate = 0.4
+NpcMixin.kTargetUpdateRate = 2 
 
 
 
@@ -79,28 +82,34 @@ end
 // 5. process the order, generate a forward move, shoot etc.Accept
 // 6. send the move to OnProcessMove(move)
 function NpcMixin:OnUpdate(deltaTime)
+
+    if not self.timeLastUpdate or (Shared.GetTime() - self.timeLastUpdate > NpcMixin.kUpdateRate) then
   
-    if self.isaNpc then
-        if Server then    
-        
-            // this will generate an input like a normal client so the bot can move
-            local move = self:GenerateMove(deltaTime)
-            if self.active then
-                if self.AiSpecialLogic then
-                    self:AiSpecialLogic(move)
-                end
-                // not working atm
-                //self:CheckImportantEvents(move) 
-                self:ChooseOrder()
-                self:ProcessOrder(move)         
-                // Update order values for client
-                self:UpdateOrderVariables()
-            end
+        if self.isaNpc then
+            if Server then    
             
-            self:OnProcessMove(move)
+                // this will generate an input like a normal client so the bot can move
+                local move = self:GenerateMove(deltaTime)
+                if self.active then
+                    if self.AiSpecialLogic then
+                        self:AiSpecialLogic(move)
+                    end
+                    // not working atm
+                    //self:CheckImportantEvents(move) 
+                    self:ChooseOrder()
+                    self:ProcessOrder(move)         
+                    // Update order values for client
+                    self:UpdateOrderVariables()
+                end
+                
+                self:OnProcessMove(move)
+            end
+        else
+            // controlled by a client, do nothing
         end
-    else
-        // controlled by a client, do nothing
+                
+        self.timeLastUpdate = Shared.GetTime()
+        
     end
 end
 
@@ -219,7 +228,7 @@ function NpcMixin:AttackVisibleTarget()
     // Are there any visible enemy players or structures nearby?
     local success = false
     
-    if not self.timeLastTargetCheck or (Shared.GetTime() - self.timeLastTargetCheck > NpcMixin.kUpdateRate) then
+    if not self.timeLastTargetCheck or (Shared.GetTime() - self.timeLastTargetCheck > NpcMixin.kTargetUpdateRate) then
     
         local nearestTarget = nil
         local nearestTargetDistance = nil
