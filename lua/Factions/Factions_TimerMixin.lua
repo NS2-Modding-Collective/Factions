@@ -32,11 +32,13 @@ TimerMixin.networkVars =
 }
 
 local function TriggerTimers(self)
+	local currentTime = Shared.GetTime()
 	for name, timer in pairs(self.timers) do
-		Shared.Message("Triggered timer " .. name .. ". Next trigger " .. timer.lastTrigger + timer.interval .. " currentTime = " .. Shared.GetTime())
-		if timer.lastTrigger + interval <= baseTimer then
-			timer.func(timer.object)
-			timer.lastTrigger = Shared.GetTime()
+		if timer.lastTrigger + timer.interval <= currentTime then
+			// Uncomment this for debug
+			//Shared.Message("Triggered timer " .. name .. ". Next trigger " .. timer.lastTrigger + timer.interval .. " currentTime = " .. currentTime)
+			timer.func(timer.object, self)
+			timer.lastTrigger = currentTime
 		end
 	end
 	
@@ -58,4 +60,8 @@ function TimerMixin:AddTimer(name, object, func, interval)
 	timer.interval = interval
 	
 	self.timers[name] = timer
+end
+
+function TimerMixin:RemoveTimer(name)
+	self.timers[name] = nil
 end

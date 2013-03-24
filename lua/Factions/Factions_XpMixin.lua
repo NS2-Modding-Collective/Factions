@@ -165,7 +165,7 @@ function XpMixin:AddScore(points, res)
             self:AddResources(points)
             self:SetScoreboardChanged(true)
             self:CheckLvlUp()
-			self:GiveXpMatesNearby(points)
+			self:GiveXpToTeammatesNearby(points)
         end    
     end    
 end

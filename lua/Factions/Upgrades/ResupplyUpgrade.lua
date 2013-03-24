@@ -22,7 +22,6 @@ function ResupplyUpgrade:Initialize()
 
 	FactionsUpgrade.Initialize(self)
 
-	self.hideUpgrade = true
 	self.cost = ResupplyUpgrade.cost
 	self.levels = ResupplyUpgrade.levels
 	self.upgradeName = ResupplyUpgrade.upgradeName
@@ -67,6 +66,25 @@ local function NeedsResupply(player)
 
 end
 
+local function GiveAllAmmo(player)
+
+	for i = 0, player:GetNumChildren() - 1 do
+
+		local child = player:GetChildAtIndex(i)
+		if child:isa("ClipWeapon") then
+			
+			if child:GetNeedsAmmo(false) then
+				child:GiveAmmo(AmmoPack.kNumClips, false)
+			end
+				
+		end
+		
+	end
+
+	StartSoundEffectAtOrigin(AmmoPack.kPickupSound, player:GetOrigin())
+
+end
+
 local function ResupplyNow(player)
 
 	local success = false
@@ -77,7 +95,7 @@ local function ResupplyNow(player)
 	
 		local droppackHealth = CreateEntity(mapNameHealth, position, player:GetTeamNumber())
 		// dont drop a ammo pack, give ammo via a new function
-		player:GiveAllAmmo()
+		GiveAllAmmo(player)
 		
 		StartSoundEffectAtOrigin(MedPack.kHealthSound, player:GetOrigin())
 		success = true
@@ -94,5 +112,4 @@ function ResupplyUpgrade:OnTrigger(player)
 	if (NeedsResupply(player)) then
 		ResupplyNow(player)
 	end
-	Shared.Message("Default timer triggered for upgrade type " .. self:GetClassName() .. " on player " .. player:GetName())
 end

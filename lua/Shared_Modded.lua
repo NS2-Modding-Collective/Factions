@@ -19,6 +19,8 @@ Script.Load("lua/Factions/Factions_Balance.lua")
 // Extra Entities
 Script.Load("lua/ExtraEntitiesMod/eem_Shared.lua")
 
+// Effects
+Script.Load("lua/Factions/Effects/Factions_DamageEffects.lua")
 
 // Class overrides here
 Script.Load("lua/Factions/Factions_NS2Gamerules.lua")
