@@ -11,6 +11,7 @@
 
 // Detail about the different kinds of upgrades.
 kAllFactionsUpgrades = {}
+kFactionsUpgrade = {}
 
 // Load utility functions
 Script.Load("lua/Factions/Factions_Utility.lua")
@@ -25,10 +26,19 @@ Script.Load("lua/Factions/Factions_TimedUpgrade.lua")
 local function RegisterNewUpgrades(newValuesTable)
 
 	for index, value in ipairs(newValuesTable) do
+		// Save the factions upgrades in a regular table
 		// Don't register the base classes.
 		if not _G[value]:GetHideUpgrade() then
 			table.insert(kAllFactionsUpgrades, value)
 		end
+		
+		// Also save them in an enum so that we can refer to them directly by ID
+		local enumTable = {}
+		for index, value in ipairs(kFactionsUpgrade) do
+			table.insert(enumTable, value)
+		end
+		table.insert(enumTable, value)
+		kFactionsUpgrade = enum(enumTable)
 	end
 
 end

@@ -36,5 +36,5 @@ function UnlockGrenadeLauncherUpgrade:GetClassName()
 end
 
 function UnlockGrenadeLauncherUpgrade:GetUnlockUpgradeId()
-	return 
+	return kFactionsUpgrade.GrenadeLauncherUpgrade
 end

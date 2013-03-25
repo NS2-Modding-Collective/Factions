@@ -59,5 +59,8 @@ function FactionsUnlockUpgrade:OnAdd(player)
 		local unlockUpgradeId = self:GetUnlockUpgradeId()
 		local unlockUpgrade = player:GetUpgradeById(unlockUpgradeId)
 		player:SendDirectMessage("Unlocked " .. unlockUpgrade:GetUpgradeTitle() .. "!")
+		
+		// Also add the locked upgrade for the first time here.
+		unlockUpgrade:OnAdd(player)
 	end
 end

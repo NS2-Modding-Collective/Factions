@@ -11,6 +11,15 @@
 
 if Server then
 
+	function SetPlayerColor(client, red, green, blue)
+		local player = client:GetControllingPlayer()
+        if player and Shared.GetCheatsEnabled() and red and green and blue then
+            if HasMixin(player, "TeamColours") then
+                player.armorColour = Vector(red, green, blue)
+            end
+        end
+	end
+
 	function OnCommandDebugUpgrades(client)
 		for list, victim in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
 			Shared.Message("Player: " .. victim:GetName())
@@ -67,7 +76,37 @@ if Server then
 	
 	end
 	
-	function OnCommandForceClass(client, playerName, newClass)
+	function OnCommandForceGiveUpgrade(client, playerName, newUpgrade)
+	
+		if Shared.GetCheatsEnabled() then
+		
+			local found = FindPlayerByName(playerName)
+			if found ~= nil then
+			
+				if HasMixin(found, "Upgrade") then
+				
+					// If a class is specified then change the class.
+					if newUpgrade then
+				        if found and Shared.GetCheatsEnabled() and newUpgrade then
+							if HasMixin(found, "Upgrade") then
+								local upgrade = found:GetUpgradeByName(newUpgrade)
+								// cause it's cheats 1 you just get the upgrade without paying
+								found:BuyUpgrade(upgrade:GetId(), true)
+								SendGlobalChatMessage(found:GetName() .. " has been given a " .. upgrade:GetUpgradeTitle() .. " upgrade.")
+							end
+						end
+					end
+					
+				end
+				
+			else
+				SendGlobalChatMessage("Failed to find player matching name")
+			end
+		end
+			
+	end
+	
+	function OnCommandForceClass(client, playerName, newUpgrade)
 	
 		if Shared.GetCheatsEnabled() then
 		
@@ -138,5 +177,5 @@ if Server then
 	
 	Event.Hook("Console_forceclass", OnCommandForceClass) 
 	Event.Hook("Console_forcegivexp", OnCommandGiveXp) 
-	Event.Hook("Console_forcegiveupgrade", OnCommandGiveUpgrade) 
+	Event.Hook("Console_forcegiveupgrade", OnCommandForceGiveUpgrade) 
 end
