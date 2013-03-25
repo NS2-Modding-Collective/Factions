@@ -39,24 +39,11 @@ TeamColoursMixin.expectedConstants =
 
 TeamColoursMixin.networkVars =
 {
-	armorColour = "vector",
-	randomColour = "boolean",
 }
 
 function TeamColoursMixin:__initmixin()
 
-	self.armorColour = nil
-	self.randomColour = false
-	
 end
-
-function FactionsClassMixin:CopyPlayerDataFrom(player)
-
-	self.armorColour = player.armorColour
-	self.randomColour = player.randomColour
-
-end
-
 
 // Set the colour for the objects based on the team colours.
 function TeamColoursMixin:OnUpdateRender()
@@ -66,28 +53,20 @@ function TeamColoursMixin:OnUpdateRender()
 	local model = self:GetRenderModel()
 	if model then
 	
-		// Set the colours
 		local teamColours = nil
-		if self.armorColour ~= nil then
-			teamColours = Color(self.armorColour.x, self.armorColour.y, self.armorColour.z)
-		elseif self.randomColour then
-			teamColours = Color(math.random() * 255, math.random() * 255, math.random() * 255)
+		if self:GetTeamNumber() == kTeam2Index then
+			teamColours = kAlienTeamColorFloat
 		else
-			if self:GetTeamNumber() == kTeam2Index then
-				teamColours = kAlienTeamColorFloat
-			else
-				teamColours = kMarineTeamColorFloat
-			end
+			teamColours = kMarineTeamColorFloat
 		end
 		
 		if not self.teamColourMaterial then
 			self.teamColourMaterial = AddMaterial(model, "materials/test.material")
+			self.teamColourMaterial:SetParameter("colourR", teamColours.r)
+			self.teamColourMaterial:SetParameter("colourG", teamColours.g)
+			self.teamColourMaterial:SetParameter("colourB", teamColours.b)
+			self.teamColourMaterial:SetParameter("intensity", TeamColoursMixin.intensity)
 		end
-		
-		self.teamColourMaterial:SetParameter("colourR", teamColours.r)
-		self.teamColourMaterial:SetParameter("colourG", teamColours.g)
-		self.teamColourMaterial:SetParameter("colourB", teamColours.b)
-		self.teamColourMaterial:SetParameter("intensity", TeamColoursMixin.intensity)
 		
 		if not self:GetIsAlive() and self.teamColourMaterial then
 			if RemoveMaterial(model, self.teamColourMaterial) then
