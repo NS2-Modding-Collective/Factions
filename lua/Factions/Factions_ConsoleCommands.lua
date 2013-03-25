@@ -11,13 +11,32 @@
 
 if Server then
 
-	function OnCommandSetColour(client, red, green, blue)
+	function OnCommandBadass(client)
 		local player = client:GetControllingPlayer()
-        if player and Shared.GetCheatsEnabled() and red and green and blue then
+        if player and Shared.GetCheatsEnabled() then
+        	// Toggle random colours
             if HasMixin(player, "TeamColours") then
-                player.armorColour = Vector(red, green, blue)
+                player.randomColour = not player.randomColour
+                player:SendDirectMessage("You are badass!")
             end
         end
+	end
+
+	function OnCommandSetColour(client, red, green, blue)
+		local player = client:GetControllingPlayer()
+		if player and Shared.GetCheatsEnabled() then
+			local intRed = tonumber(red)
+			local intGreen = tonumber(green)
+			local intBlue = tonumber(blue)
+			if red and green and blue then
+        	    if HasMixin(player, "TeamColours") then
+         	       player.armorColour = Vector(intRed, intGreen, intBlue)
+          	  end
+			else
+    			player:SendDirectMessage("Usage: setcolour <red> <green> <blue>")
+    			player:SendDirectMessage("Where red, green and blue are numbers between 0 and 255")
+      	  end
+    	end
 	end
 
 	function OnCommandDebugUpgrades(client)
@@ -169,6 +188,7 @@ if Server then
 		SwitchClass(client, "Support")
 	end
 	
+	Event.Hook("Console_badass", OnCommandBadass)
 	Event.Hook("Console_setcolour", OnCommandSetColour)
 
     Event.Hook("Console_givexp", OnCommandGiveXp) 

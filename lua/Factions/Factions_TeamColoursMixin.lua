@@ -44,6 +44,9 @@ TeamColoursMixin.networkVars =
 }
 
 function TeamColoursMixin:__initmixin()
+
+	self.armorColour = nil
+	self.randomColour = false
 	
 end
 
