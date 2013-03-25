@@ -11,6 +11,19 @@
 
 if Server then
 
+	function OnCommandDebugUpgrades(client)
+		for list, victim in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
+			Shared.Message("Player: " .. victim:GetName())
+			if HasMixin(victim, "Upgrade") then
+				for index, upgrade in victim:GetAllUpgrades() do
+					if upgrade:GetCurrentLevel() > 0 then
+						Shared.Message("Upgrade: " .. upgrade:GetClassName() .. " Level: " .. upgrade:GetCurrentLevel())
+					end
+				end
+			end
+		end
+	end
+
     function OnCommandGiveXp(client, amount)
 
         local player = client:GetControllingPlayer()

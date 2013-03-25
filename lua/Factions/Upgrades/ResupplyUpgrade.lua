@@ -109,7 +109,7 @@ local function ResupplyNow(player)
 end
 
 function ResupplyUpgrade:OnTrigger(player)
-	if (NeedsResupply(player)) then
+	if player and NeedsResupply(player) then
 		ResupplyNow(player)
 	end
 end
