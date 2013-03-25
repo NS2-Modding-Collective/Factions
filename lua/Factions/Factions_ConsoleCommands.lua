@@ -28,14 +28,14 @@ if Server then
 			local intRed = tonumber(red)
 			local intGreen = tonumber(green)
 			local intBlue = tonumber(blue)
-			if red and green and blue then
-        	    if HasMixin(player, "TeamColours") then
-         	       player.armorColour = Vector(intRed, intGreen, intBlue)
-          	  end
+			if intRed and intGreen and intBlue then
+				if HasMixin(player, "TeamColours") then
+					   player.armorColour = Vector(intRed, intGreen, intBlue)
+				end			
 			else
-    			player:SendDirectMessage("Usage: setcolour <red> <green> <blue>")
-    			player:SendDirectMessage("Where red, green and blue are numbers between 0 and 255")
-      	  end
+				player:SendDirectMessage("Usage: setcolour <red> <green> <blue>")
+				player:SendDirectMessage("Where red, green and blue are numbers between 0 and 255")
+			end
     	end
 	end
 
@@ -197,6 +197,7 @@ if Server then
 	Event.Hook("Console_support", OnCommandSupport) 
     Event.Hook("Console_giveupgrade", OnCommandGiveUpgrade) 
 	
+	Event.Hook("Console_debugupgrades", OnCommandDebugUpgrades)
 	Event.Hook("Console_forceclass", OnCommandForceClass) 
 	Event.Hook("Console_forcegivexp", OnCommandGiveXp) 
 	Event.Hook("Console_forcegiveupgrade", OnCommandForceGiveUpgrade) 
