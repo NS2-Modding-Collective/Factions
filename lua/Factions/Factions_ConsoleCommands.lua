@@ -11,7 +11,7 @@
 
 if Server then
 
-	function SetPlayerColor(client, red, green, blue)
+	function OnCommandSetColour(client, red, green, blue)
 		local player = client:GetControllingPlayer()
         if player and Shared.GetCheatsEnabled() and red and green and blue then
             if HasMixin(player, "TeamColours") then
@@ -168,6 +168,8 @@ if Server then
 	function OnCommandSupport(client)
 		SwitchClass(client, "Support")
 	end
+	
+	Event.Hook("Console_setcolour", OnCommandSetColour)
 
     Event.Hook("Console_givexp", OnCommandGiveXp) 
 	Event.Hook("Console_assault", OnCommandAssault) 
