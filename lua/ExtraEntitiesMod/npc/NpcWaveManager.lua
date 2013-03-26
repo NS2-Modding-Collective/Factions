@@ -37,7 +37,7 @@ if Server then
     end    
         
     function NpcManager:GetTechId()
-        return kTechId.Marine
+        return kTechId.Skulk
     end    
 
     function NpcManager:Reset() 
@@ -79,24 +79,35 @@ if Server then
         end 
     end
     
-    function NpcManager:GetClearSpawn()
-    
-        local extents = LookupTechData(self:GetTechId(), kTechDataMaxExtents) or Vector(1,1,1)
 
-        // search clear spawn pos
-        for index = 1, 50 do
-            position = GetRandomSpawnForCapsule(extents.y, extents.x , self:GetOrigin(), 0, 4, EntityFilterOne(self))
-            if position then
-                break                
+    function NpcManager:GetClearSpawn(class)
+    
+        local techId = LookupTechId(class, kTechDataMapName, kTechId.None) 
+        local extents = Vector(0.17, 0.2, 0.17)
+        if techId  then
+             extents = LookupTechData(techId , kTechDataMaxExtents) or  extents 
+        end
+        // origin of entity is on ground, so make it higher
+        local position = self:GetOrigin() + Vector(0, extents.y, 0)        
+        
+        if not GetHasRoomForCapsule(extents, position, CollisionRep.Default, PhysicsMask.AllButPCsAndRagdolls, EntityFilterOne(self)) then
+            // search clear spawn pos
+            for index = 1, 50 do
+                randomSpawn = GetRandomSpawnForCapsule(extents.y, extents.x , position , 1, 6, EntityFilterOne(self))
+                if position then
+                    position = randomSpawn
+                    break                
+                end
             end
         end
             
         return position
         
     end
+        
 
     function NpcManager:GetValues()
-        local spawnOrigin = self:GetClearSpawn()
+        local spawnOrigin = self:GetClearSpawn(Skulk.kMapName)
         // values every npc needs for the npc mixin
         local values = { 
                         origin = spawnOrigin,
@@ -110,12 +121,17 @@ if Server then
 
     function NpcManager:Spawn(waypoint)
         local values = self:GetValues() 
-        local entity = Server.CreateEntity(Skulk.kMapName, values)
-        // init the xp mixin for the new npc
-        InitMixin(entity, NpcMixin)
-        if waypoint then
-            entity:GiveOrder(kTechId.Move , waypoint:GetId(), waypoint:GetOrigin(), nil, true, true)
-            entity.mapWaypoint = waypoint:GetId()
+        if values.origin then
+            local entity = Server.CreateEntity(Skulk.kMapName, values)
+            // init the xp mixin for the new npc
+            InitMixin(entity, NpcMixin)
+            if waypoint then
+                entity:GiveOrder(kTechId.Move , waypoint:GetId(), waypoint:GetOrigin(), nil, true, true)
+                entity.mapWaypoint = waypoint:GetId()
+            end
+        else
+            // for debugging
+            Print("Found no position for npc!")
         end
     end
     
