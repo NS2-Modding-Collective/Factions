@@ -21,6 +21,7 @@ local networkVars = {
 
 AddMixinNetworkVars(MagnoBootsWearerMixin, networkVars)
 AddMixinNetworkVars(CombatMovementMixin, networkVars)
+AddMixinNetworkVars(TeamColoursMixin, networkVars)
 AddMixinNetworkVars(SpawnProtectMixin, networkVars)
 AddMixinNetworkVars(FactionsClassMixin, networkVars)
 
