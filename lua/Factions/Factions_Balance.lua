@@ -10,6 +10,7 @@
 // Factions_Balance.lua
 
 // Game rules
+kInitialTimeLeft = 25
 kInitialTokenValue = 500
 
 // Sprinting
