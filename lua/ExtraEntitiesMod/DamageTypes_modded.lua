@@ -11,7 +11,7 @@ local originalGetDamageByType = GetDamageByType
 function GetDamageByType(target, attacker, doer, damage, damageType)
       // only for the client    
     if attacker.isaNpc then
-        damage = damage * 0.1
+        damage = damage * 0.2
     end
     return originalGetDamageByType(target, attacker, doer, damage, damageType)
 end
