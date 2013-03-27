@@ -16,7 +16,7 @@ Shared.PrecacheSurfaceShader("shaders/team_colours.surface_shader")
 TeamColoursMixin = CreateMixin( TeamColoursMixin )
 TeamColoursMixin.type = "TeamColours"
 
-TeamColoursMixin.intensity = 0.15
+TeamColoursMixin.intensity = 0.2
 
 TeamColoursMixin.expectedMixins =
 {

@@ -19,6 +19,9 @@ Script.Load("lua/Factions/Factions_Balance.lua")
 // Extra Entities
 Script.Load("lua/ExtraEntitiesMod/eem_Shared.lua")
 
+// Effects
+Script.Load("lua/Factions/Effects/Factions_DamageEffects.lua")
+
 // Class overrides here
 Script.Load("lua/Factions/Factions_NS2Gamerules.lua")
 Script.Load("lua/Factions/Factions_PlayingTeam.lua")
@@ -28,9 +31,16 @@ Script.Load("lua/Factions/Factions_Marine.lua")
 Script.Load("lua/Factions/Factions_MarineSpectator.lua")
 Script.Load("lua/Factions/Factions_JetpackMarine.lua")
 
+// Buildings
+Script.Load("lua/Factions/Factions_Armory.lua")
+Script.Load("lua/Factions/Factions_CommandStation.lua")
+Script.Load("lua/Factions/Factions_Extractor.lua")
+
+// Weapons
 Script.Load("lua/Factions/Weapons/Factions_Pistol.lua")
 Script.Load("lua/Factions/Weapons/Factions_Rifle.lua")
 Script.Load("lua/Factions/Weapons/Factions_Shotgun.lua")
+Script.Load("lua/Factions/Factions_Mine.lua")
 
 // New classes here
 Script.Load("lua/Factions/Factions_GenericGamerules.lua")

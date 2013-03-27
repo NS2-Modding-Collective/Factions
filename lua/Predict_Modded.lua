@@ -14,4 +14,6 @@ Script.Load("lua/Shared_Modded.lua")
 
 Script.Load("lua/Predict.lua")
 
+Script.Load("lua/Factions/Factions_NetworkMessages_Client.lua")
+
 Script.Load("lua/PostLoadMod.lua")

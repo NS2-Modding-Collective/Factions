@@ -18,6 +18,9 @@ Script.Load("lua/MixinUtility.lua")
     TODO: Also include every new class
 */
 
+kSkulkPointValue = 30
+kFadePointValue = 150
+kOnosPointValue = 400
 kMarinePointValue = 60
 kJetpackPointValue = 80
 kExosuitPointValue = 120
@@ -31,16 +34,24 @@ kPhaseGatePointValue = kPhaseGateCost * buildingXpFactor
 kSentryPointValue = kSentryCost * buildingXpFactor
 kPowerPointPointValue = 0
 
-kMinePointValue =  kMineCost * buildingXpFactor
+kMinePointValue = kMineCost * buildingXpFactor
 
 // default start xp
 kPlayerInitialIndivRes = 0
 // default start lvl
 kStartLevel = 1
+kStartXPAvailable = 0
 
 // Max xp you can get
-kMaxPersonalResources = 9999
-kMaxResources = 9999
+kMaxXP = 25000
+kMaxScore = kMaxXP
+kMaxPersonalResources = kMaxXP
+kMaxResources = kMaxXP
+
+// how much % from the xp are the teammates nearby getting and the range
+mateXpAmount = 0.4
+mateXpRange = 20
+
 
 // How much lvl you will lose when you rejoin the same team
 kPenaltyLevel = 1
@@ -75,15 +86,76 @@ XpMixin.expectedCallbacks =
 {
 }
 
+XpMixin.overrideFunctions =
+{
+	"SetResources",
+	"AddResources",
+	"GetResources",
+	"GetPersonalResources",
+	"GetDisplayResources",
+}
+
 XpMixin.networkVars =
 {
     level = "integer (0 to 99)",
+	permanentXpAvailable = "integer (0 to " .. kMaxXP .. ")",
     // score was no networkvar so add it that we can refer on it as client
     score = "integer (0 to " .. kMaxScore .. ")",
 }
 
 function XpMixin:__initmixin()
     self.level = kStartLevel
+	self.permanentXpAvailable = kStartXPAvailable
+end
+
+function XpMixin:CopyPlayerDataFrom(player)
+
+	if player.level then		
+		self.level = player.level
+		self.permanentXpAvailable = player.permanentXpAvailable
+	end
+
+end
+
+// Resources are divided by 10 as we are limited to 999 max.
+function XpMixin:SetResources(amount)
+
+    local oldVisibleResources = math.floor(self.permanentXpAvailable)
+
+    self.permanentXpAvailable = Clamp(amount, 0, kMaxPersonalResources)
+    
+    local newVisibleResources = math.floor(self.permanentXpAvailable)
+    
+    if oldVisibleResources ~= newVisibleResources then
+        self:SetScoreboardChanged(true)
+    end
+    
+end
+
+function XpMixin:AddResources(amount)
+
+    local resReward = math.min(amount, kMaxPersonalResources - self:GetResources())
+    local oldRes = self:GetResources()
+    self:SetResources(self:GetResources() + resReward)
+    
+    if oldRes ~= self:GetResources() then
+        self:SetScoreboardChanged(true)
+    end
+    
+    return resReward
+    
+end
+
+function XpMixin:GetResources()
+	return self.permanentXpAvailable
+end
+
+function XpMixin:GetPersonalResources()
+	return self.permanentXpAvailable
+end
+
+function XpMixin:GetDisplayResources()
+	return self.permanentXpAvailable
 end
 
 // also adds res when score will be added so you can use them to buy something
@@ -92,15 +164,14 @@ function XpMixin:AddScore(points, res)
         if points ~= nil and points ~= 0 then        
             self:AddResources(points)
             self:SetScoreboardChanged(true)
-            self:CheckLvlUp()  
+            self:CheckLvlUp()
+			self:GiveXpToTeammatesNearby(points)
         end    
     end    
 end
 
 // gives res back when rejoining
-function XpMixin:Reset()     
-    self:AddResources(self.score)
-    self:SetScoreboardChanged(true)
+function XpMixin:Reset()
 end
 
 function XpMixin:CheckLvlUp()    
@@ -225,5 +296,21 @@ function XpMixin:GetLevelProgression()
         local nextLevel = kXpList[lvl + 1]["XP"]
         return (xp - thisLevel) / (nextLevel - thisLevel)
     end
+end
+
+// Give XP to teammates around you when you kill an enemy
+function Player:GiveXpToTeammatesNearby(xp)
+
+	xp = xp * mateXpAmount
+
+	local playersInRange = GetEntitiesForTeamWithinRange("Player", self:GetTeamNumber(), self:GetOrigin(), mateXpRange)
+	
+	// Only give Xp to players who are alive!
+	for _, player in ipairs(playersInRange) do
+		if self ~= player and player:GetIsAlive() then
+			player:AddResources(xp)    
+		end
+	end
+
 end
 

@@ -32,6 +32,11 @@ function Rifle:OnCreate()
 	InitMixin(self, IronSightMixin, ironSightParameters)
 	
 	assert(HasMixin(self, "IronSight"))
+
+end
+
+function Rifle:GetSpread()
+	return ClipWeapon.kCone4Degrees
 end
 
 Class_Reload("Rifle", networkVars)

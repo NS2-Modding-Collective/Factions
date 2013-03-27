@@ -9,8 +9,11 @@
 
 // Factions_Marine.lua
 
-Script.Load("lua/Factions/Factions_FactionsClassMixin.lua")
 Script.Load("lua/Factions/Factions_MagnoBootsWearerMixin.lua")
+Script.Load("lua/Factions/Factions_TimerMixin.lua")
+Script.Load("lua/Factions/Factions_SpeedUpgradeMixin.lua")
+Script.Load("lua/Factions/Factions_HealthUpgradeMixin.lua")
+Script.Load("lua/Factions/Factions_ArmorUpgradeMixin.lua")
 Script.Load("lua/Factions/Factions_CombatMovementMixin.lua")
 Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
 Script.Load("lua/Factions/Factions_IronSightViewerMixin.lua")
@@ -20,27 +23,30 @@ local networkVars = {
 }
 
 AddMixinNetworkVars(MagnoBootsWearerMixin, networkVars)
+AddMixinNetworkVars(SpeedUpgradeMixin, networkVars)
+AddMixinNetworkVars(HealthUpgradeMixin, networkVars)
+AddMixinNetworkVars(ArmorUpgradeMixin, networkVars)
 AddMixinNetworkVars(CombatMovementMixin, networkVars)
 AddMixinNetworkVars(TeamColoursMixin, networkVars)
 AddMixinNetworkVars(SpawnProtectMixin, networkVars)
-AddMixinNetworkVars(FactionsClassMixin, networkVars)
-
 
 // Balance, movement, animation
-Marine.kSprintAcceleration = 180
+Marine.kSprintAcceleration = 220
 Marine.kSprintInfestationAcceleration = 150
-Marine.kAcceleration = 120
+Marine.kAcceleration = 140
+Marine.kLadderAcceleration = 50
 Marine.kGroundFriction = 13
-Marine.kGroundWalkFriction = 22
+Marine.kGroundWalkFriction = 20
 
 Marine.kCrouchSpeedScalar = 0.4
+Marine.kWallWalkSpeedScalar = 0.5
 
 Marine.kWalkMaxSpeed = 5.0                // Four miles an hour = 6,437 meters/hour = 1.8 meters/second (increase for FPS tastes)
 Marine.kRunMaxSpeed = 9.0               // 10 miles an hour = 16,093 meters/hour = 4.4 meters/second (increase for FPS tastes)
 Marine.kRunInfestationMaxSpeed = Marine.kRunMaxSpeed - 0.5
 Marine.kWalkBackwardSpeedScalar = 0.75
 
-Marine.kJumpHeight = 2.5
+Marine.kJumpHeight = 2.3
 
 // Wall walking logic.
 Marine.kJumpRepeatTime = 0.1
@@ -92,25 +98,34 @@ function Marine:OnCreate()
 	// Init mixins
     InitMixin(self, WallMovementMixin)
 	InitMixin(self, MagnoBootsWearerMixin)
+	InitMixin(self, SpeedUpgradeMixin)
+	InitMixin(self, HealthUpgradeMixin)
+	InitMixin(self, ArmorUpgradeMixin)
 	InitMixin(self, CombatMovementMixin)
 	InitMixin(self, CloakableMixin)
 	InitMixin(self, TeamColoursMixin)
 	InitMixin(self, IronSightViewerMixin)
 	InitMixin(self, SpawnProtectMixin)
-	InitMixin(self, FactionsClassMixin)
-	InitMixin(self, XpMixin)
-	InitMixin(self, UpgradeMixin)
 	
+	assert(HasMixin(self, "FactionsClass"))
 	assert(HasMixin(self, "WallMovement"))
 	assert(HasMixin(self, "MagnoBootsWearer"))
+	assert(HasMixin(self, "SpeedUpgrade"))
+	assert(HasMixin(self, "HealthUpgrade"))
+	assert(HasMixin(self, "ArmorUpgrade"))
 	assert(HasMixin(self, "CombatMovement"))
 	assert(HasMixin(self, "Cloakable"))
 	assert(HasMixin(self, "TeamColours"))
 	assert(HasMixin(self, "IronSightViewer"))
 	assert(HasMixin(self, "SpawnProtect"))
-	assert(HasMixin(self, "FactionsClass"))
 	assert(HasMixin(self, "Xp"))
 	assert(HasMixin(self, "Upgrade"))
+	
+	// Server-only mixins
+	if Server then
+		InitMixin(self, TimerMixin)
+		assert(HasMixin(self, "Timer"))
+	end
 	
 end
 
@@ -146,6 +161,10 @@ function Marine:GetCrouchSpeedScalar()
     return Marine.kCrouchSpeedScalar
 end
 
+function Marine:GetWallWalkSpeedScalar()
+    return Marine.kWallWalkSpeedScalar
+end
+
 function Marine:GetRollSmoothRate()
 	return 4
 end
@@ -159,7 +178,8 @@ function Marine:GetAirFrictionForce()
 end 
 
 function Marine:GetJumpHeight()
-    return Marine.kJumpHeight - Marine.kJumpHeight * self.slowAmount * 0.8
+    //return Marine.kJumpHeight - Marine.kJumpHeight * self.slowAmount * 0.8
+	return Marine.kJumpHeight
 end
 
 if Client then

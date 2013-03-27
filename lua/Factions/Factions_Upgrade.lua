@@ -15,19 +15,46 @@ class 'FactionsUpgrade'
 kFactionsUpgradeTypes = enum({'Ability', 'Attribute', 'Tech', 'Weapon'})
 kFactionsTriggerTypes = enum({'NoTrigger', 'ByTime', 'ByKey'})
 
+FactionsUpgrade.upgradeType = kFactionsUpgradeTypes.Tech       	// The type of the upgrade
+FactionsUpgrade.triggerType = kFactionsTriggerTypes.NoTrigger  	// How the upgrade is gonna be triggered
+FactionsUpgrade.currentLevel = 0                               	// The default level of the upgrade. This is incremented when we buy the upgrade
+FactionsUpgrade.levels = 1                                     	// If the upgrade has more than one lvl, like weapon or armor ups. Default is 1.
+FactionsUpgrade.cost = { 9999 }                                	// Cost of each level of the upgrade in xp
+FactionsUpgrade.upgradeName = "nil"                         	// Name of the upgrade as used in the console, e.g. smg
+FactionsUpgrade.upgradeTitle = "nil"                         	// Title of the upgrade, e.g. Submachine Gun
+FactionsUpgrade.upgradeDesc = "No discription"                 	// Description of the upgrade
+FactionsUpgrade.upgradeTechId = { kTechId.Move }             	// Table of the techIds of the upgrade
+FactionsUpgrade.hardCapScale = 0                               	// How many people of your team can max. take this upgrade, 1/5 for 1 upgrade per 5 player
+FactionsUpgrade.mutuallyExclusive = { }                        	// Upgrades that can not bought when you got this (like no jp when have exo)
+FactionsUpgrade.requirements = { }                        		// Upgrades you must get before you can get this one.
+FactionsUpgrade.permanent = true								// Controls whether you get the upgrade back when you respawn
+
 function FactionsUpgrade:Initialize()
-	self.upgradeType = kFactionsUpgradeTypes.Tech       // the type of the upgrade
-	self.triggerType = kFactionsTriggerTypes.NoTrigger  // how the upgrade is gonna be triggered
-	self.currentLevel = 0                               // The default level of the upgrade. This is incremented when we buy the upgrade
-	self.levels = 1                                     // if the upgrade has more than one lvl, like weapon or armor ups. Default is 1.
-	self.cost = { 9999 }                                // cost of each level of the upgrade in xp
-	self.upgradeName = "nil"                         	// name of the upgrade as used in the console, e.g. smg
-	self.upgradeTitle = "nil"                         	// Title of the upgrade, e.g. Submachine Gun
-	self.upgradeDesc = "No discription"                 // discription of the upgrade
-	self.upgradeTechId = { kTechId.Move }             	// Table of the techIds of the upgrade
-	self.hardCapScale = 0                               // how many people of your team can max. take this upgrade, 1/5 for 1 upgrade per 5 player
-	self.mutuallyExclusive = { }                        // upgrades that can not bought when you got this (like no jp when have exo)
-	self.permanent = true								// Controls whether you get the upgrade back when you respawn
+	// This is a base class so never show it in the menu.
+	if (self:GetClassName() == "FactionsUpgrade") then
+		self.hideUpgrade = true
+	end
+	self.upgradeType = FactionsUpgrade.upgradeType
+	self.triggerType = FactionsUpgrade.triggerType
+	self.currentLevel = FactionsUpgrade.currentLevel
+	self.levels = FactionsUpgrade.levels
+	self.cost = FactionsUpgrade.cost
+	self.upgradeName = FactionsUpgrade.upgradeName
+	self.upgradeTitle = FactionsUpgrade.upgradeTitle
+	self.upgradeDesc = FactionsUpgrade.upgradeDesc
+	self.upgradeTechId = FactionsUpgrade.upgradeTechId
+	self.hardCapScale = FactionsUpgrade.hardCapScale
+	self.mutuallyExclusive = FactionsUpgrade.mutuallyExclusive
+	self.permanent = FactionsUpgrade.permanent
+end
+
+function FactionsUpgrade:GetHideUpgrade()
+	// Convert nil to false!
+	if self.hideUpgrade then
+		return true
+	else
+		return false
+	end
 end
 
 function FactionsUpgrade:GetUpgradeType()
@@ -64,6 +91,11 @@ function FactionsUpgrade:AddLevel()
 	end
 end
 
+function FactionsUpgrade:SetLevel(newLevel)
+	self.currentLevel = newLevel
+end
+
+
 function FactionsUpgrade:ResetLevel()
 	self.currentLevel = 0
 end
@@ -72,16 +104,24 @@ function FactionsUpgrade:GetCostForNextLevel()
 	if self:GetIsAtMaxLevel() then
 		return 9999
 	else
-		return self:GetCost(self:GetCurrentLevel() + 1)
+		return self:GetCost(self:GetNextLevel())
 	end
 end
 
 function FactionsUpgrade:GetCost(level)
-    return self.cost[level]
+	if level > self:GetMaxLevels() then
+		return 9999
+	else
+		return self.cost[level]
+	end
 end
 
 function FactionsUpgrade:GetUpgradeName()
-    return self.upgradeName
+	if self.upgradeName == "nil" then
+		return self:GetClassName()
+	else
+		return self.upgradeName
+	end
 end
 
 function FactionsUpgrade:GetUpgradeTitle()
@@ -92,12 +132,16 @@ function FactionsUpgrade:GetUpgradeDesc()
     return self.upgradeDesc
 end
 
-function FactionsUpgrade:GetUpgradeTechId(level)
-    return self.upgradeTechId[level]
+function FactionsUpgrade:GetUpgradeTechId()
+    return self.upgradeTechId
 end
 
 function FactionsUpgrade:GetIsPermanent()
 	return self.permanent
+end
+
+function FactionsUpgrade:GetRequirements()
+	return self.requirements
 end
 
 if kFactionsUpgradeIdCache == nil then
@@ -128,10 +172,6 @@ end
 
 // called from the UpgradeMixin when the upgraded is added to a player, old upgradeFunc
 function FactionsUpgrade:OnAdd(player)
-end
-
-// called from the UpgradeMixin when upgrade will be triggered by a key or by time
-function FactionsUpgrade:OnTrigger(player)
 end
 
 // called when the Player is resetted so we can reset all the changes the upgrade has made

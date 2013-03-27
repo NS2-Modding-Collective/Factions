@@ -19,6 +19,7 @@
 
 Script.Load("lua/Weapons/Marine/ClipWeapon.lua")
 Script.Load("lua/PickupableWeaponMixin.lua")
+Script.Load("lua/LiveMixin.lua")
 Script.Load("lua/EntityChangeMixin.lua")
 Script.Load("lua/Weapons/ClientWeaponEffectsMixin.lua")
 Script.Load("lua/Factions/Weapons/Factions_IronSightMixin.lua")
@@ -32,12 +33,12 @@ local kViewModelName = PrecacheAsset("models/marine/lightmachinegun/lightmachine
 local kAnimationGraph = PrecacheAsset("models/marine/lightmachinegun/lightmachinegun_view.animation_graph")
 
 LightMachineGun.kIronSightTexture = "ui/Factions/testing_ironsights.png"
-LightMachineGun.kIronSightZoomFOV = 45
+LightMachineGun.kIronSightZoomFOV = 80
 LightMachineGun.kIronSightActivateTime = 0.1
 
 local kRange = 250
 // 4 degrees in NS1
-local kSpread = ClipWeapon.kCone3Degrees
+local kSpread = ClipWeapon.kCone5Degrees
 
 local kButtRange = 1.1
 
@@ -59,6 +60,8 @@ local networkVars =
 {
     soundType = "integer (1 to 9)"
 }
+
+AddMixinNetworkVars(LiveMixin, networkVars)
 
 local kMuzzleEffect = PrecacheAsset("cinematics/marine/rifle/muzzle_flash.cinematic")
 local kMuzzleAttachPoint = "fxnode_riflemuzzle"
@@ -95,6 +98,7 @@ function LightMachineGun:OnCreate()
     
     InitMixin(self, PickupableWeaponMixin)
     InitMixin(self, EntityChangeMixin)
+    InitMixin(self, LiveMixin)
     
     if Client then
         InitMixin(self, ClientWeaponEffectsMixin)
@@ -176,6 +180,10 @@ end
 
 function LightMachineGun:GetClipSize()
     return kLightMachineGunClipSize
+end
+
+function LightMachineGun:GetReloadTime()
+    return kRifleReloadTime
 end
 
 function LightMachineGun:GetSpread()
@@ -312,6 +320,28 @@ if Client then
         return self:GetOrigin()
         
     end
+    
+end
+
+function LightMachineGun:ModifyDamageTaken(damageTable, attacker, doer, damageType)
+    if damageType ~= kDamageType.Corrode then
+        damageTable.damage = 0
+    end
+end
+
+function LightMachineGun:GetCanTakeDamageOverride()
+    return self:GetParent() == nil
+end
+
+if Server then
+
+    function LightMachineGun:OnKill()
+        DestroyEntity(self)
+    end
+    
+    function LightMachineGun:GetSendDeathMessageOverride()
+        return false
+    end 
     
 end
 

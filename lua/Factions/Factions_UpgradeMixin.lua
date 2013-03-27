@@ -20,6 +20,7 @@ UpgradeMixin.networkVars =
 
 UpgradeMixin.expectedMixins =
 {
+	FactionsClass = "For specifying which upgrades are allowed",
 }
 
 UpgradeMixin.expectedCallbacks =
@@ -46,21 +47,33 @@ end
 
 function UpgradeMixin:CopyPlayerDataFrom(player)
     if player.UpgradeList then 
-		self.UpgradeList = player.UpgradeList
-		self.UpgradeList:ResetNonPermanentUpgrades()
+		self.UpgradeList:CopyUpgradeDataFrom(player.UpgradeList)
 	end
     
 	// give upgrades back when the player respawns
     if self:GetIsAlive() and self:GetTeamNumber() ~= kNeutralTeamType then
-        for i, entry in ipairs(self.UpgradeList:GetActiveUpgrades()) do
-            upgrade:OnAdd(self)
-        end
+		self:GiveBackPermanentUpgrades()
     end
+end
+
+function UpgradeMixin:GiveBackPermanentUpgrades()
+	for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
+		if upgrade:GetCurrentLevel() > 0 and upgrade:GetIsPermanent() then
+			upgrade:OnAdd(self)
+		end
+	end
+end
+
+function UpgradeMixin:GetHasPrerequisites(upgrade)
+	return self.UpgradeList:GetHasPrerequisites(upgrade)
 end
 
 function UpgradeMixin:GetIsAllowedToBuy(upgradeId)
 	local upgrade = self:GetUpgradeById(upgradeId)
-	if (not upgrade:GetIsAtMaxLevel()) and self.resources >= upgrade:GetCostForNextLevel() then
+	if (not upgrade:GetIsAtMaxLevel()) 
+		and self:GetResources() >= upgrade:GetCostForNextLevel()
+		and self:GetFactionsClass():GetIsUpgradeAllowed(upgrade)
+		and self:GetHasPrerequisites(upgrade) then
 		return true
 	else
 		return false
@@ -73,17 +86,17 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
     if Server then
         local upgradeOk = self:GetIsAllowedToBuy(upgradeId)
 		
-        if upgradeOk then        
-			local success = upgrade:OnAdd(self)
-			
-			if success and not freeUpgrade then
-				self:AddResources(-upgrade:GetCostForNextLevel())
-				Server.SendNetworkMessage(self, "UpdateUpgrade",  BuildUpdateUpgradeMessage(upgradeId, level), true)
-            end
-			
+        if upgradeOk then     
 			if upgrade:GetIsPermanent() then
 				upgrade:AddLevel()
-			end
+				Server.SendNetworkMessage(self, "UpdateUpgrade",  BuildUpdateUpgradeMessage(upgradeId, upgrade:GetCurrentLevel()), true)
+			end		
+			
+			upgrade:OnAdd(self)
+			
+			if not freeUpgrade then
+				self:AddResources(-upgrade:GetCostForNextLevel())
+            end
         else
             self:SendDirectMessage("Upgrade not available")
         end
@@ -93,12 +106,16 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
     end
 end
 
+function UpgradeMixin:SetUpgradeLevel(upgradeId, upgradeLevel)
+	return self.UpgradeList:SetUpgradeLevel(upgradeId, upgradeLevel)
+end
+
 function UpgradeMixin:GetCanBuyUpgrade(upgradeId)
     local hasUpgrade = self:GetHasUpgrade(upgradeId)
 	local upgrade = self:GetUpgradeById(upgradeId)
     if not hasUpgrade or (hasUpgrade and not upgrade:GetIsAtMaxLevel()) then
         // upgrade is ok, enough res?
-        if self:GetResources() - upgrade:GetCostForNextLevel() > 0 then
+        if self:GetResources() - upgrade:GetCostForNextLevel() >= 0 then
             return true
         end
     end      
@@ -122,12 +139,16 @@ function UpgradeMixin:GetUpgradeByName(upgradeName)
     return self.UpgradeList:GetUpgradeByName(upgradeName)
 end
 
-function UpgradeMixin:GetUpgradesByType(upgradeType)
-    return self.UpgradeList:GetUpgradesByType(upgradeType)
+function UpgradeMixin:GetAvailableUpgradesByType(upgradeType)
+    return self.UpgradeList:GetAvailableUpgradesByType(self:GetFactionsClass(), upgradeType)
 end
 
 function UpgradeMixin:GetAllUpgrades()
 	return self.UpgradeList:GetAllUpgrades()
+end
+
+function UpgradeMixin:GetAvailableUpgrades()
+	return self.UpgradeList:GetAvailableUpgrades(self:GetFactionsClass())
 end
 
 function UpgradeMixin:spendlvlHints(hint, type)

@@ -11,15 +11,46 @@
 
 if Server then
 
-    function OnCommandGiveMagnoBoots(client)
-
-        local player = client:GetControllingPlayer()
-        if (HasMixin(player, "MagnoBootsWearer")) then
-            player:GiveMagnoBoots()
+	function OnCommandBadass(client)
+		local player = client:GetControllingPlayer()
+        if player and Shared.GetCheatsEnabled() then
+        	// Toggle random colours
+            if HasMixin(player, "TeamColours") then
+                player.randomColour = not player.randomColour
+                player:SendDirectMessage("You are badass!")
+            end
         end
+	end
 
-    end
+	function OnCommandSetColour(client, red, green, blue)
+		local player = client:GetControllingPlayer()
+		if player and Shared.GetCheatsEnabled() then
+			local intRed = tonumber(red)
+			local intGreen = tonumber(green)
+			local intBlue = tonumber(blue)
+			if intRed and intGreen and intBlue then
+				if HasMixin(player, "TeamColours") then
+					   player.armorColour = Vector(intRed, intGreen, intBlue)
+				end			
+			else
+				player:SendDirectMessage("Usage: setcolour <red> <green> <blue>")
+				player:SendDirectMessage("Where red, green and blue are numbers between 0 and 255")
+			end
+    	end
+	end
 
+	function OnCommandDebugUpgrades(client)
+		for list, victim in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
+			Shared.Message("Player: " .. victim:GetName())
+			if HasMixin(victim, "Upgrade") then
+				for index, upgrade in victim:GetAllUpgrades() do
+					if upgrade:GetCurrentLevel() > 0 then
+						Shared.Message("Upgrade: " .. upgrade:GetClassName() .. " Level: " .. upgrade:GetCurrentLevel())
+					end
+				end
+			end
+		end
+	end
 
     function OnCommandGiveXp(client, amount)
 
@@ -28,7 +59,7 @@ if Server then
             if not amount then
                 amount = 10
             end	        
-            player:AddScore(amount)
+            player:AddResources(amount)
         end
 
     end
@@ -64,37 +95,61 @@ if Server then
 	
 	end
 	
-	function OnCommandForceClass(client, playerName, newClass)
+	function OnCommandForceGiveUpgrade(client, playerName, newUpgrade)
 	
 		if Shared.GetCheatsEnabled() then
 		
 			local found = FindPlayerByName(playerName)
-			
 			if found ~= nil then
 			
-				if HasMixin(found, "FactionsClass") then
-		
+				if HasMixin(found, "Upgrade") then
+				
 					// If a class is specified then change the class.
-					local player = client:GetControllingPlayer()
-					if newClass then
-						local success = found:ChangeFactionsClassFromString(newClass)
-						if player then
-							if success then 
-								player:SendDirectMessage("Changed " .. found:GetName() .. "'s class to " .. found:GetFactionsClassString())
-							else
-								player:SendDirectMessage("Invalid class name: " .. newClass)
+					if newUpgrade then
+				        if found and Shared.GetCheatsEnabled() and newUpgrade then
+							if HasMixin(found, "Upgrade") then
+								local upgrade = found:GetUpgradeByName(newUpgrade)
+								// cause it's cheats 1 you just get the upgrade without paying
+								found:BuyUpgrade(upgrade:GetId(), true)
+								SendGlobalChatMessage(found:GetName() .. " has been given a " .. upgrade:GetUpgradeTitle() .. " upgrade.")
 							end
-						end
-					else
-						if player then
-							player:SendDirectMessage(found:GetName() .. "'s class is a: " .. found:GetFactionsClassString())
 						end
 					end
 					
 				end
 				
 			else
-				Shared.Message("Failed to find player matching name")
+				SendGlobalChatMessage("Failed to find player matching name")
+			end
+		end
+			
+	end
+	
+	function OnCommandForceClass(client, playerName, newUpgrade)
+	
+		if Shared.GetCheatsEnabled() then
+		
+			local found = FindPlayerByName(playerName)
+			if found ~= nil then
+			
+				if HasMixin(found, "FactionsClass") then
+				
+					// If a class is specified then change the class.
+					if newClass then
+						local success = found:ChangeFactionsClassFromString(newClass)
+						if success then 
+							SendGlobalChatMessage("Changed " .. found:GetName() .. "'s class to " .. found:GetFactionsClassString())
+						else
+							SendGlobalChatMessage("Invalid class name: " .. newClass)
+						end
+					else
+						SendGlobalChatMessage(found:GetName() .. "'s class is a: " .. found:GetFactionsClassString())
+					end
+					
+				end
+				
+			else
+				SendGlobalChatMessage("Failed to find player matching name")
 			end
 		end
 			
@@ -132,15 +187,18 @@ if Server then
 	function OnCommandSupport(client)
 		SwitchClass(client, "Support")
 	end
+	
+	Event.Hook("Console_badass", OnCommandBadass)
+	Event.Hook("Console_setcolour", OnCommandSetColour)
 
-    Event.Hook("Console_magnoboots", OnCommandGiveMagnoBoots) 
     Event.Hook("Console_givexp", OnCommandGiveXp) 
 	Event.Hook("Console_assault", OnCommandAssault) 
 	Event.Hook("Console_scout", OnCommandScout) 
 	Event.Hook("Console_support", OnCommandSupport) 
     Event.Hook("Console_giveupgrade", OnCommandGiveUpgrade) 
 	
+	Event.Hook("Console_debugupgrades", OnCommandDebugUpgrades)
 	Event.Hook("Console_forceclass", OnCommandForceClass) 
 	Event.Hook("Console_forcegivexp", OnCommandGiveXp) 
-	Event.Hook("Console_forcegiveupgrade", OnCommandGiveUpgrade) 
+	Event.Hook("Console_forcegiveupgrade", OnCommandForceGiveUpgrade) 
 end

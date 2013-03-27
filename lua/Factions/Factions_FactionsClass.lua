@@ -13,16 +13,31 @@
 							
 class 'FactionsClass'
 
-FactionsClass.type 			= "NoneSelected"				     								// the type of the FactionsClass
-FactionsClass.name 			= kFactionsClassStrings[kFactionsClassType.NoneSelected]     		// the friendly name of the FactionsClass
-FactionsClass.description 	= kFactionsClassStrings[kFactionsClassType.NoneSelected]     		// the description of the FactionsClass
-FactionsClass.baseHealth 	= kMarineHealth											     		// the base health value of this class
-FactionsClass.baseArmor 	= kMarineArmor											     		// the base armor value of this class
-FactionsClass.baseWalkSpeed = 5.0                												// the initial walk speed of this class
-FactionsClass.baseRunSpeed 	= 9.0                												// the initial run speed of this class
-FactionsClass.icon			= "ui/Factions/badges/badge_assault.dds"							// the badge for this class
-FactionsClass.picture		= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
-FactionsClass.techTree		= { }
+FactionsClass.type 						= "NoneSelected"				     								// the type of the FactionsClass
+FactionsClass.name 						= kFactionsClassStrings[kFactionsClassType.NoneSelected]     		// the friendly name of the FactionsClass
+FactionsClass.description 				= kFactionsClassStrings[kFactionsClassType.NoneSelected]     		// the description of the FactionsClass
+FactionsClass.baseHealth 				= kMarineHealth											     		// the base health value of this class
+FactionsClass.baseArmor 				= kMarineArmor											     		// the base armor value of this class
+FactionsClass.baseWalkSpeed 			= 6.0                												// the initial walk speed of this class
+FactionsClass.baseRunSpeed 				= 9.0                												// the initial run speed of this class
+FactionsClass.icon						= "ui/Factions/badges/badge_assault.dds"							// the badge for this class
+FactionsClass.picture					= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
+FactionsClass.initialUpgrades			= { }																// the upgrades that you start the game with
+FactionsClass.disallowedUpgrades		= { }																// the upgrades that you are not allowed to buy
+
+function FactionsClass:Initialize()
+	self.type = FactionsClass.type
+	self.name = FactionsClass.name
+	self.description = FactionsClass.description
+	self.baseHealth = FactionsClass.baseHealth
+	self.baseArmor = FactionsClass.baseArmor
+	self.baseWalkSpeed = FactionsClass.baseWalkSpeed
+	self.baseRunSpeed = FactionsClass.baseRunSpeed
+	self.icon = FactionsClass.icon
+	self.picture = FactionsClass.picture
+	self.initialUpgrades = FactionsClass.initialUpgrades
+	self.disallowedUpgrades = FactionsClass.disallowedUpgrades
+end
 
 function FactionsClass:OnCreate()
 
@@ -54,11 +69,11 @@ function FactionsClass:GetBaseArmor()
     return self.baseArmor
 end
 
-function FactionsClass:GetBaseRunSpeed()
+function FactionsClass:GetBaseSprintSpeed()
     return self.baseRunSpeed
 end
 
-function FactionsClass:GetBaseWalkSpeed()
+function FactionsClass:GetBaseSpeed()
     return self.baseWalkSpeed
 end
 
@@ -70,8 +85,12 @@ function FactionsClass:GetPicture()
 	return self.picture
 end
 
-function FactionsClass:GetTechTree()
-    return self.techTree
+function FactionsClass:GetInitialUpgrades()
+    return self.initialUpgrades
+end
+
+function FactionsClass:GetDisallowedUpgrades()
+    return self.disallowedUpgrades
 end
 
 if kFactionsClassIdCache == nil then
@@ -92,6 +111,17 @@ function FactionsClass:GetId()
 	end
 	
 	return cachedId
+end
+
+function FactionsClass:GetIsUpgradeAllowed(upgrade)
+	for index, disallowedUpgradeClassName in ipairs(self.disallowedUpgrades) do
+		if disallowedUpgradeClassName == upgrade:GetClassName() then
+			return false
+		end
+	end
+	
+	// By default, the upgrade is allowed.
+	return true
 end
 
 // called from the FactionsClassMixin when the FactionsClass is added to a player. Override if necessary.

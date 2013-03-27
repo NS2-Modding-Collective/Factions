@@ -19,7 +19,6 @@ class 'LogicWeldable' (ScriptActor)
 LogicWeldable.kMapName = "logic_weldable"
 
 LogicWeldable.kModelName = PrecacheAsset("models/props/generic/terminals/generic_controlpanel_01.model")
-local kAnimationGraph = PrecacheAsset("models/marine/sentry/sentry.animation_graph")
 
 local networkVars =
 {
@@ -50,6 +49,7 @@ function LogicWeldable:OnInitialized()
     ScriptActor.OnInitialized(self)
     InitMixin(self, WeldableMixin)
     InitMixin(self, ScaledModelMixin)
+	self:SetScaledModel(self.model)
 
     if Server then
         InitMixin(self, LogicMixin)
@@ -106,8 +106,12 @@ function LogicWeldable:OnWelded()
     self:TriggerOutputs()
 end
 
+function LogicWeldable:GetCanBeUsed(player, useSuccessTable)
+    useSuccessTable.useSuccess = false  
+end
 
-function LogicWeldable:OnLogicTrigger()
+
+function LogicWeldable:OnLogicTrigger(player)
     if self.enabled then
         self.enabled = false 
     else

@@ -90,7 +90,8 @@ function FuncMoveable:OnInitialized()
 
     ScriptActor.OnInitialized(self)  
     InitMixin(self, ScaledModelMixin)
-
+	self:SetScaledModel(self.model)
+	
     if Server then
         InitMixin(self, LogicMixin)  
         if self.isDoor then
@@ -102,6 +103,10 @@ end
 
 function FuncMoveable:Reset()
     ScriptActor.Reset(self)
+end
+
+function FuncMoveable:GetCanBeUsed(player, useSuccessTable)
+    useSuccessTable.useSuccess = false   
 end
 
 // called from OnUpdate when self.driving = true
@@ -161,16 +166,13 @@ case self.direction:
 */
 function FuncMoveable:CreatePath(onUpdate)
 
-    local extents = Vector(1,1,1)
+    local extents = self.scale or Vector(1,1,1)
     if self.model then
         _, extents = Shared.GetModel(Shared.GetModelIndex(self.model)):GetExtents(self.boneCoords)        
     end
-    if self.propScale then
-        extents.x = extents.x * self.propScale.x
-        extents.y = extents.y * self.propScale.y
-        extents.z = extents.z * self.propScale.z
-    end
+
     local origin = self:GetOrigin()
+    local wayPointOrigin = nil
     local moveVector = Vector(0,0,0)
     local directionVector = AnglesToVector(self)
     
@@ -184,11 +186,18 @@ function FuncMoveable:CreatePath(onUpdate)
         //directionVector 
     elseif  self.direction == 3 then
         moveVector.x = directionVector.z * extents.x 
-        moveVector.z = directionVector.x * -extents.x 
+        moveVector.z = directionVector.x * -extents.x     
+    elseif self.direction == 4 then
+        for _, ent in ientitylist(Shared.GetEntitiesWithClassname("FuncTrainWaypoint")) do 
+            if ent.trainName == self.name then
+                wayPointOrigin = ent:GetOrigin()
+                break
+            end   
+        end
     end
     
-    self.waypoint = origin + moveVector
-    self.savedOrigin = self:GetOrigin()
+    self.waypoint = wayPointOrigin or (origin + moveVector)
+    self.savedOrigin = origin
     
     if self.startsOpened and not self.isDoor then  
         self:SetOrigin(self.waypoint)  
@@ -211,7 +220,7 @@ function FuncMoveable:GetPushPlayers()
 end
 
 function FuncMoveable:GetSpeed()
-    return 40
+    return self.moveSpeed or 40
 end
 
 function FuncMoveable:GetIsFlying()
@@ -222,7 +231,7 @@ function FuncMoveable:GetRotationEnabled()
     return false
 end
 
-function FuncMoveable:OnLogicTrigger()
+function FuncMoveable:OnLogicTrigger(player)
     self.driving = true
 end
 

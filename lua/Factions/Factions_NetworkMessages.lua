@@ -48,20 +48,3 @@ end
 Shared.RegisterNetworkMessage( "UpdateUpgrade", kUpdateUpgrade )
 Shared.RegisterNetworkMessage( "BuyUpgrade", kBuyUpgrade )
 Shared.RegisterNetworkMessage( "ClearUpgrades", {} )
-
-local kFactionsClassUpdate =
-{
-    newClass = "enum kFactionsClassType"
-}
-
-function BuildChangeFactionsClassMessage(newClass)
-
-    local message = { }
-    
-    message.newClass = newClass
-    
-    return message
-	
-end
-
-Shared.RegisterNetworkMessage( "ChangeFactionsClass", kFactionsClassUpdate)

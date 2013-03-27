@@ -7,20 +7,27 @@
 //  Licensed under LGPL v3.0
 //________________________________
 
-// MineUpgrade file, weapons will be added directly after upgrading, so nothing to do here
+// WelderUpgrade.lua
 						
 class 'WelderUpgrade' (FactionsWeaponUpgrade)
+
+WelderUpgrade.cost			= { 50 }                           						// Cost of the upgrade in xp
+WelderUpgrade.upgradeName 	= "welder"                       						// Text code of the upgrade if using it via console
+WelderUpgrade.upgradeTitle	= "Welder"               								// Title of the upgrade, e.g. Submachine Gun
+WelderUpgrade.upgradeDesc 	= "Weld stuff"											// Description of the upgrade
+WelderUpgrade.upgradeTechId = kTechId.Welder 	    								// TechId of the upgrade, default is kTechId.Move cause its the first entry
+WelderUpgrade.primaryWeapon = true													// Is this a primary weapon?
 
 function WelderUpgrade:Initialize()
 
 	FactionsWeaponUpgrade.Initialize(self)
 	
-	self.cost = { 50 }                           								// Cost of the upgrade in xp
-	self.upgradeName = "welder"                       							// Text code of the upgrade if using it via console
-	self.upgradeTitle = "Welder"               									// Title of the upgrade, e.g. Submachine Gun
-	self.upgradeDesc = "Weld stuff"												// Description of the upgrade
-	self.upgradeTechId = { kTechId.Welder }    									// TechId of the upgrade, default is kTechId.Move cause its the first entry
-	self.primaryWeapon = true													// Is this a primary weapon?
+	self.cost = WelderUpgrade.cost
+	self.upgradeName = WelderUpgrade.upgradeName
+	self.upgradeTitle = WelderUpgrade.upgradeTitle
+	self.upgradeDesc = WelderUpgrade.upgradeDesc
+	self.upgradeTechId = WelderUpgrade.upgradeTechId
+	self.primaryWeapon = WelderUpgrade.primaryWeapon
 	
 end
 

@@ -20,6 +20,7 @@ end
 
 // load the Factions Class base classes
 Script.Load("lua/Factions/Factions_FactionsClass.lua")
+Script.Load("lua/Factions/Factions_UpgradeList.lua")
 
 local function RegisterNewClass(classType, className, classEntity)
 	
@@ -79,7 +80,7 @@ FactionsClassMixin.expectedConstants =
 
 FactionsClassMixin.networkVars =
 {
-	//factionsClassType = "enum kFactionsClassType"
+	factionsClassType = "enum kFactionsClassType"
 }
 
 // Conversion functions for ease of output/input
@@ -97,16 +98,42 @@ local function StringToFactionsClass(stringValue)
 	return nil
 end
 
+// Maintain a local type variable so that the calculations are sane until ChangeFactionsClass is triggered.
 function FactionsClassMixin:__initmixin()
 
     self.factionsClassType = kFactionsClassType.NoneSelected
+	self.factionsClassLocalType = kFactionsClassType.NoneSelected
 
+end
+
+function FactionsClassMixin:GiveStartingUpgrades()
+
+	// TODO: Reenable when this is fixed.
+	/*if self:GetHasFactionsClass() and self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
+		for index, upgradeClassName in ipairs(self.factionsClass:GetInitialUpgrades()) do
+			local upgrade = self:GetUpgradeByClassName(upgradeClassName)
+			if upgrade then
+				self:BuyUpgrade(upgrade:GetId(), true)
+			else
+				Shared.Message("Could not find initial upgrade " .. upgradeClassName .. " for player " .. self:GetName())
+			end
+		end
+	end*/
+	
 end
 
 function FactionsClassMixin:CopyPlayerDataFrom(player)
 
-	self.factionsClassType = player.factionsClassType
-	self.factionsClass = self:GetClassByType(player.factionsClassType)
+	if player.factionsClassType then		
+		self.factionsClassType = player.factionsClassType
+		self.factionsClassLocalType = player.factionsClassLocalType
+		self.factionsClass = self:GetClassByType(player.factionsClassType)
+	end
+	
+	// At this point we have enough info to give the player their starting equipment
+	if Server then
+		self:GiveStartingUpgrades()
+	end
 
 end
 
@@ -118,7 +145,7 @@ end
 
 function FactionsClassMixin:GetFactionsClassType()
 
-	return self.factionsClassType
+	return self.factionsClassLocalType
 
 end
 
@@ -134,6 +161,7 @@ function FactionsClassMixin:GetHasFactionsClass()
 	if self:GetFactionsClassType() == kFactionsClassType.NoneSelected then
 		hasClass = false
 	end
+	
 	return hasClass
 	
 end
@@ -159,45 +187,72 @@ function FactionsClassMixin:GetClassByType(classType)
     if classType then
         local allClasses = self:GetAllClasses()
         if allClasses[classType] then
-            return allClasses[classType]
+			local gotClass = allClasses[classType]()
+			gotClass:Initialize()
+            return gotClass
         end
     end
 end
 
+function FactionsClassMixin:OnUpdatePlayer()
+	if self.factionsClassType ~= self.factionsClassLocalType then
+		self:ChangeFactionsClass(self.factionsClassType)
+	end
+end
+
 function FactionsClassMixin:ChangeFactionsClass(newClass)
 
-	if self.factionsClassType ~= newClass then
+	if self.factionsClassLocalType ~= newClass then
 		self.factionsClassType = newClass
+		self.factionsClassLocalType = newClass
 		self.factionsClass = self:GetClassByType(newClass)
 		
 		if Server then
-			Server.SendNetworkMessage(self, "ChangeFactionsClass", BuildChangeFactionsClassMessage(newClass), true)
-		end
-		
-		// Kill the player if they do this while playing.
-		if self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
-			self:Kill(nil, nil, self:GetOrigin())
+			// Kill the player if they do this while playing.
+			if self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
+				self:Kill(nil, nil, self:GetOrigin())
+			end
 		end
 	end
 
 end
 
-function FactionsClassMixin:GetRunMaxSpeed()
+function FactionsClassMixin:GetBaseMaxSprintSpeed()
 
-	if self:GetFactionsClassType() == kFactionsClassType.NoneSelected then
+	if self:GetHasFactionsClass() then
+		return self.factionsClass:GetBaseSprintSpeed()
+	else
 		return Marine.kRunMaxSpeed
-	else
-		return self.factionsClass.baseRunSpeed
 	end
 
 end
 
-function FactionsClassMixin:GetWalkMaxSpeed()
+function FactionsClassMixin:GetBaseMaxSpeed()
 
-	if self:GetFactionsClassType() == kFactionsClassType.NoneSelected then
-		return Marine.kWalkMaxSpeed
+	if self:GetHasFactionsClass() then
+		return self.factionsClass:GetBaseSpeed()
 	else
-		return self.factionsClass.baseWalkSpeed
+		return Marine.kWalkMaxSpeed
+	end
+
+end
+
+function FactionsClassMixin:GetBaseHealth()
+
+	if self:GetHasFactionsClass() then
+		return self.factionsClass:GetBaseHealth()
+	else
+		return Marine.kHealth
+	end
+
+end
+
+function FactionsClassMixin:GetBaseArmor()
+
+	if self:GetHasFactionsClass() then
+		return self.factionsClass:GetBaseArmor()
+	else
+		return Marine.kBaseArmor
 	end
 
 end

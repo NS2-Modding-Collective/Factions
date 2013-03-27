@@ -18,7 +18,8 @@ CombatMovementMixin.expectedMixins =
 {
 	 WallMovement = "Needed for processing the wall walking.",
 	 FactionsClass = "Needed for changing the movement speed depending on class.",
-	 MagnoBootsWearer = "Needed for detecting whether the player has Magno Boots"
+	 MagnoBootsWearer = "Needed for detecting whether the player has Magno Boots",
+	 SpeedUpgrade = "Needed to calculate the upgraded speed based on player upgrades",
 }
 
 CombatMovementMixin.expectedCallbacks =
@@ -26,8 +27,10 @@ CombatMovementMixin.expectedCallbacks =
 	GetAngleSmoothRate = "The smooth rate for the angle changes as the player moves from wall to wall",
 	GetRollSmoothRate = "The smooth rate for the angle changes as the player moves from wall to wall",
 	GetPitchSmoothRate = "The smooth rate for the angle changes as the player moves from wall to wall",
-	GetRunMaxSpeed = "The speed that the player runs",
-	GetWalkMaxSpeed = "The speed that the player walks",
+	GetUpgradedMaxSprintSpeed = "The speed that the player runs",
+	GetUpgradedSprintAcceleration = "The speed that the player runs",
+	GetUpgradedMaxSpeed = "The speed that the player walks",
+	GetUpgradedAcceleration = "The speed that the player walks",
 	
 	GetAirFrictionForce = "The force of Air Friction for this entity",
 }
@@ -86,6 +89,7 @@ CombatMovementMixin.networkVars =
 // These should completely override any existing function defined in the class.
 CombatMovementMixin.overrideFunctions =
 {
+	"GetAcceleration",
 	"GetAirMoveScalar",
 	"GetIsJumping",
 	"GetMoveSpeedIs2D",
@@ -117,6 +121,8 @@ CombatMovementMixin.overrideFunctions =
 	"GetJumpVelocity",
 	"GetPlayJumpSound",
 	"HandleJump",
+	"OnClampSpeed",
+	"ComputeForwardVelocity",
 	
 }
 
@@ -136,6 +142,28 @@ function CombatMovementMixin:__initmixin()
     
     self.timeLastWallJump = 0
 	
+end
+
+function CombatMovementMixin:GetAcceleration()
+
+    local acceleration = self:GetUpgradedAcceleration()
+    
+    if self:GetIsSprinting() then
+        acceleration = self:GetUpgradedAcceleration() + (self:GetUpgradedSprintAcceleration() - self:GetUpgradedAcceleration()) * self:GetSprintingScalar()
+    end
+
+    // Disable slow speed.... 
+	//acceleration = acceleration * self:GetSlowSpeedModifier()
+    acceleration = acceleration * self:GetInventorySpeedScalar()
+
+    /*
+    if self.timeLastSpitHit + Marine.kSpitSlowDuration > Shared.GetTime() then
+        acceleration = acceleration * 0.5
+    end
+    */
+
+    return acceleration * self:GetCatalystMoveSpeedModifier()
+
 end
 
 function CombatMovementMixin:GetAirMoveScalar()
@@ -337,8 +365,8 @@ end
 
 function CombatMovementMixin:GetMaxSpeed(possible)
 
-	local maxRunSpeed = self:GetRunMaxSpeed()
-	local maxWalkSpeed = self:GetWalkMaxSpeed()
+	local maxRunSpeed = self:GetUpgradedMaxSprintSpeed()
+	local maxWalkSpeed = self:GetUpgradedMaxSpeed()
 	if possible then
 		return maxRunSpeed
 	end
@@ -354,6 +382,11 @@ function CombatMovementMixin:GetMaxSpeed(possible)
 	// Take into account crouching
 	if not self:GetIsJumping() then
 		maxSpeed = ( 1 - self:GetCrouchAmount() * self:GetCrouchSpeedScalar() ) * maxSpeed
+	end
+	
+	// Take into account crouching
+	if self:GetIsWallWalking() then
+		maxSpeed = ( 1 - self:GetWallWalkSpeedScalar() ) * maxSpeed
 	end
 
 	local adjustedMaxSpeed = maxSpeed * self:GetCatalystMoveSpeedModifier() * inventorySpeedScalar 
@@ -511,7 +544,7 @@ end
 
 function CombatMovementMixin:GetGravityAllowed()
 
-	return not self:GetIsWallWalking()
+	return not self:GetIsOnLadder() and not self:GetIsOnGround() and not self:GetIsWallWalking()
 	
 end
 
@@ -652,4 +685,92 @@ function CombatMovementMixin:HandleJump(input, velocity)
 		
 	return success
 	
+end
+
+// Make sure we can't move faster than our max speed (esp. when holding
+// down multiple keys, going down ramps, etc.)
+function CombatMovementMixin:OnClampSpeed(input, velocity)
+
+    PROFILE("CombatMovementMixin:OnClampSpeed")
+    
+    // Don't clamp speed when stunned, so we can go flying
+    if HasMixin(self, "Stun") and self:GetIsStunned() then
+        return velocity
+    end
+    
+    if self:PerformsVerticalMove() then
+        moveSpeed = velocity:GetLength()   
+    else
+        moveSpeed = velocity:GetLengthXZ()   
+    end
+    
+	// TODO: Fix the speed inheritance from class then reenable here.
+	//local maxSpeed = 9999
+    local maxSpeed = self:GetMaxSpeed()
+    
+    // Players moving backwards can't go full speed.
+    if input.move.z < 0 then
+        maxSpeed = maxSpeed * self:GetMaxBackwardSpeedScalar()
+    end
+    
+    if moveSpeed > maxSpeed then
+    
+        local velocityY = velocity.y
+        velocity:Scale(maxSpeed / moveSpeed)
+        
+        if not self:PerformsVerticalMove() then
+            velocity.y = velocityY
+        end
+        
+    end
+    
+end
+
+// MoveMixin callbacks.
+// Compute the desired velocity based on the input. Make sure that going off at 45 degree angles
+// doesn't make us faster.
+function CombatMovementMixin:ComputeForwardVelocity(input)
+
+    local forwardVelocity = Vector(0, 0, 0)
+    
+    local move = GetNormalizedVector(input.move)
+    local angles = self:ConvertToViewAngles(input.pitch, input.yaw, 0)
+    local viewCoords = angles:GetCoords()
+    
+    local accel = ConditionalValue(self:GetIsOnLadder(), Marine.kLadderAcceleration, self:GetAcceleration())
+    
+    local moveVelocity = viewCoords:TransformVector(move) * accel
+    if input.move.z < 0 and self:GetVelocity():GetLength() > self:GetMaxSpeed() * 0.4 then
+        moveVelocity = moveVelocity * self:GetMaxBackwardSpeedScalar()
+    end
+
+    self:ConstrainMoveVelocity(moveVelocity)
+    
+    // The active weapon can also constain the move velocity.
+    local activeWeapon = self:GetActiveWeapon()
+    if activeWeapon ~= nil then
+        activeWeapon:ConstrainMoveVelocity(moveVelocity)
+    end
+    
+    // Make sure that moving forward while looking down doesn't slow 
+    // us down (get forward velocity, not view velocity)
+    local moveVelocityLength = moveVelocity:GetLength()
+    
+    if moveVelocityLength > 0 then
+
+        local moveDirection = self:GetMoveDirection(moveVelocity)
+        
+        // Trying to move straight down
+        if not ValidateValue(moveDirection) then
+            moveDirection = Vector(0, -1, 0)
+        end
+        
+        forwardVelocity = moveDirection * moveVelocityLength
+        
+    end
+    
+    local pushVelocity = Vector( self.pushImpulse * ( 1 - Clamp( (Shared.GetTime() - self.pushTime) / Player.kPushDuration, 0, 1) ) )
+    
+    return forwardVelocity + pushVelocity * (self:GetGroundFrictionForce()/7)
+
 end
