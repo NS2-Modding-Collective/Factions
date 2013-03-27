@@ -16,8 +16,12 @@ if Server then
         if player and Shared.GetCheatsEnabled() then
         	// Toggle random colours
             if HasMixin(player, "TeamColours") then
-                player.randomColour = not player.randomColour
-                player:SendDirectMessage("You are badass!")
+                player.factionsBadassColour = not player.factionsBadassColour
+				local badassString = "You are badass!"
+				if not player.factionsBadassColour then
+					badassString = "You are not badass any more! Sorry!" 
+				end
+                player:SendDirectMessage(badassString)
             end
         end
 	end
@@ -25,12 +29,12 @@ if Server then
 	function OnCommandSetColour(client, red, green, blue)
 		local player = client:GetControllingPlayer()
 		if player and Shared.GetCheatsEnabled() then
-			local intRed = tonumber(red)
-			local intGreen = tonumber(green)
-			local intBlue = tonumber(blue)
-			if intRed and intGreen and intBlue then
+			local dblRed = tonumber(red) / 255
+			local dblGreen = tonumber(green) / 255
+			local dblBlue = tonumber(blue) / 255
+			if dblRed and dblGreen and dblBlue then
 				if HasMixin(player, "TeamColours") then
-					   player.armorColour = Vector(intRed, intGreen, intBlue)
+					   player.factionsArmorColour = Vector(dblRed, dblGreen, dblBlue)
 				end			
 			else
 				player:SendDirectMessage("Usage: setcolour <red> <green> <blue>")

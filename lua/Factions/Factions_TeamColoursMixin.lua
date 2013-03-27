@@ -41,10 +41,10 @@ function TeamColoursMixin:__initmixin()
 	
 end
 
-function FactionsClassMixin:CopyPlayerDataFrom(player)
+function TeamColoursMixin:CopyPlayerDataFrom(player)
 
-	self.armorColour = player.armorColour
-	self.randomColour = player.randomColour
+	self.factionsArmorColour = player.factionsArmorColour
+	self.factionsBadassColour = player.factionsBadassColour
 
 end
 
@@ -59,10 +59,10 @@ function TeamColoursMixin:OnUpdateRender()
 	
 		// Set the colours
 		local teamColours = nil
-		if self.armorColour ~= nil then
-			teamColours = Color(self.armorColour.x, self.armorColour.y, self.armorColour.z)
-		elseif self.randomColour then
-			teamColours = Color(math.random() * 255, math.random() * 255, math.random() * 255)
+		if self.factionsBadassColour then
+			teamColours = Color(math.random(), math.random(), math.random())
+		elseif self.factionsArmorColour ~= nil and (self.factionsArmorColour.x > 0 or self.factionsArmorColour.y > 0 or self.factionsArmorColour.z > 0) then
+			teamColours = Color(self.factionsArmorColour.x, self.factionsArmorColour.y, self.factionsArmorColour.z)
 		else
 			if self:GetTeamNumber() == kTeam2Index then
 				teamColours = kAlienTeamColorFloat
@@ -73,12 +73,12 @@ function TeamColoursMixin:OnUpdateRender()
 		
 		if not self.teamColourMaterial then
 			self.teamColourMaterial = AddMaterial(model, "materials/test.material")
-		
-			self.teamColourMaterial:SetParameter("colourR", teamColours.r)
-			self.teamColourMaterial:SetParameter("colourG", teamColours.g)
-			self.teamColourMaterial:SetParameter("colourB", teamColours.b)
-			self.teamColourMaterial:SetParameter("intensity", TeamColoursMixin.intensity)
 		end
+		
+		self.teamColourMaterial:SetParameter("colourR", teamColours.r)
+		self.teamColourMaterial:SetParameter("colourG", teamColours.g)
+		self.teamColourMaterial:SetParameter("colourB", teamColours.b)
+		self.teamColourMaterial:SetParameter("intensity", TeamColoursMixin.intensity)
 		
 		if not self:GetIsAlive() and self.teamColourMaterial then
 			if RemoveMaterial(model, self.teamColourMaterial) then
