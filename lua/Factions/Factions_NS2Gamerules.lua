@@ -9,6 +9,8 @@
 
 // Factions_NS2Gamerules.lua
 
+Script.Load("lua/Factions/Factions_GamerulesPicker.lua")
+
 local networkVars = {
 }
 
@@ -16,8 +18,13 @@ local networkVars = {
 originalNS2GamerulesOnCreate = NS2Gamerules.OnCreate
 function NS2Gamerules:OnCreate()
 
+	if not GetHasGamerulesPicker() then
+		Server.CreateEntity(GamerulesPicker.kMapName)
+	end
+	
+	local gamerulesPicker = GetGamerulesPicker()
 	// Work out what entity we need to use as the gamerules.
-	Server.CreateEntity(CombatDeathmatchGamerules.kMapName)
+	Server.CreateEntity(gamerulesPicker:GetGamerulesMapName())
 	
 	// Commit harikari.
 	DestroyEntity(self)

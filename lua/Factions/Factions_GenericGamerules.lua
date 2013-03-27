@@ -23,6 +23,9 @@ if Server then
 	function GenericGamerules:OnCreate()
 	
         originalNS2GamerulesOnCreate(self)
+		
+		Shared.Message("Server started for Factions v" .. kFactionsVersion .. "!")
+		Shared.Message("Current Game Mode: " .. self:GetGameModeName())
         
     end
 	
