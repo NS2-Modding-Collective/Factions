@@ -15,6 +15,8 @@ class 'HordeGamerules' (GenericGamerules)
 
 HordeGamerules.kMapName = "factions_horde_gamerules"
 
+local kGameEndCheckInterval = 0.75
+
 local networkVars =
 {
 	timeLeft = "time",
@@ -61,6 +63,33 @@ if Server then
 			end
 				
 		end
+        
+    end
+	
+	function HordeGamerules:CheckGameEnd()
+    
+        if self:GetGameStarted() and self.timeGameEnded == nil and not Shared.GetCheatsEnabled() and not self.preventGameEnd then
+        
+            if self.timeLastGameEndCheck == nil or (Shared.GetTime() > self.timeLastGameEndCheck + kGameEndCheckInterval) then
+            
+                local team1Lost = self.team1:GetHasTeamLost()
+                local team1Won = self.team1:GetHasTeamWon()
+                
+                local team1Players = self.team1:GetNumPlayers()
+                
+                if (team1Lost and team1Won) then
+                    self:DrawGame()
+                elseif team1Lost then
+                    self:EndGame(self.team2)
+                elseif team1Won then
+                    self:EndGame(self.team1)
+                end
+                
+                self.timeLastGameEndCheck = Shared.GetTime()
+                
+            end
+            
+        end
         
     end
 
