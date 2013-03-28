@@ -33,6 +33,7 @@ Script.Load("lua/Factions/Factions_JetpackMarine.lua")
 
 // Buildings
 Script.Load("lua/Factions/Factions_Armory.lua")
+Script.Load("lua/Factions/Factions_InfantryPortal.lua")
 Script.Load("lua/Factions/Factions_CommandStation.lua")
 Script.Load("lua/Factions/Factions_Extractor.lua")
 
