@@ -18,8 +18,8 @@ function MarineTeam:SpawnInitialStructures(techPoint)
 
 	// Special logic depending on the game mode
 	// For game modes using Combat-like rules
-	// Spawn an armory, no IPs.
-	if GetGamerules():isa("CombatDeathmatchGamerules") then
+	// Spawn an armory.
+	if GetGamerules():isa("CombatDeathmatchGamerules") or GetGamerules():isa("HordeGamerules") then
 		local tower, commandStation = PlayingTeam.SpawnInitialStructures(self, techPoint)
 
 		//Check if there is already an Armory
@@ -46,7 +46,9 @@ function MarineTeam:SpawnInitialStructures(techPoint)
 			end
 		end
 		
-		self.ipsToConstruct = 0
+		if GetGamerules():isa("CombatDeathmatchGamerules") then
+			self.ipsToConstruct = 0
+		end
 		
 		return tower, commandStation
 	else
