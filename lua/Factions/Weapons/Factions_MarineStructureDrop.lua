@@ -64,4 +64,3 @@ function MarineStructureDrop:IsAllowed(player)
     return true
 	
 end
-

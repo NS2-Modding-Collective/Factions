@@ -204,7 +204,7 @@ function MarineStructureAbility:PerformPrimaryAttack(player)
             if player:GetResources() >= cost and not self:GetHasDropCooldown() then
 
                 local message = BuildGorgeDropStructureMessage(player:GetEyePos(), player:GetViewCoords().zAxis, self.activeStructure, self.lastClickedPosition)
-                Client.SendNetworkMessage("GorgeBuildStructure", message, true)
+                Client.SendNetworkMessage("MarineBuildStructure", message, true)
                 self.timeLastDrop = Shared.GetTime()
                 success = true
 
@@ -529,7 +529,7 @@ if Client then
     function MarineStructureAbility:CreateBuildMenu()
     
         if not self.buildMenu then        
-            self.buildMenu = GetGUIManager():CreateGUIScript("GUIGorgeBuildMenu")            
+            self.buildMenu = GetGUIManager():CreateGUIScript("Hud/Factions_GUIMarineBuildMenu")            
         end
         
     end
