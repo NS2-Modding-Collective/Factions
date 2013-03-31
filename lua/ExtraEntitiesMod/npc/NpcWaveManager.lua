@@ -104,6 +104,33 @@ if Server then
         return position
         
     end
+    
+    function NpcManager:GetSpawnClass()
+        if not self.spawnClass then
+        
+            local class = Skulk.kMapName
+            if self.class then
+                if self.class == 1 then
+                    class = Gorge.kMapName
+                elseif self.class == 2 then
+                    class = Lerk.kMapName 
+                elseif self.class == 3 then
+                    class = Fade.kMapName
+                elseif self.class == 4 then
+                    class = Onos.kMapName
+                elseif self.class == 5 then
+                    class = Marine.kMapName
+                end
+            end
+                
+            self.spawnClass = class
+            return class
+            
+        else
+            return self.spawnClass
+        end
+
+    end
         
 
     function NpcManager:GetValues()
@@ -122,12 +149,15 @@ if Server then
     function NpcManager:Spawn(waypoint)
         local values = self:GetValues() 
         if values.origin then
-            local entity = Server.CreateEntity(Skulk.kMapName, values)
-            // init the xp mixin for the new npc
-            InitMixin(entity, NpcMixin)
-            if waypoint then
-                entity:GiveOrder(kTechId.Move , waypoint:GetId(), waypoint:GetOrigin(), nil, true, true)
-                entity.mapWaypoint = waypoint:GetId()
+            local class = self:GetSpawnClass()
+            if class then
+                local entity = Server.CreateEntity(class, values)
+                // init the xp mixin for the new npc
+                InitMixin(entity, NpcMixin)
+                if waypoint then
+                    entity:GiveOrder(kTechId.Move , waypoint:GetId(), waypoint:GetOrigin(), nil, true, true)
+                    entity.mapWaypoint = waypoint:GetId()
+                end
             end
         else
             // for debugging

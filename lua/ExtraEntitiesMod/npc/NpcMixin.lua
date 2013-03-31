@@ -5,22 +5,33 @@
 //
 //________________________________
 
+// Adpeted from them original Ns2 Bot
+
 Script.Load("lua/FunctionContracts.lua")
 Script.Load("lua/PathingUtility.lua")
 Script.Load("lua/PathingMixin.lua")
 Script.Load("lua/TargetCacheMixin.lua")
 
+Script.Load("lua/ExtraEntitiesMod/npc/NpcMarineMixin.lua")
+Script.Load("lua/ExtraEntitiesMod/npc/NpcSkulkMixin.lua")
+Script.Load("lua/ExtraEntitiesMod/npc/NpcLerkMixin.lua")
+Script.Load("lua/ExtraEntitiesMod/npc/NpcFadeMixin.lua")
+Script.Load("lua/ExtraEntitiesMod/npc/NpcGorgeMixin.lua")
+Script.Load("lua/ExtraEntitiesMod/npc/NpcOnosMixin.lua")
+
 NpcMixin = CreateMixin( NpcMixin )
 NpcMixin.type = "Npc"
 
-NpcMixin.lowHealthFactor = 0.2 // if health is 20% we need to do something
-NpcMixin.armorySearchRange = 60 // armory will be searched in this range
 NpcMixin.kPlayerFollowDistance = 3
-NpcMixin.kMaxOrderDistance = 2
+NpcMixin.kMaxOrderDistance = 3
+
+NpcMixin.kMinAttackGap = 0.6
+NpcMixin.kJumpRange = 2
 
 // update rates to increase performance
 NpcMixin.kUpdateRate = 0.01
-NpcMixin.kTargetUpdateRate = 1
+NpcMixin.kTargetUpdateRate = 0.5
+NpcMixin.kRangeUpdateRate = 2
 
 
 
@@ -35,7 +46,6 @@ NpcMixin.expectedCallbacks =
 
 NpcMixin.optionalCallbacks =
 {
-    AiSpecialLogic = "Called OnUpdate, needed that lerks fly etc.",
 }
 
 
@@ -46,21 +56,9 @@ NpcMixin.networkVars =
 
 function NpcMixin:__initmixin() 
 
-    if Server and self.isaNpc then
+    if Server then
         InitMixin(self, PathingMixin) 
         InitMixin(self, TargetCacheMixin) 
-        
-        // configure how targets are selected and validated
-        //attacker, range, visibilityRequired, targetTypeList, filters, prioritizers
-        self.targetSelector = TargetSelector():Init(
-            self,
-            Sentry.kRange, 
-            false,
-            self:GetTargets(),
-            { self.FilterTarget(self) },
-            { function(target) return target:isa("Player") end })
-
-        InitMixin(self, StaticTargetMixin)
         
         self.active = false  
         if self.startsActive then
@@ -71,13 +69,41 @@ function NpcMixin:__initmixin()
             self:SetName(self.name1)
         end
         
-        self:SetTeamNumber(self.team)
-        table.insert(self:GetTeam().playerIds, self:GetId())
-        self:DropToFloor()
+        if self.team then
+            self:SetTeamNumber(self.team)
+        end
         
+        table.insert(self:GetTeam().playerIds, self:GetId())
+        self:DropToFloor()    
+                
+        // configure how targets are selected and validated
+        //attacker, range, visibilityRequired, targetTypeList, filters, prioritizers
+        self.targetSelector = TargetSelector():Init(
+            self,
+            40, 
+            true,
+            self:GetTargets(),
+            //{self.FilterTarget(self)},
+            { CloakTargetFilter(), self.FilterTarget(self)},
+            //{ function(target) return target:isa("Player") end })
+            { function(target) return target:isa("Player") end } )
+
+
+        InitMixin(self, StaticTargetMixin)
+        
+        // special Mixins
         if self:isa("Marine") then
-            self.weapon1OutOfAmmo = false
-            self.weapon2OutOfAmmo = false 
+            InitMixin(self, NpcMarineMixin)   
+        elseif self:isa("Skulk") then
+            InitMixin(self, NpcSkulkMixin)
+        elseif self:isa("Lerk") then
+            InitMixin(self, NpcLerkMixin)
+        elseif self:isa("Gorge") then
+            InitMixin(self, NpcGorgeMixin)
+        elseif self:isa("Fade") then
+            InitMixin(self, NpcFadeMixin) 
+        elseif self:isa("Onos") then
+            InitMixin(self, NpcOnosMixin)      
         end
 
     end
@@ -88,7 +114,7 @@ end
 function NpcMixin:GetTargets()
 
     local targets = {}
-    if self:GetTeam() == 1 then
+    if self:GetTeamNumber() == 1 then
         targets = {    
                 kMarineStaticTargets, 
                 kMarineMobileTargets}        
@@ -106,9 +132,8 @@ function NpcMixin:FilterTarget()
     local attacker = self
     return  function (target, targetPosition)
                 // dont attack power points or team members
-                if not target:GetCanTakeDamage() or target:GetTeamNumber() == self:GetTeamNumber() or target:isa("PowerPoint") then
-                    return false
-                else
+                return target:GetCanTakeDamage() and target:GetTeamNumber() ~= self:GetTeamNumber() and not target:isa("PowerPoint")
+                    /*
                     local minePos = self:GetEngagementPoint()
                     local weapon = self:GetActiveWeapon()
                     if weapon then
@@ -120,8 +145,9 @@ function NpcMixin:FilterTarget()
                     local filter = EntityFilterAll()
                     local trace = Shared.TraceRay(minePos, targetPos , CollisionRep.Damage, PhysicsMask.Bullets, filter)
                     return ((trace.entity == target) or not GetWallBetween(minePos, targetPos, target) or GetCanSeeEntity(self, target))
-                end
+                    */
             end
+            
 end
     
 
@@ -132,6 +158,11 @@ function NpcMixin:Reset()
         self.active = false
     end
 end
+
+
+function NpcMixin:OnKill()
+end
+
 
 function NpcMixin:OnLogicTrigger(player) 
     self.active = not self.active
@@ -150,22 +181,22 @@ function NpcMixin:OnUpdate(deltaTime)
         if Server then    
         
             // this will generate an input like a normal client so the bot can move
-            local updateOK = not self.timeLastUpdate or ((Shared.GetTime() - self.timeLastUpdate) > NpcMixin.kUpdateRate) 
-            local move = self:GenerateMove(deltaTime)
+            //local updateOK = not self.timeLastUpdate or ((Shared.GetTime() - self.timeLastUpdate) > NpcMixin.kUpdateRate) 
+            local updateOK = true
+            self:GenerateMove(deltaTime)
             if self.active and updateOK and self:GetIsAlive() then
-                if self.AiSpecialLogic then
-                    self:AiSpecialLogic(move)
-                end
+                self:AiSpecialLogic()
                 // not working atm
-                //self:CheckImportantEvents(move) 
+                self:CheckImportantEvents() 
                 self:ChooseOrder()
-                self:ProcessOrder(move)         
+                self:ProcessOrder()         
                 // Update order values for client
                 self:UpdateOrderVariables()                                 
                 self.timeLastUpdate = Shared.GetTime()
             end
             
-            self:OnProcessMove(move)
+            assert(self.move ~= nil)
+            self:OnProcessMove(self.move)
         end
     else
         // controlled by a client, do nothing
@@ -173,69 +204,31 @@ function NpcMixin:OnUpdate(deltaTime)
 
 end
 
-
-// Npc things, choses order etc
+////////////////////////////////////////////////////////
+//      Movement-Things
+////////////////////////////////////////////////////////
 
 function NpcMixin:GenerateMove(deltaTime)
 
-    local move = Move()    
+    self.move = Move()    
     // keep the current yaw/pitch as default
-    move.yaw = self:GetAngles().yaw
-    move.pitch = self:GetAngles().pitch    
-    move.time = deltaTime
+    self.move.yaw = self:GetAngles().yaw
+    self.move.pitch = self:GetAngles().pitch    
+    self.move.time = deltaTime
 
-    return move
-    
 end
 
-function NpcMixin:CheckImportantEvents(move)
-    // if health is low and we have no order, got to an armory if near
-    local healthFactor = self:GetHealth() / self:GetMaxHealth()
-    local order = self:GetCurrentOrder() 
-    local origin = self:GetOrigin()
-    
-    // If we're inside an egg, hatch
-    if self:isa("AlienSpectator") then
-        move.commands = Move.PrimaryAttack
-    end
-    
-    if healthFactor <= NpcMixin.lowHealthFactor then
-        // only go healing when no order or no attack order and armory will help us 
-        if not order or order:GetType() ~= kTechId.Attack then
-        
-            local armorys = GetEntitiesWithinRange("Armory",  origin , NpcMixin.armorySearchRange )
-            if armorys then
-                // search nearest armory
-                local nearestArmory = nil
-                local distance = nil
-                // check if an armory would heal us
-                if armory[1]:GetShouldResupplyPlayer(self) then
-                    for i, armory in ipairs(armorys) do
-                        if not nearestArmory then
-                            nearestArmory = armory
-                            distance = origin:GetDistanceTo(armory:GetOrigin())
-                        else
-                            if origin:GetDistanceTo(armory:GetOrigin()) < distance then
-                                nearestArmory = armory
-                                distance = origin:GetDistanceTo(armory:GetOrigin())  
-                            end
-                        end
-                    end
-                end                
-            end
-            if nearestArmory then
-                self:GiveOrder(kTechId.Move , nearestArmory:GetId(), nearestArmory:GetOrigin())
-            end            
-        end
-    end
+function NpcMixin:AiSpecialLogic()
+end
 
+function NpcMixin:CheckImportantEvents()
 end
 
 function NpcMixin:ChooseOrder()
 
     // don't search for targets if neutral
     if self:GetTeam() ~= 0 then
-        self:AttackVisibleTarget()
+        self:FindVisibleTarget()
     end
     
     order = self:GetCurrentOrder()
@@ -251,9 +244,9 @@ function NpcMixin:ChooseOrder()
 end
 
 
-function NpcMixin:ProcessOrder(move)
+function NpcMixin:ProcessOrder()
 
-    self:UpdateWeaponMove(move)  
+    self:UpdateWeaponMove()  
     local order = self:GetCurrentOrder() 
     if order then 
         local orderLocation = order:GetLocation()
@@ -268,7 +261,7 @@ function NpcMixin:ProcessOrder(move)
             end
         end
         
-        self:MoveToPoint(orderLocation , move)
+        self:MoveToPoint(orderLocation)
         
     end
 
@@ -287,17 +280,163 @@ function NpcMixin:GoToNearbyEntity()
     return false
 end
 
-function NpcMixin:AttackVisibleTarget()
+
+function NpcMixin:MoveRandomly()
+
+    assert(self.move ~= nil)
+    // Jump up and down crazily!
+    if self.active and Shared.GetRandomInt(0, 100) <= 5 then
+        self.move.commands = bit.bor(self.move.commands, Move.Jump)
+    end
+    
+    return true
+    
+end
+
+function NpcMixin:ChooseRandomDestination()
+
+    assert(self.move ~= nil)
+    // Go to nearest unbuilt tech point or nozzle
+    local className = ConditionalValue(math.random() < .5, "TechPoint", "ResourcePoint")
+
+    local ents = Shared.GetEntitiesWithClassname(className)
+    
+    if ents:GetSize() > 0 then 
+    
+        local index = math.floor(math.random() * ents:GetSize())
+        
+        local destination = ents:GetEntityAtIndex(index)
+        
+        self:GiveOrder(kTechId.Move, 0, destination:GetEngagementPoint(), nil, true, true)
+        
+        return true
+        
+    end
+    
+    return false
+    
+end
+
+function NpcMixin:CheckCrouch(targetPosition)
+end
+
+function NpcMixin:MoveToPoint(toPoint)
+
+    assert(self.move ~= nil)
+    local order = self:GetCurrentOrder()
+    toPoint = self:GetNextPoint(order, toPoint) or toPoint
+    // Fill in move to get to specified point
+    local diff = (toPoint - self:GetEyePos())
+    local direction = GetNormalizedVector(diff)
+        
+    // Look at target (needed for moving and attacking)
+    self.move.yaw   = GetYawFromVector(direction) - self:GetBaseViewAngles().yaw
+    self.move.pitch = GetPitchFromVector(direction)
+    
+    local moved = false
+    
+    // Generate naive move towards point
+    if not self.toClose and not self.inTargetRange then
+        self.move.move.z = 1  
+        moved = true
+    elseif self.toClose then
+        // test wheres place to go
+        local startPoint = self:GetEyePos()
+        local viewAngles = self:GetViewAngles() 
+        local fowardCoords = viewAngles:GetCoords()
+        local trace = Shared.TraceRay(startPoint, startPoint + (fowardCoords.zAxis * -5), CollisionRep.LOS, PhysicsMask.AllButPCs, EntityFilterOne(self))        
+        if (trace.endPoint - startPoint):GetLength() >= 1 then
+            // enough space, move back
+            self.move.move.z = -1     
+        else
+            // move left or right (random)
+            if math.random(1,2) == 1 then
+                self.move.move.x = -1
+            else
+                self.move.move.x = 1
+            end
+        end
+        
+        if self:GetCanJump() and (self:GetOrigin() - toPoint):GetLengthXZ() < NpcMixin.kJumpRange then
+            // sometimes jump (real players do that, too)
+            if Shared.GetRandomInt(0, 80) <= 5 then
+                self.move.commands = bit.bor(self.move.commands, Move.Jump)
+            end
+        end
+        moved = true       
+        
+    else
+        self:CheckCrouch(toPoint)
+    end
+    
+    if moved and not self.target then
+        self.targetSelector:AttackerMoved()
+    end
+
+end
+
+function NpcMixin:OnOrderGiven()
+    // delete old values
+    self:ResetOrderParamters()
+end
+
+function NpcMixin:DeleteCurrentOrder()
+    self:CompletedCurrentOrder()
+end
+
+function NpcMixin:OnOrderComplete(currentOrder)
+    self:ResetOrderParamters()
+end
+
+function NpcMixin:ResetOrderParamters()
+    local currentOrder = self:GetCurrentOrder()
+    if currentOrder then
+        if self.mapWaypoint == currentOrder:GetId() or self.mapWaypoint == currentOrder:GetParam() then
+            self.mapWaypoint = nil
+        end
+        
+        if currentOrder:GetParam() ~= self.target then
+            self.target = nil
+        end
+    end
+    
+    self:ResetPath()
+
+    self.toClose = false
+    self.inTargetRange = false
+    
+end
+
+////////////////////////////////////////////////////////
+//      Attack-Things
+////////////////////////////////////////////////////////
+
+function NpcMixin:GetAttackDistance()
+
+    if self.GetAttackDistanceOverride then
+        return self:GetAttackDistanceOverride()
+    else
+        local activeWeapon = self:GetActiveWeapon()
+        
+        if activeWeapon then
+            return math.min(activeWeapon:GetRange(), 40)
+        end
+    end
+    
+    return NpcMixin.kMinAttackGap
+    
+end
+
+function NpcMixin:FindVisibleTarget()
 
     // Are there any visible enemy players or structures nearby?
     local success = false
 
-    if not self.timeLastTargetCheck or (Shared.GetTime() - self.timeLastTargetCheck > NpcMixin.kTargetUpdateRate) then
-        
-        self.target = self.targetSelector:AcquireTarget()  
-    
-        /*
-    
+    if not self.target and (not self.timeLastTargetCheck or (Shared.GetTime() - self.timeLastTargetCheck > NpcMixin.kTargetUpdateRate)) then 
+
+        local target = self.targetSelector:AcquireTarget()
+ 
+    /*
         local nearestTarget = nil
         local nearestTargetDistance = nil
         
@@ -342,15 +481,23 @@ function NpcMixin:AttackVisibleTarget()
             end
             
         end
-        */
-        if self.target then
         
-            local name = SafeClassName(self.target)
-            if self.target:isa("Player") then
-                name = self.target:GetName()
+        self.target = nearestTarget
+*/
+        if target then
+        
+            self.target = target:GetId()
+            
+            local name = SafeClassName(target)
+            if target:isa("Player") then
+                name = target:GetName()
             end
             
-            self:GiveOrder(kTechId.Attack, self.target:GetId(), self.target:GetEngagementPoint(), nil, true, true)
+            local engagementPoint = target:GetEngagementPoint()
+            if self.EngagementPointOverride then
+                engagementPoint = self:EngagementPointOverride(target) or engagementPoint
+            end
+            self:GiveOrder(kTechId.Attack, self.target, engagementPoint, nil, true, true)
             
             success = true
         end
@@ -364,49 +511,26 @@ function NpcMixin:AttackVisibleTarget()
 end
 
 
-function NpcMixin:MoveRandomly(move)
+function NpcMixin:GetMinAttackGap() 
 
-    // Jump up and down crazily!
-    if self.active and Shared.GetRandomInt(0, 100) <= 5 then
-        move.commands = bit.bor(move.commands, Move.Jump)
-    end
-    
-    return true
-    
-end
+    if not self.minAttackGap then
+        self.minAttackGap = NpcMixin.kMinAttackGap
+    end 
 
-function NpcMixin:ChooseRandomDestination(move)
-
-    // Go to nearest unbuilt tech point or nozzle
-    local className = ConditionalValue(math.random() < .5, "TechPoint", "ResourcePoint")
-
-    local ents = Shared.GetEntitiesWithClassname(className)
-    
-    if ents:GetSize() > 0 then 
-    
-        local index = math.floor(math.random() * ents:GetSize())
+    if (self:GetAttackDistance() > NpcMixin.kMinAttackGap) and (not self.timeLastRangeUpdate 
+            or ((Shared.GetTime() -  self.timeLastRangeUpdate ) > NpcMixin.kRangeUpdateRate)) then
+  
+        // make it a bit random   
+        if self:GetAttackDistance() > 10 then
+            self.minAttackGap = math.random(4, 25)
+        else
+            self.minAttackGap = math.max(NpcMixin.kMinAttackGap, math.random(NpcMixin.kMinAttackGap, math.min(self:GetAttackDistance(), 8)))
+        end
         
-        local destination = ents:GetEntityAtIndex(index)
-        
-        self:GiveOrder(kTechId.Move, 0, destination:GetEngagementPoint(), nil, true, true)
-        
-        return true
-        
-    end
-    
-    return false
-    
-end
+        self.timeLastRangeUpdate = Shared.GetTime()
+    end   
 
-function NpcMixin:GetAttackDistance()
-
-    local activeWeapon = self:GetActiveWeapon()
-    
-    if activeWeapon then
-        return math.min(activeWeapon:GetRange(), 15)
-    end
-    
-    return nil
+    return self.minAttackGap 
     
 end
 
@@ -415,8 +539,9 @@ function NpcMixin:CanAttackTarget(targetOrigin)
     return (targetOrigin - self:GetModelOrigin()):GetLength() < (self:GetAttackDistance() or 0)
 end
 
-function NpcMixin:UpdateWeaponMove(move)
+function NpcMixin:UpdateWeaponMove()
 
+    assert(self.move ~= nil)
     local order = self:GetCurrentOrder()             
     local activeWeapon = self:GetActiveWeapon()
 
@@ -425,100 +550,88 @@ function NpcMixin:UpdateWeaponMove(move)
         
             local target = Shared.GetEntity(order:GetParam())
             if target then
-            
-                if self:isa("Marine") and activeWeapon then
-                    outOfAmmo = (activeWeapon:isa("ClipWeapon") and (activeWeapon:GetAmmo() == 0))            
-                    // Some bots switch to axe to take down structures
-                    if (GetReceivesStructuralDamage(target) and self.prefersAxe and not activeWeapon:isa("Axe")) or outOfAmmo then
-                        //Print("%s switching to axe to attack structure", self:GetName())
-                        move.commands = bit.bor(move.commands, Move.Weapon3)
-                    elseif target:isa("Player") and not activeWeapon:isa("Rifle") then
-                        //Print("%s switching to weapon #1", self:GetName())
-                        move.commands = bit.bor(move.commands, Move.Weapon1)
-                    // If we're out of ammo in our primary weapon, switch to next weapon (pistol or axe)
-                    elseif outOfAmmo then
-                        //Print("%s switching to next weapon", self:GetName())
-                        self:SetWeaponOutOfAmmo(activeWeapon:GetHUDSlot(), true)
-                        move.commands = bit.bor(move.commands, Move.NextWeapon)
-                    end
-                    
-                end
-                
+                            
                 // Attack target! TODO: We should have formal point where attack emanates from.
                 local distToTarget = (target:GetEngagementPoint() - self:GetModelOrigin()):GetLength()
                 local attackDist = self:GetAttackDistance()
                 
-                self.inAttackRange = false
+                self.inTargetRange = false
                 
                 if activeWeapon and attackDist and (distToTarget < attackDist) then
-                
+ 
                     // Make sure we can see target
                     local filter = EntityFilterTwo(self, activeWeapon)
-                    local trace = Shared.TraceRay(self:GetEyePos(), target:GetModelOrigin(), CollisionRep.LOS, PhysicsMask.AllButPCs, filter)
-                    if trace.entity == target then
-                    
-                        move.commands = bit.bor(move.commands, Move.PrimaryAttack)
-                        self.inAttackRange = true
-                        
-                    end
-                    
-                end
-            
-            end        
-            
-        elseif (order:GetType() == kTechId.Build or order:GetType() == kTechId.Construct) then
-            // if we're near the build, look if we can build it
-            if order:GetLocation() and (self:GetOrigin() - order:GetLocation()):GetLengthXZ() <= kPlayerUseRange then
-                local targetEnt = Shared.GetEntity(order:GetParam())
-                local ent = self:PerformUseTrace()            
-                if ent and ent == targetEnt then
-                    if not ent:GetIsBuilt() then
-                        move.commands = bit.bor(move.commands, Move.Use)
+                    local trace = Shared.TraceRay(self:GetEyePos(), target:GetEngagementPoint(), CollisionRep.Damage, PhysicsMask.Bullets, filter)
+                    if trace.entity == target or (target:GetEngagementPoint() - trace.endPoint):GetLengthXZ() <= 2  then 
+                        self.inTargetRange = true   
+                        self:Attack(activeWeapon)                     
                     else
-                        self:DeleteCurrentOrder()
-                    end
+                        //Print("not in range")
+                    end 
+                    
                 end
-            end
-            // if not, do nothing, we will walk there
+                
+                // if its not a structure, dont come to close
+                if HasMixin(target,"MobileTarget") and (distToTarget < self:GetMinAttackGap()) then
+                    self.toClose = true
+                else
+                    self.toClose = false
+                end  
+            
+            end  
         end
     else
         // if were a marine a have currently the pistol selected, switch back to rifle
 
     end
     
-    return move
-    
 end
 
-function NpcMixin:MoveToPoint(toPoint, move)
+function NpcMixin:Attack(activeWeapon)
+    assert(self.move ~= nil)
+    if self.AttackOverride then
+        self:AttackOverride(activeWeapon)
+    else
+        self.move.commands = bit.bor(self.move.commands, Move.PrimaryAttack)
+    end        
+end
 
-    local order = self:GetCurrentOrder()
-    if order:GetType() ~= kTechId.Attack then
+
+function NpcMixin:OnTakeDamage(damage, attacker, doer, point)
+    if Server then
+        self.lastAttacker = attacker 
+        local order = self:GetCurrentOrder()
+        // if were getting attacked, attack back
+        if not order or (order and (order:GetType() ~= kTechId.Attack or not Shared.GetEntity(order:GetParam()):isa("Player")) ) then
+            self:GiveOrder(kTechId.Attack, attacker:GetId(), attacker:GetEngagementPoint(), nil, true, true)       
+        end
+    end
+end
+
+
+////////////////////////////////////////////////////////
+//      Pathing-Things
+////////////////////////////////////////////////////////
+
+
+function NpcMixin:GetNextPoint(order, toPoint)
+    if order:GetType() ~= kTechId.Attack or (not self.toClose and not self.inTargetRange) then
+    //if order:GetType() ~= kTechId.Attack then
         // if its the same point, lets look if we can still move there
         if self.oldPoint and self.oldPoint == toPoint then
-            local startPoint = self:GetEyePos()
-            local viewAngles = self:GetViewAngles()
-            local fowardCoords = viewAngles:GetCoords()
-            local trace = Shared.TraceRay(startPoint, startPoint + (fowardCoords.zAxis * 5), CollisionRep.LOS, PhysicsMask.AllButPCs, EntityFilterOne(self))        
-            if (trace.endPoint - startPoint):GetLength() <= 0.5 then
-                local groundLocation = GetGroundAt(self, toPoint, PhysicsMask.Movement)
-                if not self:CheckTarget(groundLocation) then
-                    // thers no path
-                    self:DeleteCurrentOrder()
-                end 
-            end
+            // look if we're stucking
+             
+
         else
-            // delete current path cause its a new point
-            self.index = nil
-            self.points = nil
-            self.cursor = nil
-            
-            local groundLocation = GetGroundAt(self, toPoint, PhysicsMask.Movement)
-            if not self:CheckTarget(groundLocation) then
+            // delete current path cause its a new point           
+            local location = GetGroundAt(self, toPoint, PhysicsMask.Movement)
+            if self:GetIsFlying() then
+                location = GetHoverAt(self, toPoint, EntityFilterOne(self))
+            end
+            if not self:GeneratePath(location) then
                 // thers no path
                 self:DeleteCurrentOrder()
-            end   
-
+            end  
         end  
                    
         self.oldPoint = toPoint 
@@ -531,7 +644,7 @@ function NpcMixin:MoveToPoint(toPoint, move)
             
             if self.index <= #self.points then
                 toPoint = self.points[self.index]
-                if (self:GetOrigin() - toPoint):GetLengthXZ() <= NpcMixin.kMaxOrderDistance then
+                if self:CheckTargetReached(toPoint) then
                     // next point
                     self.index = self.index + 1
                 end
@@ -542,60 +655,31 @@ function NpcMixin:MoveToPoint(toPoint, move)
         end
         
     end
-  
-    // Fill in move to get to specified point
-    local diff = (toPoint - self:GetEyePos())
-    local direction = GetNormalizedVector(diff)
-        
-    // Look at target (needed for moving and attacking)
-    move.yaw   = GetYawFromVector(direction) - self:GetBaseViewAngles().yaw
-    move.pitch = GetPitchFromVector(direction)
-    
-    // Generate naive move towards point
-    if not self.inAttackRange then
-        move.move.z = 1        
-    end
-       
-    return move
-
+    return toPoint
 end
 
 
-function NpcMixin:DeleteCurrentOrder()
-    local order = self:GetCurrentOrder()
-    if self.mapWaypoint == order:GetId() or self.mapWaypoint == order:GetParam() then
-        self.mapWaypoint = nil
+function NpcMixin:CheckTargetReached(endPoint)
+    return (self:GetOrigin() - endPoint):GetLengthXZ() <= NpcMixin.kMaxOrderDistance 
+end
+
+
+function NpcMixin:GeneratePath(endPoint)
+    self:ResetPath()
+    self.points = GeneratePath(self:GetOrigin(), endPoint, false, 0.5, 2, self:GetIsFlying())
+    if self.points and #self.points > 0 then
+        return true
+    else
+        return false
     end
-    self:CompletedCurrentOrder()
+end
+
+function NpcMixin:ResetPath()
     self.index = nil
     self.points = nil
     self.cursor = nil
 end
 
-function NpcMixin:OnTakeDamage(damage, attacker, doer, point)
-    if Server then
-        self.lastAttacker = attacker 
-        local order = self:GetCurrentOrder()
-        // if were getting attacked, attack back
-        if not order or (order and order:GetType() ~= kTechId.Attack) then
-            self:GiveOrder(kTechId.Attack, attacker:GetId(), attacker:GetEngagementPoint(), nil, true, true)       
-        end
-    end
-end
-
-// remember current weapon and set it as reloaded
-function NpcMixin:Reload()
-    local activeWeapon = self:GetActiveWeapon()
-    self:SetWeaponOutOfAmmo(activeWeapon:GetHUDSlot(), false)
-end
-
-function NpcMixin:SetWeaponOutOfAmmo(weaponSlot, boolean)
-    if weaponSlot == kPrimaryWeaponSlot then 
-        self.weapon1OutOfAmmo = false
-    else
-        self.weapon2OutOfAmmo = false
-    end
-end
 
 if Server then
 
