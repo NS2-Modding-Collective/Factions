@@ -16,10 +16,12 @@ class 'HordeGamerules' (GenericGamerules)
 HordeGamerules.kMapName = "factions_horde_gamerules"
 
 local kGameEndCheckInterval = 0.75
+local kMaxDifficulty = 10
 
 local networkVars =
 {
 	timeLeft = "time",
+	difficulty = "integer 0 to " .. kMaxDifficulty,
 }
 
 if Server then
@@ -41,6 +43,7 @@ if Server then
 		
 		// Lock the command chairs
 		self:LockCommandChairs()
+		self.difficulty = 0
 		
 	end
 	
@@ -92,6 +95,39 @@ if Server then
         end
         
     end
+
+end
+
+function HordeGamerules:GetDifficulty()
+
+	return self.difficulty
+
+end
+
+function HordeGamerules:SetDifficulty(newDifficulty)
+
+	self.difficulty = newDifficulty
+	kNPCDamageModifier = 0.1 + (0.05 * self.difficulty)
+
+end
+
+function HordeGamerules:IncreaseDifficulty()
+
+	local newDifficulty = self:GetDifficulty() + 1
+	self:SetDifficulty(newDifficulty)
+
+end
+
+function HordeGamerules:DecreaseDifficulty()
+
+	local newDifficulty = self:GetDifficulty() - 1
+	self:SetDifficulty(newDifficulty)
+
+end
+
+function HordeGamerules:ResetDifficulty()
+
+	self:SetDifficulty(0)
 
 end
 

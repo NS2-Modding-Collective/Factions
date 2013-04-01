@@ -159,13 +159,16 @@ function XpMixin:GetDisplayResources()
 end
 
 // also adds res when score will be added so you can use them to buy something
-function XpMixin:AddScore(points, res)
+function XpMixin:AddScore(points, res, noNearbyXp)
     if Server then
         if points ~= nil and points ~= 0 then        
             self:AddResources(points)
             self:SetScoreboardChanged(true)
             self:CheckLvlUp()
-			self:GiveXpToTeammatesNearby(points)
+            // Don't get stuck in an endless cycle when adding nearby xp
+            if noNearbyXp == nil and not noNearbyXp then
+			    self:GiveXpToTeammatesNearby(points)
+            end
         end    
     end    
 end
@@ -308,7 +311,7 @@ function Player:GiveXpToTeammatesNearby(xp)
 	// Only give Xp to players who are alive!
 	for _, player in ipairs(playersInRange) do
 		if self ~= player and player:GetIsAlive() then
-			player:AddResources(xp)    
+			player:AddScore(xp, xp, true)    
 		end
 	end
 
