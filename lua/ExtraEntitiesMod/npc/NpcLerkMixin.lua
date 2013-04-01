@@ -31,13 +31,20 @@ end
 
 // let lerk hover over the ground
 function NpcLerkMixin:AiSpecialLogic()
-    assert(self.move ~= nil)
-    if not self.fly and not self.inTargetRange then
-        self.move.commands = bit.bor(self.move.commands, Move.Jump)   
-        self.fly = true
-    else
-        self.fly = false
-    end  
+
+     if self:GetCurrentOrder() then
+        if not self.inTargetRange then
+            if not self.nextFlyStop then
+                self.nextFlyStop = Shared.GetTime() + 2    
+            end
+
+            if not ((self.nextFlyStop - Shared.GetTime()) >  2)  then
+                self:PressButton(Move.Jump) 
+                self.nextFlyStop = Shared.GetTime() + 2                 
+            end
+            
+        end  
+    end
 
 end
 

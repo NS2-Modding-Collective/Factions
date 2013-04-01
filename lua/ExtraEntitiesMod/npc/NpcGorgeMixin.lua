@@ -34,23 +34,40 @@ function NpcGorgeMixin:GetAttackDistanceOverride()
 end
 
 function NpcGorgeMixin:CheckImportantEvents()
-    assert(self.move ~= nil)
+   
+    if self.lastAttacker then
+        // jump sometimes if getting attacked
+        if Shared.GetRandomInt(0, 100) <= 10 then
+            self:PressButton(Move.Jump)
+        end
+        self.lastAttacker = nil
+    end    
+       
+    local activeWeapon = self:GetActiveWeapon()
+
     if self:GetHealth() < self:GetMaxHealth() then
         // heal us
         local activeWeapon = self:GetActiveWeapon()
         if activeWeapon and activeWeapon:isa("SpitSpray") then
-            self.move.commands = bit.bor(self.move.commands, Move.SecondaryAttack)
+            self:PressButton(Move.SecondaryAttack)
+        end
+    end    
+    
+end
+
+
+function NpcGorgeMixin:UpdateOrderLogic()
+
+    local order = self:GetCurrentOrder()             
+    if order ~= nil then
+        if order:GetType() == kTechId.Heal or order:GetType() == kTechId.AutoHeal then
+            // go to entity and heal it
         end
     end
     
-    if self.lastAttacker then
-        // jump sometimes if getting attacked
-        if Shared.GetRandomInt(0, 100) <= 10 then
-            self.move.commands = bit.bor(self.move.commands, Move.Jump)
-        end
-        self.lastAttacker = nil
-    end
 end
+    
+
 
 
 
