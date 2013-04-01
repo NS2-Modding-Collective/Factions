@@ -21,7 +21,7 @@ local kMaxDifficulty = 10
 local networkVars =
 {
 	timeLeft = "time",
-	difficulty = "integer 0 to " .. kMaxDifficulty,
+	difficulty = "integer (0 to " .. kMaxDifficulty .. ")",
 }
 
 if Server then
@@ -108,6 +108,7 @@ function HordeGamerules:SetDifficulty(newDifficulty)
 
 	self.difficulty = newDifficulty
 	kNPCDamageModifier = 0.1 + (0.05 * self.difficulty)
+	SendGlobalChatMessage("Difficulty set to " .. self.difficulty .. " / " .. kMaxDifficulty)
 
 end
 
