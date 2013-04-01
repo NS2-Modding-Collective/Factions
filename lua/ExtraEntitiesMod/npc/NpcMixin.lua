@@ -32,6 +32,7 @@ NpcMixin.kJumpRange = 2
 NpcMixin.kUpdateRate = 0.01
 NpcMixin.kTargetUpdateRate = 0.5
 NpcMixin.kRangeUpdateRate = 2
+NpcMixin.kMinGapChangeRate = 2
 
 
 
@@ -246,23 +247,13 @@ end
 
 function NpcMixin:ProcessOrder()
 
-    self:UpdateWeaponMove()  
     local order = self:GetCurrentOrder() 
     if order then 
-        local orderLocation = order:GetLocation()
-        
-        // Check for moving targets. This isn't done inside Order:GetLocation
-        // so that human players don't have special information about invisible
-        // targets just because they have an order to them.
-        if (order:GetType() == kTechId.Attack) then
-            local target = Shared.GetEntity(order:GetParam())
-            if (target ~= nil) then
-                orderLocation = target:GetEngagementPoint()
-            end
+        self:UpdateOrderLogic()
+        local orderLocation = order:GetLocation()      
+        if orderLocation then
+            self:MoveToPoint(orderLocation)
         end
-        
-        self:MoveToPoint(orderLocation)
-        
     end
 
 end
@@ -286,7 +277,7 @@ function NpcMixin:MoveRandomly()
     assert(self.move ~= nil)
     // Jump up and down crazily!
     if self.active and Shared.GetRandomInt(0, 100) <= 5 then
-        self.move.commands = bit.bor(self.move.commands, Move.Jump)
+        self:PressButton(Move.Jump)
     end
     
     return true
@@ -323,6 +314,8 @@ end
 function NpcMixin:MoveToPoint(toPoint)
 
     assert(self.move ~= nil)
+    assert(toPoint ~= nil)
+    
     local order = self:GetCurrentOrder()
     toPoint = self:GetNextPoint(order, toPoint) or toPoint
     // Fill in move to get to specified point
@@ -360,7 +353,7 @@ function NpcMixin:MoveToPoint(toPoint)
         if self:GetCanJump() and (self:GetOrigin() - toPoint):GetLengthXZ() < NpcMixin.kJumpRange then
             // sometimes jump (real players do that, too)
             if Shared.GetRandomInt(0, 80) <= 5 then
-                self.move.commands = bit.bor(self.move.commands, Move.Jump)
+                self:PressButton(Move.Jump)
             end
         end
         moved = true       
@@ -374,6 +367,18 @@ function NpcMixin:MoveToPoint(toPoint)
     end
 
 end
+
+
+function NpcMixin:PressButton(button)
+    assert(self.move ~= nil)
+    assert(button ~= nil)
+    self.move.commands = bit.bor(self.move.commands, button)
+end
+
+
+////////////////////////////////////////////////////////
+//      Order-Things
+////////////////////////////////////////////////////////
 
 function NpcMixin:OnOrderGiven()
     // delete old values
@@ -407,6 +412,7 @@ function NpcMixin:ResetOrderParamters()
     
 end
 
+
 ////////////////////////////////////////////////////////
 //      Attack-Things
 ////////////////////////////////////////////////////////
@@ -435,55 +441,7 @@ function NpcMixin:FindVisibleTarget()
     if not self.target and (not self.timeLastTargetCheck or (Shared.GetTime() - self.timeLastTargetCheck > NpcMixin.kTargetUpdateRate)) then 
 
         local target = self.targetSelector:AcquireTarget()
- 
-    /*
-        local nearestTarget = nil
-        local nearestTargetDistance = nil
-        
-        local targets = GetEntitiesWithMixinForTeamWithinRange("Live", GetEnemyTeamNumber(self:GetTeamNumber()), self:GetOrigin(), 60)
-        for index, target in pairs(targets) do
-        
-            // for sp, dont attack power nodes
-            if (not HasMixin(target, "PowerSourceMixin") and target:GetIsAlive() and target:GetIsVisible() and target:GetCanTakeDamage() and target ~= self ) then                     
-                local minePos = self:GetEngagementPoint()
-                local weapon = self:GetActiveWeapon()
-                if weapon then
-                    minePos = weapon:GetEngagementPoint()
-                end
-                local targetPos = target:GetEngagementPoint()
-                
-                // Make sure we can see target
-                local filter = EntityFilterAll()
-                local trace = Shared.TraceRay(minePos, targetPos , CollisionRep.Damage, PhysicsMask.Bullets, filter)
-                if trace.entity == target or not GetWallBetween(minePos, targetPos, target) or GetCanSeeEntity(self, target) then  
-            
-                    // Prioritize players over non-players
-                    local dist = (target:GetEngagementPoint() - self:GetModelOrigin()):GetLength()
-                    
-                    local newTarget = (not nearestTarget) or (target:isa("Player") and not nearestTarget:isa("Player"))
-                    if not newTarget then
-                    
-                        if dist < nearestTargetDistance then
-                            newTarget = not nearestTarget:isa("Player") or target:isa("Player")
-                        end
-                        
-                    end
-                    
-                    if newTarget then
-                    
-                        nearestTarget = target
-                        nearestTargetDistance = dist
-                        
-                    end
-                    
-                end
-                
-            end
-            
-        end
-        
-        self.target = nearestTarget
-*/
+
         if target then
         
             self.target = target:GetId()
@@ -517,8 +475,7 @@ function NpcMixin:GetMinAttackGap()
         self.minAttackGap = NpcMixin.kMinAttackGap
     end 
 
-    if (self:GetAttackDistance() > NpcMixin.kMinAttackGap) and (not self.timeLastRangeUpdate 
-            or ((Shared.GetTime() -  self.timeLastRangeUpdate ) > NpcMixin.kRangeUpdateRate)) then
+    if (self:GetAttackDistance() > NpcMixin.kMinAttackGap) then
   
         // make it a bit random   
         if self:GetAttackDistance() > 10 then
@@ -526,8 +483,7 @@ function NpcMixin:GetMinAttackGap()
         else
             self.minAttackGap = math.max(NpcMixin.kMinAttackGap, math.random(NpcMixin.kMinAttackGap, math.min(self:GetAttackDistance(), 8)))
         end
-        
-        self.timeLastRangeUpdate = Shared.GetTime()
+
     end   
 
     return self.minAttackGap 
@@ -539,51 +495,66 @@ function NpcMixin:CanAttackTarget(targetOrigin)
     return (targetOrigin - self:GetModelOrigin()):GetLength() < (self:GetAttackDistance() or 0)
 end
 
-function NpcMixin:UpdateWeaponMove()
+function NpcMixin:UpdateOrderLogic()
 
     assert(self.move ~= nil)
     local order = self:GetCurrentOrder()             
     local activeWeapon = self:GetActiveWeapon()
 
     if order ~= nil then
-        if (order:GetType() == kTechId.Attack) then
-        
-            local target = Shared.GetEntity(order:GetParam())
-            if target then
-                            
-                // Attack target! TODO: We should have formal point where attack emanates from.
-                local distToTarget = (target:GetEngagementPoint() - self:GetModelOrigin()):GetLength()
-                local attackDist = self:GetAttackDistance()
-                
-                self.inTargetRange = false
-                
-                if activeWeapon and attackDist and (distToTarget < attackDist) then
- 
-                    // Make sure we can see target
-                    local filter = EntityFilterTwo(self, activeWeapon)
-                    local trace = Shared.TraceRay(self:GetEyePos(), target:GetEngagementPoint(), CollisionRep.Damage, PhysicsMask.Bullets, filter)
-                    if trace.entity == target or (target:GetEngagementPoint() - trace.endPoint):GetLengthXZ() <= 2  then 
-                        self.inTargetRange = true   
-                        self:Attack(activeWeapon)                     
-                    else
-                        //Print("not in range")
-                    end 
-                    
-                end
-                
-                // if its not a structure, dont come to close
-                if HasMixin(target,"MobileTarget") and (distToTarget < self:GetMinAttackGap()) then
-                    self.toClose = true
-                else
-                    self.toClose = false
-                end  
+        if (order:GetType() == kTechId.Attack) and self.target then
+
             
-            end  
+            local target = Shared.GetEntity(self.target)
+            if target then            
+                    
+                // if were in range, only updated it after some time
+                if not self.timeLastRangeUpdate or not self.inTargetRange or (self.inTargetRange and ((Shared.GetTime() -  self.timeLastRangeUpdate ) > NpcMixin.kRangeUpdateRate)) then
+                            
+                    // Attack target! TODO: We should have formal point where attack emanates from.
+                    local distToTarget = (target:GetEngagementPoint() - self:GetModelOrigin()):GetLength()
+                    local attackDist = self:GetAttackDistance()
+                    
+                    self.inTargetRange = false
+                    
+                    if activeWeapon and attackDist and (distToTarget <= attackDist) then        
+                        // Make sure we can see target
+                        local filter = EntityFilterTwo(self, activeWeapon)
+                        local trace = Shared.TraceRay(self:GetEyePos(), target:GetEngagementPoint(), CollisionRep.Damage, PhysicsMask.Bullets, filter)
+                        if trace.entity == target or (target:GetEngagementPoint() - trace.endPoint):GetLengthXZ() <= 2  then                                        
+                            self.inTargetRange = true   
+                        end
+                    end
+                    
+                     // if its not a structure, dont come to close
+                    if HasMixin(target,"MobileTarget") and (distToTarget < self:GetMinAttackGap()) then
+                        self.toClose = true
+                    else
+                        self.toClose = false
+                    end  
+                                
+                    self.timeLastRangeUpdate = Shared.GetTime() 
+                   
+                end                
+                
+                if self.inTargetRange then
+                    self:Attack(activeWeapon)  
+                end
+
+            
+            else
+                self:DeleteCurrentOrder()
+            end
+            
+
+
         end
     else
         // if were a marine a have currently the pistol selected, switch back to rifle
 
     end
+    
+    return nil
     
 end
 
@@ -592,7 +563,7 @@ function NpcMixin:Attack(activeWeapon)
     if self.AttackOverride then
         self:AttackOverride(activeWeapon)
     else
-        self.move.commands = bit.bor(self.move.commands, Move.PrimaryAttack)
+        self:PressButton(Move.PrimaryAttack)
     end        
 end
 

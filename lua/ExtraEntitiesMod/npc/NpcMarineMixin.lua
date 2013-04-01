@@ -34,6 +34,12 @@ function NpcMarineMixin:__initmixin()
 end
 
 
+function NpcMarineMixin:AiSpecialLogic()
+    // just sprint all the time
+    //self:PressButton(Move.MovementModifier)
+end
+
+
 function NpcMarineMixin:CheckImportantEvents()
     // if health is low and we have no order, got to an armory if near
     local healthFactor = self:GetHealth() / self:GetMaxHealth()
@@ -76,10 +82,10 @@ function NpcMarineMixin:CheckImportantEvents()
 end
 
 function NpcMarineMixin:CheckCrouch(targetPosition)
-    assert(self.move ~= nil)
+
     local activeWeapon = self:GetActiveWeapon()
     // only crouch when using an axe
-    if activeWeapom and activeWeapon:isa("Axe") then
+    if activeWeapon and activeWeapon:isa("Axe") then
         // crouch if we need to
         local yRange = targetPosition.y - self:GetEyePos().y
         local target = false
@@ -89,15 +95,14 @@ function NpcMarineMixin:CheckCrouch(targetPosition)
         end
         
         if (self:GetCanCrouch() and yRange > self:GetCrouchShrinkAmount()) or (target and target:isa("Egg")) then
-            self.move.commands = bit.bor(self.move.commands, Move.Crouch)
+            self:PressButton(Move.Crouch)
         end
     end
     
 end
 
-function NpcMarineMixin:UpdateWeaponMove()
+function NpcMarineMixin:UpdateOrderLogic()
 
-    assert(self.move ~= nil)
     local order = self:GetCurrentOrder()             
     local activeWeapon = self:GetActiveWeapon()
 
@@ -108,21 +113,20 @@ function NpcMarineMixin:UpdateWeaponMove()
             if target then
             
                 if activeWeapon then
-                    outOfAmmo = (activeWeapon:isa("ClipWeapon") and (activeWeapon:GetAmmo() == 0))            
+                    outOfAmmo = (activeWeapon:isa("ClipWeapon") and (activeWeapon:GetAmmo() == 0))  
+          
                     // Some bots switch to axe to take down structures
                     if (GetReceivesStructuralDamage(target) and self.prefersAxe and not activeWeapon:isa("Axe")) or 
                             (self:GetWeaponOutOfAmmo(kPrimaryWeaponSlot) and self:GetWeaponOutOfAmmo(kSecondaryWeaponSlot)) then
-                        //Print("%s switching to axe to attack structure", self:GetName())
-                        self.move.commands = bit.bor(self.move.commands, Move.Weapon3)
+                        self:PressButton(Move.Weapon3)
                     elseif ((target:isa("Player") or not GetReceivesStructuralDamage(target)) and not activeWeapon:isa("Rifle"))
                             and not self:GetWeaponOutOfAmmo(kPrimaryWeaponSlot) then
-                        //Print("%s switching to weapon #1", self:GetName())
-                        self.move.commands = bit.bor(self.move.commands, Move.Weapon1)
+                        self:PressButton(Move.Weapon1)
                     // If we're out of ammo in our primary weapon, switch to next weapon (pistol or axe)
                     elseif outOfAmmo then
-                        //Print("%s switching to next weapon", self:GetName())
-                        self.move.commands = bit.bor(self.move.commands, Move.NextWeapon)                   
+                        self:PressButton(Move.NextWeapon)                   
                     end
+                    
                     /*
                 elseif self:isa("Exo") then
                 
@@ -145,7 +149,7 @@ function NpcMarineMixin:UpdateWeaponMove()
                 local ent = self:PerformUseTrace()            
                 if ent and ent == targetEnt then
                     if not ent:GetIsBuilt() then
-                        self.move.commands = bit.bor(self.move.commands, Move.Use)
+                        self:PressButton(Move.Use)
                         self.inTargetRange = true
                         self.toClose = false
                     else
@@ -161,7 +165,7 @@ function NpcMarineMixin:UpdateWeaponMove()
             // don't check this to often
             if not self.timeLastAmmoUpdate or ((Shared.GetTime() - self.timeLastAmmoUpdate) > NpcMarineMixin.kAmmoUpdateRate) then
                 if not self:GetWeaponOutOfAmmo(kPrimaryWeaponSlot) then
-                    self.move.commands = bit.bor(self.move.commands, Move.Weapon1)
+                    self:PressButton(Move.Weapon1)
                 end
                 self.timeLastAmmoUpdate = Shared.GetTime()
             end
@@ -187,7 +191,7 @@ function NpcMarineMixin:AttackOverride(activeWeapon)
                 
 */
     if not activeWeapon:isa("Pistol") or not self.pistolFired then
-        self.move.commands = bit.bor(self.move.commands, Move.PrimaryAttack)
+        self:PressButton(Move.PrimaryAttack)
         self.pistolFired = true
     else
         self.pistolFired = false
