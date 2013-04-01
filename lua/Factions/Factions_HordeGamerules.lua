@@ -126,6 +126,31 @@ function HordeGamerules:DecreaseDifficulty()
 
 end
 
+function HordeGamerules:JoinTeam(player, newTeamNumber, force)
+	
+	local oldTeamNumber = player:GetTeamNumber()
+	
+	local success, newPlayer = GenericGamerules.JoinTeam(self, player, newTeamNumber, force)
+	
+	if success then
+	
+		// Adjust the difficulty if a player joins or leaves team 1
+		if oldTeamNumber ~= kTeam1Index and newTeamNumber == kTeam1Index then
+			// Increase the difficulty.
+			self:IncreaseDifficulty()
+		elseif oldTeamNumber == kTeam1Index and newTeamNumber ~= kTeam1Index then
+			self:DecreaseDifficulty()
+		end
+		
+	end
+
+end
+
+// We definitely need to add some more logic here.
+function HordeGamerules:OnClientDisconnect(client)
+	GenericGamerules.OnClientDisconnect(self, client)
+end
+
 function HordeGamerules:ResetDifficulty()
 
 	self:SetDifficulty(0)

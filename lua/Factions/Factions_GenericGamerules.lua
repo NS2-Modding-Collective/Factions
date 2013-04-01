@@ -70,6 +70,11 @@ if Server then
 		
 	end
 	
+	// We may need to add some more logic here.
+	function GenericGamerules:OnClientDisconnect(client)
+		NS2Gamerules.OnClientDisconnect(self, client)
+	end
+	
 	// Reveal the command chair locations with this.
 	function GenericGamerules:RevealCommandChairLocations()
 	
