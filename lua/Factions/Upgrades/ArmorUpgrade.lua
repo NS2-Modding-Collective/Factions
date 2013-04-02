@@ -39,5 +39,6 @@ function ArmorUpgrade:OnAdd(player)
 		player.upgradeArmorLevel = self:GetCurrentLevel()
 		player:UpgradeArmor()
 		player:SendDirectMessage("Armor Upgraded to level " .. self:GetCurrentLevel() .. ".")
+		player:SendDirectMessage("New Max Armor is: " .. player:GetMaxArmor())
 	end
 end

@@ -39,5 +39,6 @@ function HealthUpgrade:OnAdd(player)
 		player.upgradeHealthLevel = self:GetCurrentLevel()
 		player:UpgradeHealth()
 		player:SendDirectMessage("Health Upgraded to level " .. self:GetCurrentLevel() .. ".")
+		player:SendDirectMessage("New Max Health is: " .. player:GetMaxHealth())
 	end
 end
