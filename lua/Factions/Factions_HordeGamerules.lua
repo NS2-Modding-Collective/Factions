@@ -157,4 +157,15 @@ function HordeGamerules:ResetDifficulty()
 
 end
 
+// Enforce unbalanced teams!
+function HordeGamerules:GetCanJoinTeamNumber(teamNumber)
+
+	if teamNumber == kTeam1Index then
+		return true
+	else
+		return false
+	end
+
+end
+
 Shared.LinkClassToMap("HordeGamerules", HordeGamerules.kMapName, networkVars)
