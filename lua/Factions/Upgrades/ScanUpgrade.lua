@@ -43,7 +43,7 @@ end
 function ScanUpgrade:OnTrigger(player)
 
 	if player then
-		CreateEntity(Scan.kMapName, player:GetOrigin(), self:GetTeamNumber())
+		CreateEntity(Scan.kMapName, player:GetOrigin(), player:GetTeamNumber())
 		StartSoundEffectAtOrigin(Observatory.kScanSound, position)  
 	end
 
