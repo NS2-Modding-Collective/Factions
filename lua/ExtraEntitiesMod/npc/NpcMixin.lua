@@ -24,6 +24,7 @@ NpcMixin.type = "Npc"
 
 NpcMixin.kPlayerFollowDistance = 3
 NpcMixin.kMaxOrderDistance = 3
+NpcMixin.kAntiStuckDistance = 0.2
 
 NpcMixin.kMinAttackGap = 0.6
 NpcMixin.kJumpRange = 2
@@ -32,7 +33,6 @@ NpcMixin.kJumpRange = 2
 NpcMixin.kUpdateRate = 0.01
 NpcMixin.kTargetUpdateRate = 0.5
 NpcMixin.kRangeUpdateRate = 2
-NpcMixin.kMinGapChangeRate = 2
 
 
 
@@ -82,11 +82,10 @@ function NpcMixin:__initmixin()
         self.targetSelector = TargetSelector():Init(
             self,
             40, 
-            true,
+            false,
             self:GetTargets(),
             //{self.FilterTarget(self)},
-            { CloakTargetFilter(), self.FilterTarget(self)},
-            //{ function(target) return target:isa("Player") end })
+            { CloakTargetFilter(), self.FilterTarget(self)},            
             { function(target) return target:isa("Player") end } )
 
 
@@ -133,7 +132,8 @@ function NpcMixin:FilterTarget()
     local attacker = self
     return  function (target, targetPosition)
                 // dont attack power points or team members
-                return target:GetCanTakeDamage() and target:GetTeamNumber() ~= self:GetTeamNumber() and not target:isa("PowerPoint")
+                return target:GetCanTakeDamage() and not target:isa("PowerPoint") and not GetWallBetween(GetEntityEyePos(attacker), targetPosition, target)
+                
                     /*
                     local minePos = self:GetEngagementPoint()
                     local weapon = self:GetActiveWeapon()
@@ -232,7 +232,7 @@ function NpcMixin:ChooseOrder()
         self:FindVisibleTarget()
     end
     
-    order = self:GetCurrentOrder()
+    order = self:GetCurrentOrder()   
     // try to reach the mapWaypoint
     if not order and self.mapWaypoint then
         local waypoint = Shared.GetEntity(self.mapWaypoint)
@@ -387,6 +387,7 @@ end
 
 function NpcMixin:DeleteCurrentOrder()
     self:CompletedCurrentOrder()
+    self:ResetOrderParamters()
 end
 
 function NpcMixin:OnOrderComplete(currentOrder)
@@ -403,6 +404,8 @@ function NpcMixin:ResetOrderParamters()
         if currentOrder:GetParam() ~= self.target then
             self.target = nil
         end
+    else
+        self.target = nil
     end
     
     self:ResetPath()
@@ -438,29 +441,34 @@ function NpcMixin:FindVisibleTarget()
     // Are there any visible enemy players or structures nearby?
     local success = false
 
-    if not self.target and (not self.timeLastTargetCheck or (Shared.GetTime() - self.timeLastTargetCheck > NpcMixin.kTargetUpdateRate)) then 
+    if (not self.timeLastTargetCheck or (Shared.GetTime() - self.timeLastTargetCheck > NpcMixin.kTargetUpdateRate)) then 
+        if not self.target then
+            self.targetSelector:AttackerMoved()
+            local target = self.targetSelector:AcquireTarget()
 
-        local target = self.targetSelector:AcquireTarget()
-
-        if target then
-        
-            self.target = target:GetId()
+            if target then
             
-            local name = SafeClassName(target)
-            if target:isa("Player") then
-                name = target:GetName()
+                self.target = target:GetId()
+                
+                local name = SafeClassName(target)
+                if target:isa("Player") then
+                    name = target:GetName()
+                end
+                
+                local engagementPoint = target:GetEngagementPoint()
+                if self.EngagementPointOverride then
+                    engagementPoint = self:EngagementPointOverride(target) or engagementPoint
+                end
+                self:GiveOrder(kTechId.Attack, self.target, engagementPoint, nil, true, true)
+                
+                success = true
             end
-            
-            local engagementPoint = target:GetEngagementPoint()
-            if self.EngagementPointOverride then
-                engagementPoint = self:EngagementPointOverride(target) or engagementPoint
-            end
-            self:GiveOrder(kTechId.Attack, self.target, engagementPoint, nil, true, true)
-            
-            success = true
+                
+            self.timeLastTargetCheck = Shared.GetTime() 
+        else
+            self.target = nil
+            self:DeleteCurrentOrder()
         end
-        
-        self.timeLastTargetCheck = Shared.GetTime()
         
     end
     
@@ -543,6 +551,8 @@ function NpcMixin:UpdateOrderLogic()
 
             
             else
+                // target isnt valid anymore
+                self.target = nil
                 self:DeleteCurrentOrder()
             end
             
@@ -586,13 +596,17 @@ end
 
 
 function NpcMixin:GetNextPoint(order, toPoint)
-    if order:GetType() ~= kTechId.Attack or (not self.toClose and not self.inTargetRange) then
+    if (order and order:GetType() ~= kTechId.Attack) or (not self.toClose and not self.inTargetRange) then
     //if order:GetType() ~= kTechId.Attack then
         // if its the same point, lets look if we can still move there
-        if self.oldPoint and self.oldPoint == toPoint then
-            // look if we're stucking
-             
-
+        if self.oldPoint and self.oldOrigin and self.oldPoint == toPoint then
+        /*
+            if math.abs((self:GetOrigin() - self.oldOrigin):GetLengthXZ()) < NpcMixin.kAntiStuckDistance then
+                // we're still in the same spot
+                self:GeneratePath(toPoint)
+                Print("Unstucking")
+            end
+*/
         else
             // delete current path cause its a new point           
             local location = GetGroundAt(self, toPoint, PhysicsMask.Movement)
@@ -606,6 +620,7 @@ function NpcMixin:GetNextPoint(order, toPoint)
         end  
                    
         self.oldPoint = toPoint 
+        self.oldOrigin = self:GetOrigin()
             
         if self.points and #self.points ~= 0 then            
 
