@@ -47,7 +47,7 @@ end
 
 Shared.RegisterNetworkMessage( "UpdateUpgrade", kUpdateUpgrade )
 Shared.RegisterNetworkMessage( "BuyUpgrade", kBuyUpgrade )
-Shared.RegisterNetworkMessage( "ClearUpgrades", {} )
+Shared.RegisterNetworkMessage( "ResetUpgrades", {} )
 
 local kMarineBuildStructureMessage = 
 {

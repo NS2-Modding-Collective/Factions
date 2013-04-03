@@ -36,7 +36,7 @@ function UpgradeMixin:Reset()
     self:BuildNewUpgradeList()
 end
 
-function UpgradeMixin:ClearUpgrades()
+function UpgradeMixin:ResetUpgrades()
 	self:BuildNewUpgradeList()
 end
 

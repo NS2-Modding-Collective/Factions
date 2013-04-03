@@ -19,17 +19,17 @@ function OnCommandUpdateUpgrade(msg)
 
 end
 
-function OnCommandClearUpgrades()
+function OnCommandResetUpgrades()
 
     // The server will send us this message to tell us an ability succeded.
     player = Client.GetLocalPlayer()
-    player:ClearUpgrades()
+    player:ResetUpgrades()
 
 end
 
 if Client then
 	Client.HookNetworkMessage("UpdateUpgrade", OnCommandUpdateUpgrade)
-	Client.HookNetworkMessage("ClearUpgrades", OnCommandClearUpgrades)
+	Client.HookNetworkMessage("ResetUpgrades", OnCommandResetUpgrades)
 end
 
 if Client then
