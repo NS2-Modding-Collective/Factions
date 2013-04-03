@@ -12,7 +12,7 @@
 Script.Load("lua/Factions/Factions_UpgradeList.lua")
   
 UpgradeMixin = CreateMixin(UpgradeMixin)
-UpgradeMixin.type = "Upgrade"
+UpgradeMixin.type = "FactionsUpgrade"
 
 UpgradeMixin.networkVars =
 {
@@ -46,8 +46,10 @@ function UpgradeMixin:BuildNewUpgradeList()
 end
 
 function UpgradeMixin:CopyPlayerDataFrom(player)
-    if player.UpgradeList then 
-		self.UpgradeList:CopyUpgradeDataFrom(player.UpgradeList)
+	if HasMixin(player, "FactionsUpgrade") then
+		if player.UpgradeList then 
+			self.UpgradeList:CopyUpgradeDataFrom(player.UpgradeList)
+		end
 	end
     
 	// give upgrades back when the player respawns

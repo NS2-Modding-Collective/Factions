@@ -196,9 +196,10 @@ function UpgradeList:GetAvailableUpgradesByClass(playerClass)
 end
 
 function UpgradeList:CopyUpgradeDataFrom(cloneList)
-	for index, upgrade in pairs(cloneList:GetAllUpgrades()) do
-		local cloneUpgrade = self:GetUpgradeById(upgrade:GetId())
-		cloneUpgrade:SetLevel(upgrade:GetCurrentLevel())
+	if cloneList then
+		table.clear(self.UpgradeTable)
+		table.copy(cloneList.UpgradeTable, self.UpgradeTable)
+		table.clear(cloneList.UpgradeTable)
 	end
 end
 

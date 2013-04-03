@@ -119,7 +119,7 @@ function Marine:OnCreate()
 	assert(HasMixin(self, "IronSightViewer"))
 	assert(HasMixin(self, "SpawnProtect"))
 	assert(HasMixin(self, "Xp"))
-	assert(HasMixin(self, "Upgrade"))
+	assert(HasMixin(self, "FactionsUpgrade"))
 	
 	// Server-only mixins
 	if Server then

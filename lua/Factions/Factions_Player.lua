@@ -32,7 +32,7 @@ function Player:OnCreate()
 
 	assert(HasMixin(self, "FactionsClass"))
 	assert(HasMixin(self, "Xp"))
-	assert(HasMixin(self, "Upgrade"))
+	assert(HasMixin(self, "FactionsUpgrade"))
 
     if Server then
 
@@ -40,6 +40,7 @@ function Player:OnCreate()
         InitMixin(self, DirectMessageRecipientMixin)
         
         assert(HasMixin(self, "DirectMessageRecipient"))
+		
     end
     
 end

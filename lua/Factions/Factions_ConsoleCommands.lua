@@ -46,7 +46,7 @@ if Server then
 	function OnCommandDebugUpgrades(client)
 		for list, victim in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
 			Shared.Message("Player: " .. victim:GetName())
-			if HasMixin(victim, "Upgrade") then
+			if HasMixin(victim, "FactionsUpgrade") then
 				for index, upgrade in pairs(victim:GetAllUpgrades()) do
 					if upgrade:GetCurrentLevel() > 0 then
 						Shared.Message("Upgrade: " .. upgrade:GetClassName() .. " Level: " .. upgrade:GetCurrentLevel())
@@ -72,7 +72,7 @@ if Server then
 
         local player = client:GetControllingPlayer()
         if player and Shared.GetCheatsEnabled() and upgradeName then
-            if HasMixin(player, "Upgrade") then
+            if HasMixin(player, "FactionsUpgrade") then
                 local upgrade = player:GetUpgradeByName(upgradeName)
                 // cause it's cheats 1 you just get the upgrade without paying
                 player:BuyUpgrade(upgrade:GetId(), true)
@@ -106,12 +106,12 @@ if Server then
 			local found = FindPlayerByName(playerName)
 			if found ~= nil then
 			
-				if HasMixin(found, "Upgrade") then
+				if HasMixin(found, "FactionsUpgrade") then
 				
 					// If a class is specified then change the class.
 					if newUpgrade then
 				        if found and Shared.GetCheatsEnabled() and newUpgrade then
-							if HasMixin(found, "Upgrade") then
+							if HasMixin(found, "FactionsUpgrade") then
 								local upgrade = found:GetUpgradeByName(newUpgrade)
 								// cause it's cheats 1 you just get the upgrade without paying
 								found:BuyUpgrade(upgrade:GetId(), true)
