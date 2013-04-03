@@ -14,7 +14,7 @@ Script.Load("lua/Factions/Factions_FactionsClassMixin.lua")
 ArmorUpgradeMixin = CreateMixin( ArmorUpgradeMixin )
 ArmorUpgradeMixin.type = "ArmorUpgrade"
 
-ArmorUpgrade.armorBoostPerLevel = 0.1
+ArmorUpgrade.armorBoostPerLevel = 0.2
 
 ArmorUpgradeMixin.expectedMixins =
 {
@@ -50,8 +50,16 @@ function ArmorUpgradeMixin:CopyPlayerDataFrom(player)
 end
 
 function ArmorUpgradeMixin:UpgradeArmor()
-	local baseMaxArmor = self:GetBaseArmor()
-	local newMaxArmor = baseMaxArmor + baseMaxArmor*self.upgradeHealthLevel*ArmorUpgrade.armorBoostPerLevel
 	
+	// Calculate the new max armor
+	local oldMaxArmor = self:GetMaxArmor()
+	local baseMaxArmor = self:GetBaseArmor()
+	local newMaxArmor = baseMaxArmor + baseMaxArmor*self.upgradeArmorLevel*ArmorUpgrade.armorBoostPerLevel
 	self:SetMaxArmor(newMaxArmor)
+	
+	// Add the difference to the player's current armor
+	local armorDifference = self:GetMaxArmor() - oldMaxArmor
+	local currentArmor = self:GetArmor()
+	self:SetArmor(currentArmor + armorDifference)
+	
 end

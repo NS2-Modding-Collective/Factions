@@ -28,13 +28,13 @@ if Server then
 
 	function OnCommandSetColour(client, red, green, blue)
 		local player = client:GetControllingPlayer()
-		if player and Shared.GetCheatsEnabled() then
+		if player then
 			local dblRed = tonumber(red) / 255
 			local dblGreen = tonumber(green) / 255
 			local dblBlue = tonumber(blue) / 255
 			if dblRed and dblGreen and dblBlue then
 				if HasMixin(player, "TeamColours") then
-					   player.factionsArmorColour = Vector(dblRed, dblGreen, dblBlue)
+					player.factionsArmorColour = Vector(dblRed, dblGreen, dblBlue)
 				end			
 			else
 				player:SendDirectMessage("Usage: setcolour <red> <green> <blue>")
@@ -47,7 +47,7 @@ if Server then
 		for list, victim in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
 			Shared.Message("Player: " .. victim:GetName())
 			if HasMixin(victim, "Upgrade") then
-				for index, upgrade in victim:GetAllUpgrades() do
+				for index, upgrade in pairs(victim:GetAllUpgrades()) do
 					if upgrade:GetCurrentLevel() > 0 then
 						Shared.Message("Upgrade: " .. upgrade:GetClassName() .. " Level: " .. upgrade:GetCurrentLevel())
 					end
@@ -129,7 +129,7 @@ if Server then
 			
 	end
 	
-	function OnCommandForceClass(client, playerName, newUpgrade)
+	function OnCommandForceClass(client, playerName, newClass)
 	
 		if Shared.GetCheatsEnabled() then
 		
