@@ -31,7 +31,7 @@ end
 function MarineBuild_Close()
 
     local player = Client.GetLocalPlayer()
-    local dropStructureAbility = player:GetWeapon(DropStructureAbility.kMapName)
+    local dropStructureAbility = player:GetWeapon(MarineStructureAbility.kMapName)
 
     if dropStructureAbility then
         dropStructureAbility:DestroyBuildMenu()
@@ -45,7 +45,7 @@ function MarineBuild_SendSelect(index)
 
     if player then
     
-        local dropStructureAbility = player:GetWeapon(DropStructureAbility.kMapName)
+        local dropStructureAbility = player:GetWeapon(MarineStructureAbility.kMapName)
         if dropStructureAbility then
             dropStructureAbility:SetActiveStructure(index)
         end
@@ -153,11 +153,8 @@ local function GetRowForTechId(techId)
     if not rowTable then
     
         rowTable = {}
-        rowTable[kTechId.Hydra] = 1
-        rowTable[kTechId.BabblerEgg] = 2
-        rowTable[kTechId.Clog] = 3
-        rowTable[kTechId.GorgeTunnel] = 4
-        rowTable[kTechId.Web] = 5
+        rowTable[kTechId.Sentry] = 1
+        rowTable[kTechId.Armory] = 2
     
     end
     

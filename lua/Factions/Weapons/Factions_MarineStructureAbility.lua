@@ -18,12 +18,7 @@
 
 // Factions_FactionsClassMixin.lua
 
-Script.Load("lua/Weapons/Alien/Ability.lua")
-Script.Load("lua/Weapons/Alien/HydraAbility.lua")
-Script.Load("lua/Weapons/Alien/ClogAbility.lua")
-Script.Load("lua/Weapons/Alien/GorgeTunnelAbility.lua")
-Script.Load("lua/Weapons/Alien/WebsAbility.lua")
-Script.Load("lua/Weapons/Alien/BabblerEggAbility.lua")
+Script.Load("lua/Factions/Weapons/SentryAbility.lua")
 
 class 'MarineStructureAbility' (Weapon)
 
@@ -529,7 +524,7 @@ if Client then
     function MarineStructureAbility:CreateBuildMenu()
     
         if not self.buildMenu then        
-            self.buildMenu = GetGUIManager():CreateGUIScript("Hud/Factions_GUIMarineBuildMenu")            
+            self.buildMenu = GetGUIManager():CreateGUIScript("Factions/Hud/Factions_GUIMarineBuildMenu")            
         end
         
     end
