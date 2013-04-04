@@ -21,6 +21,7 @@ function ReloadSpeedUpgrade:Initialize()
 
 	FactionsUpgrade.Initialize(self)
 
+	self.hideUpgrade = true
 	self.cost = ReloadSpeedUpgrade.cost
 	self.levels = ReloadSpeedUpgrade.levels
 	self.upgradeName = ReloadSpeedUpgrade.upgradeName
