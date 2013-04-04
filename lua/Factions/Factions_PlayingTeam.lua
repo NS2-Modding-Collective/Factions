@@ -203,6 +203,21 @@ if Server then
 		return success
 		
 	end
+	
+	// Todo: Use GetEntitiesForTeamWithMixin
+	function PlayingTeam:GetNumPlayersWithAnyClass()
+		local playerCount = 0
+		local players = GetEntitiesForTeam("Player", self:GetTeamNumber())
+		for index, player in ientitylist(players) do
+			if HasMixin(player, "FactionsClass") then
+				if player:GetHasFactionsClass() then
+					playerCount = playerCount + 1
+				end
+			end
+		end
+		
+		return playerCount
+	end
 
 	Class_Reload("PlayingTeam", networkVars)
 end
