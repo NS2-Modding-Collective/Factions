@@ -38,12 +38,14 @@ HealthUpgradeMixin.networkVars =
 function HealthUpgradeMixin:__initmixin()
 
 	self.upgradeHealthLevel = 0
+	self:UpgradeHealth()
 
 end
 
 function HealthUpgradeMixin:CopyPlayerDataFrom(player)
 
 	self.upgradeHealthLevel = player.upgradeHealthLevel
+	self:UpgradeHealth()
 
 end
 

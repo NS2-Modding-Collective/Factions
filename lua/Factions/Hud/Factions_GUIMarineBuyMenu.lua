@@ -389,86 +389,85 @@ function Factions_GUIMarineBuyMenu:_InitializeItemButtons()
 		for index, upgrade in ipairs(allUps) do
 
 			if not upgrade:GetHideUpgrade() then
-					// only 6 icons per column
-					// Shuffle the column forward if we need more room.
-					if itemNr > 1 and itemNr % 6 then
-						xOffset = xOffset + Factions_GUIMarineBuyMenu.kSmallIconOffset_x
-						itemNr = 1
-					end
-				
-					local itemTechId = upgrade:GetUpgradeTechId()
+				// only 6 icons per column
+				// Shuffle the column forward if we need more room.
+				if itemNr > 1 and (itemNr % 6 == 0) then
+					xOffset = xOffset + Factions_GUIMarineBuyMenu.kSmallIconOffset_x
+					itemNr = 1
+				end
+			
+				local itemTechId = upgrade:GetUpgradeTechId()
 
-					if itemTechId then         
-						
-						local graphicItem = GUIManager:CreateGraphicItem()
-						graphicItem:SetSize(Factions_GUIMarineBuyMenu.kSmallIconSize)
-						graphicItem:SetAnchor(GUIItem.Middle, GUIItem.Top)
-						graphicItem:SetPosition(Vector((-Factions_GUIMarineBuyMenu.kSmallIconSize.x/ 2) + xOffset, Factions_GUIMarineBuyMenu.kIconTopOffset + (Factions_GUIMarineBuyMenu.kSmallIconSize.y) * itemNr - Factions_GUIMarineBuyMenu.kSmallIconSize.y, 0))
-						// set the tecture file for the icons
-						graphicItem:SetTexture(Factions_GUIMarineBuyMenu.kSmallIconTexture)
-						 // set the pixel coordinate for the icon
-						graphicItem:SetTexturePixelCoordinates(GetSmallIconPixelCoordinates(itemTechId))
+				if itemTechId then         
+					
+					local graphicItem = GUIManager:CreateGraphicItem()
+					graphicItem:SetSize(Factions_GUIMarineBuyMenu.kSmallIconSize)
+					graphicItem:SetAnchor(GUIItem.Middle, GUIItem.Top)
+					graphicItem:SetPosition(Vector((-Factions_GUIMarineBuyMenu.kSmallIconSize.x/ 2) + xOffset, Factions_GUIMarineBuyMenu.kIconTopOffset + (Factions_GUIMarineBuyMenu.kSmallIconSize.y) * itemNr - Factions_GUIMarineBuyMenu.kSmallIconSize.y, 0))
+					// set the tecture file for the icons
+					graphicItem:SetTexture(Factions_GUIMarineBuyMenu.kSmallIconTexture)
+					 // set the pixel coordinate for the icon
+					graphicItem:SetTexturePixelCoordinates(GetSmallIconPixelCoordinates(itemTechId))
 
-						local graphicItemActive = GUIManager:CreateGraphicItem()
-						graphicItemActive:SetSize(Factions_GUIMarineBuyMenu.kSelectorSize)          
-						graphicItemActive:SetPosition(Vector(selectorPosX, -Factions_GUIMarineBuyMenu.kSelectorSize.y / 2, 0))
-						graphicItemActive:SetAnchor(GUIItem.Right, GUIItem.Center)
-						graphicItemActive:SetTexture(Factions_GUIMarineBuyMenu.kMenuSelectionTexture)
-						graphicItemActive:SetIsVisible(false)
-						
-						graphicItem:AddChild(graphicItemActive)
-						
-						local costIcon = GUIManager:CreateGraphicItem()
-						costIcon:SetSize(Vector(Factions_GUIMarineBuyMenu.kResourceIconWidth * 0.8, Factions_GUIMarineBuyMenu.kResourceIconHeight * 0.8, 0))
-						costIcon:SetAnchor(GUIItem.Left, GUIItem.Bottom)
-						costIcon:SetPosition(Vector(5, -Factions_GUIMarineBuyMenu.kResourceIconHeight, 0))
-						costIcon:SetTexture(Factions_GUIMarineBuyMenu.kResourceIconTexture)
-						costIcon:SetColor(Factions_GUIMarineBuyMenu.kTextColor)
-						
-						local selectedArrow = GUIManager:CreateGraphicItem()
-						selectedArrow:SetSize(Vector(Factions_GUIMarineBuyMenu.kArrowWidth, Factions_GUIMarineBuyMenu.kArrowHeight, 0))
-						selectedArrow:SetAnchor(GUIItem.Left, GUIItem.Center)
-						selectedArrow:SetPosition(Vector(-Factions_GUIMarineBuyMenu.kArrowWidth - Factions_GUIMarineBuyMenu.kPadding, -Factions_GUIMarineBuyMenu.kArrowHeight * 0.5, 0))
-						selectedArrow:SetTexture(Factions_GUIMarineBuyMenu.kArrowTexture)
-						selectedArrow:SetColor(Factions_GUIMarineBuyMenu.kTextColor)
-						selectedArrow:SetTextureCoordinates(unpack(Factions_GUIMarineBuyMenu.kArrowTexCoords))
-						selectedArrow:SetIsVisible(false)
-						
-						graphicItem:AddChild(selectedArrow) 
-						
-						local itemCost = GUIManager:CreateTextItem()
-						itemCost:SetFontName(Factions_GUIMarineBuyMenu.kFont)
-						itemCost:SetFontIsBold(true)
-						itemCost:SetAnchor(GUIItem.Right, GUIItem.Center)
-						itemCost:SetPosition(Vector(0, 0, 0))
-						itemCost:SetTextAlignmentX(GUIItem.Align_Min)
-						itemCost:SetTextAlignmentY(GUIItem.Align_Center)
-						itemCost:SetScale(fontScaleVector)
-						itemCost:SetColor(Factions_GUIMarineBuyMenu.kTextColor)
-						itemCost:SetText(ToString(upgrade:GetCostForNextLevel()))
-						
-				
-						local level = GUIManager:CreateTextItem()
-						level:SetFontName(Factions_GUIMarineBuyMenu.kFont)
-						level:SetFontIsBold(true)
-						level:SetAnchor(GUIItem.Left, GUIItem.Top)
-						level:SetPosition(Vector(Factions_GUIMarineBuyMenu.kSmallIconSize.x - Factions_GUIMarineBuyMenu.kLevelOffsetX, Factions_GUIMarineBuyMenu.kLevelOffsetY, 0))
-						level:SetTextAlignmentX(GUIItem.Align_Max)
-						level:SetTextAlignmentY(GUIItem.Align_Center)
-						level:SetScale(fontScaleVector)
-						level:SetColor(Factions_GUIMarineBuyMenu.kTextColor)
-						level:SetText(GetLevelText(upgrade))
-						graphicItem:AddChild(level)
-						
-						costIcon:AddChild(itemCost)  
-						
-						graphicItem:AddChild(costIcon)   
-						
-						self.menu:AddChild(graphicItem)
-						table.insert(self.itemButtons, { Button = graphicItem, Highlight = graphicItemActive, TechId = itemTechId, Cost = itemCost, ResourceIcon = costIcon, Arrow = selectedArrow, Level = level, Upgrade = upgrade} )
-						  
-						itemNr = itemNr +1
-					end
+					local graphicItemActive = GUIManager:CreateGraphicItem()
+					graphicItemActive:SetSize(Factions_GUIMarineBuyMenu.kSelectorSize)          
+					graphicItemActive:SetPosition(Vector(selectorPosX, -Factions_GUIMarineBuyMenu.kSelectorSize.y / 2, 0))
+					graphicItemActive:SetAnchor(GUIItem.Right, GUIItem.Center)
+					graphicItemActive:SetTexture(Factions_GUIMarineBuyMenu.kMenuSelectionTexture)
+					graphicItemActive:SetIsVisible(false)
+					
+					graphicItem:AddChild(graphicItemActive)
+					
+					local costIcon = GUIManager:CreateGraphicItem()
+					costIcon:SetSize(Vector(Factions_GUIMarineBuyMenu.kResourceIconWidth * 0.8, Factions_GUIMarineBuyMenu.kResourceIconHeight * 0.8, 0))
+					costIcon:SetAnchor(GUIItem.Left, GUIItem.Bottom)
+					costIcon:SetPosition(Vector(5, -Factions_GUIMarineBuyMenu.kResourceIconHeight, 0))
+					costIcon:SetTexture(Factions_GUIMarineBuyMenu.kResourceIconTexture)
+					costIcon:SetColor(Factions_GUIMarineBuyMenu.kTextColor)
+					
+					local selectedArrow = GUIManager:CreateGraphicItem()
+					selectedArrow:SetSize(Vector(Factions_GUIMarineBuyMenu.kArrowWidth, Factions_GUIMarineBuyMenu.kArrowHeight, 0))
+					selectedArrow:SetAnchor(GUIItem.Left, GUIItem.Center)
+					selectedArrow:SetPosition(Vector(-Factions_GUIMarineBuyMenu.kArrowWidth - Factions_GUIMarineBuyMenu.kPadding, -Factions_GUIMarineBuyMenu.kArrowHeight * 0.5, 0))
+					selectedArrow:SetTexture(Factions_GUIMarineBuyMenu.kArrowTexture)
+					selectedArrow:SetColor(Factions_GUIMarineBuyMenu.kTextColor)
+					selectedArrow:SetTextureCoordinates(unpack(Factions_GUIMarineBuyMenu.kArrowTexCoords))
+					selectedArrow:SetIsVisible(false)
+					
+					graphicItem:AddChild(selectedArrow) 
+					
+					local itemCost = GUIManager:CreateTextItem()
+					itemCost:SetFontName(Factions_GUIMarineBuyMenu.kFont)
+					itemCost:SetFontIsBold(true)
+					itemCost:SetAnchor(GUIItem.Right, GUIItem.Center)
+					itemCost:SetPosition(Vector(0, 0, 0))
+					itemCost:SetTextAlignmentX(GUIItem.Align_Min)
+					itemCost:SetTextAlignmentY(GUIItem.Align_Center)
+					itemCost:SetScale(fontScaleVector)
+					itemCost:SetColor(Factions_GUIMarineBuyMenu.kTextColor)
+					itemCost:SetText(ToString(upgrade:GetCostForNextLevel()))
+					
+			
+					local level = GUIManager:CreateTextItem()
+					level:SetFontName(Factions_GUIMarineBuyMenu.kFont)
+					level:SetFontIsBold(true)
+					level:SetAnchor(GUIItem.Left, GUIItem.Top)
+					level:SetPosition(Vector(Factions_GUIMarineBuyMenu.kSmallIconSize.x - Factions_GUIMarineBuyMenu.kLevelOffsetX, Factions_GUIMarineBuyMenu.kLevelOffsetY, 0))
+					level:SetTextAlignmentX(GUIItem.Align_Max)
+					level:SetTextAlignmentY(GUIItem.Align_Center)
+					level:SetScale(fontScaleVector)
+					level:SetColor(Factions_GUIMarineBuyMenu.kTextColor)
+					level:SetText(GetLevelText(upgrade))
+					graphicItem:AddChild(level)
+					
+					costIcon:AddChild(itemCost)  
+					
+					graphicItem:AddChild(costIcon)   
+					
+					self.menu:AddChild(graphicItem)
+					table.insert(self.itemButtons, { Button = graphicItem, Highlight = graphicItemActive, TechId = itemTechId, Cost = itemCost, ResourceIcon = costIcon, Arrow = selectedArrow, Level = level, Upgrade = upgrade} )
+					  
+					itemNr = itemNr +1
 				end
 			end
 		end

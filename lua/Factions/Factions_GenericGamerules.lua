@@ -52,6 +52,8 @@ if Server then
 			end
 			
 		end
+		
+		return success, newPlayer
 	
 	end
 	

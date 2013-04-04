@@ -10,17 +10,19 @@
 class 'ArmorUpgrade' (FactionsUpgrade)
 
 // Define these statically so we can easily access them without instantiating too.
-ArmorUpgrade.cost = { 100, 200, 400 }                              					// Cost of the upgrade in xp
-ArmorUpgrade.levels = 3																// How many levels are there to this upgrade
-ArmorUpgrade.upgradeName = "armor"                     								// Text code of the upgrade if using it via console
-ArmorUpgrade.upgradeTitle = "Armor Upgrade"               							// Title of the upgrade, e.g. Submachine Gun
-ArmorUpgrade.upgradeDesc = "Upgrade your player's armor"							// Description of the upgrade
-ArmorUpgrade.upgradeTechId = kTechId.Armor1											// TechId of the upgrade, default is kTechId.Move cause its the first entry
+ArmorUpgrade.upgradeType 		= kFactionsUpgradeTypes.Attribute        				// the type of the upgrade
+ArmorUpgrade.cost 				= { 100, 200, 400 }                              		// Cost of the upgrade in xp
+ArmorUpgrade.levels				= 3														// How many levels are there to this upgrade
+ArmorUpgrade.upgradeName 		= "armor"                     							// Text code of the upgrade if using it via console
+ArmorUpgrade.upgradeTitle 		= "Armor Upgrade"               						// Title of the upgrade, e.g. Submachine Gun
+ArmorUpgrade.upgradeDesc 		= "Upgrade your player's armor"							// Description of the upgrade
+ArmorUpgrade.upgradeTechId		= kTechId.Armor1										// TechId of the upgrade, default is kTechId.Move cause its the first entry
 
 function ArmorUpgrade:Initialize()
 
 	FactionsUpgrade.Initialize(self)
 
+	self.upgradeType = ArmorUpgrade.upgradeType
 	self.cost = ArmorUpgrade.cost
 	self.levels = ArmorUpgrade.levels
 	self.upgradeName = ArmorUpgrade.upgradeName

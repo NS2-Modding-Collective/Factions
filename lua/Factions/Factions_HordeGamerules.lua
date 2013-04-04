@@ -30,8 +30,8 @@ if Server then
 	
 		GenericGamerules.OnCreate(self)
 		
-		isMarinevsMarine = false
-		isCompetitive = false
+		self.isMarinevsMarine = false
+		self.isCompetitive = false
 		
 	end
 
@@ -144,7 +144,7 @@ function HordeGamerules:JoinTeam(player, newTeamNumber, force)
 	if success then
 	
 		// Adjust the difficulty if a player joins or leaves team 1
-		Shared.Message("oldTeamNumber: " .. oldTeamNumber .. " newTeamNumber " .. newTeamNumber)
+		Print("oldTeamNumber: " .. oldTeamNumber .. " newTeamNumber " .. newTeamNumber)
 		if oldTeamNumber ~= kTeam1Index and newTeamNumber == kTeam1Index then
 			// Increase the difficulty.
 			self:IncreaseDifficulty()

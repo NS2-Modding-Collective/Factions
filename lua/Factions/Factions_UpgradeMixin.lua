@@ -45,24 +45,36 @@ function UpgradeMixin:BuildNewUpgradeList()
 	self.UpgradeList:Initialize()
 end
 
-function UpgradeMixin:CopyPlayerDataFrom(player)
-	if HasMixin(player, "FactionsUpgrade") then
-		if player.UpgradeList then 
-			self.UpgradeList:CopyUpgradeDataFrom(player.UpgradeList)
-			self:ReapplyUpgrades()
-		end
+local function ReapplyUpgrades(self)
+	if self:GetIsDestroyed() then
+        return false
+    end
+	
+	local owner = Server.GetOwner(self)
+	if owner == nil then
+		owner = self
 	end
-end
 
-function UpgradeMixin:ReapplyUpgrades()
 	for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
 		if upgrade:GetCurrentLevel() > 0 and upgrade:GetIsPermanent() then
-			Server.SendNetworkMessage(self, "UpdateUpgrade",  BuildUpdateUpgradeMessage(upgradeId, upgrade:GetCurrentLevel()), true)
+			if owner ~= nil then
+				Server.SendNetworkMessage(owner, "UpdateUpgrade",  BuildUpdateUpgradeMessage(upgradeId, upgrade:GetCurrentLevel()), true)
+			end
 			
 			// give upgrades back when the player respawns
 			if self:GetIsAlive() and self:GetTeamNumber() ~= kNeutralTeamType then
 				upgrade:OnAdd(self)
 			end
+		end
+	end
+	return false
+end
+
+function UpgradeMixin:CopyPlayerDataFrom(player)
+	if HasMixin(player, "FactionsUpgrade") then
+		if player.UpgradeList then 
+			self.UpgradeList:CopyUpgradeDataFrom(player.UpgradeList)
+			self:AddTimedCallback(ReapplyUpgrades, 0.1)
 		end
 	end
 end

@@ -27,8 +27,8 @@ if Server then
 	
 		GenericGamerules.OnCreate(self)
 		
-		isMarinevsMarine = true
-		isCompetitive = true
+		self.isMarinevsMarine = true
+		self.isCompetitive = true
 		
 	end
 
