@@ -23,6 +23,15 @@ local networkVars =
 
 if Server then
 
+	function CombatDeathmatchGamerules:OnCreate()
+	
+		GenericGamerules.OnCreate(self)
+		
+		isMarinevsMarine = true
+		isCompetitive = true
+		
+	end
+
 	function CombatDeathmatchGamerules:GetGameModeName()
 		return "Combat Deathmatch"
 	end

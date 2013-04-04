@@ -14,7 +14,8 @@ Script.Load("lua/Factions/Factions_FactionsClassMixin.lua")
 WeaponUpgradeMixin = CreateMixin( WeaponUpgradeMixin )
 WeaponUpgradeMixin.type = "WeaponUpgrade"
 
-WeaponUpgrade.baseReloadSpeed = 1.0
+WeaponUpgradeMixin.baseReloadSpeed = 1.0
+WeaponUpgradeMixin.reloadSpeedBoostPerLevel = 0.1
 
 WeaponUpgradeMixin.expectedMixins =
 {
@@ -31,7 +32,7 @@ WeaponUpgradeMixin.expectedConstants =
 
 WeaponUpgradeMixin.networkVars =
 {
-	reloadSpeedLevel = "integer (0 to " .. SpeedUpgrade.levels .. ")"
+	reloadSpeedLevel = "integer (0 to " .. ReloadSpeedUpgrade.levels .. ")"
 }
 
 function WeaponUpgradeMixin:__initmixin()
@@ -56,5 +57,7 @@ function WeaponUpgradeMixin:UpdateReloadSpeed()
 end
 
 function WeaponUpgradeMixin:GetReloadSpeed()
+
+	return WeaponUpgradeMixin.baseReloadSpeed + (self.reloadSpeedLevel * WeaponUpgradeMixin.reloadSpeedBoostPerLevel)
 
 end

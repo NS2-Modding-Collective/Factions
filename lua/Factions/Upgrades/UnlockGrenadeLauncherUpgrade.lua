@@ -12,6 +12,7 @@
 class 'UnlockGrenadeLauncherUpgrade' (FactionsUnlockUpgrade)
 
 // Define these statically so we can easily access them without instantiating.
+UnlockGrenadeLauncherUpgrade.upgradeType 		= kFactionsUpgradeTypes.Weapon        						// the type of the upgrade
 UnlockGrenadeLauncherUpgrade.cost				= { 500 }                          							// cost of the upgrade in xp
 UnlockGrenadeLauncherUpgrade.upgradeName 		= "unlockgl"	                        					// text code of the upgrade if using it via console
 UnlockGrenadeLauncherUpgrade.upgradeTitle 		= "Unlock Grenade Launcher"       							// Title of the upgrade, e.g. Submachine Gun
@@ -23,6 +24,7 @@ function UnlockGrenadeLauncherUpgrade:Initialize()
 
 	FactionsUnlockUpgrade.Initialize(self)
 	
+	self.upgradeType = UnlockGrenadeLauncherUpgrade.upgradeType
 	self.cost = UnlockGrenadeLauncherUpgrade.cost
 	self.upgradeName = UnlockGrenadeLauncherUpgrade.upgradeName
 	self.upgradeTitle = UnlockGrenadeLauncherUpgrade.upgradeTitle

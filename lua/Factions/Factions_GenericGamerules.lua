@@ -15,6 +15,8 @@ GenericGamerules.kMapName = "factions_generic_gamerules"
 
 local networkVars =
 {
+	isMarinevsMarine = "boolean",
+	isCompetitive = "boolean",
 }
 
 if Server then
@@ -28,6 +30,14 @@ if Server then
 		Shared.Message("Current Game Mode: " .. self:GetGameModeName())
         
     end
+	
+	function GenericGamerules:GetIsMarinevsMarine()
+		return self.isMarinevsMarine
+	end
+	
+	function GenericGamerules:GetIsCompetitive()
+		return self.isCompetitive
+	end
 	
 	// Spawn protection
 	function GenericGamerules:JoinTeam(player, newTeamNumber, force)

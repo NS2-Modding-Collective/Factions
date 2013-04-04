@@ -389,8 +389,13 @@ function Factions_GUIMarineBuyMenu:_InitializeItemButtons()
 		for index, upgrade in ipairs(allUps) do
 
 			if not upgrade:GetHideUpgrade() then
-				// only 6 icons per column
-				if (itemNr < 6) then
+					// only 6 icons per column
+					// Shuffle the column forward if we need more room.
+					if itemNr > 1 and itemNr % 6 then
+						xOffset = xOffset + Factions_GUIMarineBuyMenu.kSmallIconOffset_x
+						itemNr = 1
+					end
+				
 					local itemTechId = upgrade:GetUpgradeTechId()
 
 					if itemTechId then         

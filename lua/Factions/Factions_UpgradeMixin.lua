@@ -49,19 +49,20 @@ function UpgradeMixin:CopyPlayerDataFrom(player)
 	if HasMixin(player, "FactionsUpgrade") then
 		if player.UpgradeList then 
 			self.UpgradeList:CopyUpgradeDataFrom(player.UpgradeList)
+			self:ReapplyUpgrades()
 		end
 	end
-    
-	// give upgrades back when the player respawns
-    if self:GetIsAlive() and self:GetTeamNumber() ~= kNeutralTeamType then
-		self:GiveBackPermanentUpgrades()
-    end
 end
 
-function UpgradeMixin:GiveBackPermanentUpgrades()
+function UpgradeMixin:ReapplyUpgrades()
 	for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
 		if upgrade:GetCurrentLevel() > 0 and upgrade:GetIsPermanent() then
-			upgrade:OnAdd(self)
+			Server.SendNetworkMessage(self, "UpdateUpgrade",  BuildUpdateUpgradeMessage(upgradeId, upgrade:GetCurrentLevel()), true)
+			
+			// give upgrades back when the player respawns
+			if self:GetIsAlive() and self:GetTeamNumber() ~= kNeutralTeamType then
+				upgrade:OnAdd(self)
+			end
 		end
 	end
 end

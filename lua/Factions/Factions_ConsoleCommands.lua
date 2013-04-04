@@ -26,9 +26,12 @@ if Server then
         end
 	end
 
+	// Set your player's colour based on an rgb value.
+	// At some point we will put this into the class menu.
+	// Only allowed in non-competitive games like Horde.
 	function OnCommandSetColour(client, red, green, blue)
 		local player = client:GetControllingPlayer()
-		if player then
+		if player and not GetGamerules():GetIsCompetitive() then
 			local dblRed = tonumber(red) / 255
 			local dblGreen = tonumber(green) / 255
 			local dblBlue = tonumber(blue) / 255
@@ -113,9 +116,13 @@ if Server then
 				        if found and Shared.GetCheatsEnabled() and newUpgrade then
 							if HasMixin(found, "FactionsUpgrade") then
 								local upgrade = found:GetUpgradeByName(newUpgrade)
-								// cause it's cheats 1 you just get the upgrade without paying
-								found:BuyUpgrade(upgrade:GetId(), true)
-								SendGlobalChatMessage(found:GetName() .. " has been given a " .. upgrade:GetUpgradeTitle() .. " upgrade.")
+								if upgrade then
+									// cause it's cheats 1 you just get the upgrade without paying
+									found:BuyUpgrade(upgrade:GetId(), true)
+									SendGlobalChatMessage(found:GetName() .. " has been given a " .. upgrade:GetUpgradeTitle() .. " upgrade.")
+								else
+									SendGlobalChatMessage("Cannot find upgrade " .. newUpgrade .. " to give to " .. found:GetName())
+								end
 							end
 						end
 					end

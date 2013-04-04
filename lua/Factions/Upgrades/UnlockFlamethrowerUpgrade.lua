@@ -12,6 +12,7 @@
 class 'UnlockFlamethrowerUpgrade' (FactionsUnlockUpgrade)
 
 // Define these statically so we can easily access them without instantiating.
+UnlockFlamethrowerUpgrade.upgradeType 		= kFactionsUpgradeTypes.Weapon        						// the type of the upgrade
 UnlockFlamethrowerUpgrade.cost				= { 500 }                          							// cost of the upgrade in xp
 UnlockFlamethrowerUpgrade.upgradeName 		= "unlockflamer"	                        				// text code of the upgrade if using it via console
 UnlockFlamethrowerUpgrade.upgradeTitle 		= "Unlock Flamethrower"       								// Title of the upgrade, e.g. Submachine Gun
@@ -22,6 +23,7 @@ function UnlockFlamethrowerUpgrade:Initialize()
 
 	FactionsUnlockUpgrade.Initialize(self)
 	
+	self.upgradeType = UnlockFlamethrowerUpgrade.upgradeType
 	self.cost = UnlockFlamethrowerUpgrade.cost
 	self.upgradeName = UnlockFlamethrowerUpgrade.upgradeName
 	self.upgradeTitle = UnlockFlamethrowerUpgrade.upgradeTitle

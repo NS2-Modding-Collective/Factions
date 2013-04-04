@@ -26,6 +26,15 @@ local networkVars =
 
 if Server then
 
+	function HordeGamerules:OnCreate()
+	
+		GenericGamerules.OnCreate(self)
+		
+		isMarinevsMarine = false
+		isCompetitive = false
+		
+	end
+
 	function HordeGamerules:GetGameModeName()
 		return "Horde"
 	end
