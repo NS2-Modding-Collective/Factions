@@ -14,6 +14,9 @@ Script.Load("lua/FunctionContracts.lua")
 ReloadSpeedMixin = CreateMixin( ReloadSpeedMixin )
 ReloadSpeedMixin.type = "VariableReloadSpeed"
 
+ReloadSpeedMixin.baseReloadSpeed = 1.15
+ReloadSpeedMixin.reloadSpeedBoostPerLevel = 0.2
+
 ReloadSpeedMixin.expectedMixins =
 {
 }
@@ -32,17 +35,31 @@ ReloadSpeedMixin.expectedConstants =
 
 ReloadSpeedMixin.networkVars =
 {
-	reloadSpeedScalar = "decimal",
+	reloadSpeedScalar = "float",
+	reloadSpeedLevel = "integer (0 to " .. ReloadSpeedUpgrade.levels .. ")",
 }
 
 function ReloadSpeedMixin:__initmixin()
 
-    self.reloadSpeedScalar = 1.0
+    self.reloadSpeedScalar = ReloadSpeedMixin.baseReloadSpeed
+	self.reloadSpeedLevel = 0
     
 end
 
-function ReloadSpeedMixin:UpdateReloadSpeed(newSpeed)
+function ReloadSpeedMixin:OnUpdateAnimationInput(modelMixin)
+   
+    local player = self:GetParent()
+    if player then
+    
+        modelMixin:SetAnimationInput("reload_time", self.reloadSpeedScalar)
+        
+    end
+            
+end
 
-	self.reloadSpeedScalar = newSpeed
+function ReloadSpeedMixin:SetReloadSpeedLevel(newLevel)
+
+	self.reloadSpeedLevel = newLevel
+	self.reloadSpeedScalar = ReloadSpeedMixin.baseReloadSpeed + (self.reloadSpeedLevel * ReloadSpeedMixin.reloadSpeedBoostPerLevel)
 
 end

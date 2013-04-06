@@ -32,7 +32,7 @@ DamageMixin.expectedConstants =
 
 DamageMixin.networkVars =
 {
-	damageScalar = "decimal",
+	damageScalar = "float",
 }
 
 function DamageMixin:__initmixin()

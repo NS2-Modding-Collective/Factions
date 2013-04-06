@@ -11,11 +11,10 @@
 
 Script.Load("lua/Factions/Factions_FactionsClassMixin.lua")
 
+Script.Load("lua/Factions/Weapons/Factions_ReloadSpeedMixin.lua")
+
 WeaponUpgradeMixin = CreateMixin( WeaponUpgradeMixin )
 WeaponUpgradeMixin.type = "WeaponUpgrade"
-
-WeaponUpgradeMixin.baseReloadSpeed = 1.0
-WeaponUpgradeMixin.reloadSpeedBoostPerLevel = 0.2
 
 WeaponUpgradeMixin.baseFireRate = 1.0
 WeaponUpgradeMixin.fireRateBoostPerLevel = 0.15
@@ -64,7 +63,7 @@ function WeaponUpgradeMixin:UpdateReloadSpeed()
     // Set the reload speed on the weapon based on the player's level
     local weapon = self:GetActiveWeapon()
     if weapon and HasMixin(weapon, "VariableReloadSpeed") then
-    	weapon:UpdateReloadSpeed(self:GetReloadSpeedScalar())
+    	weapon:UpdateReloadSpeedLevel(self.reloadSpeedLevel)
     end
     
 end
@@ -87,12 +86,6 @@ function WeaponUpgradeMixin:UpdateDamageLevel()
     	weapon:UpdateDamageLevel(self:GetDamageScalar())
     end
     
-end
-
-function WeaponUpgradeMixin:GetReloadSpeedScalar()
-
-	return WeaponUpgradeMixin.baseReloadSpeed + (self.reloadSpeedLevel * WeaponUpgradeMixin.reloadSpeedBoostPerLevel)
-
 end
 
 function WeaponUpgradeMixin:GetFireRateScalar()

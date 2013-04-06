@@ -32,7 +32,7 @@ FireRateMixin.expectedConstants =
 
 FireRateMixin.networkVars =
 {
-	fireRateScalar = "decimal",
+	fireRateScalar = "float",
 }
 
 function FireRateMixin:__initmixin()
