@@ -16,16 +16,19 @@
 //  Licensed under LGPL v3.0
 //________________________________
 
-// Factions_FactionsClassMixin.lua
+// Factions_MarineStructureAbility.lua
 
-Script.Load("lua/Factions/Weapons/SentryAbility.lua")
+Script.Load("lua/Factions/Weapons/Factions_SentryAbility.lua")
 
 class 'MarineStructureAbility' (Weapon)
 
 local kMaxStructures = {}
-local kMaxStructures[kTechId.Sentry] = 2
-local kMaxStructures[kTechId.Armory] = 1
+kMaxStructures[kTechId.Sentry] = 2
+kMaxStructures[kTechId.Armory] = 1
 local kDropCooldown = 1
+
+local kViewModelName = PrecacheAsset("models/marine/welder/welder_view.model")
+local kAnimationGraph = PrecacheAsset("models/marine/welder/welder_view.animation_graph")
 
 MarineStructureAbility.kMapName = "drop_structure_ability"
 
@@ -73,6 +76,35 @@ function MarineStructureAbility:OnCreate()
     
 end
 
+function MarineStructureAbility:OnInitialized()
+
+    self:SetModel(Welder.kModelName)
+    
+    Weapon.OnInitialized(self)
+    
+end
+
+function MarineStructureAbility:GetIsValidRecipient(recipient)
+
+    if self:GetParent() == nil and recipient and not GetIsVortexed(recipient) and recipient:isa("Marine") then
+    
+        local welder = recipient:GetWeapon(MarineStructureAbility.kMapName)
+        return welder == nil
+        
+    end
+    
+    return false
+    
+end
+
+function MarineStructureAbility:GetViewModelName()
+    return kViewModelName
+end
+
+function MarineStructureAbility:GetAnimationGraphName()
+    return kAnimationGraph
+end
+
 function MarineStructureAbility:GetDeathIconIndex()
     return kDeathMessageIcon.Consumed
 end
@@ -115,12 +147,8 @@ function MarineStructureAbility:OnPrimaryAttack(player)
         
             self.mouseDown = true
         
-            if player:GetEnergy() >= kDropStructureEnergyCost then
-            
-                if self:PerformPrimaryAttack(player) then
-                    self.dropping = true
-                end
-
+			if self:PerformPrimaryAttack(player) then
+				self.dropping = true
             else
                 player:TriggerInvalidSound()
             end
@@ -159,7 +187,7 @@ function MarineStructureAbility:GetDamageType()
 end
 
 function MarineStructureAbility:GetHUDSlot()
-    return 2
+    return kWelderHUDSlot
 end
 
 function MarineStructureAbility:GetHasSecondary(player)
