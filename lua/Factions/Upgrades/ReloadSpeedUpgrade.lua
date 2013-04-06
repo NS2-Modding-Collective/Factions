@@ -21,7 +21,6 @@ function ReloadSpeedUpgrade:Initialize()
 
 	FactionsUpgrade.Initialize(self)
 
-	self.hideUpgrade = true
 	self.cost = ReloadSpeedUpgrade.cost
 	self.levels = ReloadSpeedUpgrade.levels
 	self.upgradeName = ReloadSpeedUpgrade.upgradeName
@@ -37,8 +36,9 @@ end
 
 function ReloadSpeedUpgrade:OnAdd(player)
 	if HasMixin(player, "WeaponUpgrade") then
-		player.upgradeSpeedLevel = self:GetCurrentLevel()
+		player:UpdateReloadSpeedLevel(self:GetCurrentLevel())
 		player:SendDirectMessage("Reload Speed Upgraded to level " .. self:GetCurrentLevel() .. ".")
-		player:SendDirectMessage("You will reload " .. self:GetCurrentLevel()*WeaponUpgradeMixin.reloadSpeedBoostPerLevel*100 .. "% faster")
+		local reloadSpeedBoost = math.round(self:GetCurrentLevel()*ReloadSpeedMixin.reloadSpeedBoostPerLevel / ReloadSpeedMixin.baseReloadSpeed * 100)
+		player:SendDirectMessage("You will reload " .. reloadSpeedBoost .. "% faster")
 	end
 end

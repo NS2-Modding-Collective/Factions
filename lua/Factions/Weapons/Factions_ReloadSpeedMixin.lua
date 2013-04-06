@@ -15,7 +15,7 @@ ReloadSpeedMixin = CreateMixin( ReloadSpeedMixin )
 ReloadSpeedMixin.type = "VariableReloadSpeed"
 
 ReloadSpeedMixin.baseReloadSpeed = 1.15
-ReloadSpeedMixin.reloadSpeedBoostPerLevel = 0.2
+ReloadSpeedMixin.reloadSpeedBoostPerLevel = 0.1
 
 ReloadSpeedMixin.expectedMixins =
 {
@@ -48,13 +48,19 @@ end
 
 function ReloadSpeedMixin:OnUpdateAnimationInput(modelMixin)
    
-    local player = self:GetParent()
-    if player then
-    
-        modelMixin:SetAnimationInput("reload_time", self.reloadSpeedScalar)
-        
-    end
+    modelMixin:SetAnimationInput("reload_time", self.reloadSpeedScalar)
             
+end
+
+function ReloadSpeedMixin:UpdateReloadSpeedLevel()
+
+	local player = self:GetParent()
+    if player and self.reloadSpeedLevel ~= player:GetReloadSpeedLevel() then
+	
+		self:SetReloadSpeedLevel(player:GetReloadSpeedLevel())
+		
+    end
+
 end
 
 function ReloadSpeedMixin:SetReloadSpeedLevel(newLevel)
