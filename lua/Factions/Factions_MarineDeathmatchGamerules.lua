@@ -7,13 +7,13 @@
 //  Licensed under LGPL v3.0
 //________________________________
 
-// Factions_CombatDeathmatchGamerules.lua
+// Factions_MarineDeathmatchGamerules.lua
 
 Script.Load("lua/Factions/Factions_GenericGamerules.lua")
 
-class 'CombatDeathmatchGamerules' (GenericGamerules)
+class 'MarineDeathmatchGamerules' (GenericGamerules)
 
-CombatDeathmatchGamerules.kMapName = "factions_combatdeathmatch_gamerules"
+MarineDeathmatchGamerules.kMapName = "factions_marinedeathmatch_gamerules"
 
 local networkVars =
 {
@@ -23,29 +23,42 @@ local networkVars =
 
 if Server then
 
-	function CombatDeathmatchGamerules:OnCreate()
+	function MarineDeathmatchGamerules:OnCreate()
 	
 		GenericGamerules.OnCreate(self)
 		
-		self.isMarinevsMarine = false
+		self.isMarinevsMarine = true
 		self.isCompetitive = true
-		self.isClassBased = false
+		self.isClassBased = true
 		self.isCombatRules = true
-		self.isFactionsMovement = true
+		
+		// Marines vs. Marines
+		kTeam1Type = kMarineTeamType
+		kTeam2Type = kMarineTeamType
+
+		kMarineTeamColor = 0x3390FF
+		kMarineTeamColorFloat = Color(0.2, 0.564, 1)
+
+		kAlienTeamColor = 0x41FF30
+		kAlienTeamColorFloat = Color(0.254, 1, 0.188)
+
+		// Used for playing team and scoreboard
+		kTeam1Name = "TSA"
+		kTeam2Name = "TSF"
 		
 	end
 
-	function CombatDeathmatchGamerules:GetGameModeName()
+	function MarineDeathmatchGamerules:GetGameModeName()
 		return "Combat Deathmatch"
 	end
 	
-	function CombatDeathmatchGamerules:GetGameModeText()
+	function MarineDeathmatchGamerules:GetGameModeText()
 		return { "Both sides fight until the other team's CC is destroyed,",
                  "or one side runs out of lives!" }
 	end
 
 	local overrideResetGame = GenericGamerules.ResetGame
-	function CombatDeathmatchGamerules:ResetGame()
+	function MarineDeathmatchGamerules:ResetGame()
 		
 		overrideResetGame(self)
 		
@@ -59,13 +72,13 @@ if Server then
 	end
 	
 	// Override the game start condition. The games should start when both teams have players.
-	function CombatDeathmatchGamerules:CheckGameStart()
+	function MarineDeathmatchGamerules:CheckGameStart()
 
 		if self:GetGameState() == kGameState.NotStarted or self:GetGameState() == kGameState.PreGame then
 			
 			// Start pre-game when both teams have players or when once side does if cheats are enabled
-			local team1Players = self.team1:GetNumPlayers()
-			local team2Players = self.team2:GetNumPlayers()
+			local team1Players = self.team1:GetNumPlayersWithAnyClass()
+			local team2Players = self.team2:GetNumPlayersWithAnyClass()
 				
 			if (team1Players > 0 and team2Players > 0) or (Shared.GetCheatsEnabled() and (team1Players > 0 or team2Players > 0)) then
 				
@@ -83,4 +96,4 @@ if Server then
 
 end
 
-Shared.LinkClassToMap("CombatDeathmatchGamerules", CombatDeathmatchGamerules.kMapName, networkVars)
+Shared.LinkClassToMap("MarineDeathmatchGamerules", MarineDeathmatchGamerules.kMapName, networkVars)

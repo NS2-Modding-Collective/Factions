@@ -32,6 +32,8 @@ if Server then
 		
 		self.isMarinevsMarine = false
 		self.isCompetitive = false
+		self.isClassBased = true
+		self.isCombatRules = true
 		
 	end
 

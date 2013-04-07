@@ -16,7 +16,10 @@ GenericGamerules.kMapName = "factions_generic_gamerules"
 local networkVars =
 {
 	isMarinevsMarine = "boolean",
+	isCombatRules = "boolean",
 	isCompetitive = "boolean",
+	isClassBased = "boolean",
+	isFactionsMovemement = "boolean",
 }
 
 if Server then
@@ -26,10 +29,21 @@ if Server then
 	
         originalNS2GamerulesOnCreate(self)
 		
+		self.isCombatRules = true
+		self.isClassBased = false
+		self.isFactionsMovemement = false
 		Shared.Message("Server started for Factions v" .. kFactionsVersion .. "!")
 		Shared.Message("Current Game Mode: " .. self:GetGameModeName())
         
     end
+	
+	function GenericGamerules:GetIsCombatRules()
+		return self.isCombatRules
+	end
+	
+	function GenericGamerules:GetIsClassBased()
+		return self.isClassBased
+	end
 	
 	function GenericGamerules:GetIsMarinevsMarine()
 		return self.isMarinevsMarine
