@@ -31,6 +31,7 @@ if Server then
 		self.isCompetitive = true
 		self.isClassBased = true
 		self.isCombatRules = true
+		self.isFactionsMovement = true
 		
 		// Marines vs. Marines
 		kTeam1Type = kMarineTeamType

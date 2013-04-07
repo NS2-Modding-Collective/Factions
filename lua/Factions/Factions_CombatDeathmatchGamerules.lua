@@ -31,7 +31,7 @@ if Server then
 		self.isCompetitive = true
 		self.isClassBased = false
 		self.isCombatRules = true
-		self.isFactionsMovement = true
+		self.isFactionsMovement = false
 		
 	end
 
