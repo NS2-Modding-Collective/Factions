@@ -38,6 +38,7 @@ Script.Load("lua/Factions/Factions_CommandStation.lua")
 Script.Load("lua/Factions/Factions_Extractor.lua")
 
 // Weapons
+Script.Load("lua/Factions/Weapons/Factions_ClipWeapon.lua")
 Script.Load("lua/Factions/Weapons/Factions_Pistol.lua")
 Script.Load("lua/Factions/Weapons/Factions_Rifle.lua")
 Script.Load("lua/Factions/Weapons/Factions_Shotgun.lua")
