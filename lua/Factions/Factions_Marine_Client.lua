@@ -17,24 +17,32 @@ function Marine:OnInitLocalClient()
 
 	overrideOnInitLocalClient(self)
 
-    if self:GetTeamNumber() ~= kTeamReadyRoom then
+    /*if self:GetTeamNumber() ~= kTeamReadyRoom then
         if self.marineXpBar == nil then
             self.marineXpBar = GetGUIManager():CreateGUIScript("Factions/Hud/Factions_GUIExperienceBar")
         end
-    end
+    end*/
 	
 end
 
+local overrideOnUpdateRender = Marine.OnUpdateRender
+function Marine:OnUpdateRender()
+
+	overrideOnUpdateRender(self)
+	HiveVision_SetEnabled( GetIsAlienUnit(self) )
+    HiveVision_SyncCamera( gRenderCamera, self:isa("Commander") )
+	
+end
 
 local overrideOnKillClient = Marine.OnKillClient
 function Marine:OnKillClient()
 
 	overrideOnKillClient(self)
 
-    if self.marineXpBar then        
+    /*if self.marineXpBar then        
         GetGUIManager():DestroyGUIScript(self.marineXpBar)
         self.marineXpBar = nil            
-    end
+    end*/
 	
 end
 

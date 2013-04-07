@@ -70,9 +70,9 @@ local function GetTeamType()
 	
 	if not player:isa("ReadyRoomPlayer") then	
 		local teamnumber = player:GetTeamNumber()
-		if teamnumber == kMarine2TeamType then
-			return "Marines2"
-		elseif teamnumber == kMarineTeamType then
+		if teamnumber == kTeam1Index then
+			return "Marines"
+		elseif teamnumber == kTeam2Index then
 			return "Marines"
 		elseif teamnumber == kNeutralTeamType then 
 			return "Spectator"
@@ -155,23 +155,6 @@ function Factions_GUIExperienceBar:Update(deltaTime)
 		    self.experienceBar:SetTexturePixelCoordinates(Factions_GUIExperienceBar.kMarineBarTextureX1, Factions_GUIExperienceBar.kMarineBarTextureY1, Factions_GUIExperienceBar.kMarineBarTextureX2, Factions_GUIExperienceBar.kMarineBarTextureY2)
 			self.experienceBar:SetColor(Factions_GUIExperienceBar.kMarineGUIColor)
 			self.experienceText:SetColor(Factions_GUIExperienceBar.kMarineTextColor)
-			self.experienceAlpha = 1.0
-			self.showExperience = true
-		elseif (self.playerTeam == "Marines2") then
-			self.experienceBarBackground:SetIsVisible(true)
-			self.experienceBar:SetIsVisible(true)
-			self.experienceText:SetIsVisible(true)
-			self.experienceData.barPixelCoordsX1 = Factions_GUIExperienceBar.kMarine2BarTextureX1
-			self.experienceData.barPixelCoordsX2 = Factions_GUIExperienceBar.kMarine2BarTextureX2
-			self.experienceData.barPixelCoordsY1 = Factions_GUIExperienceBar.kMarine2BarTextureY1
-			self.experienceData.barPixelCoordsY2 = Factions_GUIExperienceBar.kMarine2BarTextureY2
-			self.experienceBarBackground:SetTexture(Factions_GUIExperienceBar.kMarine2BackgroundTextureName)
-			self.experienceBarBackground:SetTexturePixelCoordinates(Factions_GUIExperienceBar.kMarine2BarBackgroundTextureX1, Factions_GUIExperienceBar.kMarine2BarBackgroundTextureY1, Factions_GUIExperienceBar.kMarine2BarBackgroundTextureX2, Factions_GUIExperienceBar.kMarine2BarBackgroundTextureY2)
-			self.experienceBarBackground:SetColor(Factions_GUIExperienceBar.kMarine2BackgroundGUIColor)
-			self.experienceBar:SetTexture(Factions_GUIExperienceBar.kMarine2BarTextureName)
-			self.experienceBar:SetTexturePixelCoordinates(Factions_GUIExperienceBar.kMarine2BarTextureX1, Factions_GUIExperienceBar.kMarine2BarTextureY1, Factions_GUIExperienceBar.kMarine2BarTextureX2, Factions_GUIExperienceBar.kMarine2BarTextureY2)
-			self.experienceBar:SetColor(Factions_GUIExperienceBar.kMarine2GUIColor)	
-			self.experienceText:SetColor(Factions_GUIExperienceBar.kMarine2TextColor)
 			self.experienceAlpha = 1.0
 			self.showExperience = true
 		else

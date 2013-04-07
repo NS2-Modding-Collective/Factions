@@ -32,14 +32,18 @@ for n, e in pairs(kBothAlienAndMarine) do
     
 end
 
+function AddClientUIScriptForTeam(showOnTeam, scriptName)
+    kShowOnTeam[showOnTeam][scriptName] = true
+end
+
 // Below are the rules for what scripts should be active when the local player is a certain class.
 local kShowAsClass = { }
 kShowAsClass["Marine"] = { ["Hud/Marine/GUIMarineHUD"] = true, GUIPoisonedFeedback = true, GUIPickups = true, GUIOrders = true,
                            GUISensorBlips = true, GUIObjectiveDisplay = true, GUIProgressBar = true, GUIRequestMenu = true,
-                           GUIWaypoints = true }
+                           GUIWaypoints = true, ["Factions/Hud/Factions_GUIExperienceBar"] = true }
 kShowAsClass["JetpackMarine"] = { GUIJetpackFuel = true }
-kShowAsClass["Exo"] = { GUIJetpackFuel = true, ["Hud/Marine/GUIMarineHUD"] = true, ["Hud/Marine/GUIExoHUD"] = true, GUIProgressBar = true, GUIRequestMenu = true, GUIWaypoints = true }
-kShowAsClass["MarineSpectator"] = { GUIRequestMenu = true }
+kShowAsClass["Exo"] = { GUIJetpackFuel = true, ["Hud/Marine/GUIMarineHUD"] = true, ["Hud/Marine/GUIExoHUD"] = true, GUIProgressBar = true, GUIRequestMenu = true, GUIWaypoints = true, ["Factions/Hud/Factions_GUIExperienceBar"] = true }
+kShowAsClass["MarineSpectator"] = { GUIRequestMenu = true, ["Factions/Hud/Factions_GUIExperienceBar"] = true }
 kShowAsClass["Alien"] = { GUIObjectiveDisplay = true, GUIProgressBar = true, GUIRequestMenu = true, GUIWaypoints = true, GUIAlienHUD = true,
                           GUIEggDisplay = true, GUIRegenerationFeedback = true }
 kShowAsClass["AlienSpectator"] = { GUIRequestMenu = true }
@@ -49,6 +53,10 @@ kShowAsClass["AlienCommander"] = { GUIEggDisplay = true, GUICommanderPheromoneDi
 kShowAsClass["ReadyRoomPlayer"] = { }
 kShowAsClass["TeamSpectator"] = { }
 kShowAsClass["Spectator"] = { }
+
+function AddClientUIScriptForClass(className, scriptName)
+    kShowAsClass[className][scriptName] = true
+end
 
 local scripts = { }
 
