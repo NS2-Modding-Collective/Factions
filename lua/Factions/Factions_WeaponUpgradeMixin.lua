@@ -64,7 +64,13 @@ function WeaponUpgradeMixin:UpdateReloadSpeedLevel(newLevel)
     
 end
 
-function WeaponUpgradeMixin:UpdateFireRate(newLevel)
+function WeaponUpgradeMixin:UpdateDamageLevel(newLevel)
+	
+	self.damageLevel = newLevel
+    
+end
+
+function WeaponUpgradeMixin:UpdateFireRateLevel(newLevel)
 
 	self.fireRateLevel = newLevel
 
@@ -72,18 +78,6 @@ function WeaponUpgradeMixin:UpdateFireRate(newLevel)
     local weapon = self:GetActiveWeapon()
     if weapon and HasMixin(weapon, "VariableFireRate") then
     	weapon:UpdateFireRate(self:GetFireRateScalar())
-    end
-    
-end
-
-function WeaponUpgradeMixin:UpdateDamageLevel(newLevel)
-
-	self.damageLevel = newLevel
-
-    // Set the reload speed on the weapon based on the player's level
-    local weapon = self:GetActiveWeapon()
-    if weapon and HasMixin(weapon, "VariableDamage") then
-    	weapon:UpdateDamageLevel(self:GetDamageScalar())
     end
     
 end

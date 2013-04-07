@@ -14,6 +14,7 @@ Script.Load("lua/Locale/OverrideLocale.lua")
 // Then any files that adjust values go before the rest.
 Script.Load("lua/Factions/Factions_TechTreeConstants.lua")
 Script.Load("lua/Factions/Factions_Globals.lua")
+Script.Load("lua/Factions/Factions_DamageTypes.lua")
 Script.Load("lua/Factions/Factions_Balance.lua")
 
 // Extra Entities
