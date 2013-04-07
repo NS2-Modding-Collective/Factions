@@ -47,7 +47,7 @@ end
 // Find place for player to spawn, within range of origin. Makes sure that a line can be traced between the two points
 // without hitting anything, to make sure you don't spawn on the other side of a wall. Returns nil if it can't find a 
 // spawn point after a few tries.
-function CombatNS2Utility:GetRandomSpawnForCapsule_Hook(capsuleHeight, capsuleRadius, origin, minRange, maxRange, filter, validationFunc)
+function GetRandomSpawnForCapsule(capsuleHeight, capsuleRadius, origin, minRange, maxRange, filter, validationFunc)
 
     ASSERT(capsuleHeight > 0)
     ASSERT(capsuleRadius > 0)

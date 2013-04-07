@@ -15,6 +15,7 @@ Script.Load("lua/Shared_Modded.lua")
 Script.Load("lua/Server.lua")
 
 // Hooks for files that are not in Shared.lua need to go here.
+Script.Load("lua/Factions/Factions_NS2Utility.lua")
 Script.Load("lua/Factions/Factions_MarineTeam.lua")
 Script.Load("lua/Factions/Factions_ConsoleCommands.lua")
 Script.Load("lua/Factions/Factions_NetworkMessages_Server.lua")
