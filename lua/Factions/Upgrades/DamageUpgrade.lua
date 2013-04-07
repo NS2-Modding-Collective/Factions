@@ -10,8 +10,8 @@
 class 'DamageUpgrade' (FactionsUpgrade)
 
 // Define these statically so we can easily access them without instantiating too.
-DamageUpgrade.cost = { 100, 200, 400 }                              				// Cost of the upgrade in xp
-DamageUpgrade.levels = 3															// How many levels are there to this upgrade
+DamageUpgrade.cost = { 100, 200, 400, 600, 600 }                              		// Cost of the upgrade in xp
+DamageUpgrade.levels = 5															// How many levels are there to this upgrade
 DamageUpgrade.upgradeName = "damage"                     							// Text code of the upgrade if using it via console
 DamageUpgrade.upgradeTitle = "Damage Upgrade"		               					// Title of the upgrade, e.g. Submachine Gun
 DamageUpgrade.upgradeDesc = "Upgrade your damage"									// Description of the upgrade
