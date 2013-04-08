@@ -28,12 +28,13 @@ if Server then
 
 	function HordeGamerules:OnCreate()
 	
-		GenericGamerules.OnCreate(self)
-		
 		self.isMarinevsMarine = false
 		self.isCompetitive = false
 		self.isClassBased = true
 		self.isCombatRules = true
+		self.isFactionsMovement = true
+	
+		GenericGamerules.OnCreate(self)
 		
 	end
 

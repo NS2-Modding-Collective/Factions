@@ -164,7 +164,7 @@ if Server then
 	function PlayingTeam:RespawnPlayer(player, origin, angles)
 
 		// Don't bother trying to spawn the player if they are a human and still yet to choose a class.
-		if not Server.GetOwner(player):GetIsVirtual() and player.GetHasFactionsClass and not player:GetHasFactionsClass() then
+		if GetGamerulesInfo():GetIsClassBased() and not Server.GetOwner(player):GetIsVirtual() and player.GetHasFactionsClass and not player:GetHasFactionsClass() then
 			player:SendDirectMessage("Please choose a class using e.g. 'assault', 'support' or 'scout' in console...")
 			return false
 		end

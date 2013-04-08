@@ -29,7 +29,12 @@ if Server then
 	
         originalNS2GamerulesOnCreate(self)
 		
-		Server.CreateEntity(FactionsGamerulesInfo.kMapName)
+		local gameInfo = Server.CreateEntity(FactionsGamerulesInfo.kMapName)
+		gameInfo:SetIsMarinevsMarine(self.isMarinevsMarine)
+		gameInfo:SetIsCompetitive(self.isCompetitive)
+		gameInfo:SetIsCombatRules(self.isCombatRules)
+		gameInfo:SetIsClassBased(self.isClassBased)
+		gameInfo:SetIsFactionsMovement(self.isFactionsMovemement)
 		
 		Shared.Message("Server started for Factions v" .. kFactionsVersion .. "!")
 		Shared.Message("Current Game Mode: " .. self:GetGameModeName())

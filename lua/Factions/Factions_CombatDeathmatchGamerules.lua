@@ -25,13 +25,13 @@ if Server then
 
 	function CombatDeathmatchGamerules:OnCreate()
 	
-		GenericGamerules.OnCreate(self)
-		
 		self.isMarinevsMarine = false
 		self.isCompetitive = true
 		self.isClassBased = false
 		self.isCombatRules = true
 		self.isFactionsMovement = false
+	
+		GenericGamerules.OnCreate(self)
 		
 	end
 
