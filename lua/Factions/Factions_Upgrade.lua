@@ -14,6 +14,7 @@ class 'FactionsUpgrade'
 
 kFactionsUpgradeTypes = enum({'Ability', 'Attribute', 'Tech', 'Weapon'})
 kFactionsTriggerTypes = enum({'NoTrigger', 'ByTime', 'ByKey'})
+kFactionsUpgradeTeamType = enum({'MarineTeam', 'AlienTeam', 'PlayingTeam'})
 
 FactionsUpgrade.upgradeType = kFactionsUpgradeTypes.Tech       	// The type of the upgrade
 FactionsUpgrade.triggerType = kFactionsTriggerTypes.NoTrigger  	// How the upgrade is gonna be triggered
@@ -28,6 +29,8 @@ FactionsUpgrade.hardCapScale = 0                               	// How many peop
 FactionsUpgrade.mutuallyExclusive = { }                        	// Upgrades that can not bought when you got this (like no jp when have exo)
 FactionsUpgrade.requirements = { }                        		// Upgrades you must get before you can get this one.
 FactionsUpgrade.permanent = true								// Controls whether you get the upgrade back when you respawn
+FactionsUpgrade.disallowedGameModes = { }							// Controls which game modes this applies to
+FactionsUpgrade.teamType = { kFactionsUpgradeTeamType.PlayingTeam }	// Controls which team type this applies to
 
 function FactionsUpgrade:Initialize()
 	// This is a base class so never show it in the menu.
@@ -46,6 +49,8 @@ function FactionsUpgrade:Initialize()
 	self.hardCapScale = FactionsUpgrade.hardCapScale
 	self.mutuallyExclusive = FactionsUpgrade.mutuallyExclusive
 	self.permanent = FactionsUpgrade.permanent
+	self.disallowedGameModes = FactionsUpgrade.disallowedGameModes
+	self.teamType = FactionsUpgrade.teamType
 end
 
 function FactionsUpgrade:GetHideUpgrade()
@@ -142,6 +147,24 @@ end
 
 function FactionsUpgrade:GetRequirements()
 	return self.requirements
+end
+
+function FactionsUpgrade:GetDisallowedGameModes()
+	return self.disallowedGameModes
+end
+
+function FactionsUpgrade:GetTeamType()
+	local teamType = "PlayingTeam"
+	
+	if self.teamType == kFactionsUpgradeTeamType.MarineTeam then
+		teamType = "MarineTeam"
+	elseif self.teamType == kFactionsUpgradeTeamType.AlienTeam then
+		teamType = "AlienTeam"
+	else
+		teamType = "PlayingTeam"
+	end
+	
+	return teamType
 end
 
 if kFactionsUpgradeIdCache == nil then
