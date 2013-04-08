@@ -39,7 +39,9 @@ local function searchEntities(self)
     // clear the entity list and rewrite it
     kLogicEntityList = {}
     for index, entity in ipairs(GetEntitiesWithMixin("Logic")) do
-        kLogicEntityList[self.name] = self:GetId()
+        if entity.name and entity.name ~= "" then   
+            kLogicEntityList[entity.name] = entity:GetId()
+        end
     end
     kLogicEntitiesSearched = true
 end
@@ -96,7 +98,7 @@ function LogicMixin:GetLogicEntityWithName(name)
 end
 
 
-function LogicMixin:TriggerOutputs(player, number, retryList)   
+function LogicMixin:TriggerOutputs(player, number, func, retryList)   
  
     local retryTriggerEntities = {}
     for i, name in ipairs(retryList or self:GetOutputNames(number)) do 
@@ -104,7 +106,14 @@ function LogicMixin:TriggerOutputs(player, number, retryList)
             local entity = self:GetLogicEntityWithName(name)
             if entity then
                 if  HasMixin(entity, "Logic") then
-                    entity:OnLogicTrigger(player)
+                    if func then
+                        // custom output functions
+                        if func == "reset" then
+                            entity:Reset()
+                        end
+                    else
+                        entity:OnLogicTrigger(player)
+                    end
                 else
                     Print("Error: Entity " .. name .. " has no Logic function!")
                 end
@@ -123,7 +132,7 @@ function LogicMixin:TriggerOutputs(player, number, retryList)
     if #retryTriggerEntities > 0 then
         // Try to search the entities again (doors sometimes change their id)
         searchEntities(self) 
-        self:TriggerOutputs(nil, nil, retryTriggerEntities)
+        self:TriggerOutputs(nil, nil, nil, retryTriggerEntities)
     end
 end
 
@@ -137,4 +146,19 @@ function LogicMixin:GetUsedOutputs()
     end
     
     return outputs
+end
+
+
+// some entities have special functions, but others just switches on, off etc
+function LogicMixin:OnTriggerAction()
+    if self.onTriggerAction == 0 or self.onTriggerAction == nil then
+        // toggle
+        self.enabled = not self.enabled
+    elseif self.onTriggerAction == 1 then
+        // stay on
+        self.enabled = true
+    elseif self.onTriggerAction == 2 then
+        // stay off
+        self.enabled = off
+    end  
 end
