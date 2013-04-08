@@ -14,11 +14,11 @@ Script.Load("lua/Factions/Factions_GenericGamerules.lua")
 class 'CombatDeathmatchGamerules' (GenericGamerules)
 
 CombatDeathmatchGamerules.kMapName = "factions_combatdeathmatch_gamerules"
+CombatDeathmatchGamerules.kDefaultTimeLimit = 1800
 
 local networkVars =
 {
-	team1Tokens = "integer (0 to 1000)",
-	team2Tokens = "integer (0 to 1000)",
+	timelimit = "integer (1 to 65535)"
 }
 
 if Server then
@@ -40,8 +40,8 @@ if Server then
 	end
 	
 	function CombatDeathmatchGamerules:GetGameModeText()
-		return { "Both sides fight until the other team's CC is destroyed,",
-                 "or one side runs out of lives!" }
+		return { "Both sides fight until the other team's Hive/CC is destroyed,",
+                 "or the time runs out!" }
 	end
 
 	local overrideResetGame = GenericGamerules.ResetGame
@@ -49,8 +49,7 @@ if Server then
 		
 		overrideResetGame(self)
 		
-		self.team1Tokens = kInitialTokenValue
-		self.team2Tokens = kInitialTokenValue
+		self.timelimit = CombatDeathmatchGamerules.kDefaultTimeLimit
 		
 		// Lock the command chairs and reveal the objectives.
 		self:RevealCommandChairLocations()

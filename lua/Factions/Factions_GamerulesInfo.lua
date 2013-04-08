@@ -48,6 +48,7 @@ local networkVars =
 	isCombatRules = "boolean",
 	isClassBased = "boolean",
 	isFactionsMovemement = "boolean",
+	isInSuddenDeath = "boolean",
 }
 
 function FactionsGamerulesInfo:OnCreate()
@@ -91,6 +92,10 @@ if Server then
 	function FactionsGamerulesInfo:SetIsMarinevsMarine(value)
 		self.isMarinevsMarine = value
 	end
+	
+	function FactionsGamerulesInfo:SetIsInSuddenDeath(value)
+		self.isInSuddenDeath = value
+	end
 end
 
 function FactionsGamerulesInfo:GetIsMarinevsMarine()
@@ -111,6 +116,10 @@ end
 
 function FactionsGamerulesInfo:GetIsFactionsMovement()
 	return self.isClassBased
+end
+
+function FactionsGamerulesInfo:GetIsInSuddenDeath()
+	return self.isInSuddenDeath
 end
 	
 Shared.LinkClassToMap("FactionsGamerulesInfo", FactionsGamerulesInfo.kMapName, networkVars)

@@ -35,6 +35,7 @@ if Server then
 		gameInfo:SetIsCombatRules(self.isCombatRules)
 		gameInfo:SetIsClassBased(self.isClassBased)
 		gameInfo:SetIsFactionsMovement(self.isFactionsMovemement)
+		gameInfo:SetIsInSuddenDeath(false)
 		
 		Shared.Message("Server started for Factions v" .. kFactionsVersion .. "!")
 		Shared.Message("Current Game Mode: " .. self:GetGameModeName())
@@ -66,6 +67,9 @@ if Server then
      * respawn playing players.
      */
     function GenericGamerules:ResetGame()
+    
+    	// Reset sudden death mode
+    	GetGamerulesInfo():SetIsInSuddenDeath(false)
     
         // save commanders for later re-login
         local team1CommanderClientIndex = self.team1:GetCommander() and self.team1:GetCommander().clientIndex or nil
