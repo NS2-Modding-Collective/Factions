@@ -19,7 +19,7 @@ function MarineTeam:SpawnInitialStructures(techPoint)
 	// Special logic depending on the game mode
 	// For game modes using Combat-like rules
 	// Spawn an armory.
-	if GetGamerules():GetIsCombatRules() then
+	if GetGamerulesInfo():GetIsCombatRules() then
 		local tower, commandStation = PlayingTeam.SpawnInitialStructures(self, techPoint)
 
 		//Check if there is already an Armory
@@ -58,7 +58,7 @@ end
 local overrideUpdate = MarineTeam.Update
 function MarineTeam:Update(timePassed)
 	
-	if GetGamerules():GetIsCombatRules() then
+	if GetGamerulesInfo():GetIsCombatRules() then
 		PlayingTeam.Update(self, timePassed)
 		
 		// Update distress beacon mask

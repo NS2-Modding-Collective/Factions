@@ -31,7 +31,7 @@ if Server then
 	// Only allowed in non-competitive games like Horde.
 	function OnCommandSetColour(client, red, green, blue)
 		local player = client:GetControllingPlayer()
-		if player and not GetGamerules():GetIsCompetitive() then
+		if player and not GetGamerulesInfo():GetIsCompetitive() then
 			local dblRed = tonumber(red) / 255
 			local dblGreen = tonumber(green) / 255
 			local dblBlue = tonumber(blue) / 255

@@ -15,7 +15,7 @@ Script.Load("lua/Factions/Factions_SpeedUpgradeMixin.lua")
 Script.Load("lua/Factions/Factions_WeaponUpgradeMixin.lua")
 Script.Load("lua/Factions/Factions_HealthUpgradeMixin.lua")
 Script.Load("lua/Factions/Factions_ArmorUpgradeMixin.lua")
-Script.Load("lua/Factions/Factions_CombatMovementMixin.lua")
+Script.Load("lua/Factions/Factions_FactionsMovementMixin.lua")
 Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
 Script.Load("lua/Factions/Factions_IronSightViewerMixin.lua")
 Script.Load("lua/Factions/Factions_SpawnProtectMixin.lua")
@@ -28,13 +28,12 @@ AddMixinNetworkVars(SpeedUpgradeMixin, networkVars)
 AddMixinNetworkVars(WeaponUpgradeMixin, networkVars)
 AddMixinNetworkVars(HealthUpgradeMixin, networkVars)
 AddMixinNetworkVars(ArmorUpgradeMixin, networkVars)
-if GetGamerules():GetIsFactionsMovement() then
-	AddMixinNetworkVars(CombatMovementMixin, networkVars)
-end
+AddMixinNetworkVars(FactionsMovementMixin, networkVars)
 AddMixinNetworkVars(TeamColoursMixin, networkVars)
 AddMixinNetworkVars(SpawnProtectMixin, networkVars)
 
-if GetGamerules():GetIsFactionsMovement() then
+function Marine:SetupFactionsMovement()
+
 	// Balance, movement, animation
 	Marine.kSprintAcceleration = 220
 	Marine.kSprintInfestationAcceleration = 150
@@ -87,6 +86,11 @@ if GetGamerules():GetIsFactionsMovement() then
 	Marine.kAirAccelerationFraction = 0.6
 
 	Marine.kAirMoveMinVelocity = 8
+	
+	// Set up the Combat Movement mixin
+	InitMixin(self, FactionsMovementMixin)
+	assert(HasMixin(self, "FactionsMovement"))
+
 end
 
 // Use the new Mixins here.
@@ -102,9 +106,6 @@ function Marine:OnCreate()
 	InitMixin(self, WeaponUpgradeMixin)
 	InitMixin(self, HealthUpgradeMixin)
 	InitMixin(self, ArmorUpgradeMixin)
-	if GetGamerules():GetIsFactionsMovement() then
-		InitMixin(self, CombatMovementMixin)
-	end
 	InitMixin(self, CloakableMixin)
 	InitMixin(self, TeamColoursMixin)
 	InitMixin(self, IronSightViewerMixin)
@@ -117,9 +118,6 @@ function Marine:OnCreate()
 	assert(HasMixin(self, "WeaponUpgrade"))
 	assert(HasMixin(self, "HealthUpgrade"))
 	assert(HasMixin(self, "ArmorUpgrade"))
-	if GetGamerules():GetIsFactionsMovement() then
-		assert(HasMixin(self, "CombatMovement"))
-	end
 	assert(HasMixin(self, "Cloakable"))
 	assert(HasMixin(self, "TeamColours"))
 	assert(HasMixin(self, "IronSightViewer"))
@@ -131,6 +129,11 @@ function Marine:OnCreate()
 	if Server then
 		InitMixin(self, TimerMixin)
 		assert(HasMixin(self, "Timer"))
+	end
+	
+	// Factions movement
+	if GetGamerulesInfo():GetIsFactionsMovement() then
+		self:SetupFactionsMovement()
 	end
 	
 end
@@ -152,7 +155,9 @@ function Marine:Drop(weapon, ignoreDropTimeLimit, ignoreReplacementWeapon)
 
 end
 
-if GetGamerules():GetIsFactionsMovement() then
+//if GetGamerulesInfo():GetIsFactionsMovement() then
+// TODO: Fix how this is controlled. Move it to FactionsMovementMixin!
+if false then
 	// Functions to control movement, angles.
 	function Marine:GetAngleSmoothRate()
 

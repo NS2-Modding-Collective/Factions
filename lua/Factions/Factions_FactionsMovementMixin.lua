@@ -7,14 +7,14 @@
 //  Licensed under LGPL v3.0
 //________________________________
 
-// Factions_CombatMovementMixin.lua
+// Factions_FactionsMovementMixin.lua
 
 Script.Load("lua/FunctionContracts.lua")
 
-CombatMovementMixin = CreateMixin( CombatMovementMixin )
-CombatMovementMixin.type = "CombatMovement"
+FactionsMovementMixin = CreateMixin( FactionsMovementMixin )
+FactionsMovementMixin.type = "FactionsMovement"
 
-CombatMovementMixin.expectedMixins =
+FactionsMovementMixin.expectedMixins =
 {
 	 WallMovement = "Needed for processing the wall walking.",
 	 FactionsClass = "Needed for changing the movement speed depending on class.",
@@ -22,7 +22,7 @@ CombatMovementMixin.expectedMixins =
 	 SpeedUpgrade = "Needed to calculate the upgraded speed based on player upgrades",
 }
 
-CombatMovementMixin.expectedCallbacks =
+FactionsMovementMixin.expectedCallbacks =
 {
 	GetAngleSmoothRate = "The smooth rate for the angle changes as the player moves from wall to wall",
 	GetRollSmoothRate = "The smooth rate for the angle changes as the player moves from wall to wall",
@@ -69,11 +69,11 @@ CombatMovementMixin.expectedCallbacks =
 	kAirMoveMaxVelocity = "The minimum speed at which GetAirMoveScalar is set to 1.0",
 */
 
-CombatMovementMixin.expectedConstants =
+FactionsMovementMixin.expectedConstants =
 {
 }
 
-CombatMovementMixin.networkVars =
+FactionsMovementMixin.networkVars =
 {
 	wallWalking = "compensated boolean",
 	timeLastWallWalkCheck = "private compensated time",
@@ -87,7 +87,7 @@ CombatMovementMixin.networkVars =
 }
 
 // These should completely override any existing function defined in the class.
-CombatMovementMixin.overrideFunctions =
+FactionsMovementMixin.overrideFunctions =
 {
 	"GetAcceleration",
 	"GetAirMoveScalar",
@@ -126,7 +126,7 @@ CombatMovementMixin.overrideFunctions =
 	
 }
 
-function CombatMovementMixin:__initmixin()
+function FactionsMovementMixin:__initmixin()
 
 	// Wall walking stuff
 	self.wallWalking = false
@@ -144,7 +144,7 @@ function CombatMovementMixin:__initmixin()
 	
 end
 
-function CombatMovementMixin:GetAcceleration()
+function FactionsMovementMixin:GetAcceleration()
 
     local acceleration = self:GetUpgradedAcceleration()
     
@@ -166,7 +166,7 @@ function CombatMovementMixin:GetAcceleration()
 
 end
 
-function CombatMovementMixin:GetAirMoveScalar()
+function FactionsMovementMixin:GetAirMoveScalar()
 
 	if self:GetVelocityLength() < self.kAirMoveMinVelocity then
 		return 1.0
@@ -177,7 +177,7 @@ function CombatMovementMixin:GetAirMoveScalar()
 end
 
 // required to trigger wall walking animation
-function CombatMovementMixin:GetIsJumping()
+function FactionsMovementMixin:GetIsJumping()
 
 	return Player.GetIsJumping(self) and not self.wallWalking	
 	
@@ -185,26 +185,26 @@ end
 
 // The movement should factor in the vertical velocity
 // only when wall walking.
-function CombatMovementMixin:GetMoveSpeedIs2D()
+function FactionsMovementMixin:GetMoveSpeedIs2D()
 
 	return not self:GetIsWallWalking()
 	
 end
 
-function CombatMovementMixin:GetRecentlyWallJumped()
+function FactionsMovementMixin:GetRecentlyWallJumped()
 
 	return self.timeLastWallJump + Marine.kWallJumpInterval > Shared.GetTime()
 	
 end
 
-function CombatMovementMixin:GetCanWallJump()
+function FactionsMovementMixin:GetCanWallJump()
 
 	return self:GetHasMagnoBoots() and (self:GetIsWallWalking() or (not self:GetIsOnGround() and self:GetAverageWallWalkingNormal(Marine.kJumpWallRange, Marine.kJumpWallFeelerSize) ~= nil))
 	
 end
 
 // Players with magno boots don't need ladders
-function CombatMovementMixin:GetIsOnLadder()
+function FactionsMovementMixin:GetIsOnLadder()
 
 	if self:GetHasMagnoBoots() then
 		return false
@@ -214,26 +214,26 @@ function CombatMovementMixin:GetIsOnLadder()
 
 end
 
-function CombatMovementMixin:GetCanJump()
+function FactionsMovementMixin:GetCanJump()
 
 	return Player.GetCanJump(self) or self:GetCanWallJump()    
 	
 end
 
-function CombatMovementMixin:GetIsWallWalking()
+function FactionsMovementMixin:GetIsWallWalking()
 
 	return self.wallWalking
 
 end
 
-function CombatMovementMixin:GetIsWallWalkingPossible() 
+function FactionsMovementMixin:GetIsWallWalkingPossible() 
 
 	// Can only wall walk if you have magno boots
 	return self:GetHasMagnoBoots() and not self:GetRecentlyJumped() /* and not self.crouching */ 
 	
 end
 
-function CombatMovementMixin:PreUpdateMove(input, runningPrediction)
+function FactionsMovementMixin:PreUpdateMove(input, runningPrediction)
 
 	PROFILE("Marine:PreUpdateMove")
 	
@@ -281,7 +281,7 @@ function CombatMovementMixin:PreUpdateMove(input, runningPrediction)
 	self.wallWalkingNormalCurrent = self:SmoothWallNormal(self.wallWalkingNormalCurrent, self.wallWalkingNormalGoal, fraction)
 end
 
-function CombatMovementMixin:GetDesiredAngles(deltaTime)
+function FactionsMovementMixin:GetDesiredAngles(deltaTime)
 
 	if self:GetIsWallWalking() then    
 		return self:GetAnglesFromWallNormal(self.wallWalkingNormalCurrent, 1)        
@@ -291,14 +291,14 @@ function CombatMovementMixin:GetDesiredAngles(deltaTime)
 	
 end 
 
-function CombatMovementMixin:GetSmoothAngles()
+function FactionsMovementMixin:GetSmoothAngles()
 
 	return not self:GetIsWallWalking()	
 	
 end
 
 local kUpVector = Vector(0, 1, 0)
-function CombatMovementMixin:UpdatePosition(velocity, time)
+function FactionsMovementMixin:UpdatePosition(velocity, time)
 
 	PROFILE("Marine:UpdatePosition")
 
@@ -363,7 +363,7 @@ function CombatMovementMixin:UpdatePosition(velocity, time)
 
 end
 
-function CombatMovementMixin:GetMaxSpeed(possible)
+function FactionsMovementMixin:GetMaxSpeed(possible)
 
 	local maxRunSpeed = self:GetUpgradedMaxSprintSpeed()
 	local maxWalkSpeed = self:GetUpgradedMaxSpeed()
@@ -395,13 +395,13 @@ function CombatMovementMixin:GetMaxSpeed(possible)
 	
 end
 
-function CombatMovementMixin:GetRecentlyJumped()
+function FactionsMovementMixin:GetRecentlyJumped()
 
 	return not (self.timeOfLastJump == nil or (Shared.GetTime() > (self.timeOfLastJump + Marine.kJumpRepeatTime)))
 	
 end
 
-function CombatMovementMixin:ModifyVelocity(input, velocity)
+function FactionsMovementMixin:ModifyVelocity(input, velocity)
 
 	if self:isa("JetpackMarine") then
 	
@@ -508,7 +508,7 @@ function CombatMovementMixin:ModifyVelocity(input, velocity)
 	
 end
 
-function CombatMovementMixin:ConstrainMoveVelocity(moveVelocity)
+function FactionsMovementMixin:ConstrainMoveVelocity(moveVelocity)
 
 	// allow acceleration in air for skulks   
 	if not self:GetIsOnSurface() then
@@ -525,13 +525,13 @@ function CombatMovementMixin:ConstrainMoveVelocity(moveVelocity)
 
 end
 
-function CombatMovementMixin:GetGroundFrictionForce()   
+function FactionsMovementMixin:GetGroundFrictionForce()   
 
 	return ConditionalValue(self.crouching or self.isUsing, Marine.kGroundWalkFriction, Marine.kGroundFriction) 
 
 end
 
-function CombatMovementMixin:GetFrictionForce(input, velocity)
+function FactionsMovementMixin:GetFrictionForce(input, velocity)
 
 	local friction = Player.GetFrictionForce(self, input, velocity)
 	if self:GetIsWallWalking() then
@@ -542,23 +542,23 @@ function CombatMovementMixin:GetFrictionForce(input, velocity)
 
 end
 
-function CombatMovementMixin:GetGravityAllowed()
+function FactionsMovementMixin:GetGravityAllowed()
 
 	return not self:GetIsOnLadder() and not self:GetIsOnGround() and not self:GetIsWallWalking()
 	
 end
 
-function CombatMovementMixin:GetIsOnSurface()
+function FactionsMovementMixin:GetIsOnSurface()
 
 	return Player.GetIsOnSurface(self) or self:GetIsWallWalking()
 	
 end
 
-function CombatMovementMixin:GetIsAffectedByAirFriction()
+function FactionsMovementMixin:GetIsAffectedByAirFriction()
 	return not self:GetIsOnSurface()
 end
 
-function CombatMovementMixin:AdjustGravityForce(input, gravity)
+function FactionsMovementMixin:AdjustGravityForce(input, gravity)
 
 	// No gravity when we're sticking to a wall.
 	if self:GetIsWallWalking() then
@@ -573,7 +573,7 @@ function CombatMovementMixin:AdjustGravityForce(input, gravity)
 	
 end
 
-function CombatMovementMixin:GetMoveDirection(moveVelocity)
+function FactionsMovementMixin:GetMoveDirection(moveVelocity)
 
 	// Don't constrain movement to XZ so we can walk smoothly up walls
 	if self:GetIsWallWalking() then
@@ -584,7 +584,7 @@ function CombatMovementMixin:GetMoveDirection(moveVelocity)
 	
 end
 
-function CombatMovementMixin:GetIsCloseToGround(distanceToGround)
+function FactionsMovementMixin:GetIsCloseToGround(distanceToGround)
 
 	if self:GetIsWallWalking() then
 		return false
@@ -595,25 +595,25 @@ function CombatMovementMixin:GetIsCloseToGround(distanceToGround)
 end
 
 // Play footsteps when walking up a wall.
-function CombatMovementMixin:GetPlayFootsteps()
+function FactionsMovementMixin:GetPlayFootsteps()
 
 	return self:GetVelocityLength() > .75 and self:GetIsOnSurface() and self:GetIsAlive()
 
 end
 
-function CombatMovementMixin:GetIsOnGround()
+function FactionsMovementMixin:GetIsOnGround()
 
 	return Player.GetIsOnGround(self) and not self:GetIsWallWalking()    
 	
 end
 
-function CombatMovementMixin:PerformsVerticalMove()
+function FactionsMovementMixin:PerformsVerticalMove()
 
 	return self:GetIsWallWalking()
 	
 end
 
-function CombatMovementMixin:GetJumpVelocity(input, velocity)
+function FactionsMovementMixin:GetJumpVelocity(input, velocity)
 
 	local viewCoords = self:GetViewAngles():GetCoords()
 	
@@ -668,11 +668,11 @@ function CombatMovementMixin:GetJumpVelocity(input, velocity)
 end
 
 // Handle jump sounds ourselves
-function CombatMovementMixin:GetPlayJumpSound()
+function FactionsMovementMixin:GetPlayJumpSound()
 	return false
 end
 
-function CombatMovementMixin:HandleJump(input, velocity)
+function FactionsMovementMixin:HandleJump(input, velocity)
 
 	local success = Player.HandleJump(self, input, velocity)
 	
@@ -689,9 +689,9 @@ end
 
 // Make sure we can't move faster than our max speed (esp. when holding
 // down multiple keys, going down ramps, etc.)
-function CombatMovementMixin:OnClampSpeed(input, velocity)
+function FactionsMovementMixin:OnClampSpeed(input, velocity)
 
-    PROFILE("CombatMovementMixin:OnClampSpeed")
+    PROFILE("FactionsMovementMixin:OnClampSpeed")
     
     // Don't clamp speed when stunned, so we can go flying
     if HasMixin(self, "Stun") and self:GetIsStunned() then
@@ -729,7 +729,7 @@ end
 // MoveMixin callbacks.
 // Compute the desired velocity based on the input. Make sure that going off at 45 degree angles
 // doesn't make us faster.
-function CombatMovementMixin:ComputeForwardVelocity(input)
+function FactionsMovementMixin:ComputeForwardVelocity(input)
 
     local forwardVelocity = Vector(0, 0, 0)
     

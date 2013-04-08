@@ -17,6 +17,9 @@ Script.Load("lua/Factions/Factions_Globals.lua")
 Script.Load("lua/Factions/Factions_DamageTypes.lua")
 Script.Load("lua/Factions/Factions_Balance.lua")
 
+// Gamerules info
+Script.Load("lua/Factions/Factions_GamerulesInfo.lua")
+
 // Extra Entities
 Script.Load("lua/ExtraEntitiesMod/eem_Shared.lua")
 
