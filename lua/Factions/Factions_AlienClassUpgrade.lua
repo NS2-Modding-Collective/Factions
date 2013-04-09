@@ -7,7 +7,7 @@
 //  Licensed under LGPL v3.0
 //________________________________
 
-// Factions_WeaponUpgrade.lua
+// Factions_AlienClassUpgrade.lua
 
 // Base class for all weapons and their upgrades
 

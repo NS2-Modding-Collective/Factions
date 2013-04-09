@@ -17,6 +17,7 @@ ScanUpgrade.upgradeTitle = "Scanner"	               							// Title of the upgra
 ScanUpgrade.upgradeDesc = "Periodically scan for nearby enemies"				// Description of the upgrade
 ScanUpgrade.upgradeTechId = kTechId.Scan										// TechId of the upgrade, default is kTechId.Move cause its the first entry
 ScanUpgrade.triggerInterval	= { 20, 17, 13, 10, 8 } 							// Specify the timer interval (in seconds) per level.
+ScanUpgrade.teamType	 	= kFactionsUpgradeTeamType.MarineTeam					// Team Type
 
 function ScanUpgrade:Initialize()
 
@@ -29,6 +30,7 @@ function ScanUpgrade:Initialize()
 	self.upgradeDesc = ScanUpgrade.upgradeDesc
 	self.upgradeTechId = ScanUpgrade.upgradeTechId
 	self.triggerInterval = ScanUpgrade.triggerInterval
+	self.teamType = ScanUpgrade.teamType
 	
 end
 

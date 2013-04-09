@@ -17,6 +17,7 @@ ResupplyUpgrade.upgradeTitle = "Resupply"               								// Title of the 
 ResupplyUpgrade.upgradeDesc = "Periodically stock up on health and ammo"				// Description of the upgrade
 ResupplyUpgrade.upgradeTechId = kTechId.Resupply										// TechId of the upgrade, default is kTechId.Move cause its the first entry
 ResupplyUpgrade.triggerInterval	= { 12, 10, 8 } 										// Specify the timer interval (in seconds) per level.
+ResupplyUpgrade.teamType	 	= kFactionsUpgradeTeamType.MarineTeam					// Team Type
 
 function ResupplyUpgrade:Initialize()
 
@@ -29,6 +30,7 @@ function ResupplyUpgrade:Initialize()
 	self.upgradeDesc = ResupplyUpgrade.upgradeDesc
 	self.upgradeTechId = ResupplyUpgrade.upgradeTechId
 	self.triggerInterval = ResupplyUpgrade.triggerInterval
+	self.teamType = ResupplyUpgrade.teamType
 	
 end
 

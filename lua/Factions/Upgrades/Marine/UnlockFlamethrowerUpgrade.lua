@@ -18,6 +18,7 @@ UnlockFlamethrowerUpgrade.upgradeName 		= "unlockflamer"	                       
 UnlockFlamethrowerUpgrade.upgradeTitle 		= "Unlock Flamethrower"       								// Title of the upgrade, e.g. Submachine Gun
 UnlockFlamethrowerUpgrade.upgradeDesc 		= "Unlock the flame thrower!"  								// Description of the upgrade
 UnlockFlamethrowerUpgrade.upgradeTechId		= kTechId.Flamethrower 	 		    						// TechId of the upgrade, default is kTechId.Move cause its the first entry
+UnlockFlamethrowerUpgrade.teamType	 		= kFactionsUpgradeTeamType.MarineTeam						// Team Type
 
 function UnlockFlamethrowerUpgrade:Initialize()
 
@@ -29,6 +30,7 @@ function UnlockFlamethrowerUpgrade:Initialize()
 	self.upgradeTitle = UnlockFlamethrowerUpgrade.upgradeTitle
 	self.upgradeDesc = UnlockFlamethrowerUpgrade.upgradeDesc
 	self.upgradeTechId = UnlockFlamethrowerUpgrade.upgradeTechId
+	self.teamType = UnlockFlamethrowerUpgrade.teamType
 	
 end
 

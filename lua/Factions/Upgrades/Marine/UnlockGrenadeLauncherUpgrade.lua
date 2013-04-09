@@ -18,7 +18,7 @@ UnlockGrenadeLauncherUpgrade.upgradeName 		= "unlockgl"	                        
 UnlockGrenadeLauncherUpgrade.upgradeTitle 		= "Unlock Grenade Launcher"       							// Title of the upgrade, e.g. Submachine Gun
 UnlockGrenadeLauncherUpgrade.upgradeDesc 		= "Unlock the grenade launcher!"  							// Description of the upgrade
 UnlockGrenadeLauncherUpgrade.upgradeTechId		= kTechId.GrenadeLauncher 	 		    					// TechId of the upgrade, default is kTechId.Move cause its the first entry
-
+UnlockGrenadeLauncherUpgrade.teamType	 		= kFactionsUpgradeTeamType.MarineTeam						// Team Type
 
 function UnlockGrenadeLauncherUpgrade:Initialize()
 
@@ -30,6 +30,7 @@ function UnlockGrenadeLauncherUpgrade:Initialize()
 	self.upgradeTitle = UnlockGrenadeLauncherUpgrade.upgradeTitle
 	self.upgradeDesc = UnlockGrenadeLauncherUpgrade.upgradeDesc
 	self.upgradeTechId = UnlockGrenadeLauncherUpgrade.upgradeTechId
+	self.teamType = UnlockGrenadeLauncherUpgrade.teamType
 	
 end
 
