@@ -1362,6 +1362,19 @@
 		<parameter name="fallDmg" type="boolean" label="Fall damage" default="false" />
     </class>
 	
+	<!-- Factions Gamerules -->
+	<class name="factions_gamerules_picker" placeable="true">
+		<model>
+            <file>models/system/editor/team_location.model</file>
+        </model>
+
+        <parameter name="gameType" type="choice" label="Game Type" default="0">
+			<choice label="Combat Deathmatch" value="1"/>
+			<choice label="Horde" value="2"/>
+			<choice label="Marine Deathmatch" value="3"/>
+        </parameter>
+    </class>
+	
 		<!-- NPCs -->	
 
 	<class name="npc_wave_manager" placeable="true">
