@@ -12,7 +12,7 @@
 // Base class for all upgrades
 class 'FactionsUpgrade'
 
-kFactionsUpgradeTypes = enum({'Class', 'Attribute', 'Tech', 'Weapon'})
+kFactionsUpgradeTypes = enum({'Lifeform', 'Attribute', 'Ability', 'Tech', 'Weapon'})
 kFactionsTriggerTypes = enum({'NoTrigger', 'ByTime', 'ByKey'})
 kFactionsUpgradeTeamType = enum({'MarineTeam', 'AlienTeam', 'AnyTeam'})
 

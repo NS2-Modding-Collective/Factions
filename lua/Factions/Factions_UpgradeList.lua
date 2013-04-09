@@ -18,6 +18,8 @@ Script.Load("lua/Factions/Factions_Utility.lua")
 
 // Load the upgrade base classes
 Script.Load("lua/Factions/Factions_Upgrade.lua")
+Script.Load("lua/Factions/Factions_AlienClassUpgrade.lua")
+Script.Load("lua/Factions/Factions_AlienUpgrade.lua")
 Script.Load("lua/Factions/Factions_UnlockUpgrade.lua")
 Script.Load("lua/Factions/Factions_WeaponUpgrade.lua")
 Script.Load("lua/Factions/Factions_TimedUpgrade.lua")
@@ -58,6 +60,8 @@ local function BuildAllUpgrades()
         
         // save all upgrades in a table
         kAllFactionsUpgrades = {}
+        RegisterNewUpgrades(Script.GetDerivedClasses("AlienClassUpgrade"))
+        RegisterNewUpgrades(Script.GetDerivedClasses("FactionsAlienUpgrade"))
 		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsUpgrade"))
 		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsWeaponUpgrade"))
 		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsUnlockUpgrade"))

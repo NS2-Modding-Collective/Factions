@@ -15,7 +15,7 @@ Script.Load("lua/Factions/Factions_Upgrade.lua")
 							
 class 'AlienClassUpgrade' (FactionsUpgrade)
 
-AlienClassUpgrade.upgradeType 		= kFactionsUpgradeTypes.Class        	// the type of the upgrade
+AlienClassUpgrade.upgradeType 		= kFactionsUpgradeTypes.Lifeform        	// the type of the upgrade
 AlienClassUpgrade.triggerType 		= kFactionsTriggerTypes.NoTrigger   	// how the upgrade is gonna be triggered
 AlienClassUpgrade.levels 			= 1                                    	// if the upgrade has more than one lvl, like weapon or armor ups. Default is 1.
 AlienClassUpgrade.permanent			= true									// Controls whether you get the upgrade back when you respawn
