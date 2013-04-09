@@ -86,7 +86,8 @@ function UpgradeMixin:GetIsAllowedToBuy(upgradeId)
 	local upgrade = self:GetUpgradeById(upgradeId)
 	if (not upgrade:GetIsAtMaxLevel()) 
 		and self:GetResources() >= upgrade:GetCostForNextLevel()
-		and self:GetFactionsClass():GetIsUpgradeAllowed(upgrade)
+		and (not self:GetFactionsClass()
+			 or (self:GetFactionsClass() and self:GetFactionsClass():GetIsUpgradeAllowed(upgrade)))
 		and self:GetHasPrerequisites(upgrade) then
 		return true
 	else
@@ -124,7 +125,7 @@ end
 function UpgradeMixin:RefundAllUpgrades()
 	for index, upgrade in ipairs(self:GetActiveUpgrades()) do
 		self:AddResources(upgrade:GetCompleteRefundAmount())
-		upgrade:SetCurrentLevel(0)
+		upgrade:SetLevel(0)
 	end
 	
 	if Server then

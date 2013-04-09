@@ -45,8 +45,8 @@ kShowAsClass["JetpackMarine"] = { GUIJetpackFuel = true }
 kShowAsClass["Exo"] = { GUIJetpackFuel = true, ["Hud/Marine/GUIMarineHUD"] = true, ["Hud/Marine/GUIExoHUD"] = true, GUIProgressBar = true, GUIRequestMenu = true, GUIWaypoints = true, ["Factions/Hud/Factions_GUIExperienceBar"] = true }
 kShowAsClass["MarineSpectator"] = { GUIRequestMenu = true, ["Factions/Hud/Factions_GUIExperienceBar"] = true }
 kShowAsClass["Alien"] = { GUIObjectiveDisplay = true, GUIProgressBar = true, GUIRequestMenu = true, GUIWaypoints = true, GUIAlienHUD = true,
-                          GUIEggDisplay = true, GUIRegenerationFeedback = true }
-kShowAsClass["AlienSpectator"] = { GUIRequestMenu = true }
+                          GUIEggDisplay = true, GUIRegenerationFeedback = true, ["Factions/Hud/Factions_GUIExperienceBar"] = true }
+kShowAsClass["AlienSpectator"] = { GUIRequestMenu = true, ["Factions/Hud/Factions_GUIExperienceBar"] = true }
 kShowAsClass["Commander"] = { GUIOrders = true, GUIWaypoints = true }
 kShowAsClass["MarineCommander"] = { GUISensorBlips = true, GUIDistressBeacon = true }
 kShowAsClass["AlienCommander"] = { GUIEggDisplay = true, GUICommanderPheromoneDisplay = true }

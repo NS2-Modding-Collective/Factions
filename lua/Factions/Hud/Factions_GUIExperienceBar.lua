@@ -13,8 +13,10 @@ Factions_GUIExperienceBar.kMarineBarTextureName = "ui/Factions/xpbar_marine.png"
 Factions_GUIExperienceBar.kMarineBackgroundTextureName = "ui/Factions/xpbarbg_marine.png"
 Factions_GUIExperienceBar.kMarine2BarTextureName = "ui/Factions/xpbar_marine.png"
 Factions_GUIExperienceBar.kMarine2BackgroundTextureName = "ui/Factions/xpbarbg_marine.png"
+Factions_GUIExperienceBar.kAlienBarTextureName = "ui/combat_xpbar_alien.png"
+Factions_GUIExperienceBar.kAlienBackgroundTextureName = "ui/combat_xpbarbg_alien.png"
 
-Factions_GUIExperienceBar.kTextFontName = "MicrogrammaDBolExt"
+Factions_GUIExperienceBar.kTextFontName = "fonts/AgencyFB_small.fnt"
 
 Factions_GUIExperienceBar.kExperienceBackgroundWidth = 450
 Factions_GUIExperienceBar.kExperienceBackgroundHeight = 30
@@ -37,21 +39,32 @@ Factions_GUIExperienceBar.kMarineBarBackgroundTextureX1 = 12
 Factions_GUIExperienceBar.kMarineBarBackgroundTextureX2 = 500
 Factions_GUIExperienceBar.kMarineBarBackgroundTextureY1 = 0
 Factions_GUIExperienceBar.kMarineBarBackgroundTextureY2 = 31
-Factions_GUIExperienceBar.kMarine2BarTextureX1 = 13
-Factions_GUIExperienceBar.kMarine2BarTextureX2 = 498
+Factions_GUIExperienceBar.kMarine2BarTextureX1 = 12
+Factions_GUIExperienceBar.kMarine2BarTextureX2 = 500
 Factions_GUIExperienceBar.kMarine2BarTextureY1 = 0
 Factions_GUIExperienceBar.kMarine2BarTextureY2 = 31
-Factions_GUIExperienceBar.kMarine2BarBackgroundTextureX1 = 13
-Factions_GUIExperienceBar.kMarine2BarBackgroundTextureX2 = 498
+Factions_GUIExperienceBar.kMarine2BarBackgroundTextureX1 = 12
+Factions_GUIExperienceBar.kMarine2BarBackgroundTextureX2 = 500
 Factions_GUIExperienceBar.kMarine2BarBackgroundTextureY1 = 0
 Factions_GUIExperienceBar.kMarine2BarBackgroundTextureY2 = 31
+Factions_GUIExperienceBar.kAlienBarTextureX1 = 13
+Factions_GUIExperienceBar.kAlienBarTextureX2 = 498
+Factions_GUIExperienceBar.kAlienBarTextureY1 = 0
+Factions_GUIExperienceBar.kAlienBarTextureY2 = 31
+Factions_GUIExperienceBar.kAlienBarBackgroundTextureX1 = 13
+Factions_GUIExperienceBar.kAlienBarBackgroundTextureX2 = 498
+Factions_GUIExperienceBar.kAlienBarBackgroundTextureY1 = 0
+Factions_GUIExperienceBar.kAlienBarBackgroundTextureY2 = 31
 
 Factions_GUIExperienceBar.kMarineBackgroundGUIColor = Color(1.0, 1.0, 1.0, 0.2)
 Factions_GUIExperienceBar.kMarineGUIColor = Color(1.0, 1.0, 1.0, 0.9)
 Factions_GUIExperienceBar.kMarine2BackgroundGUIColor = Color(1.0, 1.0, 1.0, 0.4)
 Factions_GUIExperienceBar.kMarine2GUIColor = Color(1.0, 1.0, 1.0, 0.9)
+Factions_GUIExperienceBar.kAlienBackgroundGUIColor = Color(1.0, 1.0, 1.0, 0.4)
+Factions_GUIExperienceBar.kAlienGUIColor = Color(1.0, 1.0, 1.0, 0.9)
 Factions_GUIExperienceBar.kMarineTextColor = Color(1.0, 1.0, 1.0, 1)
 Factions_GUIExperienceBar.kMarine2TextColor = Color(0.9, 0.7, 0.7, 1)
+Factions_GUIExperienceBar.kAlienTextColor = Color(0.9, 0.7, 0.7, 1)
 Factions_GUIExperienceBar.kExperienceTextFontSize = 15
 Factions_GUIExperienceBar.kExperienceTextOffset = Vector(0, -10, 0)
 Factions_GUIExperienceBar.kNormalAlpha = 0.9
@@ -70,11 +83,12 @@ local function GetTeamType()
 	
 	if not player:isa("ReadyRoomPlayer") then	
 		local teamnumber = player:GetTeamNumber()
-		if teamnumber == kTeam1Index then
+		local teamType = GetGamerulesInfo():GetTeamType(teamnumber)
+		if teamType == kMarineTeamType then
 			return "Marines"
-		elseif teamnumber == kTeam2Index then
-			return "Marines"
-		elseif teamnumber == kNeutralTeamType then 
+		elseif teamType == kAlienTeamType then
+			return "Aliens"
+		elseif teamType == kNeutralTeamType then 
 			return "Spectator"
 		else
 			return "Unknown"
@@ -155,6 +169,23 @@ function Factions_GUIExperienceBar:Update(deltaTime)
 		    self.experienceBar:SetTexturePixelCoordinates(Factions_GUIExperienceBar.kMarineBarTextureX1, Factions_GUIExperienceBar.kMarineBarTextureY1, Factions_GUIExperienceBar.kMarineBarTextureX2, Factions_GUIExperienceBar.kMarineBarTextureY2)
 			self.experienceBar:SetColor(Factions_GUIExperienceBar.kMarineGUIColor)
 			self.experienceText:SetColor(Factions_GUIExperienceBar.kMarineTextColor)
+			self.experienceAlpha = 1.0
+			self.showExperience = true
+		elseif (self.playerTeam == "Aliens") then
+			self.experienceBarBackground:SetIsVisible(true)
+			self.experienceBar:SetIsVisible(true)
+			self.experienceText:SetIsVisible(true)
+			self.experienceData.barPixelCoordsX1 = Factions_GUIExperienceBar.kAlienBarTextureX1
+			self.experienceData.barPixelCoordsX2 = Factions_GUIExperienceBar.kAlienBarTextureX2
+			self.experienceData.barPixelCoordsY1 = Factions_GUIExperienceBar.kAlienBarTextureY1
+			self.experienceData.barPixelCoordsY2 = Factions_GUIExperienceBar.kAlienBarTextureY2
+			self.experienceBarBackground:SetTexture(Factions_GUIExperienceBar.kAlienBackgroundTextureName)
+			self.experienceBarBackground:SetTexturePixelCoordinates(Factions_GUIExperienceBar.kAlienBarBackgroundTextureX1, Factions_GUIExperienceBar.kAlienBarBackgroundTextureY1, Factions_GUIExperienceBar.kAlienBarBackgroundTextureX2, Factions_GUIExperienceBar.kAlienBarBackgroundTextureY2)
+			self.experienceBarBackground:SetColor(Factions_GUIExperienceBar.kAlienBackgroundGUIColor)
+			self.experienceBar:SetTexture(Factions_GUIExperienceBar.kAlienBarTextureName)
+			self.experienceBar:SetTexturePixelCoordinates(Factions_GUIExperienceBar.kAlienBarTextureX1, Factions_GUIExperienceBar.kAlienBarTextureY1, Factions_GUIExperienceBar.kAlienBarTextureX2, Factions_GUIExperienceBar.kAlienBarTextureY2)
+			self.experienceBar:SetColor(Factions_GUIExperienceBar.kAlienGUIColor)	
+			self.experienceText:SetColor(Factions_GUIExperienceBar.kAlienTextColor)
 			self.experienceAlpha = 1.0
 			self.showExperience = true
 		else

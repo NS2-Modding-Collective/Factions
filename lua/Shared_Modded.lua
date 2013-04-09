@@ -35,6 +35,13 @@ Script.Load("lua/Factions/Factions_Marine.lua")
 Script.Load("lua/Factions/Factions_MarineSpectator.lua")
 Script.Load("lua/Factions/Factions_JetpackMarine.lua")
 
+// Alien Classes
+Script.Load("lua/Factions/Factions_Skulk.lua")
+Script.Load("lua/Factions/Factions_Gorge.lua")
+Script.Load("lua/Factions/Factions_Lerk.lua")
+Script.Load("lua/Factions/Factions_Fade.lua")
+Script.Load("lua/Factions/Factions_Onos.lua")
+
 // Buildings
 Script.Load("lua/Factions/Factions_Armory.lua")
 Script.Load("lua/Factions/Factions_InfantryPortal.lua")

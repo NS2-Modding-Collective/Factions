@@ -69,15 +69,30 @@ if Server then
 
     end
 
-    function OnCommandGiveUpgrade(client, upgradeName)
+    function OnCommandBuy(client, upgradeName)
 
         local player = client:GetControllingPlayer()
-        if player and Shared.GetCheatsEnabled() and upgradeName then
+        if player and upgradeName then
             if HasMixin(player, "FactionsUpgrade") then
+				local cheats = Shared.GetCheatsEnabled()
                 local upgrade = player:GetUpgradeByName(upgradeName)
-                // cause it's cheats 1 you just get the upgrade without paying
-                player:BuyUpgrade(upgrade:GetId(), true)
+				if upgrade then
+					// if it's cheats 1 you just get the upgrade without paying
+					player:BuyUpgrade(upgrade:GetId(), cheats)
+					player:SendDirectMessage("You have bought a " .. upgrade:GetUpgradeTitle() .. " upgrade.")
+				else
+					player:SendDirectMessage("Cannot find upgrade " .. upgradeName .. ".")
+				end
             end
+        end
+        
+    end
+	
+	 function OnCommandRefundAllUpgrades(client)
+
+        local player = client:GetControllingPlayer()
+        if player and HasMixin(player, "FactionsUpgrade") then
+            player:RefundAllUpgrades()
         end
         
     end
@@ -100,7 +115,7 @@ if Server then
 	
 	end
 	
-	function OnCommandForceGiveUpgrade(client, playerName, newUpgrade)
+	function OnCommandForceBuy(client, playerName, upgradeName)
 	
 		if Shared.GetCheatsEnabled() then
 		
@@ -110,16 +125,17 @@ if Server then
 				if HasMixin(found, "FactionsUpgrade") then
 				
 					// If a class is specified then change the class.
-					if newUpgrade then
-				        if found and Shared.GetCheatsEnabled() and newUpgrade then
+					if upgradeName then
+				        if found and upgradeName then
 							if HasMixin(found, "FactionsUpgrade") then
-								local upgrade = found:GetUpgradeByName(newUpgrade)
+								local cheats = Shared.GetCheatsEnabled()
+								local upgrade = found:GetUpgradeByName(upgradeName)
 								if upgrade then
-									// cause it's cheats 1 you just get the upgrade without paying
-									found:BuyUpgrade(upgrade:GetId(), true)
+									// if it's cheats 1 you just get the upgrade without paying
+									found:BuyUpgrade(upgrade:GetId(), cheats)
 									SendGlobalChatMessage(found:GetName() .. " has been given a " .. upgrade:GetUpgradeTitle() .. " upgrade.")
 								else
-									SendGlobalChatMessage("Cannot find upgrade " .. newUpgrade .. " to give to " .. found:GetName())
+									SendGlobalChatMessage("Cannot find upgrade " .. upgradeName .. " to give to " .. found:GetName())
 								end
 							end
 						end
@@ -204,10 +220,11 @@ if Server then
 	Event.Hook("Console_assault", OnCommandAssault) 
 	Event.Hook("Console_scout", OnCommandScout) 
 	Event.Hook("Console_support", OnCommandSupport) 
-    Event.Hook("Console_giveupgrade", OnCommandGiveUpgrade) 
+    Event.Hook("Console_buy", OnCommandBuy) 
+	Event.Hook("Console_refundall", OnCommandRefundAllUpgrades) 
 	
 	Event.Hook("Console_debugupgrades", OnCommandDebugUpgrades)
 	Event.Hook("Console_forceclass", OnCommandForceClass) 
 	Event.Hook("Console_forcegivexp", OnCommandGiveXp) 
-	Event.Hook("Console_forcegiveupgrade", OnCommandForceGiveUpgrade) 
+	Event.Hook("Console_forcebuy", OnCommandForceBuy) 
 end
