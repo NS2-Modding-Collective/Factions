@@ -10,7 +10,7 @@
 class 'MagnoBootsUpgrade' (FactionsUpgrade)
 
 // Define these statically so we can easily access them without instantiating too.
-MagnoBootsUpgrade.upgradeType = kFactionsUpgradeTypes.Ability       					// The type of the upgrade
+MagnoBootsUpgrade.upgradeType = kFactionsUpgradeTypes.Class		       					// The type of the upgrade
 MagnoBootsUpgrade.cost = { 500 }                              							// Cost of the upgrade in xp
 MagnoBootsUpgrade.levels = 1															// How many levels are there to this upgrade
 MagnoBootsUpgrade.upgradeName = "magnoboots"                     						// Text code of the upgrade if using it via console

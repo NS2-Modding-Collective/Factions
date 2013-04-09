@@ -10,13 +10,14 @@
 class 'JetpackUpgrade' (FactionsUpgrade)
 
 // Define these statically so we can easily access them without instantiating too.
-JetpackUpgrade.upgradeType = kFactionsUpgradeTypes.Ability       					// The type of the upgrade
+JetpackUpgrade.upgradeType = kFactionsUpgradeTypes.Class	       					// The type of the upgrade
 JetpackUpgrade.cost = { 800 }                              							// Cost of the upgrade in xp
 JetpackUpgrade.levels = 1															// How many levels are there to this upgrade
 JetpackUpgrade.upgradeName = "jetpack"                     							// Text code of the upgrade if using it via console
 JetpackUpgrade.upgradeTitle = "Jetpack"               								// Title of the upgrade, e.g. Submachine Gun
 JetpackUpgrade.upgradeDesc = "Allows you to fly like an eagle"						// Description of the upgrade
 JetpackUpgrade.upgradeTechId = kTechId.Jetpack										// TechId of the upgrade, default is kTechId.Move cause its the first entry
+JetpackUpgrade.teamType = kFactionsUpgradeTeamType.MarineTeam						// Team Type
 
 function JetpackUpgrade:Initialize()
 
@@ -29,6 +30,7 @@ function JetpackUpgrade:Initialize()
 	self.upgradeTitle = JetpackUpgrade.upgradeTitle
 	self.upgradeDesc = JetpackUpgrade.upgradeDesc
 	self.upgradeTechId = JetpackUpgrade.upgradeTechId
+	self.teamType  = JetpackUpgrade.teamType
 	
 end
 
