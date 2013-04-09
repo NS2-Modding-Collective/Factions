@@ -26,14 +26,14 @@ function FactionsAlienUpgrade:Initialize()
 	FactionsUpgrade.Initialize(self)
 
 	// This is a base class so never show it in the menu.
-	if (self:GetClassName() == "AlienClassUpgrade") then
+	if (self:GetClassName() == "FactionsAlienUpgrade") then
 		self.hideUpgrade = true
 	end
-	self.upgradeType = AlienClassUpgrade.upgradeType
-	self.triggerType = AlienClassUpgrade.triggerType
-	self.levels = AlienClassUpgrade.levels
-	self.permanent = AlienClassUpgrade.permanent
-	self.teamType = AlienClassUpgrade.teamType
+	self.upgradeType = FactionsAlienUpgrade.upgradeType
+	self.triggerType = FactionsAlienUpgrade.triggerType
+	self.levels = FactionsAlienUpgrade.levels
+	self.permanent = FactionsAlienUpgrade.permanent
+	self.teamType = FactionsAlienUpgrade.teamType
 	
 end
 
