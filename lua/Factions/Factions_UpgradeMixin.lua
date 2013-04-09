@@ -122,7 +122,7 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
 end
 
 function UpgradeMixin:RefundAllUpgrades()
-	for index, upgrade in ipairs(self:GetActiveUpgrades())
+	for index, upgrade in ipairs(self:GetActiveUpgrades()) do
 		self:AddResources(upgrade:GetCompleteRefundAmount())
 		upgrade:SetCurrentLevel(0)
 	end
@@ -169,7 +169,7 @@ function UpgradeMixin:GetUpgradeByName(upgradeName)
 end
 
 function UpgradeMixin:GetAvailableUpgradesByType(upgradeType)
-    return self.UpgradeList:GetAvailableUpgradesByType(self:GetFactionsClass(), upgradeType)
+    return self.UpgradeList:GetAvailableUpgradesByType(self:GetFactionsClass(), self:GetTeamNumber(), upgradeType)
 end
 
 function UpgradeMixin:GetAllUpgrades()
@@ -177,7 +177,7 @@ function UpgradeMixin:GetAllUpgrades()
 end
 
 function UpgradeMixin:GetAvailableUpgrades()
-	return self.UpgradeList:GetAvailableUpgrades(self:GetFactionsClass())
+	return self.UpgradeList:GetAvailableUpgrades(self:GetFactionsClass(), self:GetTeamNumber())
 end
 
 function UpgradeMixin:GetActiveUpgrades()

@@ -116,7 +116,7 @@ function FactionsUpgrade:GetCostForNextLevel()
 end
 
 function FactionsUpgrade:GetRefundAmount()
-	local currentLevel == self:GetCurrentLevel()
+	local currentLevel = self:GetCurrentLevel()
 	if currentLevel == 0 then
 		return 0
 	elseif currentLevel == 1 then
@@ -128,7 +128,7 @@ function FactionsUpgrade:GetRefundAmount()
 end
 
 function FactionsUpgrade:GetCompleteRefundAmount()
-	local currentLevel == self:GetCurrentLevel()
+	local currentLevel = self:GetCurrentLevel()
 	if currentLevel == 0 then
 		return 0
 	else
@@ -191,12 +191,13 @@ function FactionsUpgrade:GetTeamType()
 	return self.teamType
 end
 
-function FactionsUpgrade:GetIsAllowedForThisTeam(team)
+function FactionsUpgrade:GetIsAllowedForTeam(teamNumber)
 
-	if  team ~= nil and
-		((self.teamType == kFactionsUpgradeTeamType.MarineTeam and team:isa("MarineTeam"))
+	local playerTeamType = GetGamerulesInfo():GetTeamType(teamNumber)
+	
+	if  ((self.teamType == kFactionsUpgradeTeamType.MarineTeam and playerTeamType == kMarineTeamType)
 		or 
-		(self.teamType == kFactionsUpgradeTeamType.AlienTeam and team:isa("AlienTeam"))
+		(self.teamType == kFactionsUpgradeTeamType.AlienTeam and playerTeamType == kAlienTeamType)
 		or
 		(self.teamType == kFactionsUpgradeTeamType.AnyTeam)) then
 		return true

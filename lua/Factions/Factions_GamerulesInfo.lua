@@ -76,7 +76,7 @@ if Server then
 	end
 
 	function FactionsGamerulesInfo:SetIsFactionsMovement(value)
-		self.isClassBased = value
+		self.isFactionsMovemement = value
 	end
 
 	function FactionsGamerulesInfo:SetIsMarinevsMarine(value)
@@ -117,7 +117,7 @@ function FactionsGamerulesInfo:GetIsClassBased()
 end
 
 function FactionsGamerulesInfo:GetIsFactionsMovement()
-	return self.isClassBased
+	return self.isFactionsMovemement
 end
 
 function FactionsGamerulesInfo:GetIsInSuddenDeath()
@@ -126,6 +126,21 @@ end
 
 function FactionsGamerulesInfo:GetUsesMarineColours()
 	return self.usesMarineColours
+end
+
+// TODO: Implement a cache here.
+function FactionsGamerulesInfo:GetTeamType(teamNumber)
+	if teamNumber == kTeam1Index then
+		return kMarineTeamType
+	elseif teamNumber == kTeam2Index then
+		if self.isMarinevsMarine then
+			return kMarineTeamType
+		else
+			return kAlienTeamType
+		end
+	else
+		return kNeutralTeamType
+	end
 end
 	
 Shared.LinkClassToMap("FactionsGamerulesInfo", FactionsGamerulesInfo.kMapName, networkVars)

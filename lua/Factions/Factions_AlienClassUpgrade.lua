@@ -41,8 +41,6 @@ function AlienClassUpgrade:GetClassName()
 	return "AlienClassUpgrade"
 end
 
-function
-
 // Give the weapon to the player when they buy the upgrade.
 function AlienClassUpgrade:OnAdd(player)
 

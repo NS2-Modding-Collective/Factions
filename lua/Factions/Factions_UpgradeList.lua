@@ -115,11 +115,11 @@ function UpgradeList:GetUpgradeByName(upgradeName)
     end
 end
 
-function UpgradeList:GetAvailableUpgradesByType(playerClass, upgradeType)
+function UpgradeList:GetAvailableUpgradesByType(playerClass, playerTeamNumber, upgradeType)
 	local upgradeClassList = {}
 
     if upgradeType then
-        for upgradeId, upgrade in pairs(self:GetAvailableUpgrades(playerClass)) do
+        for upgradeId, upgrade in pairs(self:GetAvailableUpgrades(playerClass, playerTeamNumber)) do
             if upgradeType == kFactionsUpgradeTypes[upgrade:GetUpgradeType()] then
                 table.insert(upgradeClassList, upgrade)
             end
@@ -174,23 +174,15 @@ function UpgradeList:GetHasPrerequisites(upgrade)
 	return true
 end
 
-function UpgradeList:GetAvailableUpgrades(playerClass)
-	local availableUpgrades = {}
-	for upgradeId, upgrade in pairs(self:GetAvailableUpgradesByClass(playerClass)) do
-		if self:GetHasPrerequisites(upgrade) then
-			table.insert(availableUpgrades, upgrade)
-		end
-	end
-	
-	// TODO: Order these correctly by priority before returning to the user
-	return availableUpgrades
-end
-
-// TODO: Implement a cache here.
-function UpgradeList:GetAvailableUpgradesByClass(playerClass)
+function UpgradeList:GetAvailableUpgrades(playerClass, playerTeamNumber)
 	local availableUpgrades = {}
 	for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
-		if playerClass:GetIsUpgradeAllowed(upgrade) then
+		if  (playerClass and playerClass:GetIsUpgradeAllowed(upgrade)
+		    or
+			(playerClass == nil))
+			and self:GetHasPrerequisites(upgrade)
+			and upgrade:GetIsAllowedForTeam(playerTeamNumber) then
+			
 			table.insert(availableUpgrades, upgrade)
 		end
 	end
