@@ -15,11 +15,6 @@ GenericGamerules.kMapName = "factions_generic_gamerules"
 
 local networkVars =
 {
-	isMarinevsMarine = "boolean",
-	isCompetitive = "boolean",
-	isCombatRules = "boolean",
-	isClassBased = "boolean",
-	isFactionsMovemement = "boolean",
 }
 
 if Server then
@@ -29,38 +24,28 @@ if Server then
 	
         originalNS2GamerulesOnCreate(self)
 		
+		// Normalise any missing boolean values here.
+		if self.isMarinevsMarine == nil then self.isMarinevsMarine = false end
+		if self.isCompetitive == nil then self.isCompetitive = false end
+		if self.isCombatRules == nil then self.isCombatRules = false end
+		if self.isClassBased == nil then self.isClassBased = false end
+		if self.isFactionsMovemement == nil then self.isFactionsMovemement = false end
+		if self.usesMarineColours == nil then self.usesMarineColours = false end
+		
 		local gameInfo = Server.CreateEntity(FactionsGamerulesInfo.kMapName)
 		gameInfo:SetIsMarinevsMarine(self.isMarinevsMarine)
 		gameInfo:SetIsCompetitive(self.isCompetitive)
 		gameInfo:SetIsCombatRules(self.isCombatRules)
 		gameInfo:SetIsClassBased(self.isClassBased)
 		gameInfo:SetIsFactionsMovement(self.isFactionsMovemement)
+		gameInfo:SetUsesMarineColours(self.usesMarineColours)
+		gameInfo:SetGameType(self.factionsGameType)
 		gameInfo:SetIsInSuddenDeath(false)
 		
 		Shared.Message("Server started for Factions v" .. kFactionsVersion .. "!")
 		Shared.Message("Current Game Mode: " .. self:GetGameModeName())
         
     end
-	
-	function GenericGamerules:GetIsMarinevsMarine()
-		return self.isMarinevsMarine
-	end
-	
-	function GenericGamerules:GetIsCompetitive()
-		return self.isCompetitive
-	end
-	
-	function GenericGamerules:GetIsCombatRules()
-		return self.isCombatRules
-	end
-	
-	function GenericGamerules:GetIsClassBased()
-		return self.isClassBased
-	end
-	
-	function GenericGamerules:GetIsFactionsMovement()
-		return self.isClassBased
-	end
 	
 	/**
      * Starts a new game by resetting the map and all of the players. Keep everyone on current teams (readyroom, playing teams, etc.) but 

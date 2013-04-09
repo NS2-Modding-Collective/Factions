@@ -32,6 +32,8 @@ if Server then
 		self.isClassBased = true
 		self.isCombatRules = true
 		self.isFactionsMovement = true
+		self.usesMarineColours = true
+		self.factionsGameType = kFactionsGameType.MarineDeathmatch
 		
 		// Marines vs. Marines
 		kTeam1Type = kMarineTeamType

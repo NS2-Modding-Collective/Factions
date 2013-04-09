@@ -20,9 +20,11 @@ function CommandStation:OnCreate()
 
 	overrideOnCreate(self)
 
-	InitMixin(self, TeamColoursMixin)
-	
-	assert(HasMixin(self, "TeamColours"))
+	// Team Colours
+	if GetGamerulesInfo():GetUsesMarineColours() then
+		InitMixin(self, TeamColoursMixin)
+		assert(HasMixin(self, "TeamColours"))
+	end
 end
 
 Class_Reload("CommandStation", networkVars)

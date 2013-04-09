@@ -154,11 +154,32 @@ function FactionsUpgrade:GetDisallowedGameModes()
 end
 
 function FactionsUpgrade:GetIsAllowedForThisGameMode()
-	for index, gamemode in ipairs(
-		 GetGamerulesInfo():GetGameType() 
+
+	for index, gamemode in ipairs(self.disallowedGameModes) do
+		if GetGamerulesInfo():GetGameType() == gamemode then
+			return false
+		end
+	end
+	
+	return true
+end
 
 function FactionsUpgrade:GetTeamType()
 	return self.teamType
+end
+
+function FactionsUpgrade:GetIsAllowedForThisTeam(team)
+
+	if  team ~= nil and
+		((self.teamType == kFactionsUpgradeTeamType.MarineTeam and team:isa("MarineTeam"))
+		or 
+		(self.teamType == kFactionsUpgradeTeamType.AlienTeam and team:isa("AlienTeam"))
+		or
+		(self.teamType == kFactionsUpgradeTeamType.AnyTeam)) then
+		return true
+	else
+		return false
+	end
 end
 
 if kFactionsUpgradeIdCache == nil then

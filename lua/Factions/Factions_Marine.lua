@@ -107,7 +107,6 @@ function Marine:OnCreate()
 	InitMixin(self, HealthUpgradeMixin)
 	InitMixin(self, ArmorUpgradeMixin)
 	InitMixin(self, CloakableMixin)
-	InitMixin(self, TeamColoursMixin)
 	InitMixin(self, IronSightViewerMixin)
 	InitMixin(self, SpawnProtectMixin)
 	
@@ -119,7 +118,6 @@ function Marine:OnCreate()
 	assert(HasMixin(self, "HealthUpgrade"))
 	assert(HasMixin(self, "ArmorUpgrade"))
 	assert(HasMixin(self, "Cloakable"))
-	assert(HasMixin(self, "TeamColours"))
 	assert(HasMixin(self, "IronSightViewer"))
 	assert(HasMixin(self, "SpawnProtect"))
 	assert(HasMixin(self, "Xp"))
@@ -134,6 +132,12 @@ function Marine:OnCreate()
 	// Factions movement
 	if GetGamerulesInfo():GetIsFactionsMovement() then
 		self:SetupFactionsMovement()
+	end
+	
+	// Team Colours
+	if GetGamerulesInfo():GetUsesMarineColours() then
+		InitMixin(self, TeamColoursMixin)
+		assert(HasMixin(self, "TeamColours"))
 	end
 	
 end

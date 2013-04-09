@@ -49,30 +49,20 @@ local networkVars =
 	isClassBased = "boolean",
 	isFactionsMovemement = "boolean",
 	isInSuddenDeath = "boolean",
+	usesMarineColours = "boolean",
 }
 
 function FactionsGamerulesInfo:OnCreate()
 	// Set global gamerules info whenever gamerules info is built
 	SetGamerulesInfo(self)
 	self.isMapEntity = true
-	Print("Created! GamerulesInfo!")
-end
-
-function FactionsGamerulesInfo:OnDestroy()
-	Print("Destroyed! GamerulesInfo!")
-	if 1 == nil then
-	end
-end
-
-function FactionsGamerulesInfo:GetGameType()
-	if self.gameType == nil then
-		return kFactionsGameType.CombatDeathmatch
-	else
-		return self.gameType
-	end
 end
 
 if Server then
+	function FactionsGamerulesInfo:SetGameType(value)
+		self.gameType = value
+	end
+
 	function FactionsGamerulesInfo:SetIsCompetitive(value)
 		self.isCompetitive = value
 	end
@@ -95,6 +85,18 @@ if Server then
 	
 	function FactionsGamerulesInfo:SetIsInSuddenDeath(value)
 		self.isInSuddenDeath = value
+	end
+	
+	function FactionsGamerulesInfo:SetUsesMarineColours(value)
+		self.usesMarineColours = value
+	end
+end
+
+function FactionsGamerulesInfo:GetGameType()
+	if self.gameType == nil then
+		return kFactionsGameType.CombatDeathmatch
+	else
+		return self.gameType
 	end
 end
 
@@ -120,6 +122,10 @@ end
 
 function FactionsGamerulesInfo:GetIsInSuddenDeath()
 	return self.isInSuddenDeath
+end
+
+function FactionsGamerulesInfo:GetUsesMarineColours()
+	return self.usesMarineColours
 end
 	
 Shared.LinkClassToMap("FactionsGamerulesInfo", FactionsGamerulesInfo.kMapName, networkVars)

@@ -33,6 +33,8 @@ if Server then
 		self.isClassBased = true
 		self.isCombatRules = true
 		self.isFactionsMovement = true
+		self.usesMarineColours = true
+		self.factionsGameType = kFactionsGameType.Horde
 	
 		GenericGamerules.OnCreate(self)
 		
