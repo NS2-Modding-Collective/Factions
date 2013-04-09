@@ -50,7 +50,7 @@ local function BuildAllUpgrades()
         // load all upgrade files
         local upgradeFiles = { }
         local upgradeDirectory = "lua/Factions/Upgrades/"
-        Shared.GetMatchingFileNames( upgradeDirectory .. "*.lua", false, upgradeFiles)
+        Shared.GetMatchingFileNames( upgradeDirectory .. "*.lua", true, upgradeFiles)
 
         for _, upgradeFile in pairs(upgradeFiles) do
             Script.Load(upgradeFile)      
