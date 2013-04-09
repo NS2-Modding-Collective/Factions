@@ -14,7 +14,7 @@ class 'FactionsUpgrade'
 
 kFactionsUpgradeTypes = enum({'Ability', 'Attribute', 'Tech', 'Weapon'})
 kFactionsTriggerTypes = enum({'NoTrigger', 'ByTime', 'ByKey'})
-kFactionsUpgradeTeamType = enum({'MarineTeam', 'AlienTeam', 'PlayingTeam'})
+kFactionsUpgradeTeamType = enum({'MarineTeam', 'AlienTeam', 'AnyTeam'})
 
 FactionsUpgrade.upgradeType = kFactionsUpgradeTypes.Tech       	// The type of the upgrade
 FactionsUpgrade.triggerType = kFactionsTriggerTypes.NoTrigger  	// How the upgrade is gonna be triggered
@@ -30,7 +30,7 @@ FactionsUpgrade.mutuallyExclusive = { }                        	// Upgrades that
 FactionsUpgrade.requirements = { }                        		// Upgrades you must get before you can get this one.
 FactionsUpgrade.permanent = true								// Controls whether you get the upgrade back when you respawn
 FactionsUpgrade.disallowedGameModes = { }							// Controls which game modes this applies to
-FactionsUpgrade.teamType = { kFactionsUpgradeTeamType.PlayingTeam }	// Controls which team type this applies to
+FactionsUpgrade.teamType = kFactionsUpgradeTeamType.AnyTeam		// Controls which team type this applies to
 
 function FactionsUpgrade:Initialize()
 	// This is a base class so never show it in the menu.
@@ -153,18 +153,12 @@ function FactionsUpgrade:GetDisallowedGameModes()
 	return self.disallowedGameModes
 end
 
+function FactionsUpgrade:GetIsAllowedForThisGameMode()
+	for index, gamemode in ipairs(
+		 GetGamerulesInfo():GetGameType() 
+
 function FactionsUpgrade:GetTeamType()
-	local teamType = "PlayingTeam"
-	
-	if self.teamType == kFactionsUpgradeTeamType.MarineTeam then
-		teamType = "MarineTeam"
-	elseif self.teamType == kFactionsUpgradeTeamType.AlienTeam then
-		teamType = "AlienTeam"
-	else
-		teamType = "PlayingTeam"
-	end
-	
-	return teamType
+	return self.teamType
 end
 
 if kFactionsUpgradeIdCache == nil then
