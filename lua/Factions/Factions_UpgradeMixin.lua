@@ -27,7 +27,6 @@ UpgradeMixin.expectedCallbacks =
 {
 }
 
-
 function UpgradeMixin:__initmixin()
 	self:BuildNewUpgradeList()
 end
