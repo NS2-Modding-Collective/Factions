@@ -16,6 +16,8 @@ kFactionsUpgradeTypes = enum({'Lifeform', 'Attribute', 'Ability', 'Tech', 'Weapo
 kFactionsTriggerTypes = enum({'NoTrigger', 'ByTime', 'ByKey'})
 kFactionsUpgradeTeamType = enum({'MarineTeam', 'AlienTeam', 'AnyTeam'})
 
+kRefundPenalty = 0.2 // 20% is taken away from any refunded amount of xp.
+
 FactionsUpgrade.upgradeType = kFactionsUpgradeTypes.Tech       	// The type of the upgrade
 FactionsUpgrade.triggerType = kFactionsTriggerTypes.NoTrigger  	// How the upgrade is gonna be triggered
 FactionsUpgrade.currentLevel = 0                               	// The default level of the upgrade. This is incremented when we buy the upgrade
@@ -110,6 +112,27 @@ function FactionsUpgrade:GetCostForNextLevel()
 		return 9999
 	else
 		return self:GetCost(self:GetNextLevel())
+	end
+end
+
+function FactionsUpgrade:GetRefundAmount()
+	local currentLevel == self:GetCurrentLevel()
+	if currentLevel == 0 then
+		return 0
+	elseif currentLevel == 1 then
+		return self:GetCost(currentLevel)*kRefundPenalty
+	else
+		local previousLevelCost = self:GetCost(currentLevel - 1)
+		return (self:GetCost(currentLevel)-previousLevelCost)*kRefundPenalty
+	end
+end
+
+function FactionsUpgrade:GetCompleteRefundAmount()
+	local currentLevel == self:GetCurrentLevel()
+	if currentLevel == 0 then
+		return 0
+	else
+		return self:GetCost(currentLevel)*kRefundPenalty
 	end
 end
 

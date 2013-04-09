@@ -102,6 +102,7 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
         local upgradeOk = self:GetIsAllowedToBuy(upgradeId)
 		
         if upgradeOk then     
+        	local upgradeCost = upgrade:GetCostForNextLevel()
 			if upgrade:GetIsPermanent() then
 				upgrade:AddLevel()
 				Server.SendNetworkMessage(self, "UpdateUpgrade",  BuildUpdateUpgradeMessage(upgradeId, upgrade:GetCurrentLevel()), true)
@@ -110,7 +111,7 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
 			upgrade:OnAdd(self)
 			
 			if not freeUpgrade then
-				self:AddResources(-upgrade:GetCostForNextLevel())
+				self:AddResources(-upgradeCost)
             end
         else
             self:SendDirectMessage("Upgrade not available")
@@ -119,6 +120,20 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
         // Send buy message to server
         Client.SendNetworkMessage("BuyUpgrade", BuildBuyUpgradeMessage(upgrade), true)
     end
+end
+
+function UpgradeMixin:RefundAllUpgrades()
+	for index, upgrade in ipairs(self:GetActiveUpgrades())
+		self:AddResources(upgrade:GetCompleteRefundAmount())
+		upgrade:SetCurrentLevel(0)
+	end
+	
+	if Server then
+		// Kill the player if they do this while playing.
+		if self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
+			self:Kill(nil, nil, self:GetOrigin())
+		end
+	end
 end
 
 function UpgradeMixin:SetUpgradeLevel(upgradeId, upgradeLevel)
@@ -164,6 +179,10 @@ end
 
 function UpgradeMixin:GetAvailableUpgrades()
 	return self.UpgradeList:GetAvailableUpgrades(self:GetFactionsClass())
+end
+
+function UpgradeMixin:GetActiveUpgrades()
+	return self.UpgradeList:GetActiveUpgrades()
 end
 
 function UpgradeMixin:spendlvlHints(hint, type)

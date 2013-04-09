@@ -199,6 +199,18 @@ function UpgradeList:GetAvailableUpgradesByClass(playerClass)
 	return availableUpgrades
 end
 
+function UpgradeList:GetActiveUpgrades()
+	local activeUpgrades = {}
+	for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
+		if upgrade:GetCurrentLevel() > 0 then
+			table.insert(activeUpgrades, upgrade)
+		end
+	end
+	
+	// TODO: Order these correctly by priority before returning to the user
+	return activeUpgrades
+end
+
 function UpgradeList:CopyUpgradeDataFrom(cloneList)
 	if cloneList then
 		table.clear(self.UpgradeTable)

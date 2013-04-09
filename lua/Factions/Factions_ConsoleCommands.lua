@@ -50,10 +50,8 @@ if Server then
 		for list, victim in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
 			Shared.Message("Player: " .. victim:GetName())
 			if HasMixin(victim, "FactionsUpgrade") then
-				for index, upgrade in pairs(victim:GetAllUpgrades()) do
-					if upgrade:GetCurrentLevel() > 0 then
-						Shared.Message("Upgrade: " .. upgrade:GetClassName() .. " Level: " .. upgrade:GetCurrentLevel())
-					end
+				for index, upgrade in ipairs(victim:GetActiveUpgrades()) do
+					Shared.Message("Upgrade: " .. upgrade:GetClassName() .. " Level: " .. upgrade:GetCurrentLevel())
 				end
 			end
 		end
