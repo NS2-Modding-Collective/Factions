@@ -71,7 +71,7 @@ kXpList[9] = { Level=9, 		XP=2300, 	MarineName="Field Marshal", 		XpMultiplier=1
 kXpList[10] = { Level=10, 	XP=2800, 	MarineName="General", 				XpMultiplier=1.9}
 kXpList[11] = { Level=11, 	XP=3500, 	MarineName="President", 			XpMultiplier=2.0}
 kXpList[12] = { Level=12, 	XP=4500, 	MarineName="Badass", 				XpMultiplier=2.1}
-kXpList[13] = { Level=13, 	XP=6000, 	MarineName="Rambo", 				XpMultiplier=2.2}
+kXpList[13] = { Level=13, 	XP=8000, 	MarineName="Rambo", 				XpMultiplier=2.2}
 kMaxLvl = table.maxn(kXpList)
 kMaxXp = kXpList[kMaxLvl]["XP"]
 

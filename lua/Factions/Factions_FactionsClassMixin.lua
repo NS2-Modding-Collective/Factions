@@ -222,7 +222,7 @@ function FactionsClassMixin:GetBaseMaxSprintSpeed()
 	if self:GetHasFactionsClass() then
 		return self.factionsClass:GetBaseSprintSpeed()
 	else
-		return Marine.kRunMaxSpeed
+		return _G[self:GetClassName()].kRunMaxSpeed
 	end
 
 end
@@ -232,7 +232,7 @@ function FactionsClassMixin:GetBaseMaxSpeed()
 	if self:GetHasFactionsClass() then
 		return self.factionsClass:GetBaseSpeed()
 	else
-		return Marine.kWalkMaxSpeed
+		return _G[self:GetClassName()].kWalkMaxSpeed
 	end
 
 end
@@ -242,7 +242,7 @@ function FactionsClassMixin:GetBaseHealth()
 	if self:GetHasFactionsClass() then
 		return self.factionsClass:GetBaseHealth()
 	else
-		return Marine.kHealth
+		return self:GetOriginalMaxHealth()
 	end
 
 end
@@ -252,7 +252,7 @@ function FactionsClassMixin:GetBaseArmor()
 	if self:GetHasFactionsClass() then
 		return self.factionsClass:GetBaseArmor()
 	else
-		return Marine.kBaseArmor
+		return self:GetOriginalMaxArmor()
 	end
 
 end

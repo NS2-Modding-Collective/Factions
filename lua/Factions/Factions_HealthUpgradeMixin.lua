@@ -32,12 +32,14 @@ HealthUpgradeMixin.expectedConstants =
 
 HealthUpgradeMixin.networkVars =
 {
-	upgradeHealthLevel = "integer (0 to " .. HealthUpgrade.levels .. ")"
+	upgradeHealthLevel = "integer (0 to " .. HealthUpgrade.levels .. ")",
+	originalMaxHealth = string.format("float (0 to %f by 1)", LiveMixin.kMaxHealth),
 }
 
 function HealthUpgradeMixin:__initmixin()
 
 	self.upgradeHealthLevel = 0
+	self.originalMaxHealth = self:GetMaxHealth()
 	self:UpgradeHealth()
 
 end
@@ -47,6 +49,10 @@ function HealthUpgradeMixin:CopyPlayerDataFrom(player)
 	self.upgradeHealthLevel = player.upgradeHealthLevel
 	self:UpgradeHealth()
 
+end
+
+function HealthUpgradeMixin:GetOriginalMaxHealth()
+	return self.originalMaxHealth
 end
 
 function HealthUpgradeMixin:UpgradeHealth()
