@@ -31,7 +31,7 @@ FactionsUpgrade.hardCapScale = 0                               	// How many peop
 FactionsUpgrade.mutuallyExclusive = { }                        	// Upgrades that can not bought when you got this (like no jp when have exo)
 FactionsUpgrade.requirements = { }                        		// Upgrades you must get before you can get this one.
 FactionsUpgrade.permanent = true								// Controls whether you get the upgrade back when you respawn
-FactionsUpgrade.disallowedGameModes = { }							// Controls which game modes this applies to
+FactionsUpgrade.disallowedGameModes = { }						// Controls which game modes this applies to
 FactionsUpgrade.teamType = kFactionsUpgradeTeamType.AnyTeam		// Controls which team type this applies to
 
 function FactionsUpgrade:Initialize()

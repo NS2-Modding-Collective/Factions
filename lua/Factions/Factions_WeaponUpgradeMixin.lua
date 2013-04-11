@@ -20,7 +20,7 @@ WeaponUpgradeMixin.baseFireRate = 1.0
 WeaponUpgradeMixin.fireRateBoostPerLevel = 0.15
 
 WeaponUpgradeMixin.baseDamage = 1.0
-WeaponUpgradeMixin.damageBoostPerLevel = 0.1
+WeaponUpgradeMixin.damageBoostPerLevel = 0.2
 
 WeaponUpgradeMixin.expectedMixins =
 {
@@ -61,6 +61,10 @@ end
 function WeaponUpgradeMixin:UpdateReloadSpeedLevel(newLevel)
 	
 	self.reloadSpeedLevel = newLevel
+	local weapon = self:GetActiveWeapon()
+	if weapon and HasMixin(weapon, "VariableReloadSpeed") then
+		weapon:SetReloadSpeedLevel(newLevel)
+	end
     
 end
 
@@ -80,6 +84,12 @@ function WeaponUpgradeMixin:UpdateFireRateLevel(newLevel)
     	weapon:UpdateFireRate(self:GetFireRateScalar())
     end
     
+end
+
+function WeaponUpgradeMixin:GetReloadSpeedLevel()
+
+	return self.reloadSpeedLevel
+
 end
 
 function WeaponUpgradeMixin:GetFireRateScalar()

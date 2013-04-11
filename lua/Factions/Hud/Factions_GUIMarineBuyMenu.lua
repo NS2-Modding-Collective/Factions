@@ -28,8 +28,7 @@ Factions_GUIMarineBuyMenu.kArrowTexture = "ui/menu/arrow_horiz.dds"
 Factions_GUIMarineBuyMenu.kFont = "fonts/AgencyFB_small.fnt"
 Factions_GUIMarineBuyMenu.kFont2 = "fonts/AgencyFB_small.fnt"
 
-Factions_GUIMarineBuyMenu.kDescriptionFontName = "MicrogrammaDBolExt"
-Factions_GUIMarineBuyMenu.kDescriptionFontSize = GUIScale(20)
+Factions_GUIMarineBuyMenu.kDescriptionFontName = "fonts/AgencyFB_tiny.fnt"
 
 Factions_GUIMarineBuyMenu.kScanLineHeight = GUIScale(256)
 Factions_GUIMarineBuyMenu.kScanLineAnimDuration = 5
@@ -298,11 +297,10 @@ function Factions_GUIMarineBuyMenu:_InitializeEquipped()
     self.equippedTitle:SetTextAlignmentY(GUIItem.Align_Center)
     self.equippedTitle:SetColor(Factions_GUIMarineBuyMenu.kEquippedColor)
     self.equippedTitle:SetPosition(Vector(0, Factions_GUIMarineBuyMenu.kResourceDisplayHeight / 2, 0))
-    self.equippedTitle:SetText(Combat_ResolveString("EQUIPPED"))
+    self.equippedTitle:SetText(Locale.ResolveString("EQUIPPED"))
     self.equippedBg:AddChild(self.equippedTitle)
     
-    
-        self.equipped = { }
+	self.equipped = { }
     
     local equippedTechIds = self.player:GetUpgrades()
     local selectorPosX = -Factions_GUIMarineBuyMenu.kSelectorSize.x + Factions_GUIMarineBuyMenu.kPadding
@@ -354,7 +352,7 @@ function Factions_GUIMarineBuyMenu:_InitializeItemButtons()
     self.menuHeaderTitle:SetTextAlignmentX(GUIItem.Align_Center)
     self.menuHeaderTitle:SetTextAlignmentY(GUIItem.Align_Center)
     self.menuHeaderTitle:SetColor(Factions_GUIMarineBuyMenu.kTextColor)
-    self.menuHeaderTitle:SetText(Combat_ResolveString("BUY"))
+    self.menuHeaderTitle:SetText(Locale.ResolveString("BUY"))
     self.menuHeader:AddChild(self.menuHeaderTitle)    
     
     self.itemButtons = { }
@@ -591,8 +589,6 @@ function Factions_GUIMarineBuyMenu:_InitializeContent()
     
     self.itemDescription = GetGUIManager():CreateTextItem()
     self.itemDescription:SetFontName(Factions_GUIMarineBuyMenu.kDescriptionFontName)
-    //self.itemDescription:SetFontIsBold(true)
-    self.itemDescription:SetFontSize(Factions_GUIMarineBuyMenu.kDescriptionFontSize)
     self.itemDescription:SetAnchor(GUIItem.Middle, GUIItem.Top)
     self.itemDescription:SetPosition(Vector((-Factions_GUIMarineBuyMenu.kSmallIconSize.x/ 2) - 200, Factions_GUIMarineBuyMenu.kIconTopOffset + (Factions_GUIMarineBuyMenu.kSmallIconSize.y) * (smallIconRows + 1.8) - Factions_GUIMarineBuyMenu.kSmallIconSize.y, 0))
     self.itemDescription:SetTextAlignmentX(GUIItem.Align_Min)
@@ -677,7 +673,7 @@ function Factions_GUIMarineBuyMenu:_InitializeResourceDisplay()
     self.currentDescription:SetTextAlignmentX(GUIItem.Align_Max)
     self.currentDescription:SetTextAlignmentY(GUIItem.Align_Center)
     self.currentDescription:SetColor(Factions_GUIMarineBuyMenu.kTextColor)
-    self.currentDescription:SetText(Combat_ResolveString("CURRENT"))
+    self.currentDescription:SetText(Locale.ResolveString("CURRENT"))
     
     self.resourceDisplayBackground:AddChild(self.currentDescription) 
 

@@ -50,6 +50,7 @@ local networkVars =
 	isFactionsMovemement = "boolean",
 	isInSuddenDeath = "boolean",
 	usesMarineColours = "boolean",
+	usesAlienColours = "boolean",
 }
 
 function FactionsGamerulesInfo:OnCreate()
@@ -90,6 +91,10 @@ if Server then
 	function FactionsGamerulesInfo:SetUsesMarineColours(value)
 		self.usesMarineColours = value
 	end
+	
+	function FactionsGamerulesInfo:SetUsesAlienColours(value)
+		self.usesAlienColours = value
+	end
 end
 
 function FactionsGamerulesInfo:GetGameType()
@@ -126,6 +131,10 @@ end
 
 function FactionsGamerulesInfo:GetUsesMarineColours()
 	return self.usesMarineColours
+end
+
+function FactionsGamerulesInfo:GetUsesAlienColours()
+	return self.usesAlienColours
 end
 
 // TODO: Implement a cache here.

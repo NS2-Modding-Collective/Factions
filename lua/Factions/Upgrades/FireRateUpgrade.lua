@@ -37,7 +37,7 @@ end
 
 function FireRateUpgrade:OnAdd(player)
 	if HasMixin(player, "WeaponUpgrade") then
-		player:UpdateDamageLevel(self:GetCurrentLevel())
+		player:UpdateFireRateLevel(self:GetCurrentLevel())
 		player:SendDirectMessage("Fire Rate upgraded to level " .. self:GetCurrentLevel() .. ".")
 		local fireRateBoost = math.round(self:GetCurrentLevel()*WeaponUpgradeMixin.fireRateBoostPerLevel / WeaponUpgradeMixin.baseFireRate * 100)
 		player:SendDirectMessage("You will do " .. fireRateBoost .. "% more damage.")

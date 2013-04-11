@@ -38,17 +38,25 @@ ArmorUpgradeMixin.networkVars =
 
 function ArmorUpgradeMixin:__initmixin()
 
-	self.upgradeArmorLevel = 0
-	self.originalMaxArmor = self:GetMaxArmor()
-	self:UpgradeArmor()
+	if Server then
+		self.upgradeArmorLevel = 0
+	end
 
 end
 
 function ArmorUpgradeMixin:CopyPlayerDataFrom(player)
 
-	self.upgradeArmorLevel = player.upgradeArmorLevel
-	self:UpgradeArmor()
+	if Server then
+		self.upgradeArmorLevel = player.upgradeArmorLevel
+	end
 
+end
+
+function ArmorUpgradeMixin:OnInitialized()
+	if Server then
+		self.originalMaxArmor = self:GetMaxArmor()
+		self:UpgradeArmor()
+	end
 end
 
 function ArmorUpgradeMixin:GetOriginalMaxArmor()
@@ -57,15 +65,17 @@ end
 
 function ArmorUpgradeMixin:UpgradeArmor()
 	
-	// Calculate the new max armor
-	local oldMaxArmor = self:GetMaxArmor()
-	local baseMaxArmor = self:GetBaseArmor()
-	local newMaxArmor = baseMaxArmor + baseMaxArmor*self.upgradeArmorLevel*ArmorUpgrade.armorBoostPerLevel
-	self:SetMaxArmor(newMaxArmor)
-	
-	// Add the difference to the player's current armor
-	local armorDifference = self:GetMaxArmor() - oldMaxArmor
-	local currentArmor = self:GetArmor()
-	self:SetArmor(currentArmor + armorDifference)
+	if Server then
+		// Calculate the new max armor
+		local oldMaxArmor = self:GetMaxArmor()
+		local baseMaxArmor = self:GetBaseArmor()
+		local newMaxArmor = baseMaxArmor + baseMaxArmor*self.upgradeArmorLevel*ArmorUpgrade.armorBoostPerLevel
+		self:SetMaxArmor(newMaxArmor)
+		
+		// Add the difference to the player's current armor
+		local armorDifference = self:GetMaxArmor() - oldMaxArmor
+		local currentArmor = self:GetArmor()
+		self:SetArmor(currentArmor + armorDifference)
+	end
 	
 end

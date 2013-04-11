@@ -30,19 +30,18 @@ Script.Load("lua/Factions/Effects/Factions_DamageEffects.lua")
 Script.Load("lua/Factions/Factions_NS2Gamerules.lua")
 Script.Load("lua/Factions/Factions_PlayingTeam.lua")
 Script.Load("lua/Factions/Factions_CommandStructure.lua")
+Script.Load("lua/Factions/Factions_StaticTargetMixin.lua")
+Script.Load("lua/Factions/Factions_MaturityMixin.lua")
 Script.Load("lua/Factions/Factions_Player.lua")
 Script.Load("lua/Factions/Factions_Marine.lua")
 Script.Load("lua/Factions/Factions_MarineSpectator.lua")
 Script.Load("lua/Factions/Factions_JetpackMarine.lua")
 
 // Alien Classes
-Script.Load("lua/Factions/Factions_Skulk.lua")
-Script.Load("lua/Factions/Factions_Gorge.lua")
-Script.Load("lua/Factions/Factions_Lerk.lua")
-Script.Load("lua/Factions/Factions_Fade.lua")
-Script.Load("lua/Factions/Factions_Onos.lua")
+Script.Load("lua/Factions/Factions_Alien.lua")
 
 // Buildings
+Script.Load("lua/Factions/Factions_PowerConsumerMixin.lua")
 Script.Load("lua/Factions/Factions_Armory.lua")
 Script.Load("lua/Factions/Factions_InfantryPortal.lua")
 Script.Load("lua/Factions/Factions_CommandStation.lua")

@@ -15,7 +15,7 @@ ReloadSpeedMixin = CreateMixin( ReloadSpeedMixin )
 ReloadSpeedMixin.type = "VariableReloadSpeed"
 
 ReloadSpeedMixin.baseReloadSpeed = 1.15
-ReloadSpeedMixin.reloadSpeedBoostPerLevel = 0.1
+ReloadSpeedMixin.reloadSpeedBoostPerLevel = 0.3
 
 ReloadSpeedMixin.expectedMixins =
 {
@@ -44,6 +44,12 @@ function ReloadSpeedMixin:__initmixin()
     self.reloadSpeedScalar = ReloadSpeedMixin.baseReloadSpeed
 	self.reloadSpeedLevel = 0
     
+end
+
+function ReloadSpeedMixin:SetParent()
+
+	self:UpdateReloadSpeedLevel()
+	
 end
 
 function ReloadSpeedMixin:OnUpdateAnimationInput(modelMixin)

@@ -14,7 +14,7 @@
  */
 local function ValidateSpawnPoint(spawnPoint, capsuleHeight, capsuleRadius, filter, origin)
 
-    local center = Vector(0, capsuleHeight * 0.5 + capsuleRadius, 0)
+    local center = Vector(0, capsuleHeight * 0.5 + capsuleRadius + 1, 0)
     local spawnPointCenter = spawnPoint + center
     
     // Make sure capsule isn't interpenetrating something.
@@ -27,13 +27,13 @@ local function ValidateSpawnPoint(spawnPoint, capsuleHeight, capsuleRadius, filt
         
             VectorCopy(trace.endPoint, spawnPoint)
             
-            local endPoint = trace.endPoint + Vector(0, capsuleHeight / 2, 0)
+            local endPoint = trace.endPoint + Vector(0, (capsuleHeight / 2) - 1, 0)
             // Trace in both directions to make sure no walls are being ignored.
             trace = Shared.TraceRay(endPoint, origin, CollisionRep.Move, PhysicsMask.AllButPCs, filter)
             local traceOriginToEnd = Shared.TraceRay(origin, endPoint, CollisionRep.Move, PhysicsMask.AllButPCs, filter)
             
             if trace.fraction == 1 and traceOriginToEnd.fraction == 1 then
-                return spawnPoint - Vector(0, capsuleHeight / 2, 0)
+                return spawnPoint - Vector(0, (capsuleHeight / 2) - 1, 0)
             end
             
         end

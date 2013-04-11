@@ -188,21 +188,25 @@ if Server then
 	
 	local function SwitchClass(client, newClass)
 		
-		local player = client:GetControllingPlayer()
-		if player and HasMixin(player, "FactionsClass") then
-		
-			// If a class is specified then change the class.
-			if newClass then
-				local success = player:ChangeFactionsClassFromString(newClass)
-				if success then 
-					player:SendDirectMessage("Changed your class to " .. player:GetFactionsClassString())
-				else
-					player:SendDirectMessage("Invalid class name: " .. newClass)
-				end
-			else
-				player:SendDirectMessage("Your class is a: " .. player:GetFactionsClassString())
-			end
+		if GetGamerulesInfo():GetIsClassBased() then
+			local player = client:GetControllingPlayer()
+			if player and HasMixin(player, "FactionsClass") then
 			
+				// If a class is specified then change the class.
+				if newClass then
+					local success = player:ChangeFactionsClassFromString(newClass)
+					if success then 
+						player:SendDirectMessage("Changed your class to " .. player:GetFactionsClassString())
+					else
+						player:SendDirectMessage("Invalid class name: " .. newClass)
+					end
+				else
+					player:SendDirectMessage("Your class is a: " .. player:GetFactionsClassString())
+				end
+				
+			end
+		else
+			player:SendDirectMessage("You cannot change class in this gamemode!")
 		end
 		
 	end
