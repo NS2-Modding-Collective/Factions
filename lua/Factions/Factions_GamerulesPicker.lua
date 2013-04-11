@@ -43,6 +43,8 @@ if Server then
 				return CombatDeathmatchGamerules.kMapName
 			elseif self.gameType == kFactionsGameType.Horde then
 				return HordeGamerules.kMapName
+			elseif self.gameType == kFactionsGameType.MarineDeathmatch then
+				return MarineDeathmatchGamerules.kMapName
 			end
 		end
 	end
