@@ -32,12 +32,14 @@ ArmorUpgradeMixin.expectedConstants =
 
 ArmorUpgradeMixin.networkVars =
 {
-	upgradeArmorLevel = "integer (0 to " .. ArmorUpgrade.levels .. ")"
+	upgradeArmorLevel = "integer (0 to " .. ArmorUpgrade.levels .. ")",
+	originalMaxArmor = string.format("float (0 to %f by 1)", LiveMixin.kMaxArmor),
 }
 
 function ArmorUpgradeMixin:__initmixin()
 
 	self.upgradeArmorLevel = 0
+	self.originalMaxArmor = self:GetMaxArmor()
 	self:UpgradeArmor()
 
 end
@@ -47,6 +49,10 @@ function ArmorUpgradeMixin:CopyPlayerDataFrom(player)
 	self.upgradeArmorLevel = player.upgradeArmorLevel
 	self:UpgradeArmor()
 
+end
+
+function ArmorUpgradeMixin:GetOriginalMaxArmor()
+	return self.originalMaxArmor
 end
 
 function ArmorUpgradeMixin:UpgradeArmor()

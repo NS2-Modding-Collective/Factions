@@ -67,22 +67,22 @@ end
 
 function SpeedUpgradeMixin:GetUpgradedMaxSprintSpeed()
 
-	if self:GetHasFactionsClass() then
+	if HasMixin(self, "FactionsClass") then
 		local baseSpeed = self:GetBaseMaxSprintSpeed()
 		return baseSpeed + baseSpeed*self.upgradeSpeedLevel*SpeedUpgrade.speedBoostPerLevel
 	else
-		return Marine.kRunMaxSpeed
+		return _G[self:GetClassName()].kRunMaxSpeed
 	end
 
 end
 
 function SpeedUpgradeMixin:GetUpgradedMaxSpeed()
 
-	if self:GetHasFactionsClass() then
+	if HasMixin(self, "FactionsClass") then
 		local baseSpeed = self:GetBaseMaxSpeed()
 		return baseSpeed + baseSpeed*self.upgradeSpeedLevel*SpeedUpgrade.speedBoostPerLevel
 	else
-		return Marine.kWalkMaxSpeed
+		return _G[self:GetClassName()].kWalkMaxSpeed
 	end
 
 end

@@ -26,6 +26,17 @@ local overrideOnCreate = Player.OnCreate
 function Player:OnCreate()
 
 	overrideOnCreate(self)
+	
+			
+	// Also create a personal version of the tech tree.
+	/*local team = self:GetTeam()
+	if team ~= nil and team:isa("PlayingTeam") then
+		self.personalTechTree = TechTree()
+		self.personalTechTree:CopyDataFrom(team:GetTechTree())
+		self.personalTechTree:ComputeAvailability()
+		self.sendTechTreeBase = true
+	end*/
+	
 	InitMixin(self, FactionsClassMixin)
 	InitMixin(self, XpMixin)
 	InitMixin(self, UpgradeMixin)

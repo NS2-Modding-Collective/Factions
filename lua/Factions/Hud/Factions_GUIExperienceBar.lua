@@ -13,8 +13,8 @@ Factions_GUIExperienceBar.kMarineBarTextureName = "ui/Factions/xpbar_marine.png"
 Factions_GUIExperienceBar.kMarineBackgroundTextureName = "ui/Factions/xpbarbg_marine.png"
 Factions_GUIExperienceBar.kMarine2BarTextureName = "ui/Factions/xpbar_marine.png"
 Factions_GUIExperienceBar.kMarine2BackgroundTextureName = "ui/Factions/xpbarbg_marine.png"
-Factions_GUIExperienceBar.kAlienBarTextureName = "ui/combat_xpbar_alien.png"
-Factions_GUIExperienceBar.kAlienBackgroundTextureName = "ui/combat_xpbarbg_alien.png"
+Factions_GUIExperienceBar.kAlienBarTextureName = "ui/Factions/xpbar_alien.png"
+Factions_GUIExperienceBar.kAlienBackgroundTextureName = "ui/Factions/xpbarbg_alien.png"
 
 Factions_GUIExperienceBar.kTextFontName = "fonts/AgencyFB_small.fnt"
 
@@ -69,13 +69,13 @@ Factions_GUIExperienceBar.kExperienceTextFontSize = 15
 Factions_GUIExperienceBar.kExperienceTextOffset = Vector(0, -10, 0)
 Factions_GUIExperienceBar.kNormalAlpha = 0.9
 Factions_GUIExperienceBar.kMinimisedTextAlpha = 0.7
-Factions_GUIExperienceBar.kMinimisedAlpha = 0.7
+Factions_GUIExperienceBar.kMinimisedAlpha = 0.6
 
 Factions_GUIExperienceBar.kBarFadeInRate = 0.2
 Factions_GUIExperienceBar.kBarFadeOutDelay = 0.5
 Factions_GUIExperienceBar.kBarFadeOutRate = 0.1
 Factions_GUIExperienceBar.kBackgroundBarRate = 90
-Factions_GUIExperienceBar.kTextIncreaseRate = 50
+Factions_GUIExperienceBar.kTextIncreaseRate = 150
 
 local function GetTeamType()
 
@@ -244,7 +244,7 @@ function Factions_GUIExperienceBar:UpdateExperienceBar(deltaTime)
 		end
 	end
 	
-	if (self.experienceData.targetExperience == maxXp) then
+	if (self.experienceData.targetExperience >= kMaxXp) then
 		currentBarWidth = Factions_GUIExperienceBar.kExperienceBarWidth
 		targetBarWidth = Factions_GUIExperienceBar.kExperienceBarWidth
 		calculatedBarWidth = Factions_GUIExperienceBar.kExperienceBarWidth
@@ -270,22 +270,12 @@ end
 
 function Factions_GUIExperienceBar:UpdateFading(deltaTime)
 
-	local currentBarHeight = self.experienceBar:GetSize().y
-	local currentBackgroundHeight = self.experienceBarBackground:GetSize().y
 	local currentBarColor = self.experienceBar:GetColor()
 	local currentTextColor = self.experienceText:GetColor()
-	local targetBarHeight = currentBarHeight
-	local targetBackgroundHeight = currentBackgroundHeight
-	local targetBarColor = currentBarColor
 	local targetAlpha = Factions_GUIExperienceBar.kNormalAlpha
 	local targetTextAlpha = Factions_GUIExperienceBar.kNormalAlpha
 		
 	if (self.barMoving or Shared.GetTime() < self.fadeOutTime) then
-		targetBarHeight = Factions_GUIExperienceBar.kExperienceBarHeight
-		targetBackgroundHeight = Factions_GUIExperienceBar.kExperienceBackgroundHeight
-	else
-		targetBarHeight = Factions_GUIExperienceBar.kExperienceBarMinimisedHeight
-		targetBackgroundHeight = Factions_GUIExperienceBar.kExperienceBackgroundMinimisedHeight
 		targetAlpha = Factions_GUIExperienceBar.kMinimisedAlpha
 		targetTextAlpha = Factions_GUIExperienceBar.kMinimisedTextAlpha
 	end
@@ -293,15 +283,21 @@ function Factions_GUIExperienceBar:UpdateFading(deltaTime)
 	self.experienceAlpha = Slerp(self.experienceAlpha, targetAlpha, deltaTime*Factions_GUIExperienceBar.kBarFadeOutRate)
 	self.experienceTextAlpha = Slerp(self.experienceTextAlpha, targetTextAlpha, deltaTime*Factions_GUIExperienceBar.kBarFadeOutRate)
 	
-	self.experienceBarBackground:SetSize(Vector(Factions_GUIExperienceBar.kExperienceBackgroundWidth, Slerp(currentBackgroundHeight, targetBackgroundHeight, deltaTime*Factions_GUIExperienceBar.kBackgroundBarRate), 0))
-	self.experienceBar:SetSize(Vector(self.experienceBar:GetSize().x, Slerp(currentBarHeight, targetBarHeight, deltaTime*Factions_GUIExperienceBar.kBackgroundBarRate), 0))
 	self.experienceBar:SetColor(Color(currentBarColor.r, currentBarColor.g, currentBarColor.b, self.experienceAlpha))
-	self.experienceText:SetColor(Color(currentTextColor.r, currentTextColor.g, currentTextColor.b, self.experienceAlpha))
+	self.experienceText:SetColor(Color(currentTextColor.r, currentTextColor.g, currentTextColor.b, self.experienceTextAlpha))
+	
 end
 
 function Factions_GUIExperienceBar:UpdateText(deltaTime)
+	local updateRate = Factions_GUIExperienceBar.kTextIncreaseRate
+	// Handle the case when the experience jumps up by a huge amount
+	if self.experienceData.targetExperience > self.currentExperience and
+	   self.experienceData.targetExperience - self.currentExperience > Factions_GUIExperienceBar.kTextIncreaseRate*2 then
+	   updateRate = Factions_GUIExperienceBar.kTextIncreaseRate * 10
+	end
+	   
 	// Tween the experience text too!
-	self.currentExperience = Slerp(self.currentExperience, self.experienceData.targetExperience, deltaTime*Factions_GUIExperienceBar.kTextIncreaseRate)
+	self.currentExperience = Slerp(self.currentExperience, self.experienceData.targetExperience, deltaTime*updateRate)
 	
 	// Handle the case when the round changes and we are set back to 0 experience.
 	if self.currentExperience > self.experienceData.targetExperience then
