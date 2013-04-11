@@ -66,18 +66,18 @@ end
 function InkMixin:TriggerInk()
 
 	if Server then
-	if self:GetInkAvailable() then
-	
-        // Create ShadeInk entity in world at this position with a small offset
-        local shadeInk = CreateEntity(ShadeInk.kMapName, self:GetOrigin() + Vector(0, 0.2, 0), self:GetTeamNumber())
-		StartSoundEffectOnEntity("sound/NS2.fev/alien/structures/shade/cloak_triggered", shadeInk)
-		self.lastInkTime = Shared.GetTime()
-		self:SetInkAvailable(true)
-	else
-		local waitTime = self:GetTimeUntilInkAvailable()
-		if waitTime ~= nil and waitTime > 0 then
-			self:SendDirectMessage("Cannot trigger ink yet! Wait another " .. waitTime)
+		if self:GetInkAvailable() then
+		
+			// Create ShadeInk entity in world at this position with a small offset
+			local shadeInk = CreateEntity(ShadeInk.kMapName, self:GetOrigin() + Vector(0, 0.2, 0), self:GetTeamNumber())
+			StartSoundEffectOnEntity("sound/NS2.fev/alien/structures/shade/cloak_triggered", shadeInk)
+			self.lastInkTime = Shared.GetTime()
+			self:SetInkAvailable(true)
+		else
+			local waitTime = self:GetTimeUntilInkAvailable()
+			if waitTime ~= nil and waitTime > 0 then
+				self:SendDirectMessage("Cannot trigger ink yet! Wait another " .. waitTime .. " seconds")
+			end
 		end
-    end
     end
 end

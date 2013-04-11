@@ -132,8 +132,14 @@ if Server then
 								local upgrade = found:GetUpgradeByName(upgradeName)
 								if upgrade then
 									// if it's cheats 1 you just get the upgrade without paying
-									found:BuyUpgrade(upgrade:GetId(), cheats)
-									SendGlobalChatMessage(found:GetName() .. " has been given a " .. upgrade:GetUpgradeTitle() .. " upgrade.")
+									local upgradeMessage = found:GetCanBuyUpgradeMessage(upgrade:GetId(), true)
+									if upgradeMessage == "" then
+										found:BuyUpgrade(upgrade:GetId(), cheats)
+										SendGlobalChatMessage(found:GetName() .. " has been given a " .. upgrade:GetUpgradeTitle() .. " upgrade.")
+									else
+										SendGlobalChatMessage(found:GetName() .. " could not be given a " .. upgrade:GetUpgradeTitle() .. " upgrade.")
+										SendGlobalChatMessage("Reason: " .. upgradeMessage)
+									end
 								else
 									SendGlobalChatMessage("Cannot find upgrade " .. upgradeName .. " to give to " .. found:GetName())
 								end

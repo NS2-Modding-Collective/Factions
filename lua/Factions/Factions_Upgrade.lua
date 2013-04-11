@@ -199,7 +199,9 @@ function FactionsUpgrade:GetIsAllowedForTeam(teamNumber)
 		or 
 		(self.teamType == kFactionsUpgradeTeamType.AlienTeam and playerTeamType == kAlienTeamType)
 		or
-		(self.teamType == kFactionsUpgradeTeamType.AnyTeam)) then
+		(self.teamType == kFactionsUpgradeTeamType.AnyTeam)
+		or 
+		(self.teamType == nil)) then
 		return true
 	else
 		return false

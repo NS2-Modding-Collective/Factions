@@ -78,30 +78,43 @@ function UpgradeMixin:CopyPlayerDataFrom(player)
 	end
 end
 
-function UpgradeMixin:GetHasPrerequisites(upgrade)
-	return self.UpgradeList:GetHasPrerequisites(upgrade)
+// Remove code duplication and possible differences in logic by combining logic and messages here
+function UpgradeMixin:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade)
+	local upgrade = self:GetUpgradeById(upgradeId)
+	local factionsClass = self:GetFactionsClass()
+	
+    if upgrade == nil then
+		return "Cannot find upgrade with ID " .. upgradeId
+	elseif upgrade:GetIsAtMaxLevel() then
+		return "Upgrade is already at max level!"
+	elseif not self:GetHasPrerequisites(upgrade) then
+		return "You are missing some requirements for this upgrade..."
+	elseif not freeUpgrade and not (self:GetResources() >= upgrade:GetCostForNextLevel()) then
+		return "Cannot afford upgrade"
+	elseif factionsClass and factionsClass:GetIsUpgradeAllowed(upgrade) then
+		return "Your class cannot buy this upgrade"
+	elseif not upgrade:GetIsAllowedForThisGameMode() then
+		return "Upgrade cannot be bought in this game mode"
+	elseif not upgrade:GetIsAllowedForTeam(self:GetTeamNumber()) then
+		return "Upgrade is not allowed for your team"
+	else
+        return ""
+    end
 end
 
-function UpgradeMixin:GetIsAllowedToBuy(upgradeId)
-	local upgrade = self:GetUpgradeById(upgradeId)
-	if (not upgrade:GetIsAtMaxLevel()) 
-		and self:GetResources() >= upgrade:GetCostForNextLevel()
-		and (not self:GetFactionsClass()
-			 or (self:GetFactionsClass() and self:GetFactionsClass():GetIsUpgradeAllowed(upgrade)))
-		and self:GetHasPrerequisites(upgrade) then
-		return true
-	else
-		return false
-	end
+// For when you just need a true/false value!
+function UpgradeMixin:GetCanBuyUpgrade(upgradeId, freeUpgrade)
+	return self:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade) == ""
 end
+
 
 function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
 	local upgrade = self:GetUpgradeById(upgradeId)
 	
     if Server then
-        local upgradeOk = self:GetIsAllowedToBuy(upgradeId)
+        local upgradeMessage = self:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade)
 		
-        if upgradeOk then     
+        if upgradeMessage ~= "" then
         	local upgradeCost = upgrade:GetCostForNextLevel()
 			if upgrade:GetIsPermanent() then
 				upgrade:AddLevel()
@@ -114,7 +127,7 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
 				self:AddResources(-upgradeCost)
             end
         else
-            self:SendDirectMessage("Upgrade not available")
+            self:SendDirectMessage("Could not buy upgrade! " .. upgradeMessage)
         end
     elseif Client then
         // Send buy message to server
@@ -140,21 +153,13 @@ function UpgradeMixin:SetUpgradeLevel(upgradeId, upgradeLevel)
 	return self.UpgradeList:SetUpgradeLevel(upgradeId, upgradeLevel)
 end
 
-function UpgradeMixin:GetCanBuyUpgrade(upgradeId)
-    local hasUpgrade = self:GetHasUpgrade(upgradeId)
-	local upgrade = self:GetUpgradeById(upgradeId)
-    if not hasUpgrade or (hasUpgrade and not upgrade:GetIsAtMaxLevel()) then
-        // upgrade is ok, enough res?
-        if self:GetResources() - upgrade:GetCostForNextLevel() >= 0 then
-            return true
-        end
-    end      
-    return false  
-end
-
 // returns the entry in the table or nil if not
 function UpgradeMixin:GetHasUpgrade(upgradeId)
     return self.UpgradeList:GetHasUpgrade(upgradeId)
+end
+
+function UpgradeMixin:GetHasPrerequisites(upgrade)
+	return self.UpgradeList:GetHasPrerequisites(upgrade)
 end
 
 function UpgradeMixin:GetUpgradeLevel(upgradeId)

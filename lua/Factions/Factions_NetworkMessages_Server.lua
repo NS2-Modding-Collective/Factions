@@ -14,8 +14,13 @@ local function OnCommandBuyUpgrade(client, buyMessage)
 
     local player = client:GetControllingPlayer()
     
-    if player and player:GetIsAllowedToBuy(buyMessage.upgradeId) then
-        player:BuyUpgrade(buyMessage.upgradeId, false)
+    if player then
+		local upgradeMessage = player:GetCanBuyUpgradeMessage(buyMessage.upgradeId)
+		if upgradeMessage == "" then
+			player:BuyUpgrade(buyMessage.upgradeId, false)
+		else
+			player:SendDirectMessage("Cannot buy upgrade! " .. upgradeMessage)
+		end
     end
     
 end
