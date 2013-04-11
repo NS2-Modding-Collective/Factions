@@ -62,6 +62,10 @@ function TimerMixin:AddTimer(name, object, func, interval)
 	self.timers[name] = timer
 end
 
+function TimerMixin:GetNextTriggerTime(timerName)
+	return self.timers[timerName].lastTrigger + interval
+end
+
 function TimerMixin:RemoveTimer(name)
 	self.timers[name] = nil
 end
