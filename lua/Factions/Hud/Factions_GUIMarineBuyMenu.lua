@@ -1,8 +1,10 @@
 //________________________________
 //
-//   	NS2 Combat Mod     
-//	Made by JimWest and MCMLXXXIV, 2012
-//
+//  Factions
+//	Made by Jibrail, JimWest, Sewlek
+//  Puschen and Winston Smith (MCMLXXXIV)
+//  
+//  Licensed under LGPL v3.0
 //________________________________
 
 // Factions_GUIMarineBuyMenu.lua

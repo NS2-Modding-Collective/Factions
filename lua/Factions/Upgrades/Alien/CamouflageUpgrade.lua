@@ -9,11 +9,11 @@
 						
 class 'CamouflageUpgrade' (FactionsAlienUpgrade)
 
-CamouflageUpgrade.cost 				= { 250 }                          	// cost of the upgrade in xp
-CamouflageUpgrade.upgradeName		= "silence"	                        // text code of the upgrade if using it via console
-CamouflageUpgrade.upgradeTitle 		= "Silence"       					// Title of the upgrade, e.g. Submachine Gun
-CamouflageUpgrade.upgradeDesc 		= "Get silence"             		// Description of the upgrade
-CamouflageUpgrade.upgradeTechId 		= kTechId.Silence  				// techId of the upgrade, default is kTechId.Move cause its the first 
+CamouflageUpgrade.cost 				= { 250 }                       // cost of the upgrade in xp
+CamouflageUpgrade.upgradeName		= "camo"	                    // text code of the upgrade if using it via console
+CamouflageUpgrade.upgradeTitle 		= "Camouflage"       			// Title of the upgrade, e.g. Submachine Gun
+CamouflageUpgrade.upgradeDesc 		= "Get camouflage"             	// Description of the upgrade
+CamouflageUpgrade.upgradeTechId 	= kTechId.Camouflage			// techId of the upgrade, default is kTechId.Move cause its the first 
 
 function CamouflageUpgrade:Initialize()
 

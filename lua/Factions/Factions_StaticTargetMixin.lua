@@ -39,7 +39,7 @@ if Server then
 					local dmgXp = setDecimalPlaces(maxXp * damage / self:GetMaxHealth(), 1)
 					
 					// Award XP
-					pointOwner:AddScore(dmgXp)
+					pointOwner:AddResources(dmgXp)
 				end
 			end
 		end

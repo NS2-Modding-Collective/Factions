@@ -1,8 +1,10 @@
 //________________________________
 //
-//   	NS2 Factions Mod     
-//	Made by JimWest and MCMLXXXIV, 2012
-//
+//  Factions
+//	Made by Jibrail, JimWest, Sewlek
+//  Puschen and Winston Smith (MCMLXXXIV)
+//  
+//  Licensed under LGPL v3.0
 //________________________________
 
 // Factions_GUIExperienceBar.lua
@@ -16,7 +18,7 @@ Factions_GUIExperienceBar.kMarine2BackgroundTextureName = "ui/Factions/xpbarbg_m
 Factions_GUIExperienceBar.kAlienBarTextureName = "ui/Factions/xpbar_alien.png"
 Factions_GUIExperienceBar.kAlienBackgroundTextureName = "ui/Factions/xpbarbg_alien.png"
 
-Factions_GUIExperienceBar.kTextFontName = "fonts/AgencyFB_small.fnt"
+Factions_GUIExperienceBar.kTextFontName = "fonts/Arial_17.fnt"
 
 Factions_GUIExperienceBar.kExperienceBackgroundWidth = 450
 Factions_GUIExperienceBar.kExperienceBackgroundHeight = 30

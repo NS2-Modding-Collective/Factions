@@ -38,17 +38,25 @@ HealthUpgradeMixin.networkVars =
 
 function HealthUpgradeMixin:__initmixin()
 
-	self.upgradeHealthLevel = 0
-	self.originalMaxHealth = self:GetMaxHealth()
-	self:UpgradeHealth()
+	if Server then
+		self.upgradeHealthLevel = 0
+	end
 
 end
 
 function HealthUpgradeMixin:CopyPlayerDataFrom(player)
 
-	self.upgradeHealthLevel = player.upgradeHealthLevel
-	self:UpgradeHealth()
+	if Server then
+		self.upgradeHealthLevel = player.upgradeHealthLevel
+	end
 
+end
+
+function HealthUpgradeMixin:OnInitialized()
+	if Server then
+		self.originalMaxHealth = self:GetMaxHealth()
+		self:UpgradeHealth()
+	end
 end
 
 function HealthUpgradeMixin:GetOriginalMaxHealth()
@@ -56,14 +64,18 @@ function HealthUpgradeMixin:GetOriginalMaxHealth()
 end
 
 function HealthUpgradeMixin:UpgradeHealth()
-	// Calculate the new max health
-	local oldMaxHealth = self:GetMaxHealth()
-	local baseMaxHealth = self:GetBaseHealth()
-	local newMaxHealth = baseMaxHealth + baseMaxHealth*self.upgradeHealthLevel*HealthUpgrade.healthBoostPerLevel
-	self:SetMaxHealth(newMaxHealth)
+
+	if Server then
+		// Calculate the new max health
+		local oldMaxHealth = self:GetMaxHealth()
+		local baseMaxHealth = self:GetBaseHealth()
+		local newMaxHealth = baseMaxHealth + baseMaxHealth*self.upgradeHealthLevel*HealthUpgrade.healthBoostPerLevel
+		self:SetMaxHealth(newMaxHealth)
+		
+		// Add the difference to the player's current health
+		local healthDifference = self:GetMaxHealth() - oldMaxHealth
+		local currentHealth = self:GetHealth()
+		self:SetHealth(currentHealth + healthDifference)
+	end
 	
-	// Add the difference to the player's current health
-	local healthDifference = self:GetMaxHealth() - oldMaxHealth
-	local currentHealth = self:GetHealth()
-	self:SetHealth(currentHealth + healthDifference)
 end
