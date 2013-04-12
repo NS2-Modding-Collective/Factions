@@ -61,7 +61,7 @@ end
 function ReloadSpeedMixin:UpdateReloadSpeedLevel()
 
 	local player = self:GetParent()
-    if player and self.reloadSpeedLevel ~= player:GetReloadSpeedLevel() then
+    if player and HasMixin("WeaponUpgrade") and self.reloadSpeedLevel ~= player:GetReloadSpeedLevel() then
 	
 		self:SetReloadSpeedLevel(player:GetReloadSpeedLevel())
 		

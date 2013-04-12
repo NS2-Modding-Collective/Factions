@@ -90,7 +90,9 @@ function WeaponUpgradeMixin:UpdateFireRateLevel(newLevel)
 end
 
 function WeaponUpgradeMixin:UpdateLaserSightLevel(newLevel)
-	self.reloadSpeedLevel = newLevel
+
+	self.laserSightLevel = newLevel
+	
 end
 
 function WeaponUpgradeMixin:GetReloadSpeedLevel()
@@ -108,5 +110,11 @@ end
 function WeaponUpgradeMixin:GetDamageScalar()
 
 	return WeaponUpgradeMixin.baseDamage + (self.damageLevel * WeaponUpgradeMixin.damageBoostPerLevel)
+
+end
+
+function WeaponUpgradeMixin:GetLaserSightLevel()
+
+	return self.laserSightLevel
 
 end

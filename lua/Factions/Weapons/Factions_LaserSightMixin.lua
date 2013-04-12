@@ -36,18 +36,21 @@ LaserSightMixin.expectedConstants =
 
 LaserSightMixin.networkVars =
 {
+	accuracyScalar = "float",
+	laserSightLevel = "integer (0 to " .. LaserSightUpgrade.levels .. ")",
 }
 
 function LaserSightMixin:__initmixin()
 
-	self.laserSightActive = false
+	self.accuracyScalar = LaserSightMixin.baseAccuracy
+	self.laserSightLevel = 0
 	
 end
 
 function LaserSightMixin:GetLaserSightActive()
 
 	local player = self:GetParent()
-	if player and player.laserSightActive then
+	if player and HasMixin("WeaponUpgrade") and player:GetLaserSightLevel() > 0 then
 		return true
 	end
 	
@@ -63,4 +66,22 @@ function LaserSightMixin:OnSetActive()
 		// activate lazors
 	end
 	
+end
+
+function LaserSightMixin:UpdateLaserSightLevel()
+
+	local player = self:GetParent()
+    if player and and HasMixin("WeaponUpgrade") and self.laserSightLevel ~= player:GetLaserSightLevel() then
+	
+		self:SetLaserSightLevel(player:GetLaserSightLevel())
+		
+    end
+
+end
+
+function LaserSightMixin:SetLaserSightLevel(newLevel)
+
+	self.laserSightLevel = newLevel
+	self.accuracyScalar = LaserSightMixin.baseAccuracy - (self.reloadSpeedLevel * LaserSightMixin.accuracyBoostPerLevel)
+
 end

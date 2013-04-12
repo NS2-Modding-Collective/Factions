@@ -16,7 +16,7 @@ ReloadSpeedUpgrade.upgradeName = "reloadspeed"                     							// Tex
 ReloadSpeedUpgrade.upgradeTitle = "Reload Speed Upgrade"               						// Title of the upgrade, e.g. Submachine Gun
 ReloadSpeedUpgrade.upgradeDesc = "Upgrade your reload speed"								// Description of the upgrade
 ReloadSpeedUpgrade.upgradeTechId = kTechId.Speed1											// TechId of the upgrade, default is kTechId.Move cause its the first entry
-ReloadSpeedUpgrade.teamType = kFactionsUpgradeTeamType.MarineTeam					// Team Type
+ReloadSpeedUpgrade.teamType = kFactionsUpgradeTeamType.MarineTeam						// Team Type
 
 function ReloadSpeedUpgrade:Initialize()
 

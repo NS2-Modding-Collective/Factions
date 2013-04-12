@@ -16,6 +16,7 @@ LaserSightUpgrade.upgradeName = "reloadspeed"                     							// Text
 LaserSightUpgrade.upgradeTitle = "Reload Speed Upgrade"               						// Title of the upgrade, e.g. Submachine Gun
 LaserSightUpgrade.upgradeDesc = "Upgrade your reload speed"								// Description of the upgrade
 LaserSightUpgrade.upgradeTechId = kTechId.Speed1											// TechId of the upgrade, default is kTechId.Move cause its the first entry
+LaserSightUpgrade.teamType = kFactionsUpgradeTeamType.MarineTeam
 
 function LaserSightUpgrade:Initialize()
 
