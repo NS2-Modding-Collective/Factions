@@ -44,11 +44,6 @@ function BuyMenuMixin:__initmixin()
 end
 
 if Client then
-    // this ist just dummy to get it fast working
-    function Combat_ResolveString(string)
-        return string
-    end
-    
     // starting the custom buy menu for marines
     function BuyMenuMixin:Buy()
 

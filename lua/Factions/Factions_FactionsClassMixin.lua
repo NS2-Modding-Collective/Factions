@@ -202,17 +202,21 @@ end
 
 function FactionsClassMixin:ChangeFactionsClass(newClass)
 
-	if self.factionsClassLocalType ~= newClass then
-		self.factionsClassType = newClass
-		self.factionsClassLocalType = newClass
-		self.factionsClass = self:GetClassByType(newClass)
-		
-		if Server then
-			// Kill the player if they do this while playing.
-			if self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
-				self:Kill(nil, nil, self:GetOrigin())
+	if GetGamerulesInfo():GetIsClassBased() then
+		if self.factionsClassLocalType ~= newClass then
+			self.factionsClassType = newClass
+			self.factionsClassLocalType = newClass
+			self.factionsClass = self:GetClassByType(newClass)
+			
+			if Server then
+				// Kill the player if they do this while playing.
+				if self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
+					self:Kill(nil, nil, self:GetOrigin())
+				end
 			end
 		end
+	else
+		self:SendDirectMessage("You cannot change class in this gamemode!")
 	end
 
 end

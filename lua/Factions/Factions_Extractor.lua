@@ -14,17 +14,19 @@ Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
 local networkVars = {
 }
 
-// Iron Sights
-local overrideOnCreate = Extractor.OnCreate
-function Extractor:OnCreate()
+// Team Colours
+local overrideOnInitialized = Extractor.OnInitialized
+function Extractor:OnInitialized()
 
-	overrideOnCreate(self)
+	overrideOnInitialized(self)
 
 	// Team Colours
 	if GetGamerulesInfo():GetUsesMarineColours() then
 		InitMixin(self, TeamColoursMixin)
 		assert(HasMixin(self, "TeamColours"))
 	end
+	
 end
+
 
 Class_Reload("Extractor", networkVars)

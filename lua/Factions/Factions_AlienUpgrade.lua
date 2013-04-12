@@ -45,6 +45,6 @@ end
 function FactionsAlienUpgrade:OnAdd(player)
 
 	// Apply the same logic to the player as OnUpgrade does
-	//Todo: Fill this in
+	player:GiveUpgrade(self.upgradeTechId)
 
 end

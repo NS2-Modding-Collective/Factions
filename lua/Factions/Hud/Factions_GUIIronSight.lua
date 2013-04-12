@@ -7,7 +7,7 @@
 //  Licensed under LGPL v3.0
 //________________________________
 
-// Factions_Factions_GUIIronSight.lua
+// Factions_GUIIronSight.lua
 
 Script.Load("lua/GUIAnimatedScript.lua")
 

@@ -14,17 +14,18 @@ Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
 local networkVars = {
 }
 
-// Iron Sights
-local overrideOnCreate = Armory.OnCreate
-function Armory:OnCreate()
+// Team Colours
+local overrideOnInitialized = Armory.OnInitialized
+function Armory:OnInitialized()
 
-	overrideOnCreate(self)
+	overrideOnInitialized(self)
 
 	// Team Colours
 	if GetGamerulesInfo():GetUsesMarineColours() then
 		InitMixin(self, TeamColoursMixin)
 		assert(HasMixin(self, "TeamColours"))
 	end
+	
 end
 
 function Armory:GetRequiresPower()

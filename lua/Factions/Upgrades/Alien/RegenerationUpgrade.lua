@@ -10,10 +10,10 @@
 class 'RegenerationUpgrade' (FactionsAlienUpgrade)
 
 RegenerationUpgrade.cost 				= { 250 }                          	// cost of the upgrade in xp
-RegenerationUpgrade.upgradeName		= "regen"	                        // text code of the upgrade if using it via console
-RegenerationUpgrade.upgradeTitle 		= "Regeneration"       					// Title of the upgrade, e.g. Submachine Gun
-RegenerationUpgrade.upgradeDesc 		= "Get regeneration"             		// Description of the upgrade
-RegenerationUpgrade.upgradeTechId 		= kTechId.Regeneration  				// techId of the upgrade, default is kTechId.Move cause its the first 
+RegenerationUpgrade.upgradeName			= "regen"	                        // text code of the upgrade if using it via console
+RegenerationUpgrade.upgradeTitle 		= "Regeneration"       				// Title of the upgrade, e.g. Submachine Gun
+RegenerationUpgrade.upgradeDesc 		= "Get regeneration"             	// Description of the upgrade
+RegenerationUpgrade.upgradeTechId 		= kTechId.Regeneration  			// techId of the upgrade, default is kTechId.Move cause its the first 
 
 function RegenerationUpgrade:Initialize()
 
