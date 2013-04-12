@@ -38,8 +38,9 @@ WeaponUpgradeMixin.expectedConstants =
 WeaponUpgradeMixin.networkVars =
 {
 	reloadSpeedLevel = "integer (0 to " .. ReloadSpeedUpgrade.levels .. ")",
-	fireRateLevel = "integer (0 to " .. ReloadSpeedUpgrade.levels .. ")",
-	damageLevel = "integer (0 to " .. ReloadSpeedUpgrade.levels .. ")",
+	fireRateLevel = "integer (0 to " .. FireRateUpgrade.levels .. ")",
+	damageLevel = "integer (0 to " .. DamageUpgrade.levels .. ")",
+	laserSightLevel = "integer (0 to " .. LaserSightUpgrade.levels .. ")",
 }
 
 function WeaponUpgradeMixin:__initmixin()
@@ -47,6 +48,7 @@ function WeaponUpgradeMixin:__initmixin()
 	self.reloadSpeedLevel = 0
 	self.fireRateLevel = 0
 	self.damageLevel = 0
+	self.laserSightLevel = 0
 
 end
 
@@ -55,6 +57,7 @@ function WeaponUpgradeMixin:CopyPlayerDataFrom(player)
 	self.reloadSpeedLevel = player.reloadSpeedLevel
 	self.fireRateLevel = player.fireRateLevel
 	self.damageLevel = player.damageLevel
+	self.laserSightLevel = player.laserSightLevel
 
 end
 
@@ -80,6 +83,10 @@ function WeaponUpgradeMixin:UpdateFireRateLevel(newLevel)
     	weapon:UpdateFireRate(self:GetFireRateScalar())
     end
     
+end
+
+function WeaponUpgradeMixin:UpdateLaserSightLevel(newLevel)
+	self.reloadSpeedLevel = newLevel
 end
 
 function WeaponUpgradeMixin:GetFireRateScalar()
