@@ -11,11 +11,11 @@ class 'LaserSightUpgrade' (FactionsUpgrade)
 
 // Define these statically so we can easily access them without instantiating too.
 LaserSightUpgrade.cost = { 100, 200, 400, 600, 600 }                              		// Cost of the upgrade in xp
-LaserSightUpgrade.levels = 5																// How many levels are there to this upgrade
-LaserSightUpgrade.upgradeName = "reloadspeed"                     							// Text code of the upgrade if using it via console
-LaserSightUpgrade.upgradeTitle = "Reload Speed Upgrade"               						// Title of the upgrade, e.g. Submachine Gun
-LaserSightUpgrade.upgradeDesc = "Upgrade your reload speed"								// Description of the upgrade
-LaserSightUpgrade.upgradeTechId = kTechId.Speed1											// TechId of the upgrade, default is kTechId.Move cause its the first entry
+LaserSightUpgrade.levels = 5															// How many levels are there to this upgrade
+LaserSightUpgrade.upgradeName = "lasersight"                     						// Text code of the upgrade if using it via console
+LaserSightUpgrade.upgradeTitle = "Laser Sight"			               					// Title of the upgrade, e.g. Submachine Gun
+LaserSightUpgrade.upgradeDesc = "Improves the accuracy of your weapon"					// Description of the upgrade
+LaserSightUpgrade.upgradeTechId = kTechId.LaserSight									// TechId of the upgrade, default is kTechId.Move cause its the first entry
 LaserSightUpgrade.teamType = kFactionsUpgradeTeamType.MarineTeam
 
 function LaserSightUpgrade:Initialize()
@@ -31,11 +31,11 @@ function LaserSightUpgrade:Initialize()
 	
 end
 
-function ReloadSpeedUpgrade:GetClassName()
+function LaserSightUpgrade:GetClassName()
 	return "LaserSightUpgrade"
 end
 
-function ReloadSpeedUpgrade:OnAdd(player)
+function LaserSightUpgrade:OnAdd(player)
 	if HasMixin(player, "WeaponUpgrade") then
 		player:UpdateLaserSightLevel(self:GetCurrentLevel())
 		player:SendDirectMessage("Laser Sight Upgraded to level " .. self:GetCurrentLevel() .. ".")

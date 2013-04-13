@@ -14,20 +14,16 @@ Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
 local networkVars = {
 }
 
-class 'LightMachineGun' (ClipWeapon)
+class 'LaserMine' (ScriptActor)
 
-LightMachineGun.kMapName = "lmg"
+LaserMine.kMapName = "active_laser_mine"
 
-LightMachineGun.kModelName = PrecacheAsset("models/marine/lightmachinegun/lightmachinegun.model")
-local kViewModelName = PrecacheAsset("models/marine/lightmachinegun/lightmachinegun_view.model")
-local kAnimationGraph = PrecacheAsset("models/marine/lightmachinegun/lightmachinegun_view.animation_graph")
-
-
+LaserMine.kModelName = PrecacheAsset("models/marine/mine/mine.model")
 
 // Frickin Lasers!
-function Mine:OnCreate()
+function LaserMine:OnCreate()
 
-	Mine.OnCreate(self)
+	LaserMine.OnCreate(self)
 	
 	InitMixin(self, LaserMixin)
 	assert(HasMixin(self, "LaserMixin"))
@@ -39,4 +35,4 @@ function Mine:OnCreate()
 	end
 end
 
-Class_Reload("Mine", networkVars)
+Shared.LinkClassToMap("LaserMine", Mine.kMapName, networkVars)
