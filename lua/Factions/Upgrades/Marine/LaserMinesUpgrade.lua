@@ -13,8 +13,8 @@ LaserMinesUpgrade.cost 				= { 200 }                          	// cost of the up
 LaserMinesUpgrade.upgradeName		= "lasermines"	                        // text code of the upgrade if using it via console
 LaserMinesUpgrade.upgradeTitle 		= "Laser Mines"       					// Title of the upgrade, e.g. Submachine Gun
 LaserMinesUpgrade.upgradeDesc 		= "Get some Laser Mines"             		// Description of the upgrade
-LaserMinesUpgrade.upgradeTechId 		= kTechId.LayLaserMines  				// techId of the upgrade, default is kTechId.Move cause its the first entry
-LaserMinesUpgrade.primaryWeapon 		= false								// Is this a primary weapon?
+LaserMinesUpgrade.upgradeTechId 	= kTechId.LayLaserMines  				// techId of the upgrade, default is kTechId.Move cause its the first entry
+LaserMinesUpgrade.primaryWeapon 	= false								// Is this a primary weapon?
 
 function LaserMinesUpgrade:Initialize()
 

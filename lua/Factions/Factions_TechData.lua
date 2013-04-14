@@ -22,7 +22,7 @@ kModdedTechData =
 
     { [kTechDataId] = kTechId.LightMachineGun,  [kTechDataTooltipInfo] = "LMG_TOOLTIP", [kTechDataPointValue] = kWeaponPointValue,    [kTechDataMapName] = LightMachineGun.kMapName, [kTechDataDisplayName] = "LMG",         [kTechDataModel] = LightMachineGun.kModelName, [kTechDataDamageType] = kLightMachineGunDamageType, [kTechDataCostKey] = kLightMachineGunCost, },
 //    { [kTechDataId] = kTechId.MarineStructureAbility,  [kTechDataTooltipInfo] = "MARINE_BUILD_TOOLTIP", [kTechDataPointValue] = kWeaponPointValue,    [kTechDataMapName] = MarineStructureAbility.kMapName, [kTechDataDisplayName] = "MARINE_BUILD",         [kTechDataModel] = LightMachineGun.kModelName, [kTechDataDamageType] = kLightMachineGunDamageType, [kTechDataCostKey] = kLightMachineGunCost, },	
-//    { [kTechDataId] = kTechId.LayLaserMines,  [kTechDataTooltipInfo] = "LASERMINES_TOOLTIP", [kTechDataPointValue] = kWeaponPointValue,    [kTechDataMapName] = LaserMine.kMapName, [kTechDataDisplayName] = "LASERMINES",         [kTechDataModel] = LaserMine.kModelName, [kTechDataDamageType] = kMineDamageType, [kTechDataCostKey] = kLaserMineCost, },
+    { [kTechDataId] = kTechId.LayLaserMines,  [kTechDataTooltipInfo] = "LASERMINES_TOOLTIP", [kTechDataPointValue] = kWeaponPointValue,    [kTechDataMapName] = LaserMine.kMapName, [kTechDataDisplayName] = "LASERMINES",         [kTechDataModel] = LaserMine.kModelName, [kTechDataDamageType] = kMineDamageType, [kTechDataCostKey] = kMineCost, },
 }
 
 local overrideBuildTechData = BuildTechData
@@ -55,5 +55,6 @@ function InitTechTreeMaterialOffsets()
    overrideInitTechTreeMaterialOffsets()
 
    kTechIdToMaterialOffset[kTechId.LightMachineGun] = 81
+   kTechIdToMaterialOffset[kTechId.LaserMine] = 8
    
 end
