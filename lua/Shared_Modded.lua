@@ -28,6 +28,7 @@ Script.Load("lua/Factions/Effects/Factions_DamageEffects.lua")
 
 // Class overrides here
 Script.Load("lua/Factions/Factions_NS2Gamerules.lua")
+Script.Load("lua/Factions/Factions_TechTree.lua")
 Script.Load("lua/Factions/Factions_PlayingTeam.lua")
 Script.Load("lua/Factions/Factions_Player.lua")
 Script.Load("lua/Factions/Factions_Marine.lua")
@@ -54,6 +55,8 @@ Script.Load("lua/Factions/Weapons/Factions_Pistol.lua")
 Script.Load("lua/Factions/Weapons/Factions_Rifle.lua")
 Script.Load("lua/Factions/Weapons/Factions_Shotgun.lua")
 Script.Load("lua/Factions/Factions_Mine.lua")
+Script.Load("lua/Factions/Weapons/Factions_LayLaserMines.lua")
+Script.Load("lua/Factions/Factions_LaserMine.lua")
 //Script.Load("lua/Factions/Weapons/Factions_MarineStructureAbility.lua")
 
 // New classes here

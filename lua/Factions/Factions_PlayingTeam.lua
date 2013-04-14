@@ -215,6 +215,23 @@ if Server then
 		
 		return playerCount
 	end
+	
+	local overrideInitTechTree = PlayingTeam.InitTechTree
+	function PlayingTeam:InitTechTree()
+	
+		overrideInitTechTree(self)
+	
+		// Unlock (almost) all tech. The new upgrade system is used to actually control tech now.
+		local dontResearchTech = {}
+		dontResearchTech[kTechId.Weapons1] = true
+		dontResearchTech[kTechId.Armor1] = true
+		dontResearchTech[kTechId.Weapons2] = true
+		dontResearchTech[kTechId.Armor2] = true
+		dontResearchTech[kTechId.Weapons3] = true
+		dontResearchTech[kTechId.Armor3] = true
+		self.techTree:ResearchAll(dontResearchTech)
+		
+	end
 
 	Class_Reload("PlayingTeam", networkVars)
 end
