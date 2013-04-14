@@ -45,6 +45,8 @@ end
 function AlienClassUpgrade:OnAdd(player)
 
 	// Apply the same logic to the player as OnCommandChangeClass does
-	player:Replace(self:GetUpgradeName(), player:GetTeamNumber(), false, nil, nil)
+	if not player:isa(self:GetUpgradeTitle()) then
+		player:Replace(self:GetUpgradeName(), player:GetTeamNumber(), false, nil, nil)
+	end
 
 end

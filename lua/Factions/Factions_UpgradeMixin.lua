@@ -135,18 +135,46 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
     end
 end
 
-function UpgradeMixin:RefundAllUpgrades()
+function UpgradeMixin:RefundUnavailableUpgrades()
+	local refundAmount = 0
 	for index, upgrade in ipairs(self:GetActiveUpgrades()) do
-		self:AddResources(upgrade:GetCompleteRefundAmount())
-		upgrade:SetLevel(0)
+		if not self:GetCanBuyUpgradeMessage(upgrade:GetId(), true) then
+			refundAmount = refundAmount + self:RefundUpgradeComplete(upgrade:GetId())
+		end
 	end
 	
-	if Server then
+	if Server and refundAmount > 0 then
+		self:SendDirectMessage("Some upgrades refunded because they are no longer available. You got back " .. refundAmount .. " XP.")
 		// Kill the player if they do this while playing.
 		if self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
 			self:Kill(nil, nil, self:GetOrigin())
 		end
 	end
+end
+
+function UpgradeMixin:RefundAllUpgrades()
+	local refundAmount = 0
+	for index, upgrade in ipairs(self:GetActiveUpgrades()) do
+		refundAmount = refundAmount + self:RefundUpgradeComplete(upgrade:GetId())
+	end
+	
+	if Server and refundAmount > 0 then
+		self:SendDirectMessage("All upgrades refunded. You got back " .. refundAmount .. " XP.")
+		// Kill the player if they do this while playing.
+		if self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
+			self:Kill(nil, nil, self:GetOrigin())
+		end
+	end
+end
+
+function UpgradeMixin:RefundUpgradeComplete(upgradeId)
+
+	local upgrade = self:GetUpgradeById(upgradeId)
+	local refundAmount = upgrade:GetCompleteRefundAmount()
+	self:AddResources(upgrade:GetCompleteRefundAmount())
+	upgrade:SetLevel(0)
+	return refundAmount
+	
 end
 
 function UpgradeMixin:SetUpgradeLevel(upgradeId, upgradeLevel)
