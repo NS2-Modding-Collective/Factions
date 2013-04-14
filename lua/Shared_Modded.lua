@@ -36,6 +36,7 @@ Script.Load("lua/Factions/Factions_MarineSpectator.lua")
 Script.Load("lua/Factions/Factions_JetpackMarine.lua")
 
 // Alien Classes
+Script.Load("lua/CamouflageMixin.lua")
 Script.Load("lua/Factions/Factions_Alien.lua")
 
 // Buildings

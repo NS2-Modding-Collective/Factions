@@ -41,10 +41,10 @@ function FactionsAlienUpgrade:GetClassName()
 	return "FactionsAlienUpgrade"
 end
 
-// Give the weapon to the player when they buy the upgrade.
+// Give the alien upgrade to the player when they buy the upgrade.
 function FactionsAlienUpgrade:OnAdd(player)
 
-	// Apply the same logic to the player as OnUpgrade does
+	// Apply the same logic to the player as GiveUpgrade does
 	player:GiveUpgrade(self.upgradeTechId)
 
 end
