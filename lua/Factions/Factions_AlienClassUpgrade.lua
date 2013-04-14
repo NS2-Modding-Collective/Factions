@@ -46,6 +46,7 @@ function AlienClassUpgrade:OnAdd(player)
 
 	// Apply the same logic to the player as OnCommandChangeClass does
 	if not player:isa(self:GetUpgradeTitle()) then
+		player:SendDirectMessage("You are now a " .. self:GetUpgradeTitle() .. "!")
 		player:Replace(self:GetUpgradeName(), player:GetTeamNumber(), false, nil, nil)
 	end
 
