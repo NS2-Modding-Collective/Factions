@@ -10,10 +10,10 @@
 class 'AdrenalineUpgrade' (FactionsAlienUpgrade)
 
 AdrenalineUpgrade.cost 				= { 250 }                          	// cost of the upgrade in xp
-AdrenalineUpgrade.upgradeName		= "adrenaline"	                        // text code of the upgrade if using it via console
-AdrenalineUpgrade.upgradeTitle 		= "Adrenaline"       					// Title of the upgrade, e.g. Submachine Gun
+AdrenalineUpgrade.upgradeName		= "adrenaline"	                    // text code of the upgrade if using it via console
+AdrenalineUpgrade.upgradeTitle 		= "Adrenaline"       				// Title of the upgrade, e.g. Submachine Gun
 AdrenalineUpgrade.upgradeDesc 		= "Get Adrenaline"             		// Description of the upgrade
-AdrenalineUpgrade.upgradeTechId 		= kTechId.Adrenaline  				// techId of the upgrade, default is kTechId.Move cause its the first 
+AdrenalineUpgrade.upgradeTechId 	= kTechId.Adrenaline  				// techId of the upgrade, default is kTechId.Move cause its the first 
 
 function AdrenalineUpgrade:Initialize()
 

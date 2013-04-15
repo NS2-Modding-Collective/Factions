@@ -48,7 +48,7 @@ if Server then
 
 	function OnCommandDebugUpgrades(client)
 		for list, victim in ientitylist(Shared.GetEntitiesWithClassname("Player")) do
-			Shared.Message("Player: " .. victim:GetName())
+			Shared.Message("Player: " .. victim:GetName() .. " Team: " .. victim:GetTeamNumber())
 			if HasMixin(victim, "FactionsUpgrade") then
 				for index, upgrade in ipairs(victim:GetActiveUpgrades()) do
 					Shared.Message("Upgrade: " .. upgrade:GetClassName() .. " Level: " .. upgrade:GetCurrentLevel())

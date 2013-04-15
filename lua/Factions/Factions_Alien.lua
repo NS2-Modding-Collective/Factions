@@ -12,7 +12,15 @@
 Script.Load("lua/Factions/Factions_BuyMenuMixin.lua")
 
 local networkVars = {
+	canCamouflage = "boolean",
 }
+
+AddMixinNetworkVars(SpeedUpgradeMixin, networkVars)
+AddMixinNetworkVars(WeaponUpgradeMixin, networkVars)
+AddMixinNetworkVars(HealthUpgradeMixin, networkVars)
+AddMixinNetworkVars(ArmorUpgradeMixin, networkVars)
+AddMixinNetworkVars(SpawnProtectMixin, networkVars)
+AddMixinNetworkVars(CamouflageMixin, networkVars)
 
 // Use the new Mixins here.
 local overrideOnCreate = Alien.OnCreate
@@ -49,6 +57,25 @@ function Alien:OnCreate()
 		assert(HasMixin(self, "TeamColours"))
 	end
 	
+end
+
+local overrideOnInitialized = Alien.OnInitialized
+function Alien:OnInitialized()
+
+	overrideOnInitialized(self)
+
+	// Alien-specific stuff
+	InitMixin(self, CamouflageMixin)	
+	assert(HasMixin(self, "Camouflage"))
+	
+end
+
+function Alien:GetCanCamouflage()
+	return self.canCamouflage
+end
+
+function Alien:SetCanCamouflage(value)
+	self.canCamouflage = value
 end
 
 Class_Reload("Alien", networkVars)

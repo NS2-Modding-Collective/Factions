@@ -7,7 +7,7 @@
 
 // Alien Upgrades
 						
-class 'CamouflageUpgrade' (FactionsAlienUpgrade)
+class 'CamouflageUpgrade' (FactionsUpgrade)
 
 CamouflageUpgrade.cost 				= { 250 }                       // cost of the upgrade in xp
 CamouflageUpgrade.upgradeName		= "camo"	                    // text code of the upgrade if using it via console
@@ -29,4 +29,14 @@ end
 
 function CamouflageUpgrade:GetClassName()
 	return "CamouflageUpgrade"
+end
+
+// Give the weapon to the player when they buy the upgrade.
+function CamouflageUpgrade:OnAdd(player)
+
+	// Apply the same logic to the player as GiveUpgrade does
+	if HasMixin(player, "Camoflage") then
+		player:SetCanCamouflage(true)
+	end
+
 end

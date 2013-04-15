@@ -11,7 +11,7 @@
 
 Script.Load("lua/FunctionContracts.lua")
 
-LaserSightMixin = CreateMixin( IronSightMixin )
+LaserSightMixin = CreateMixin( LaserSightMixin )
 LaserSightMixin.type = "LaserSight"
 
 LaserSightMixin.baseAccuracy = 1
@@ -19,7 +19,7 @@ LaserSightMixin.accuracyBoostPerLevel = 0.1
 
 LaserSightMixin.expectedMixins =
 {
-	Laser = "To actually render the laser"
+	Laser = "To actually render the laser",
 }
 
 LaserSightMixin.expectedCallbacks =
@@ -32,17 +32,18 @@ LaserSightMixin.overrideFunctions =
 
 LaserSightMixin.expectedConstants =
 {
+	kLaserSightAttachPoint = "The name of the node to attach the laser to",
 }
 
 LaserSightMixin.networkVars =
 {
-	accuracyScalar = "float",
+	laserSightAccuracyScalar = "float",
 	laserSightLevel = "integer (0 to " .. LaserSightUpgrade.levels .. ")",
 }
 
 function LaserSightMixin:__initmixin()
 
-	self.accuracyScalar = LaserSightMixin.baseAccuracy
+	self.laserSightAccuracyScalar = LaserSightMixin.baseAccuracy
 	self.laserSightLevel = 0
 	
 end
@@ -59,11 +60,11 @@ function LaserSightMixin:GetLaserSightActive()
 end
 
 // Switch on the laser
-function LaserSightMixin:OnSetActive() 
+function LaserSightMixin:OnUpdateRender() 
 
-	local active = self:GetLaserSightActive()
-	if active then
-		// activate lazors
+	if self:GetLaserSightActive() then
+		local mixinConstants = self:GetMixinConstants()    
+		local laserSightAttachPoint = mixinConstants.kLaserSightAttachPoint
 	end
 	
 end
@@ -71,7 +72,7 @@ end
 function LaserSightMixin:UpdateLaserSightLevel()
 
 	local player = self:GetParent()
-    if player and and HasMixin("WeaponUpgrade") and self.laserSightLevel ~= player:GetLaserSightLevel() then
+    if player and HasMixin("WeaponUpgrade") and self.laserSightLevel ~= player:GetLaserSightLevel() then
 	
 		self:SetLaserSightLevel(player:GetLaserSightLevel())
 		
@@ -82,6 +83,6 @@ end
 function LaserSightMixin:SetLaserSightLevel(newLevel)
 
 	self.laserSightLevel = newLevel
-	self.accuracyScalar = LaserSightMixin.baseAccuracy - (self.reloadSpeedLevel * LaserSightMixin.accuracyBoostPerLevel)
+	self.laserSightAccuracyScalar = LaserSightMixin.baseAccuracy - (self.reloadSpeedLevel * LaserSightMixin.accuracyBoostPerLevel)
 
 end

@@ -230,6 +230,10 @@ if Server then
 				newPlayer:SetSpawnProtect()
 			end
 			
+			if HasMixin(newPlayer, "FactionsUpgrade") then
+				newPlayer:RefundUnavailableUpgrades()
+			end
+			
 		end
 		
 		return success, newPlayer
