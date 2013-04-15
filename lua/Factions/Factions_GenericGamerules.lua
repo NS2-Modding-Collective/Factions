@@ -42,7 +42,7 @@ if Server then
 		gameInfo:SetGameType(self.factionsGameType)
 		gameInfo:SetIsInSuddenDeath(false)
 		
-		Shared.Message("Server started for Factions v" .. kFactionsVersion .. "!")
+		Shared.Message("Server started for Xenoswarm core build " .. kFactionsVersion .. "!")
 		Shared.Message("Current Game Mode: " .. self:GetGameModeName())
         
     end

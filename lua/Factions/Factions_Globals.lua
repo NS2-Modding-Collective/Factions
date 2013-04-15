@@ -10,4 +10,4 @@
 // Factions_Globals.lua
 
 // Version number
-kFactionsVersion = "0.3"
+kFactionsVersion = "4"
