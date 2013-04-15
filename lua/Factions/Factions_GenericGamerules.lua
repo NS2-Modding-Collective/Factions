@@ -257,7 +257,7 @@ if Server then
 		NS2Gamerules.OnClientConnect(self, client)
 		local player = client:GetControllingPlayer()
 		
-		player:BuildAndSendDirectMessage("Welcome to Factions v" .. kFactionsVersion .. "!")
+		player:BuildAndSendDirectMessage("Server is running Xenoswarm core build " .. kFactionsVersion .. "!")
 		player:BuildAndSendDirectMessage("Current Game Mode: " .. self:GetGameModeName())
 		for index, message in ipairs(self:GetGameModeText()) do
 			player:BuildAndSendDirectMessage(message)
