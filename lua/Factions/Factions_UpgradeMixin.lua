@@ -135,10 +135,12 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
     end
 end
 
+// Refunds any upgrades that are no longer available because of team restrictions.
 function UpgradeMixin:RefundUnavailableUpgrades()
 	local refundAmount = 0
 	for index, upgrade in ipairs(self:GetActiveUpgrades()) do
-		if not self:GetCanBuyUpgradeMessage(upgrade:GetId(), true) then
+		local upgradeMessage = self:GetCanBuyUpgradeMessage(upgrade:GetId(), true)
+		if upgradeMessage ~= "" then
 			refundAmount = refundAmount + self:RefundUpgradeComplete(upgrade:GetId())
 		end
 	end
