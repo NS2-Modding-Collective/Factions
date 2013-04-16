@@ -10,7 +10,7 @@
 // Factions_DamageTypes.lua
 
 // Use this function to change damage according to current upgrades
-function NS2Gamerules_GetUpgradedDamage(attacker, doer, damage, damageType)
+local function ApplyFactionsUpgradedDamageModifiers(target, attacker, doer, damage, armorFractionUsed, healthPerArmor, damageType)
 
     local damageScalar = 1
 
@@ -29,6 +29,20 @@ function NS2Gamerules_GetUpgradedDamage(attacker, doer, damage, damageType)
         
     end
         
-    return damage * damageScalar
+	damage = damage * damageScalar
+	
+    return damage, armorFractionUsed, healthPerArmor
     
+end
+
+// This function is called from CanEntityDoDamageTo in NS2Utility
+// as this is the first place in the code we are able to access kDamageTypeGlobalRules
+kFactionsDamageRulesApplied = false
+function Factions_CheckAndApplyDamageModifierRules()
+	
+	if not kFactionsDamageRulesApplied then
+		table.insert(kDamageTypeGlobalRules, ApplyFactionsUpgradedDamageModifiers)
+		kFactionsDamageRulesApplied = true
+	end
+
 end
