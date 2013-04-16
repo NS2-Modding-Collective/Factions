@@ -16,7 +16,7 @@ GUIObjectiveDisplay.kMaxDistance = 100
 GUIObjectiveDisplay.kMinAlpha = 0.15 // 0.1
 GUIObjectiveDisplay.kMaxAlpha = .5 // 0.1
 
-local kTextures = { [kMarineTeamType] = "ui/objectives_alien.dds", [kAlienTeamType] = "ui/objectives_alien.dds" }
+local kTextures = { [kMarineTeamType] = "ui/objectives_marine.dds", [kAlienTeamType] = "ui/objectives_alien.dds" }
 
 local function GetTextureForTeamType(teamType)
     return kTextures[teamType] or ""

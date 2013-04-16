@@ -86,3 +86,17 @@ function PlayerUI_GetCrosshairY()
     end
 
 end
+
+function PlayerUI_GetTeamType()
+
+	local player = Client.GetLocalPlayer()
+    if player then
+    
+    	local teamNumber = player:GetTeamNumber()
+        return GetGamerulesInfo():GetTeamType(teamNumber)
+        
+    end
+    
+    return kNeutralTeamType
+
+end
