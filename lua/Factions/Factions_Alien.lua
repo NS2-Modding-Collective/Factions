@@ -21,6 +21,7 @@ AddMixinNetworkVars(HealthUpgradeMixin, networkVars)
 AddMixinNetworkVars(ArmorUpgradeMixin, networkVars)
 AddMixinNetworkVars(SpawnProtectMixin, networkVars)
 AddMixinNetworkVars(CamouflageMixin, networkVars)
+AddMixinNetworkVars(FireRateMixin, networkVars)
 
 // Use the new Mixins here.
 local overrideOnCreate = Alien.OnCreate
@@ -35,6 +36,7 @@ function Alien:OnCreate()
 	InitMixin(self, ArmorUpgradeMixin)
 	InitMixin(self, SpawnProtectMixin)	
 	InitMixin(self, BuyMenuMixin)
+	InitMixin(self, FireRateMixin)
 	
 	assert(HasMixin(self, "SpeedUpgrade"))
 	assert(HasMixin(self, "WeaponUpgrade"))
@@ -42,6 +44,7 @@ function Alien:OnCreate()
 	assert(HasMixin(self, "ArmorUpgrade"))
 	assert(HasMixin(self, "SpawnProtect"))
 	assert(HasMixin(self, "BuyMenu"))
+	assert(HasMixin(self, "VariableFireRate"))
 	assert(HasMixin(self, "Xp"))
 	assert(HasMixin(self, "FactionsUpgrade"))
 	
@@ -76,6 +79,15 @@ end
 
 function Alien:SetCanCamouflage(value)
 	self.canCamouflage = value
+end
+
+// These let the upgrade system work unimpeded.
+function Alien:GetHasTwoHives()
+	return true
+end
+
+function Alien:GetHasThreeHives()
+	return true
 end
 
 Class_Reload("Alien", networkVars)

@@ -7,23 +7,23 @@
 //  Licensed under LGPL v3.0
 //________________________________
 
-// Factions_ClipWeapon.lua
+// Factions_Weapon.lua
 
 local networkVars = {
 }
 
-AddMixinNetworkVars(ReloadSpeedMixin, networkVars)
+AddMixinNetworkVars(FireRateMixin, networkVars)
 
 // Reload Speed etc.
-local overrideOnCreate = ClipWeapon.OnCreate
-function ClipWeapon:OnCreate()
+local overrideOnCreate = Weapon.OnCreate
+function Weapon:OnCreate()
 
 	overrideOnCreate(self)
 
-	InitMixin(self, ReloadSpeedMixin)
+	InitMixin(self, FireRateMixin)
 	
-	assert(HasMixin(self, "VariableReloadSpeed"))
+	assert(HasMixin(self, "VariableFireRate"))
 	
 end
 
-Class_Reload("ClipWeapon", networkVars)
+Class_Reload("Weapon", networkVars)
