@@ -11,7 +11,6 @@ class 'LaserSightUpgrade' (FactionsUpgrade)
 
 // Define these statically so we can easily access them without instantiating too.
 LaserSightUpgrade.cost = { 100, 200, 400, 600, 600 }                              		// Cost of the upgrade in xp
-LaserSightUpgrade.levels = 5															// How many levels are there to this upgrade
 LaserSightUpgrade.upgradeName = "lasersight"                     						// Text code of the upgrade if using it via console
 LaserSightUpgrade.upgradeTitle = "Laser Sight"			               					// Title of the upgrade, e.g. Submachine Gun
 LaserSightUpgrade.upgradeDesc = "Improves the accuracy of your weapon"					// Description of the upgrade
@@ -23,7 +22,6 @@ function LaserSightUpgrade:Initialize()
 	FactionsUpgrade.Initialize(self)
 
 	self.cost = LaserSightUpgrade.cost
-	self.levels = LaserSightUpgrade.levels
 	self.upgradeName = LaserSightUpgrade.upgradeName
 	self.upgradeTitle = LaserSightUpgrade.upgradeTitle
 	self.upgradeDesc = LaserSightUpgrade.upgradeDesc

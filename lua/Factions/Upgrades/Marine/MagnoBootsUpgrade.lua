@@ -12,7 +12,6 @@ class 'MagnoBootsUpgrade' (FactionsUpgrade)
 // Define these statically so we can easily access them without instantiating too.
 MagnoBootsUpgrade.upgradeType = kFactionsUpgradeTypes.Class		       					// The type of the upgrade
 MagnoBootsUpgrade.cost = { 500 }                              							// Cost of the upgrade in xp
-MagnoBootsUpgrade.levels = 1															// How many levels are there to this upgrade
 MagnoBootsUpgrade.upgradeName = "magnoboots"                     						// Text code of the upgrade if using it via console
 MagnoBootsUpgrade.upgradeTitle = "Magno Boots"               							// Title of the upgrade, e.g. Submachine Gun
 MagnoBootsUpgrade.upgradeDesc = "Allows you to walk on walls"							// Description of the upgrade
@@ -24,7 +23,6 @@ function MagnoBootsUpgrade:Initialize()
 
 	self.upgradeType = MagnoBootsUpgrade.upgradeType
 	self.cost = MagnoBootsUpgrade.cost
-	self.levels = MagnoBootsUpgrade.levels
 	self.upgradeName = MagnoBootsUpgrade.upgradeName
 	self.upgradeTitle = MagnoBootsUpgrade.upgradeTitle
 	self.upgradeDesc = MagnoBootsUpgrade.upgradeDesc

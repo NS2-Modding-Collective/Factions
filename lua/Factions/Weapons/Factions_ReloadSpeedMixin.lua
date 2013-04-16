@@ -36,7 +36,7 @@ ReloadSpeedMixin.expectedConstants =
 ReloadSpeedMixin.networkVars =
 {
 	reloadSpeedScalar = "float",
-	reloadSpeedLevel = "integer (0 to " .. ReloadSpeedUpgrade.levels .. ")",
+	reloadSpeedLevel = "integer (0 to " .. #ReloadSpeedUpgrade.cost .. ")",
 }
 
 function ReloadSpeedMixin:__initmixin()

@@ -32,7 +32,7 @@ ArmorUpgradeMixin.expectedConstants =
 
 ArmorUpgradeMixin.networkVars =
 {
-	upgradeArmorLevel = "integer (0 to " .. ArmorUpgrade.levels .. ")",
+	upgradeArmorLevel = "integer (0 to " .. #ArmorUpgrade.cost .. ")",
 	originalMaxArmor = string.format("float (0 to %f by 1)", LiveMixin.kMaxArmor),
 }
 

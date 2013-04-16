@@ -17,7 +17,6 @@ class 'FactionsWeaponUpgrade' (FactionsUpgrade)
 
 FactionsWeaponUpgrade.upgradeType 	= kFactionsUpgradeTypes.Weapon        	// the type of the upgrade
 FactionsWeaponUpgrade.triggerType 	= kFactionsTriggerTypes.NoTrigger   	// how the upgrade is gonna be triggered
-FactionsWeaponUpgrade.levels 		= 1                                    	// if the upgrade has more than one lvl, like weapon or armor ups. Default is 1.
 FactionsWeaponUpgrade.permanent		= false									// Controls whether you get the upgrade back when you respawn
 FactionsWeaponUpgrade.primaryWeapon = false									// Is this a primary weapon?
 FactionsWeaponUpgrade.teamType		= kFactionsUpgradeTeamType.MarineTeam		// Team Type
@@ -32,7 +31,6 @@ function FactionsWeaponUpgrade:Initialize()
 	end
 	self.upgradeType = FactionsWeaponUpgrade.upgradeType
 	self.triggerType = FactionsWeaponUpgrade.triggerType
-	self.levels = FactionsWeaponUpgrade.levels
 	self.permanent = FactionsWeaponUpgrade.permanent
 	self.primaryWeapon = FactionsWeaponUpgrade.primaryWeapon
 	self.teamType = FactionsWeaponUpgrade.teamType

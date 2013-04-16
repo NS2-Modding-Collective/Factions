@@ -11,7 +11,6 @@ class 'ScanUpgrade' (FactionsTimedUpgrade)
 
 // Define these statically so we can easily access them without instantiating too.
 ScanUpgrade.cost = { 100, 100, 100, 100, 100 }                              	// Cost of the upgrade in xp
-ScanUpgrade.levels = 5															// How many levels are there to this upgrade
 ScanUpgrade.upgradeName = "scan"	                     						// Text code of the upgrade if using it via console
 ScanUpgrade.upgradeTitle = "Scanner"	               							// Title of the upgrade, e.g. Submachine Gun
 ScanUpgrade.upgradeDesc = "Periodically scan for nearby enemies"				// Description of the upgrade
@@ -24,7 +23,6 @@ function ScanUpgrade:Initialize()
 	FactionsUpgrade.Initialize(self)
 
 	self.cost = ScanUpgrade.cost
-	self.levels = ScanUpgrade.levels
 	self.upgradeName = ScanUpgrade.upgradeName
 	self.upgradeTitle = ScanUpgrade.upgradeTitle
 	self.upgradeDesc = ScanUpgrade.upgradeDesc

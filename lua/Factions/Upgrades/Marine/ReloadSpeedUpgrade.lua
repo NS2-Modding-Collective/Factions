@@ -11,7 +11,6 @@ class 'ReloadSpeedUpgrade' (FactionsUpgrade)
 
 // Define these statically so we can easily access them without instantiating too.
 ReloadSpeedUpgrade.cost = { 100, 200, 400, 600, 600 }                              			// Cost of the upgrade in xp
-ReloadSpeedUpgrade.levels = 5																// How many levels are there to this upgrade
 ReloadSpeedUpgrade.upgradeName = "reloadspeed"                     							// Text code of the upgrade if using it via console
 ReloadSpeedUpgrade.upgradeTitle = "Reload Speed Upgrade"               						// Title of the upgrade, e.g. Submachine Gun
 ReloadSpeedUpgrade.upgradeDesc = "Upgrade your reload speed"								// Description of the upgrade
@@ -23,7 +22,6 @@ function ReloadSpeedUpgrade:Initialize()
 	FactionsUpgrade.Initialize(self)
 
 	self.cost = ReloadSpeedUpgrade.cost
-	self.levels = ReloadSpeedUpgrade.levels
 	self.upgradeName = ReloadSpeedUpgrade.upgradeName
 	self.upgradeTitle = ReloadSpeedUpgrade.upgradeTitle
 	self.upgradeDesc = ReloadSpeedUpgrade.upgradeDesc

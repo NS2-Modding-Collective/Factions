@@ -137,19 +137,30 @@ function FactionsGamerulesInfo:GetUsesAlienColours()
 	return self.usesAlienColours
 end
 
-// TODO: Implement a cache here.
+local cacheGetTeamType = { }
 function FactionsGamerulesInfo:GetTeamType(teamNumber)
-	if teamNumber == kTeam1Index then
-		return kMarineTeamType
-	elseif teamNumber == kTeam2Index then
-		if self.isMarinevsMarine then
-			return kMarineTeamType
+
+	local returnType = cacheGetTeamType[teamNumber]
+	if returnType == nil then
+	
+		if teamNumber == kTeam1Index then
+			returnType = kMarineTeamType
+		elseif teamNumber == kTeam2Index then
+			if self.isMarinevsMarine then
+				returnType = kMarineTeamType
+			else
+				returnType = kAlienTeamType
+			end
 		else
-			return kAlienTeamType
+			returnType = kNeutralTeamType
 		end
-	else
-		return kNeutralTeamType
+	
+		cacheGetTeamType[teamNumber] = returnType
+	
 	end
+	
+	return returnType
+	
 end
 	
 Shared.LinkClassToMap("FactionsGamerulesInfo", FactionsGamerulesInfo.kMapName, networkVars)

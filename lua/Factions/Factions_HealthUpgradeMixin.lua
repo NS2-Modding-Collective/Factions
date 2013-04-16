@@ -32,7 +32,7 @@ HealthUpgradeMixin.expectedConstants =
 
 HealthUpgradeMixin.networkVars =
 {
-	upgradeHealthLevel = "integer (0 to " .. HealthUpgrade.levels .. ")",
+	upgradeHealthLevel = "integer (0 to " .. #HealthUpgrade.cost .. ")",
 	originalMaxHealth = string.format("float (0 to %f by 1)", LiveMixin.kMaxHealth),
 }
 
