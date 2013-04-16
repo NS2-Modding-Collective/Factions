@@ -615,6 +615,14 @@
         </model>
 		
 		<parameter name="startSocketed" type="boolean" default="false" />
+		<parameter name="startLightMode" type="choice"  label="Starting Light State"  default="0" help="Starting light state, if you wish to override.">
+            <choice label="Default" value="0"/>
+            <choice label="No Power" value="1"/>
+            <choice label="Emergency Lights" value="2"/>
+            <choice label="Damaged" value="3"/>
+			<choice label="Normal" value="4"/>
+		</parameter>
+		
         
     </class>
     
