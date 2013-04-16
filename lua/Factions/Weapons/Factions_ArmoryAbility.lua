@@ -5,7 +5,7 @@
 //
 //    Created by:   Andreas Urwalek (a_urwa@sbox.tugraz.at)
 //
-// Gorge builds Sentry.
+// Gorge builds Armory.
 //
 // ========= For more information, visit us at http://www.unknownworlds.com =====================
 
