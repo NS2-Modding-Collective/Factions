@@ -34,10 +34,10 @@ WeaponUpgradeMixin.expectedConstants =
 
 WeaponUpgradeMixin.networkVars =
 {
-	reloadSpeedLevel = "integer (0 to " .. ReloadSpeedUpgrade.levels .. ")",
-	fireRateLevel = "integer (0 to " .. FireRateUpgrade.levels .. ")",
-	damageLevel = "integer (0 to " .. DamageUpgrade.levels .. ")",
-	laserSightLevel = "integer (0 to " .. LaserSightUpgrade.levels .. ")",
+	reloadSpeedLevel = "integer (0 to " .. #ReloadSpeedUpgrade.cost .. ")",
+	fireRateLevel = "integer (0 to " .. #FireRateUpgrade.cost .. ")",
+	damageLevel = "integer (0 to " .. #DamageUpgrade.cost .. ")",
+	laserSightLevel = "integer (0 to " .. #LaserSightUpgrade.cost .. ")",
 }
 
 function WeaponUpgradeMixin:__initmixin()

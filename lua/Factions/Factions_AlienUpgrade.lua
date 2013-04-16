@@ -17,7 +17,6 @@ class 'FactionsAlienUpgrade' (FactionsUpgrade)
 
 FactionsAlienUpgrade.upgradeType 		= kFactionsUpgradeTypes.Ability        	// the type of the upgrade
 FactionsAlienUpgrade.triggerType 		= kFactionsTriggerTypes.NoTrigger   	// how the upgrade is gonna be triggered
-FactionsAlienUpgrade.levels 			= 1                                    	// if the upgrade has more than one lvl, like weapon or armor ups. Default is 1.
 FactionsAlienUpgrade.permanent			= true									// Controls whether you get the upgrade back when you respawn
 FactionsAlienUpgrade.teamType			= kFactionsUpgradeTeamType.AlienTeam	// Team Type
 
@@ -31,7 +30,6 @@ function FactionsAlienUpgrade:Initialize()
 	end
 	self.upgradeType = FactionsAlienUpgrade.upgradeType
 	self.triggerType = FactionsAlienUpgrade.triggerType
-	self.levels = FactionsAlienUpgrade.levels
 	self.permanent = FactionsAlienUpgrade.permanent
 	self.teamType = FactionsAlienUpgrade.teamType
 	

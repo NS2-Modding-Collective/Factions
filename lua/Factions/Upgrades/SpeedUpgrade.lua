@@ -11,7 +11,6 @@ class 'SpeedUpgrade' (FactionsUpgrade)
 
 // Define these statically so we can easily access them without instantiating too.
 SpeedUpgrade.cost = { 100, 200, 400 }                              					// Cost of the upgrade in xp
-SpeedUpgrade.levels = 3																// How many levels are there to this upgrade
 SpeedUpgrade.upgradeName = "speed"                     								// Text code of the upgrade if using it via console
 SpeedUpgrade.upgradeTitle = "Speed Upgrade"               							// Title of the upgrade, e.g. Submachine Gun
 SpeedUpgrade.upgradeDesc = "Upgrade your player's speed"							// Description of the upgrade
@@ -22,7 +21,6 @@ function SpeedUpgrade:Initialize()
 	FactionsUpgrade.Initialize(self)
 
 	self.cost = SpeedUpgrade.cost
-	self.levels = SpeedUpgrade.levels
 	self.upgradeName = SpeedUpgrade.upgradeName
 	self.upgradeTitle = SpeedUpgrade.upgradeTitle
 	self.upgradeDesc = SpeedUpgrade.upgradeDesc

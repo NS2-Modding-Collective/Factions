@@ -36,7 +36,7 @@ FireRateMixin.expectedConstants =
 FireRateMixin.networkVars =
 {
 	fireRateScalar = "float",
-	fireRateLevel = "integer (0 to " .. FireRateUpgrade.levels .. ")",
+	fireRateLevel = "integer (0 to " .. #FireRateUpgrade.cost .. ")",
 }
 
 function FireRateMixin:__initmixin()

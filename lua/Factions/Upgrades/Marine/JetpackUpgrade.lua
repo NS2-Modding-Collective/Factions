@@ -12,7 +12,6 @@ class 'JetpackUpgrade' (FactionsUpgrade)
 // Define these statically so we can easily access them without instantiating too.
 JetpackUpgrade.upgradeType = kFactionsUpgradeTypes.Class	       					// The type of the upgrade
 JetpackUpgrade.cost = { 800 }                              							// Cost of the upgrade in xp
-JetpackUpgrade.levels = 1															// How many levels are there to this upgrade
 JetpackUpgrade.upgradeName = "jetpack"                     							// Text code of the upgrade if using it via console
 JetpackUpgrade.upgradeTitle = "Jetpack"               								// Title of the upgrade, e.g. Submachine Gun
 JetpackUpgrade.upgradeDesc = "Allows you to fly like an eagle"						// Description of the upgrade
@@ -25,7 +24,6 @@ function JetpackUpgrade:Initialize()
 
 	self.upgradeType = JetpackUpgrade.upgradeType
 	self.cost = JetpackUpgrade.cost
-	self.levels = JetpackUpgrade.levels
 	self.upgradeName = JetpackUpgrade.upgradeName
 	self.upgradeTitle = JetpackUpgrade.upgradeTitle
 	self.upgradeDesc = JetpackUpgrade.upgradeDesc

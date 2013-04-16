@@ -11,7 +11,6 @@ class 'ResupplyUpgrade' (FactionsTimedUpgrade)
 
 // Define these statically so we can easily access them without instantiating too.
 ResupplyUpgrade.cost = { 100, 200, 400 }                              					// Cost of the upgrade in xp
-ResupplyUpgrade.levels = 3																// How many levels are there to this upgrade
 ResupplyUpgrade.upgradeName = "resupply"                     							// Text code of the upgrade if using it via console
 ResupplyUpgrade.upgradeTitle = "Resupply"               								// Title of the upgrade, e.g. Submachine Gun
 ResupplyUpgrade.upgradeDesc = "Periodically stock up on health and ammo"				// Description of the upgrade
@@ -24,7 +23,6 @@ function ResupplyUpgrade:Initialize()
 	FactionsUpgrade.Initialize(self)
 
 	self.cost = ResupplyUpgrade.cost
-	self.levels = ResupplyUpgrade.levels
 	self.upgradeName = ResupplyUpgrade.upgradeName
 	self.upgradeTitle = ResupplyUpgrade.upgradeTitle
 	self.upgradeDesc = ResupplyUpgrade.upgradeDesc

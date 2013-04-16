@@ -21,7 +21,6 @@ kRefundPenalty = 0.2 // 20% is taken away from any refunded amount of xp.
 FactionsUpgrade.upgradeType = kFactionsUpgradeTypes.Tech       	// The type of the upgrade
 FactionsUpgrade.triggerType = kFactionsTriggerTypes.NoTrigger  	// How the upgrade is gonna be triggered
 FactionsUpgrade.currentLevel = 0                               	// The default level of the upgrade. This is incremented when we buy the upgrade
-FactionsUpgrade.levels = 1                                     	// If the upgrade has more than one lvl, like weapon or armor ups. Default is 1.
 FactionsUpgrade.cost = { 9999 }                                	// Cost of each level of the upgrade in xp
 FactionsUpgrade.upgradeName = "nil"                         	// Name of the upgrade as used in the console, e.g. smg
 FactionsUpgrade.upgradeTitle = "nil"                         	// Title of the upgrade, e.g. Submachine Gun
@@ -42,7 +41,6 @@ function FactionsUpgrade:Initialize()
 	self.upgradeType = FactionsUpgrade.upgradeType
 	self.triggerType = FactionsUpgrade.triggerType
 	self.currentLevel = FactionsUpgrade.currentLevel
-	self.levels = FactionsUpgrade.levels
 	self.cost = FactionsUpgrade.cost
 	self.upgradeName = FactionsUpgrade.upgradeName
 	self.upgradeTitle = FactionsUpgrade.upgradeTitle
@@ -73,7 +71,7 @@ function FactionsUpgrade:GetTriggerType()
 end
 
 function FactionsUpgrade:GetMaxLevels()
-    return self.levels
+    return #self.cost
 end
 
 function FactionsUpgrade:GetCurrentLevel()
@@ -89,11 +87,11 @@ function FactionsUpgrade:GetNextLevel()
 end
 
 function FactionsUpgrade:GetIsAtMaxLevel()
-	return self.currentLevel == self.levels
+	return self.currentLevel == self:GetMaxLevels()
 end
 
 function FactionsUpgrade:AddLevel()
-	if self.currentLevel < self.levels then
+	if self.currentLevel < self:GetMaxLevels() then
 		self.currentLevel = self.currentLevel + 1
 	end
 end

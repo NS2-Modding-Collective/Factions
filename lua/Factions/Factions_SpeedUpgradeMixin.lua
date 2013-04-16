@@ -33,7 +33,7 @@ SpeedUpgradeMixin.expectedConstants =
 
 SpeedUpgradeMixin.networkVars =
 {
-	upgradeSpeedLevel = "integer (0 to " .. SpeedUpgrade.levels .. ")"
+	upgradeSpeedLevel = "integer (0 to " .. #SpeedUpgrade.cost .. ")"
 }
 
 function SpeedUpgradeMixin:__initmixin()

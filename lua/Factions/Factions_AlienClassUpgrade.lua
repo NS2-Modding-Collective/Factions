@@ -17,7 +17,6 @@ class 'AlienClassUpgrade' (FactionsUpgrade)
 
 AlienClassUpgrade.upgradeType 		= kFactionsUpgradeTypes.Lifeform        	// the type of the upgrade
 AlienClassUpgrade.triggerType 		= kFactionsTriggerTypes.NoTrigger   	// how the upgrade is gonna be triggered
-AlienClassUpgrade.levels 			= 1                                    	// if the upgrade has more than one lvl, like weapon or armor ups. Default is 1.
 AlienClassUpgrade.permanent			= true									// Controls whether you get the upgrade back when you respawn
 AlienClassUpgrade.teamType			= kFactionsUpgradeTeamType.AlienTeam	// Team Type
 
@@ -31,7 +30,6 @@ function AlienClassUpgrade:Initialize()
 	end
 	self.upgradeType = AlienClassUpgrade.upgradeType
 	self.triggerType = AlienClassUpgrade.triggerType
-	self.levels = AlienClassUpgrade.levels
 	self.permanent = AlienClassUpgrade.permanent
 	self.teamType = AlienClassUpgrade.teamType
 	

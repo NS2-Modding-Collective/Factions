@@ -11,7 +11,6 @@ class 'FireRateUpgrade' (FactionsUpgrade)
 
 // Define these statically so we can easily access them without instantiating too.
 FireRateUpgrade.cost = { 100, 200, 400, 600, 600 }                              	// Cost of the upgrade in xp
-FireRateUpgrade.levels = 5															// How many levels are there to this upgrade
 FireRateUpgrade.upgradeName = "firerate"                     						// Text code of the upgrade if using it via console
 FireRateUpgrade.upgradeTitle = "Fire Rate Upgrade"		               				// Title of the upgrade, e.g. Submachine Gun
 FireRateUpgrade.upgradeDesc = "Upgrade your fire rate"								// Description of the upgrade
@@ -23,7 +22,6 @@ function FireRateUpgrade:Initialize()
 
 	self.hideUpgrade = true
 	self.cost = FireRateUpgrade.cost
-	self.levels = FireRateUpgrade.levels
 	self.upgradeName = FireRateUpgrade.upgradeName
 	self.upgradeTitle = FireRateUpgrade.upgradeTitle
 	self.upgradeDesc = FireRateUpgrade.upgradeDesc

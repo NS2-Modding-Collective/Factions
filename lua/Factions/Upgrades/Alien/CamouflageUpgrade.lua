@@ -9,7 +9,7 @@
 						
 class 'CamouflageUpgrade' (FactionsUpgrade)
 
-CamouflageUpgrade.cost 				= { 250 }                       // cost of the upgrade in xp
+CamouflageUpgrade.cost 				= { 250, 250, 250, 250 }                       // cost of the upgrade in xp
 CamouflageUpgrade.upgradeName		= "camo"	                    // text code of the upgrade if using it via console
 CamouflageUpgrade.upgradeTitle 		= "Camouflage"       			// Title of the upgrade, e.g. Submachine Gun
 CamouflageUpgrade.upgradeDesc 		= "Get camouflage"             	// Description of the upgrade
@@ -35,7 +35,7 @@ end
 function CamouflageUpgrade:OnAdd(player)
 
 	// Apply the same logic to the player as GiveUpgrade does
-	if HasMixin(player, "Camoflage") then
+	if HasMixin(player, "Camouflage") then
 		player:SetCanCamouflage(true)
 	end
 

@@ -17,7 +17,6 @@ class 'FactionsUnlockUpgrade' (FactionsUpgrade)
 
 FactionsUnlockUpgrade.upgradeType 	= kFactionsUpgradeTypes.Tech        	// the type of the upgrade
 FactionsUnlockUpgrade.triggerType 	= kFactionsTriggerTypes.NoTrigger   	// how the upgrade is gonna be triggered
-FactionsUnlockUpgrade.levels 		= 1                                    	// if the upgrade has more than one lvl, like weapon or armor ups. Default is 1.
 FactionsUnlockUpgrade.permanent		= true									// Controls whether you get the upgrade back when you respawn
 
 function FactionsUnlockUpgrade:Initialize()
@@ -30,7 +29,6 @@ function FactionsUnlockUpgrade:Initialize()
 	end
 	self.upgradeType = FactionsUnlockUpgrade.upgradeType
 	self.triggerType = FactionsUnlockUpgrade.triggerType
-	self.levels = FactionsUnlockUpgrade.levels
 	self.permanent = FactionsUnlockUpgrade.permanent
 	
 end

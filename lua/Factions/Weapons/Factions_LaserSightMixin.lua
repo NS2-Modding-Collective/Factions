@@ -38,7 +38,7 @@ LaserSightMixin.expectedConstants =
 LaserSightMixin.networkVars =
 {
 	laserSightAccuracyScalar = "float",
-	laserSightLevel = "integer (0 to " .. LaserSightUpgrade.levels .. ")",
+	laserSightLevel = "integer (0 to " .. #LaserSightUpgrade.cost .. ")",
 }
 
 function LaserSightMixin:__initmixin()

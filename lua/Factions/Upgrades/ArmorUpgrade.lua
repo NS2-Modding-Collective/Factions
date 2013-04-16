@@ -12,7 +12,6 @@ class 'ArmorUpgrade' (FactionsUpgrade)
 // Define these statically so we can easily access them without instantiating too.
 ArmorUpgrade.upgradeType 		= kFactionsUpgradeTypes.Attribute        				// the type of the upgrade
 ArmorUpgrade.cost 				= { 100, 200, 400 }                              		// Cost of the upgrade in xp
-ArmorUpgrade.levels				= 3														// How many levels are there to this upgrade
 ArmorUpgrade.upgradeName 		= "armor"                     							// Text code of the upgrade if using it via console
 ArmorUpgrade.upgradeTitle 		= "Armor Upgrade"               						// Title of the upgrade, e.g. Submachine Gun
 ArmorUpgrade.upgradeDesc 		= "Upgrade your player's armor"							// Description of the upgrade
@@ -24,7 +23,6 @@ function ArmorUpgrade:Initialize()
 
 	self.upgradeType = ArmorUpgrade.upgradeType
 	self.cost = ArmorUpgrade.cost
-	self.levels = ArmorUpgrade.levels
 	self.upgradeName = ArmorUpgrade.upgradeName
 	self.upgradeTitle = ArmorUpgrade.upgradeTitle
 	self.upgradeDesc = ArmorUpgrade.upgradeDesc
