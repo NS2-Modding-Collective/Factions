@@ -30,6 +30,58 @@ function LayLaserMines:OnInitialized()
     
 end
 
+local function DropStructure(self, player)
+
+    if Server then
+    
+        local showGhost, coords, valid = self:GetPositionForStructure(player)
+        if valid then
+        
+            // Create mine.
+            local mine = CreateEntity(self:GetDropMapName(), coords.origin, player:GetTeamNumber())
+            if mine then
+            
+                mine:SetOwner(player)
+                
+                // Check for space
+                if mine:SpaceClearForEntity(coords.origin) then
+                
+                    local angles = Angles()
+                    angles:BuildFromCoords(coords)
+                    mine:SetAngles(angles)
+                    
+                    player:TriggerEffects("create_" .. self:GetSuffixName())
+                    
+                    // Jackpot.
+                    return true
+                    
+                else
+                
+                    player:TriggerInvalidSound()
+                    DestroyEntity(mine)
+                    
+                end
+                
+            else
+                player:TriggerInvalidSound()
+            end
+            
+        else
+        
+            if not valid then
+                player:TriggerInvalidSound()
+            end
+            
+        end
+        
+    elseif Client then
+        return true
+    end
+    
+    return false
+    
+end
+
 function LayLaserMines:GetDropStructureId()
     return kTechId.LaserMine
 end

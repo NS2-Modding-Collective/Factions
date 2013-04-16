@@ -10,6 +10,7 @@
 class 'DamageUpgrade' (FactionsUpgrade)
 
 // Define these statically so we can easily access them without instantiating too.
+DamageUpgrade.upgradeType = kFactionsUpgradeTypes.Attribute        					// the type of the upgrade
 DamageUpgrade.cost = { 100, 200, 400, 600, 600 }                              		// Cost of the upgrade in xp
 DamageUpgrade.upgradeName = "damage"                     							// Text code of the upgrade if using it via console
 DamageUpgrade.upgradeTitle = "Damage Upgrade"		               					// Title of the upgrade, e.g. Submachine Gun
@@ -20,6 +21,7 @@ function DamageUpgrade:Initialize()
 
 	FactionsUpgrade.Initialize(self)
 
+	self.upgradeType = DamageUpgrade.upgradeType
 	self.cost = DamageUpgrade.cost
 	self.upgradeName = DamageUpgrade.upgradeName
 	self.upgradeTitle = DamageUpgrade.upgradeTitle

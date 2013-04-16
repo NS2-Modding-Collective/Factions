@@ -16,7 +16,7 @@ local networkVars = {
 
 class 'LaserMine' (Mine)
 
-LaserMine.kMapName = "active_laser_mine"
+LaserMine.kMapName = "laser_mine"
 
 LaserMine.kModelName = PrecacheAsset("models/marine/mine/mine.model")
 

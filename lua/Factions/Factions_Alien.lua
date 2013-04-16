@@ -9,7 +9,12 @@
 
 // Factions_Alien.lua
 
-Script.Load("lua/Factions/Factions_BuyMenuMixin.lua")
+Script.Load("lua/Factions/Factions_SpeedUpgradeMixin.lua")
+Script.Load("lua/Factions/Factions_WeaponUpgradeMixin.lua")
+Script.Load("lua/Factions/Factions_HealthUpgradeMixin.lua")
+Script.Load("lua/Factions/Factions_ArmorUpgradeMixin.lua")
+Script.Load("lua/Factions/Factions_SpawnProtectMixin.lua")
+Script.Load("lua/Factions/Weapons/Factions_FireRateMixin.lua")
 
 local networkVars = {
 	canCamouflage = "boolean",

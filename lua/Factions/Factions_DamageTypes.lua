@@ -19,7 +19,7 @@ local function ApplyFactionsUpgradedDamageModifiers(target, attacker, doer, dama
         // Damage upgrades only affect weapons, not ARCs, Sentries, MACs, Mines, etc.
         if doer:isa("Weapon") or doer:isa("Grenade") then
         
-            if HasMixin("WeaponUpgrade", attacker) then
+            if HasMixin(attacker, "WeaponUpgrade") then
             
                 damageScalar = attacker:GetDamageScalar()
                 

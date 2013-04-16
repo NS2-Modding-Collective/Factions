@@ -22,7 +22,8 @@ kModdedTechData =
 
     { [kTechDataId] = kTechId.LightMachineGun,  [kTechDataTooltipInfo] = "LMG_TOOLTIP", [kTechDataPointValue] = kWeaponPointValue,    [kTechDataMapName] = LightMachineGun.kMapName, [kTechDataDisplayName] = "LMG",         [kTechDataModel] = LightMachineGun.kModelName, [kTechDataDamageType] = kLightMachineGunDamageType, [kTechDataCostKey] = kLightMachineGunCost, },
 //    { [kTechDataId] = kTechId.MarineStructureAbility,  [kTechDataTooltipInfo] = "MARINE_BUILD_TOOLTIP", [kTechDataPointValue] = kWeaponPointValue,    [kTechDataMapName] = MarineStructureAbility.kMapName, [kTechDataDisplayName] = "MARINE_BUILD",         [kTechDataModel] = LightMachineGun.kModelName, [kTechDataDamageType] = kLightMachineGunDamageType, [kTechDataCostKey] = kLightMachineGunCost, },	
-    { [kTechDataId] = kTechId.LayLaserMines,  [kTechDataTooltipInfo] = "LASERMINES_TOOLTIP", [kTechDataPointValue] = kWeaponPointValue,    [kTechDataMapName] = LaserMine.kMapName, [kTechDataDisplayName] = "LASERMINES",         [kTechDataModel] = LaserMine.kModelName, [kTechDataDamageType] = kMineDamageType, [kTechDataCostKey] = kMineCost, },
+    { [kTechDataId] = kTechId.LayLaserMines,  [kTechDataTooltipInfo] = "LASERMINES_TOOLTIP", [kTechDataPointValue] = kWeaponPointValue,    [kTechDataMapName] = LayLaserMines.kMapName, [kTechDataDisplayName] = "LASERMINES",         [kTechDataModel] = LaserMine.kModelName, [kTechDataDamageType] = kMineDamageType, [kTechDataCostKey] = kMineCost, },
+	{ [kTechDataId] = kTechId.LaserMine,        [kTechDataMapName] = LaserMine.kMapName,             [kTechDataHint] = "MINE_HINT", [kTechDataDisplayName] = "MINE", [kTechDataEngagementDistance] = kMineDetonateRange, [kTechDataMaxHealth] = kMineHealth, [kTechDataTooltipInfo] = "MINE_TOOLTIP",  [kTechDataMaxArmor] = kMineArmor, [kTechDataModel] = LaserMine.kModelName, [kTechDataPointValue] = kMinePointValue, },
 }
 
 local overrideBuildTechData = BuildTechData

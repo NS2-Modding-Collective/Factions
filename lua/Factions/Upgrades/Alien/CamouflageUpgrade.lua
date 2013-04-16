@@ -19,6 +19,7 @@ function CamouflageUpgrade:Initialize()
 
 	FactionsAlienUpgrade.Initialize(self)
 	
+	self.hideUpgrade = true
 	self.cost = CamouflageUpgrade.cost
 	self.upgradeName = CamouflageUpgrade.upgradeName
 	self.upgradeTitle = CamouflageUpgrade.upgradeTitle

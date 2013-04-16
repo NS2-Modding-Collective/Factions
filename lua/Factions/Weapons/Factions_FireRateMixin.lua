@@ -36,44 +36,57 @@ FireRateMixin.expectedConstants =
 FireRateMixin.networkVars =
 {
 	fireRateScalar = "float",
-	fireRateLevel = "integer (0 to " .. #FireRateUpgrade.cost .. ")",
+	weaponFireRateLevel = "integer (0 to " .. #FireRateUpgrade.cost .. ")",
 }
 
 function FireRateMixin:__initmixin()
 
     self.fireRateScalar = FireRateMixin.baseFireRate
-	self.fireRateLevel = 0
+	self.weaponFireRateLevel = 0
     
 end
 
 function FireRateMixin:SetParent()
 
-	self:UpdateFireRateLevel()
+	self:UpdateWeaponFireRateLevel()
 	
 end
 
 function FireRateMixin:OnUpdateAnimationInput(modelMixin)
    
-	local attackSpeed = modelMixin:GetAnimationInput("attack_speed")
-	local newAttackSpeed = attackSpeed * self.fireRateScalar
-    modelMixin:SetAnimationInput("attack_speed", newAttackSpeed)
-            
+	if modelMixin then
+	
+		local baseAttackSpeed = 1
+		if modelMixin.GetAnimationInput then
+			baseAttackSpeed = modelMixin:GetAnimationInput("attack_speed")
+		end
+		
+		local newAttackSpeed = baseAttackSpeed * self.fireRateScalar
+		modelMixin:SetAnimationInput("attack_speed", newAttackSpeed)
+		
+    end
+			
 end
 
-function FireRateMixin:UpdateFireRateLevel()
+function FireRateMixin:UpdateWeaponFireRateLevel()
 
 	local player = self:GetParent()
-    if player and HasMixin("WeaponUpgrade") and self.fireRateLevel ~= player:GetFireRateLevel() then
+	// Funky hax for alien.
+	if not player then
+		player = self
+	end
 	
-		self:SetFireRateLevel(player:GetFireRateLevel())
+    if player and HasMixin(player, "WeaponUpgrade") and self.weaponFireRateLevel ~= player:GetFireRateLevel() then
+	
+		self:SetWeaponFireRateLevel(player:GetFireRateLevel())
 		
     end
 
 end
 
-function FireRateMixin:SetFireRateLevel(newLevel)
+function FireRateMixin:SetWeaponFireRateLevel(newLevel)
 
-	self.fireRateLevel = newLevel
-	self.fireRateScalar = FireRateMixin.baseFireRate + (self.fireRateLevel * FireRateMixin.fireRateBoostPerLevel)
+	self.weaponFireRateLevel = newLevel
+	self.fireRateScalar = FireRateMixin.baseFireRate + (self.weaponFireRateLevel * FireRateMixin.fireRateBoostPerLevel)
 
 end

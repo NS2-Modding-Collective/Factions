@@ -51,7 +51,7 @@ end
 function LaserSightMixin:GetLaserSightActive()
 
 	local player = self:GetParent()
-	if player and HasMixin("WeaponUpgrade") and player:GetLaserSightLevel() > 0 then
+	if player and HasMixin(player, "WeaponUpgrade") and player:GetLaserSightLevel() > 0 then
 		return true
 	end
 	
@@ -72,7 +72,7 @@ end
 function LaserSightMixin:UpdateLaserSightLevel()
 
 	local player = self:GetParent()
-    if player and HasMixin("WeaponUpgrade") and self.laserSightLevel ~= player:GetLaserSightLevel() then
+    if player and HasMixin(player, "WeaponUpgrade") and self.laserSightLevel ~= player:GetLaserSightLevel() then
 	
 		self:SetLaserSightLevel(player:GetLaserSightLevel())
 		
