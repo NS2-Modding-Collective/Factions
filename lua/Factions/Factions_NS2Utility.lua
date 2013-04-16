@@ -85,3 +85,14 @@ function GetRandomSpawnForCapsule(capsuleHeight, capsuleRadius, origin, minRange
     return nil
     
 end
+
+local overrideCanEntityDoDamageTo = CanEntityDoDamageTo
+function CanEntityDoDamageTo(attacker, target, cheats, devMode, friendlyFire, damageType)
+	
+	// Check and apply Factions damage modifier here.
+	// We put the code here because this is the first time we can access kDamageTypeGlobalRules
+	Factions_CheckAndApplyDamageModifierRules()
+	
+	return overrideCanEntityDoDamageTo(attacker, target, cheats, devMode, friendlyFire, damageType)
+	
+end

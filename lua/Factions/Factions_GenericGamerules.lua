@@ -42,8 +42,10 @@ if Server then
 		gameInfo:SetGameType(self.factionsGameType)
 		gameInfo:SetIsInSuddenDeath(false)
 		
-		Shared.Message("Server started for Xenoswarm core build " .. kFactionsVersion .. "!")
+		Shared.Message("******************")
+		Shared.Message("Server is running Xenoswarm // Build " .. kFactionsVersion .. "!"")
 		Shared.Message("Current Game Mode: " .. self:GetGameModeName())
+		Shared.Message("******************")
         
     end
 	
@@ -257,7 +259,7 @@ if Server then
 		NS2Gamerules.OnClientConnect(self, client)
 		local player = client:GetControllingPlayer()
 		
-		player:BuildAndSendDirectMessage("Server is running Xenoswarm core build " .. kFactionsVersion .. "!")
+		player:BuildAndSendDirectMessage("Server is running Xenoswarm build " .. kFactionsVersion .. "!")
 		player:BuildAndSendDirectMessage("Current Game Mode: " .. self:GetGameModeName())
 		for index, message in ipairs(self:GetGameModeText()) do
 			player:BuildAndSendDirectMessage(message)
