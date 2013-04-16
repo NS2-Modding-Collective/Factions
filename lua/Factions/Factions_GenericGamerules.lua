@@ -43,7 +43,7 @@ if Server then
 		gameInfo:SetIsInSuddenDeath(false)
 		
 		Shared.Message("******************")
-		Shared.Message("Server is running Xenoswarm // Build " .. kFactionsVersion .. "!"")
+		Shared.Message("Server is running Xenoswarm // Build " .. kFactionsVersion .. "!")
 		Shared.Message("Current Game Mode: " .. self:GetGameModeName())
 		Shared.Message("******************")
         
