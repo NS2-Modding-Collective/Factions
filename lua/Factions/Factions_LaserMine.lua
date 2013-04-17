@@ -84,6 +84,10 @@ function LaserMine:GetIsLaserActive()
     return true
 end
 
+function LaserMine:OverrideLaserLength()
+	return 100
+end
+
 function LaserMine:GetLaserMaxLength()
     return 100
 end
