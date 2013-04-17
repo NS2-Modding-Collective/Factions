@@ -15,7 +15,7 @@ LaserSightMixin = CreateMixin( LaserSightMixin )
 LaserSightMixin.type = "LaserSight"
 
 LaserSightMixin.baseAccuracy = 1
-LaserSightMixin.accuracyBoostPerLevel = 0.1
+LaserSightMixin.accuracyBoostPerLevel = -0.1
 
 LaserSightMixin.expectedMixins =
 {
@@ -83,6 +83,6 @@ end
 function LaserSightMixin:SetLaserSightLevel(newLevel)
 
 	self.laserSightLevel = newLevel
-	self.laserSightAccuracyScalar = LaserSightMixin.baseAccuracy - (self.reloadSpeedLevel * LaserSightMixin.accuracyBoostPerLevel)
+	self.laserSightAccuracyScalar = LaserSightMixin.baseAccuracy * (self.laserSightLevel * LaserSightMixin.accuracyBoostPerLevel)
 
 end

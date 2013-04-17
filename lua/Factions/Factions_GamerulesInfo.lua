@@ -51,11 +51,13 @@ local networkVars =
 	isInSuddenDeath = "boolean",
 	usesMarineColours = "boolean",
 	usesAlienColours = "boolean",
+	timeLimit = "time",
 }
 
 function FactionsGamerulesInfo:OnCreate()
 	// Set global gamerules info whenever gamerules info is built
 	SetGamerulesInfo(self)
+	self.timeSinceGameStart = 0
 	self.isMapEntity = true
 end
 
@@ -94,6 +96,10 @@ if Server then
 	
 	function FactionsGamerulesInfo:SetUsesAlienColours(value)
 		self.usesAlienColours = value
+	end
+	
+	function FactionsGamerulesInfo:SetTimeLimit(value)
+		self.timeLimit = value
 	end
 end
 
@@ -135,6 +141,38 @@ end
 
 function FactionsGamerulesInfo:GetUsesAlienColours()
 	return self.usesAlienColours
+end
+
+function FactionsGamerulesInfo:GetTimeLimit()
+	return self.timeLimit
+end
+
+function FactionsGamerulesInfo:GetTimeSinceGameStart()
+	return self.timeSinceGameStart
+end
+
+function FactionsGamerulesInfo:GetTimeRemaining()
+	if self.timeLimit == 0 then
+		return -1
+	else
+		local timeLeft = self.timeLimit - self.timeSinceGameStart
+		if timeLeft < 0 then
+			timeLeft = 0
+		end
+		return timeLeft
+	end
+end
+
+local function UpdateLocalGameTimer(self, dt)
+	if self.timeLimitCache == nil or self.timeLimitCache ~= self.timeLimit then
+		self.timeLimitCache = self.timeLimit
+	end
+	
+	self.timeSinceGameStart = self.timeSinceGameStart + dt
+end
+
+function FactionsGamerulesInfo:OnUpdate(dt)
+	UpdateLocalGameTimer(self, dt)
 end
 
 local cacheGetTeamType = { }
