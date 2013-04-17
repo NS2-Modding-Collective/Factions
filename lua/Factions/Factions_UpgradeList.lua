@@ -19,7 +19,6 @@ Script.Load("lua/Factions/Factions_Utility.lua")
 // Load the upgrade base classes
 Script.Load("lua/Factions/Factions_Upgrade.lua")
 Script.Load("lua/Factions/Factions_AlienClassUpgrade.lua")
-Script.Load("lua/Factions/Factions_AlienTierUpgrade.lua")
 Script.Load("lua/Factions/Factions_AlienUpgrade.lua")
 Script.Load("lua/Factions/Factions_UnlockUpgrade.lua")
 Script.Load("lua/Factions/Factions_WeaponUpgrade.lua")
