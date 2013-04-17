@@ -91,6 +91,8 @@ function UpgradeMixin:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade)
 		return "You are missing some requirements for this upgrade..."
 	elseif not freeUpgrade and not (self:GetResources() >= upgrade:GetCostForNextLevel()) then
 		return "Cannot afford upgrade"
+	elseif self:GetLevel() < upgrade:GetMinPlayerLevel() then
+		return "Cannot get upgrade until level " .. upgrade:GetMinPlayerLevel()
 	elseif factionsClass and not factionsClass:GetIsUpgradeAllowed(upgrade) then
 		return "Your class cannot buy this upgrade"
 	elseif not upgrade:GetIsAllowedForThisGameMode() then
@@ -115,6 +117,15 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
         local upgradeMessage = self:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade)
 		
         if upgradeMessage == "" then
+        	// Refund any other upgrades in this slot
+        	local upgradeSlot = upgrade:GetUniqueSlot()
+        	if upgradeSlot ~= kUpgradeUniqueSlots.None then
+        		local slotUpgrades = self:GetUpgradesBySlot(upgradeSlot)
+       	 	for index, slotUpgrade in ipairs(slotUpgrades) do
+       	 		self:RefundUpgradeComplete(slotUpgrade:GetId())
+       	 	end
+       	 end
+        
         	local upgradeCost = upgrade:GetCostForNextLevel()
 			if upgrade:GetIsPermanent() then
 				upgrade:AddLevel()
@@ -206,6 +217,10 @@ end
 
 function UpgradeMixin:GetAvailableUpgradesByType(upgradeType)
     return self.UpgradeList:GetAvailableUpgradesByType(self:GetFactionsClass(), self:GetTeamNumber(), upgradeType)
+end
+
+function UpgradeMixin:GetAvailableUpgradesBySlot(upgradeSlot)
+    return self.UpgradeList:GetAvailableUpgradesByType(self:GetFactionsClass(), self:GetTeamNumber(), upgradeSlot)
 end
 
 function UpgradeMixin:GetAllUpgrades()

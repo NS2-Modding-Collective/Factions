@@ -19,6 +19,7 @@ Script.Load("lua/Factions/Factions_Utility.lua")
 // Load the upgrade base classes
 Script.Load("lua/Factions/Factions_Upgrade.lua")
 Script.Load("lua/Factions/Factions_AlienClassUpgrade.lua")
+Script.Load("lua/Factions/Factions_AlienTierUpgrade.lua")
 Script.Load("lua/Factions/Factions_AlienUpgrade.lua")
 Script.Load("lua/Factions/Factions_UnlockUpgrade.lua")
 Script.Load("lua/Factions/Factions_WeaponUpgrade.lua")
@@ -61,6 +62,7 @@ local function BuildAllUpgrades()
         // save all upgrades in a table
         kAllFactionsUpgrades = {}
         RegisterNewUpgrades(Script.GetDerivedClasses("AlienClassUpgrade"))
+        RegisterNewUpgrades(Script.GetDerivedClasses("AlienTierUpgrade"))
         RegisterNewUpgrades(Script.GetDerivedClasses("FactionsAlienUpgrade"))
 		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsUpgrade"))
 		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsWeaponUpgrade"))
@@ -127,6 +129,20 @@ function UpgradeList:GetAvailableUpgradesByType(playerClass, playerTeamNumber, u
     end
 	
 	return upgradeClassList
+end
+
+function UpgradeList:GetAvailableUpgradesBySlot(playerClass, playerTeamNumber, upgradeSlot)
+	local upgradeSlotList = {}
+
+    if upgradeType then
+        for upgradeId, upgrade in pairs(self:GetAvailableUpgrades(playerClass, playerTeamNumber)) do
+            if upgradeType == kFactionsUpgradeTypes[upgrade:GetUniqueSlot()] then
+                table.insert(upgradeSlotList, upgrade)
+            end
+        end
+    end
+	
+	return upgradeSlotList
 end
 
 function UpgradeList:GetAllUpgrades()
