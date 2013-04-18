@@ -93,7 +93,7 @@ function LaserMine:GetLaserMaxLength()
 end
 
 function LaserMine:GetLaserWidth()
-    return 0.2
+    return 0.15
 end
 
 function LaserMine:SetEndPoint()
