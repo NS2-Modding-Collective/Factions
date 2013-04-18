@@ -96,7 +96,7 @@ function Alien:GetHasTwoHives()
 	return self.hasHiveTwo
 end
 
-function Alien:SetHasTwoHives(value)
+function Alien:SetHasThreeHives(value)
 	self.hasHiveThree = value
 end
 

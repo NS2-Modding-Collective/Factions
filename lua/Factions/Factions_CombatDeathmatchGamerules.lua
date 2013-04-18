@@ -32,6 +32,7 @@ if Server then
 		self.isFactionsMovement = false
 		self.usesMarineColours = false
 		self.usesAlienColours = false
+		self.lightsStartOff = false
 		self.factionsGameType = kFactionsGameType.CombatDeathmatch
 	
 		GenericGamerules.OnCreate(self)

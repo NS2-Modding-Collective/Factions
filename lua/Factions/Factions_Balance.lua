@@ -100,3 +100,12 @@ kWeapons2DamageScalar = 1.2
 kWeapons3DamageScalar = 1.3
 
 kNanoShieldDamageReductionDamage = 0.5
+
+// Conversely, reduce the welder's effectiveness from its original value of 150.
+kStructureWeldRate = 100
+// The rate at which players heal the hive/cc should be multiplied by this ratio.
+kHiveCCHealRate = 0.3
+// The rate at which players gain XP for healing... relative to damage dealt.
+kHealXpRate = 1
+// Rate at which players gain XP for healing other players...
+kPlayerHealXpRate = 0

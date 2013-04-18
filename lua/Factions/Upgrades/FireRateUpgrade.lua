@@ -29,6 +29,10 @@ function FireRateUpgrade:Initialize()
 	
 end
 
+function FireRateUpgrade:GetClassName()
+	return "FireRateUpgrade"
+end
+
 function FireRateUpgrade:CanApplyUpgrade(player)
 	if not HasMixin(player, "WeaponUpgrade") then
 		return "Entity needs WeaponUpgrade mixin"

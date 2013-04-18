@@ -35,6 +35,7 @@ if Server then
 		self.isFactionsMovement = true
 		self.usesMarineColours = false
 		self.usesAlienColours = false
+		self.lightsStartOff = true
 		self.factionsGameType = kFactionsGameType.Horde
 	
 		GenericGamerules.OnCreate(self)

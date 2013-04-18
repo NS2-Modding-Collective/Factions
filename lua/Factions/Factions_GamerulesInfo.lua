@@ -49,6 +49,7 @@ local networkVars =
 	isClassBased = "boolean",
 	isFactionsMovemement = "boolean",
 	isInSuddenDeath = "boolean",
+	lightsStartOff = "boolean",
 	usesMarineColours = "boolean",
 	usesAlienColours = "boolean",
 	timeLimit = "time",
@@ -101,6 +102,10 @@ if Server then
 	function FactionsGamerulesInfo:SetTimeLimit(value)
 		self.timeLimit = value
 	end
+	
+	function FactionsGamerulesInfo:SetLightsStartOff(value)
+		self.lightsStartOff = value
+	end
 end
 
 function FactionsGamerulesInfo:GetGameType()
@@ -149,6 +154,10 @@ end
 
 function FactionsGamerulesInfo:GetTimeSinceGameStart()
 	return self.timeSinceGameStart
+end
+
+function FactionsGamerulesInfo:GetLightsStartOff()
+	return self.lightsStartOff
 end
 
 function FactionsGamerulesInfo:GetTimeRemaining()

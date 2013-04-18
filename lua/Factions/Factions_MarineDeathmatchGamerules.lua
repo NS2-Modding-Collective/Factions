@@ -34,6 +34,7 @@ if Server then
 		self.isFactionsMovement = true
 		self.usesMarineColours = true
 		self.usesAlienColours = false
+		self.lightsStartOff = true
 		self.factionsGameType = kFactionsGameType.MarineDeathmatch
 		
 		// Marines vs. Marines
