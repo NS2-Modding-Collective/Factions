@@ -41,13 +41,24 @@ function AlienClassUpgrade:GetClassName()
 	return "AlienClassUpgrade"
 end
 
+function AlienClassUpgrade:CanApplyUpgrade(player)
+	if not player:isa("Alien") then
+		return "Player must be an Alien!"
+	else
+		return ""
+	end
+end
+
 // Give the weapon to the player when they buy the upgrade.
 function AlienClassUpgrade:OnAdd(player)
 
 	// Apply the same logic to the player as OnCommandChangeClass does
 	if not player:isa(self:GetUpgradeTitle()) then
-		player:SendDirectMessage("You are now a " .. self:GetUpgradeTitle() .. "!")
 		player:Replace(self:GetUpgradeName(), player:GetTeamNumber(), false, nil, nil)
 	end
 
+end
+
+function AlienClassUpgrade:SendAddMessage(player)
+	player:SendDirectMessage("You are now a " .. self:GetUpgradeTitle() .. "!")
 end

@@ -113,3 +113,15 @@ function ResupplyUpgrade:OnTrigger(player)
 		ResupplyNow(player)
 	end
 end
+
+function ResupplyUpgrade:CanApplyUpgrade(player)
+	local baseText = FactionsTimedUpgrade.CanApplyUpgrade(self, player)
+	
+	if baseText ~= "" then
+		return baseText
+	elseif not player:isa("Marine") then
+		return "Entity needs to be a Marine!"
+	else
+		return ""
+	end
+end

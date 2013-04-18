@@ -49,5 +49,5 @@ end
 
 function SpeedUpgrade:SendAddMessage(player)
 	player:SendDirectMessage("Speed Upgraded to level " .. self:GetCurrentLevel() .. ".")
-		player:SendDirectMessage("You will move " .. self:GetCurrentLevel()*SpeedUpgrade.speedBoostPerLevel*100 .. "% faster")
+	player:SendDirectMessage("You will move " .. self:GetCurrentLevel()*SpeedUpgrade.speedBoostPerLevel*100 .. "% faster")
 end

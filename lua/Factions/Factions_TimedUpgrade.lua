@@ -54,10 +54,20 @@ end
 
 function FactionsTimedUpgrade:OnAdd(player)
 	if Server then
-		if HasMixin(player, "Timer") then
-			player:AddTimer(self:GetClassName(), self, self.OnTrigger, self:GetTimerInterval())
-			player:SendDirectMessage(self:GetUpgradeTitle() .. " upgraded to level " .. self:GetCurrentLevel() .. ".")
-			player:SendDirectMessage(self:GetTimerDescription() .. self:GetTimerInterval() .. " seconds.")
+		player:AddTimer(self:GetClassName(), self, self.OnTrigger, self:GetTimerInterval())
+	end
+end
+
+function FactionsTimedUpgrade:CanApplyUpgrade(player)
+	if Server then
+		if not HasMixin(player, "Timer") then
+			return "entity must implement TimerMixin!"
 		end
 	end
+	return ""
+end
+
+function FactionsTimedUpgrade:SendAddMessage(player)
+	player:SendDirectMessage(self:GetUpgradeTitle() .. " upgraded to level " .. self:GetCurrentLevel() .. ".")
+	player:SendDirectMessage(self:GetTimerDescription() .. self:GetTimerInterval() .. " seconds.")
 end

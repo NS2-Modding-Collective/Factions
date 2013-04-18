@@ -36,8 +36,14 @@ function JetpackUpgrade:GetClassName()
 	return "JetpackUpgrade"
 end
 
-function JetpackUpgrade:OnAdd(player)
-	if not player:isa("JetpackMarine") then
-		player:GiveJetpack()
+function JetpackUpgrade:CanApplyUpgrade(player)
+	if player:isa("JetpackMarine") then
+		return "Player already has jetpack!"
+	else
+		return ""
 	end
+end
+
+function JetpackUpgrade:OnAdd(player)
+	player:GiveJetpack()
 end

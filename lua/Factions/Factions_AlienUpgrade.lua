@@ -39,6 +39,14 @@ function FactionsAlienUpgrade:GetClassName()
 	return "FactionsAlienUpgrade"
 end
 
+function FactionsAlienUpgrade:CanApplyUpgrade(player)
+	if not player:isa("Alien") then
+		return "Player must be an Alien!"
+	else
+		return ""
+	end
+end
+
 // Give the alien upgrade to the player when they buy the upgrade.
 function FactionsAlienUpgrade:OnAdd(player)
 

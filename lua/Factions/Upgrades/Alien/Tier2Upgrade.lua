@@ -33,9 +33,18 @@ function Tier2Upgrade:GetClassName()
 	return "Tier2Upgrade"
 end
 
-function Tier2Upgrade:OnAdd(player)
-	player:SendDirectMessage("Unlocked Tier 2 abilities!")
-	if player:isa("Alien") then
-		player:SetHasTwoHives(true)
+function Tier2Upgrade:CanApplyUpgrade(player)
+	if not player:isa("Alien") then
+		return "Player must be an Alien!"
+	else
+		return ""
 	end
+end
+
+function Tier2Upgrade:OnAdd(player)
+	player:SetHasTwoHives(true)
+end
+
+function Tier2Upgrade:SendAddMessage(player)
+	player:SendDirectMessage("Unlocked Tier 2 abilities!")
 end

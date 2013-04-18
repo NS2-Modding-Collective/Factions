@@ -51,14 +51,18 @@ function FactionsUnlockUpgrade:GetHideUpgrade()
 	return hideUpgrade
 end
 
-// TODO: Show something to the player?
-function FactionsUnlockUpgrade:OnAdd(player)
-	if self:GetUnlockUpgradeId() ~= nil then
-		local unlockUpgradeId = self:GetUnlockUpgradeId()
-		local unlockUpgrade = player:GetUpgradeById(unlockUpgradeId)
-		player:SendDirectMessage("Unlocked " .. unlockUpgrade:GetUpgradeTitle() .. "!")
-		
-		// Also add the locked upgrade for the first time here.
-		unlockUpgrade:OnAdd(player)
+function FactionsUnlockUpgrade:CanApplyUpgrade(player)
+	if self:GetUnlockUpgradeId() == nil then
+		return "No unlock defined!"
+	else
+		return ""
 	end
+end
+
+function FactionsUnlockUpgrade:SendAddMessage(player)
+	local unlockUpgradeId = self:GetUnlockUpgradeId()
+	local unlockUpgrade = player:GetUpgradeById(unlockUpgradeId)
+	player:SendDirectMessage("Unlocked " .. unlockUpgrade:GetUpgradeTitle() .. "!")
+	// Special: Also add the locked upgrade for the first time here.
+	unlockUpgrade:OnAdd(player)
 end

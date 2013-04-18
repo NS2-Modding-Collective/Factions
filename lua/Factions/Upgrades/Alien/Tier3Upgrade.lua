@@ -33,9 +33,18 @@ function Tier3Upgrade:GetClassName()
 	return "Tier3Upgrade"
 end
 
-function Tier3Upgrade:OnAdd(player)
-	player:SendDirectMessage("Unlocked Tier 3 abilities!")
-	if player:isa("Alien") then
-		player:SetHasThreeHives(true)
+function Tier3Upgrade:CanApplyUpgrade(player)
+	if not player:isa("Alien") then
+		return "Player must be an Alien!"
+	else
+		return ""
 	end
+end
+
+function Tier3Upgrade:OnAdd(player)
+	player:SetHasThreeHives(true)
+end
+
+function Tier3Upgrade:SendAddMessage(player)
+	player:SendDirectMessage("Unlocked Tier 3 abilities!")
 end

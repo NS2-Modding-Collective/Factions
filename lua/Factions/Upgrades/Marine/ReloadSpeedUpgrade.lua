@@ -34,11 +34,20 @@ function ReloadSpeedUpgrade:GetClassName()
 	return "ReloadSpeedUpgrade"
 end
 
-function ReloadSpeedUpgrade:OnAdd(player)
-	if HasMixin(player, "WeaponUpgrade") then
-		player:UpdateReloadSpeedLevel(self:GetCurrentLevel())
-		player:SendDirectMessage("Reload Speed Upgraded to level " .. self:GetCurrentLevel() .. ".")
-		local reloadSpeedBoost = math.round(self:GetCurrentLevel()*ReloadSpeedMixin.reloadSpeedBoostPerLevel / ReloadSpeedMixin.baseReloadSpeed * 100)
-		player:SendDirectMessage("You will reload " .. reloadSpeedBoost .. "% faster")
+function ReloadSpeedUpgrade:CanApplyUpgrade(player)
+	if not HasMixin(player, "WeaponUpgrade") then
+		return "Entity needs WeaponUpgrade mixin"
+	else
+		return ""
 	end
+end
+
+function ReloadSpeedUpgrade:OnAdd(player)
+	player:UpdateReloadSpeedLevel(self:GetCurrentLevel())
+end
+
+function ReloadSpeedUpgrade:SendAddMessage(player)
+	player:SendDirectMessage("Reload Speed Upgraded to level " .. self:GetCurrentLevel() .. ".")
+	local reloadSpeedBoost = math.round(self:GetCurrentLevel()*ReloadSpeedMixin.reloadSpeedBoostPerLevel / ReloadSpeedMixin.baseReloadSpeed * 100)
+	player:SendDirectMessage("You will reload " .. reloadSpeedBoost .. "% faster")
 end

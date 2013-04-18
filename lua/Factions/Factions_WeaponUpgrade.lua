@@ -63,3 +63,7 @@ function FactionsWeaponUpgrade:OnAdd(player)
 	end          
 
 end
+
+function FactionsWeaponUpgrade:SendAddMessage(player)
+	player:SendDirectMessage("You bought a " .. unlockUpgrade:GetUpgradeTitle() .. "!")
+end
