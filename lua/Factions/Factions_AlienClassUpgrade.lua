@@ -19,6 +19,7 @@ AlienClassUpgrade.upgradeType 		= kFactionsUpgradeTypes.Lifeform        	// the 
 AlienClassUpgrade.triggerType 		= kFactionsTriggerTypes.NoTrigger   	// how the upgrade is gonna be triggered
 AlienClassUpgrade.permanent			= true									// Controls whether you get the upgrade back when you respawn
 AlienClassUpgrade.teamType			= kFactionsUpgradeTeamType.AlienTeam	// Team Type
+AlienClassUpgrade.uniqueSlot		  = kUpgradeUniqueSlot.AlienClass		// Unique slot
 
 function AlienClassUpgrade:Initialize()
 

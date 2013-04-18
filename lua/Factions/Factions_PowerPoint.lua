@@ -14,25 +14,16 @@ Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
 local networkVars = {
 }
 
-// Initial Setup
-local overrideOnCreate = PowerPoint.OnCreate
-function PowerPoint:OnCreate()
-
-	overrideOnCreate(self)
-
-	// Start socketed but unbuilt
-	// Allow the mapper to define the default power mode!
-	self.lightMode = kLightMode.NoPower
-    self.powerState = PowerPoint.kPowerState.socketed
-	
-end
-
-
 // Team Colours
 local overrideOnInitialized = PowerPoint.OnInitialized
 function PowerPoint:OnInitialized()
 
 	overrideOnInitialized(self)
+	
+	// Start socketed but unbuilt
+	// Allow the mapper to define the default power mode!
+	self.lightMode = kLightMode.NoPower
+    self.powerState = PowerPoint.kPowerState.socketed
 
 	// Team Colours
 	if GetGamerulesInfo():GetUsesMarineColours() then
