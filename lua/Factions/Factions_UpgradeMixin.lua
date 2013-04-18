@@ -62,7 +62,10 @@ local function ReapplyUpgrades(self)
 			
 			// give upgrades back when the player respawns
 			if self:GetIsAlive() and self:GetTeamNumber() ~= kNeutralTeamType then
-				upgrade:OnAdd(self)
+				local errorMessage = self:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade)
+				if errorMessage == "" then
+					upgrade:OnAdd(self)
+				end
 			end
 		end
 	end
@@ -99,6 +102,8 @@ function UpgradeMixin:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade)
 		return "Upgrade cannot be bought in this game mode"
 	elseif not upgrade:GetIsAllowedForTeam(self:GetTeamNumber()) then
 		return "Upgrade is not allowed for your team"
+	elseif not upgrade:CanApplyUpgrade(self) == "" then
+		return upgrade:CanApplyUpgrade(self)
 	else
         return ""
     end
@@ -135,6 +140,7 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
 				Server.SendNetworkMessage(self, "UpdateUpgrade",  BuildUpdateUpgradeMessage(upgradeId, upgrade:GetCurrentLevel()), true)
 			end		
 			
+			upgrade:SendAddMessage(self)
 			upgrade:OnAdd(self)
 			
 			if not freeUpgrade then
@@ -161,10 +167,6 @@ function UpgradeMixin:RefundUnavailableUpgrades()
 	
 	if Server and refundAmount > 0 then
 		self:SendDirectMessage("Some upgrades refunded because they are no longer available. You got back " .. refundAmount .. " XP.")
-		// Kill the player if they do this while playing.
-		if self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
-			self:Kill(nil, nil, self:GetOrigin())
-		end
 	end
 end
 

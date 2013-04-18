@@ -18,6 +18,8 @@ Script.Load("lua/Factions/Weapons/Factions_FireRateMixin.lua")
 
 local networkVars = {
 	canCamouflage = "boolean",
+	hasHiveTwo = "boolean",
+	hasHiveThree = "boolean",
 }
 
 AddMixinNetworkVars(SpeedUpgradeMixin, networkVars)
@@ -86,13 +88,20 @@ function Alien:SetCanCamouflage(value)
 	self.canCamouflage = value
 end
 
-// These let the upgrade system work unimpeded.
+function Alien:SetHasTwoHives(value)
+	self.hasHiveTwo = value
+end
+
 function Alien:GetHasTwoHives()
-	return true
+	return self.hasHiveTwo
+end
+
+function Alien:SetHasTwoHives(value)
+	self.hasHiveThree = value
 end
 
 function Alien:GetHasThreeHives()
-	return true
+	return self.hasHiveThree
 end
 
 Class_Reload("Alien", networkVars)

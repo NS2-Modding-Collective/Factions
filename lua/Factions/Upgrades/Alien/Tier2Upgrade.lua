@@ -12,8 +12,9 @@ class 'Tier2Upgrade' (FactionsUpgrade)
 Tier2Upgrade.cost 				= { 250 }                          	// cost of the upgrade in xp
 Tier2Upgrade.upgradeName		= "tier2"	                        // text code of the upgrade if using it via console
 Tier2Upgrade.upgradeTitle 		= "Tier 2"       					// Title of the upgrade, e.g. Submachine Gun
-Tier2Upgrade.upgradeDesc 		= "Get tier 2"             		// Description of the upgrade
+Tier2Upgrade.upgradeDesc 		= "Get tier 2 abilities for your lifeform"             		// Description of the upgrade
 Tier2Upgrade.upgradeTechId 		= kTechId.TwoHives  				// techId of the upgrade, default is kTechId.Move cause its the first 
+Tier2Upgrade.teamType			= kFactionsUpgradeTeamType.AlienTeam	// Team Type
 
 function Tier2Upgrade:Initialize()
 
@@ -24,6 +25,7 @@ function Tier2Upgrade:Initialize()
 	self.upgradeTitle = Tier2Upgrade.upgradeTitle
 	self.upgradeDesc = Tier2Upgrade.upgradeDesc
 	self.upgradeTechId = Tier2Upgrade.upgradeTechId
+	self.teamType = Tier2Upgrade.teamType
 	
 end
 
@@ -33,7 +35,7 @@ end
 
 function Tier2Upgrade:OnAdd(player)
 	player:SendDirectMessage("Unlocked Tier 2 abilities!")
-	if HasMixin(player, "HiveCount") then
+	if player:isa("Alien") then
 		player:SetHasTwoHives(true)
 	end
 end

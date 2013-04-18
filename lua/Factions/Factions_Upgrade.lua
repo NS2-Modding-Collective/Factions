@@ -246,8 +246,20 @@ function FactionsUpgrade:GetClassName()
 	return "FactionsUpgrade"
 end
 
-// called from the UpgradeMixin when the upgraded is added to a player, old upgradeFunc
+// Check for any prerequisite mixins etc here.
+function FactionsUpgrade:CanApplyUpgrade(player)
+	// Tie the logic into the message... "" == true!
+	return ""
+end
+
+// Called from the UpgradeMixin when the upgraded is added to a player, old upgradeFunc
+// Use this to perform a custom action on add.
 function FactionsUpgrade:OnAdd(player)
+end
+
+function FactionsUpgrade:SendAddMessage(player)
+	// Provide a sensible default here
+	player:SendDirectMessage("Purchased " .. self:GetCurrentLevel() .. " of the " .. self:GetUpgradeTitle() .. " upgrade.")
 end
 
 // called when the Player is resetted so we can reset all the changes the upgrade has made

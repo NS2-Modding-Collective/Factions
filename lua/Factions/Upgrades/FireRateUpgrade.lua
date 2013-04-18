@@ -29,15 +29,20 @@ function FireRateUpgrade:Initialize()
 	
 end
 
-function FireRateUpgrade:GetClassName()
-	return "FireRateUpgrade"
+function FireRateUpgrade:CanApplyUpgrade(player)
+	if not HasMixin(player, "WeaponUpgrade") then
+		return "Entity needs WeaponUpgrade mixin"
+	else
+		return ""
+	end
 end
 
 function FireRateUpgrade:OnAdd(player)
-	if HasMixin(player, "WeaponUpgrade") then
-		player:UpdateFireRateLevel(self:GetCurrentLevel())
-		player:SendDirectMessage("Fire Rate upgraded to level " .. self:GetCurrentLevel() .. ".")
-		local fireRateBoost = math.round(self:GetCurrentLevel()*FireRateMixin.fireRateBoostPerLevel / FireRateMixin.baseFireRate * 100)
-		player:SendDirectMessage("You will fire " .. fireRateBoost .. "% faster.")
-	end
+	player:UpdateFireRateLevel(self:GetCurrentLevel())
+end
+
+function FireRateUpgrade:SendAddMessage(player)
+	player:SendDirectMessage("Fire Rate upgraded to level " .. self:GetCurrentLevel() .. ".")
+	local fireRateBoost = math.round(self:GetCurrentLevel()*FireRateMixin.fireRateBoostPerLevel / FireRateMixin.baseFireRate * 100)
+	player:SendDirectMessage("You will fire " .. fireRateBoost .. "% faster.")
 end

@@ -34,11 +34,20 @@ function ArmorUpgrade:GetClassName()
 	return "ArmorUpgrade"
 end
 
-function ArmorUpgrade:OnAdd(player)
-	if HasMixin(player, "ArmorUpgrade") then
-		player.upgradeArmorLevel = self:GetCurrentLevel()
-		player:UpgradeArmor()
-		player:SendDirectMessage("Armor Upgraded to level " .. self:GetCurrentLevel() .. ".")
-		player:SendDirectMessage("New Max Armor is: " .. player:GetMaxArmor())
+function ArmorUpgrade:CanApplyUpgrade(player)
+	if not HasMixin(player, "ArmorUpgrade") then
+		return "Entity needs ArmorUpgrade mixin"
+	else
+		return ""
 	end
+end
+
+function ArmorUpgrade:OnAdd(player)
+	player.upgradeArmorLevel = self:GetCurrentLevel()
+	player:UpgradeArmor()
+end
+
+function ArmorUpgrade:SendAddMessage(player)
+	player:SendDirectMessage("Armor Upgraded to level " .. self:GetCurrentLevel() .. ".")
+	player:SendDirectMessage("New Max Armor is: " .. player:GetMaxArmor())
 end

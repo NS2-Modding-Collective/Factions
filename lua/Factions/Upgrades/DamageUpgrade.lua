@@ -34,11 +34,20 @@ function DamageUpgrade:GetClassName()
 	return "DamageUpgrade"
 end
 
-function DamageUpgrade:OnAdd(player)
-	if HasMixin(player, "WeaponUpgrade") then
-		player:UpdateDamageLevel(self:GetCurrentLevel())
-		player:SendDirectMessage("Damage Upgraded to level " .. self:GetCurrentLevel() .. ".")
-		local damageBoost = math.round(self:GetCurrentLevel()*WeaponUpgradeMixin.damageBoostPerLevel / WeaponUpgradeMixin.baseDamage * 100)
-		player:SendDirectMessage("You will do " .. damageBoost .. "% more damage.")
+function DamageUpgrade:CanApplyUpgrade(player)
+	if not HasMixin(player, "WeaponUpgrade") then
+		return "Entity needs WeaponUpgrade mixin"
+	else
+		return ""
 	end
+end
+
+function DamageUpgrade:OnAdd(player)
+	player:UpdateDamageLevel(self:GetCurrentLevel())
+end
+
+function DamageUpgrade:SendAddMessage(player)
+	player:SendDirectMessage("Damage Upgraded to level " .. self:GetCurrentLevel() .. ".")
+	local damageBoost = math.round(self:GetCurrentLevel()*WeaponUpgradeMixin.damageBoostPerLevel / WeaponUpgradeMixin.baseDamage * 100)
+	player:SendDirectMessage("You will do " .. damageBoost .. "% more damage.")
 end
