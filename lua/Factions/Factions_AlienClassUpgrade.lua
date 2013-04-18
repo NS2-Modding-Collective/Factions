@@ -33,6 +33,7 @@ function AlienClassUpgrade:Initialize()
 	self.triggerType = AlienClassUpgrade.triggerType
 	self.permanent = AlienClassUpgrade.permanent
 	self.teamType = AlienClassUpgrade.teamType
+	self.uniqueSlot = AlienClassUpgrade.uniqueSlot
 	
 end
 

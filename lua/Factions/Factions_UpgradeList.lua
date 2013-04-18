@@ -61,7 +61,6 @@ local function BuildAllUpgrades()
         // save all upgrades in a table
         kAllFactionsUpgrades = {}
         RegisterNewUpgrades(Script.GetDerivedClasses("AlienClassUpgrade"))
-        RegisterNewUpgrades(Script.GetDerivedClasses("AlienTierUpgrade"))
         RegisterNewUpgrades(Script.GetDerivedClasses("FactionsAlienUpgrade"))
 		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsUpgrade"))
 		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsWeaponUpgrade"))
@@ -104,7 +103,6 @@ function UpgradeList:GetUpgradeByClassName(upgradeClassName)
     end
 end
 
-
 // TODO: Implement a cache here.
 function UpgradeList:GetUpgradeByName(upgradeName)
     if upgradeName then
@@ -115,6 +113,22 @@ function UpgradeList:GetUpgradeByName(upgradeName)
         end
     end
 end
+
+// Todo: Caching
+function UpgradeList:GetUpgradesBySlot(upgradeSlot)
+	local upgradeSlotList = {}
+
+    if upgradeSlot then
+        for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
+            if upgradeSlot == upgrade:GetUniqueSlot() then
+                table.insert(upgradeSlotList, upgrade)
+            end
+        end
+    end
+	
+	return upgradeSlotList
+end
+
 
 function UpgradeList:GetAvailableUpgradesByType(playerClass, playerTeamNumber, upgradeType)
 	local upgradeClassList = {}
@@ -128,20 +142,6 @@ function UpgradeList:GetAvailableUpgradesByType(playerClass, playerTeamNumber, u
     end
 	
 	return upgradeClassList
-end
-
-function UpgradeList:GetAvailableUpgradesBySlot(playerClass, playerTeamNumber, upgradeSlot)
-	local upgradeSlotList = {}
-
-    if upgradeType then
-        for upgradeId, upgrade in pairs(self:GetAvailableUpgrades(playerClass, playerTeamNumber)) do
-            if upgradeType == kFactionsUpgradeTypes[upgrade:GetUniqueSlot()] then
-                table.insert(upgradeSlotList, upgrade)
-            end
-        end
-    end
-	
-	return upgradeSlotList
 end
 
 function UpgradeList:GetAllUpgrades()

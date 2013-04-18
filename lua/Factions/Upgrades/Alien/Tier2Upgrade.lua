@@ -33,5 +33,7 @@ end
 
 function Tier2Upgrade:OnAdd(player)
 	player:SendDirectMessage("Unlocked Tier 2 abilities!")
-	player.
+	if HasMixin(player, "HiveCount") then
+		player:SetHasTwoHives(true)
+	end
 end

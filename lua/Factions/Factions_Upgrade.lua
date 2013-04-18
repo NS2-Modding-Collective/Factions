@@ -15,7 +15,7 @@ class 'FactionsUpgrade'
 kFactionsUpgradeTypes = enum({'Lifeform', 'Attribute', 'Ability', 'Tech', 'Weapon'})
 kFactionsTriggerTypes = enum({'NoTrigger', 'ByTime', 'ByKey'})
 kFactionsUpgradeTeamType = enum({'MarineTeam', 'AlienTeam', 'AnyTeam'})
-kUpgradeUniqueSlots = enum({'None', 'Weapon1', 'Weapon2', 'Weapon3', 'Weapon4', 'AlienClass'})
+kUpgradeUniqueSlot = enum({'None', 'Weapon1', 'Weapon2', 'Weapon3', 'Weapon4', 'AlienClass'})
 
 kRefundPenalty = 0.2 // 20% is taken away from any refunded amount of xp.
 
@@ -33,8 +33,8 @@ FactionsUpgrade.requirements = { }                        		// Upgrades you must
 FactionsUpgrade.permanent = true								// Controls whether you get the upgrade back when you respawn
 FactionsUpgrade.disallowedGameModes = { }						// Controls which game modes this applies to
 FactionsUpgrade.teamType = kFactionsUpgradeTeamType.AnyTeam		// Controls which team type this applies to
-FactionsUpgrade.uniqueSlot = kUpgradeUniqueSlots.None			// Use this to specify that an upgrade occupies a unique slot. When you buy another upgrade in this slot you get a refund for any previous ones.
-FactionsUpgrade.minPlayerLevel = 1								// Controls whether this upgrade requires the recipient to be a minimum level
+FactionsUpgrade.uniqueSlot = kUpgradeUniqueSlot.None			// Use this to specify that an upgrade occupies a unique slot. When you buy another upgrade in this slot you get a refund for any previous ones.
+FactionsUpgrade.minPlayerLvl = 1								// Controls whether this upgrade requires the recipient to be a minimum level
 
 function FactionsUpgrade:Initialize()
 	// This is a base class so never show it in the menu.
@@ -179,8 +179,8 @@ function FactionsUpgrade:GetUniqueSlot()
 	return self.uniqueSlot
 end
 
-function FactionsUpgrade:GetMinPlayerLevel()
-	return self.minPlayerLevel
+function FactionsUpgrade:GetMinPlayerLvl()
+	return self.minPlayerLvl
 end
 
 

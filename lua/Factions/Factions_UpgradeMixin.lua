@@ -91,7 +91,7 @@ function UpgradeMixin:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade)
 		return "You are missing some requirements for this upgrade..."
 	elseif not freeUpgrade and not (self:GetResources() >= upgrade:GetCostForNextLevel()) then
 		return "Cannot afford upgrade"
-	elseif self:GetLevel() < upgrade:GetMinPlayerLevel() then
+	elseif self:GetLvl() < upgrade:GetMinPlayerLvl() then
 		return "Cannot get upgrade until level " .. upgrade:GetMinPlayerLevel()
 	elseif factionsClass and not factionsClass:GetIsUpgradeAllowed(upgrade) then
 		return "Your class cannot buy this upgrade"
@@ -119,12 +119,15 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
         if upgradeMessage == "" then
         	// Refund any other upgrades in this slot
         	local upgradeSlot = upgrade:GetUniqueSlot()
-        	if upgradeSlot ~= kUpgradeUniqueSlots.None then
+        	if upgradeSlot ~= kUpgradeUniqueSlot.None then
         		local slotUpgrades = self:GetUpgradesBySlot(upgradeSlot)
-       	 	for index, slotUpgrade in ipairs(slotUpgrades) do
-       	 		self:RefundUpgradeComplete(slotUpgrade:GetId())
-       	 	end
-       	 end
+				for index, slotUpgrade in ipairs(slotUpgrades) do
+					if self:GetHasUpgrade(slotUpgrade:GetId()) then
+						Shared.Message("Refunding " .. slotUpgrade:GetUpgradeTitle() .. " for " .. player:GetName())
+						self:RefundUpgradeComplete(slotUpgrade:GetId())
+					end
+				end
+			end
         
         	local upgradeCost = upgrade:GetCostForNextLevel()
 			if upgrade:GetIsPermanent() then
@@ -194,7 +197,6 @@ function UpgradeMixin:SetUpgradeLevel(upgradeId, upgradeLevel)
 	return self.UpgradeList:SetUpgradeLevel(upgradeId, upgradeLevel)
 end
 
-// returns the entry in the table or nil if not
 function UpgradeMixin:GetHasUpgrade(upgradeId)
     return self.UpgradeList:GetHasUpgrade(upgradeId)
 end
@@ -219,8 +221,8 @@ function UpgradeMixin:GetAvailableUpgradesByType(upgradeType)
     return self.UpgradeList:GetAvailableUpgradesByType(self:GetFactionsClass(), self:GetTeamNumber(), upgradeType)
 end
 
-function UpgradeMixin:GetAvailableUpgradesBySlot(upgradeSlot)
-    return self.UpgradeList:GetAvailableUpgradesByType(self:GetFactionsClass(), self:GetTeamNumber(), upgradeSlot)
+function UpgradeMixin:GetUpgradesBySlot(upgradeSlot)
+    return self.UpgradeList:GetUpgradesBySlot(upgradeSlot)
 end
 
 function UpgradeMixin:GetAllUpgrades()
