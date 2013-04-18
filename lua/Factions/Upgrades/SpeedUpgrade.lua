@@ -35,10 +35,19 @@ function SpeedUpgrade:GetClassName()
 	return "SpeedUpgrade"
 end
 
-function SpeedUpgrade:OnAdd(player)
-	if HasMixin(player, "SpeedUpgrade") then
-		player.upgradeSpeedLevel = self:GetCurrentLevel()
-		player:SendDirectMessage("Speed Upgraded to level " .. self:GetCurrentLevel() .. ".")
-		player:SendDirectMessage("You will move " .. self:GetCurrentLevel()*SpeedUpgrade.speedBoostPerLevel*100 .. "% faster")
+function SpeedUpgrade:CanApplyUpgrade(player)
+	if not HasMixin(player, "SpeedUpgrade") then
+		return "Entity needs SpeedUpgrade mixin"
+	else
+		return ""
 	end
+end
+
+function SpeedUpgrade:OnAdd(player)
+	player.upgradeSpeedLevel = self:GetCurrentLevel()
+end
+
+function SpeedUpgrade:SendAddMessage(player)
+	player:SendDirectMessage("Speed Upgraded to level " .. self:GetCurrentLevel() .. ".")
+		player:SendDirectMessage("You will move " .. self:GetCurrentLevel()*SpeedUpgrade.speedBoostPerLevel*100 .. "% faster")
 end

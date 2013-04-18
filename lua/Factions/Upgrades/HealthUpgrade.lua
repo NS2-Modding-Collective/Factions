@@ -34,11 +34,20 @@ function HealthUpgrade:GetClassName()
 	return "HealthUpgrade"
 end
 
-function HealthUpgrade:OnAdd(player)
-	if HasMixin(player, "HealthUpgrade") then
-		player.upgradeHealthLevel = self:GetCurrentLevel()
-		player:UpgradeHealth()
-		player:SendDirectMessage("Health Upgraded to level " .. self:GetCurrentLevel() .. ".")
-		player:SendDirectMessage("New Max Health is: " .. player:GetMaxHealth())
+function HealthUpgrade:CanApplyUpgrade(player)
+	if not HasMixin(player, "HealthUpgrade") then
+		return "Entity needs HealthUpgrade mixin"
+	else
+		return ""
 	end
+end
+
+function HealthUpgrade:OnAdd(player)
+	player.upgradeHealthLevel = self:GetCurrentLevel()
+	player:UpgradeHealth()
+end
+
+function HealthUpgrade:SendAddMessage(player)
+	player:SendDirectMessage("Health Upgraded to level " .. self:GetCurrentLevel() .. ".")
+	player:SendDirectMessage("New Max Health is: " .. player:GetMaxHealth())
 end
