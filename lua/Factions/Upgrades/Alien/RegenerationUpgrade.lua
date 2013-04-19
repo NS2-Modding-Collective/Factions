@@ -13,7 +13,7 @@ RegenerationUpgrade.kBaseRegenScalar = 0.5
 RegenerationUpgrade.kBoostRegenScalarPerLevel = 0.2
 
 // Define these statically so we can easily access them without instantiating too.
-RegenerationUpgrade.cost = { 100, 200, 400 }                              					// Cost of the upgrade in xp
+RegenerationUpgrade.cost = { 400, 400, 400 }                              					// Cost of the upgrade in xp
 RegenerationUpgrade.upgradeName = "regen"                     							// Text code of the upgrade if using it via console
 RegenerationUpgrade.upgradeTitle = "Regeneration"               								// Title of the upgrade, e.g. Submachine Gun
 RegenerationUpgrade.upgradeDesc = "Periodically stock up on health and ammo"				// Description of the upgrade
