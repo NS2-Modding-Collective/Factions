@@ -128,7 +128,7 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
         		local slotUpgrades = self:GetUpgradesBySlot(upgradeSlot)
 				for index, slotUpgrade in ipairs(slotUpgrades) do
 					if slotUpgrade:GetCurrentLevel() > 0 then
-						Shared.Message("Refunding " .. slotUpgrade:GetUpgradeTitle() .. " for " .. player:GetName())
+						Shared.Message("Refunding " .. slotUpgrade:GetUpgradeTitle() .. " for " .. self:GetName())
 						self:RefundUpgradeComplete(slotUpgrade:GetId())
 					end
 				end
