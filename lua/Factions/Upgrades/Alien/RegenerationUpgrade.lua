@@ -7,7 +7,7 @@
 //  Licensed under LGPL v3.0
 //________________________________
 						
-class 'ResupplyUpgrade' (FactionsTimedUpgrade)
+class 'RegenerationUpgrade' (FactionsTimedUpgrade)
 
 RegenerationUpgrade.kBaseRegenScalar = 0.5
 RegenerationUpgrade.kBoostRegenScalarPerLevel = 0.2
@@ -70,24 +70,24 @@ local function RegenerateNow(player)
 	local oldArmor = player:GetArmor()
 	
 	// Health first, then Armor!
-	local newHealth = math.max(player:GetHealth() + regenAmount, player:GetMaxHealth()
+	local newHealth = math.max(player:GetHealth() + regenAmount, player:GetMaxHealth())
 	player:SetHealth(newHealth)
 	regenAmount = newHealth - oldHealth
 	
 	if regenAmount > 0 then
-		local newArmor = math.max(player:GetArmor() + regenAmount, player:GetMaxArmor()
+		local newArmor = math.max(player:GetArmor() + regenAmount, player:GetMaxArmor())
 		player:SetArmor(newArmor)
 	end
 
 end
 
-function ResupplyUpgrade:OnTrigger(player)
+function RegenerationUpgrade:OnTrigger(player)
 	if player and NeedsRegenerate(player) then
 		RegenerateNow(player)
 	end
 end
 
-function ResupplyUpgrade:CanApplyUpgrade(player)
+function RegenerationUpgrade:CanApplyUpgrade(player)
 	local baseText = FactionsTimedUpgrade.CanApplyUpgrade(self, player)
 	
 	if baseText ~= "" then
