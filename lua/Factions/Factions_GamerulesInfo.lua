@@ -9,7 +9,7 @@
 
 // Factions_GamerulesInfo.lua
 
-kFactionsGameType = enum( { 'CombatDeathmatch', 'Horde', 'MarineDeathmatch' } )
+kFactionsGameType = enum( { 'CombatDeathmatch', 'Xenoswarm', 'MarineDeathmatch' } )
 
 // Global gamerules accessors. When GamerulesInfo is initialized by map they should call SetGamerules(). 
 globalGamerulesInfo = globalGamerulesInfo or nil

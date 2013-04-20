@@ -19,7 +19,7 @@
 
 // Factions_GamerulesPicker_Global.lua
 
-kFactionsGameType = enum( { 'CombatDeathmatch', 'Horde', 'MarineDeathmatch' } )
+kFactionsGameType = enum( { 'CombatDeathmatch', 'Xenoswarm', 'MarineDeathmatch' } )
 
 // Global gamerules accessors. When gamerulesPicker is initialized by map they should call SetGamerules(). 
 globalGamePicker = globalGamePicker or nil

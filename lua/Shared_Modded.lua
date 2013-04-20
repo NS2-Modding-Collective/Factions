@@ -64,7 +64,7 @@ Script.Load("lua/Factions/Factions_LaserMine.lua")
 // New classes here
 Script.Load("lua/Factions/Factions_GenericGamerules.lua")
 Script.Load("lua/Factions/Factions_CombatDeathmatchGamerules.lua")
-Script.Load("lua/Factions/Factions_HordeGamerules.lua")
+Script.Load("lua/Factions/Factions_XenoswarmGamerules.lua")
 Script.Load("lua/Factions/Factions_XpMixin.lua")
 Script.Load("lua/Factions/Weapons/Factions_LightMachineGun.lua")
 

@@ -41,8 +41,8 @@ if Server then
 		else
 			if self.gameType == kFactionsGameType.CombatDeathmatch then
 				return CombatDeathmatchGamerules.kMapName
-			elseif self.gameType == kFactionsGameType.Horde then
-				return HordeGamerules.kMapName
+			elseif self.gameType == kFactionsGameType.Xenoswarm then
+				return XenoswarmGamerules.kMapName
 			elseif self.gameType == kFactionsGameType.MarineDeathmatch then
 				return MarineDeathmatchGamerules.kMapName
 			end

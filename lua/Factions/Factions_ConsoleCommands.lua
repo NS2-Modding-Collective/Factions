@@ -28,7 +28,7 @@ if Server then
 
 	// Set your player's colour based on an rgb value.
 	// At some point we will put this into the class menu.
-	// Only allowed in non-competitive games like Horde.
+	// Only allowed in non-competitive games like Xenoswarm.
 	function OnCommandSetColour(client, red, green, blue)
 		local player = client:GetControllingPlayer()
 		if player and not GetGamerulesInfo():GetIsCompetitive() then
