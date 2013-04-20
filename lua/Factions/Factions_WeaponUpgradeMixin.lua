@@ -11,6 +11,7 @@
 
 Script.Load("lua/Factions/Factions_FactionsClassMixin.lua")
 
+Script.Load("lua/Factions/Weapons/Factions_LaserSightMixin.lua")
 Script.Load("lua/Factions/Weapons/Factions_ReloadSpeedMixin.lua")
 
 WeaponUpgradeMixin = CreateMixin( WeaponUpgradeMixin )
@@ -83,6 +84,11 @@ end
 function WeaponUpgradeMixin:UpdateLaserSightLevel(newLevel)
 
 	self.laserSightLevel = newLevel
+	local weapon = self:GetActiveWeapon()
+	if weapon and HasMixin(weapon, "LaserSight") then
+		weapon:SetLaserSightLevel(newLevel)
+	end
+
 	
 end
 

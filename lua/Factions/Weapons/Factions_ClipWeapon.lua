@@ -12,6 +12,8 @@
 local networkVars = {
 }
 
+Script.Load("lua/Factions/Weapons/Factions_ReloadSpeedMixin.lua")
+
 AddMixinNetworkVars(ReloadSpeedMixin, networkVars)
 
 // Reload Speed etc.

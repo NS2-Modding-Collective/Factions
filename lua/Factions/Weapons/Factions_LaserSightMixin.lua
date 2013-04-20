@@ -11,6 +11,8 @@
 
 Script.Load("lua/FunctionContracts.lua")
 
+Script.Load("lua/LaserMixin.lua")
+
 LaserSightMixin = CreateMixin( LaserSightMixin )
 LaserSightMixin.type = "LaserSight"
 
@@ -19,7 +21,6 @@ LaserSightMixin.accuracyBoostPerLevel = -0.1
 
 LaserSightMixin.expectedMixins =
 {
-	Laser = "To actually render the laser",
 }
 
 LaserSightMixin.expectedCallbacks =
@@ -49,13 +50,6 @@ function LaserSightMixin:__initmixin()
 end
 
 if Client then
-	function LaserSightMixin:OnUpdateRender(dt)
-		// at Init no angles are set, so set this here
-		if not self.laserTriggerSet and self:GetLaserSightActive() then
-			self:CreateLaserTrigger()   
-		end
-		
-	end
     
     function LaserSightMixin:CheckLaser()
         local startPoint = self:GetOrigin()          
@@ -82,9 +76,9 @@ end
 // Switch on the laser
 function LaserSightMixin:OnUpdateRender() 
 
-	if self:GetLaserSightActive() then
-		local mixinConstants = self:GetMixinConstants()    
-		local laserSightAttachPoint = mixinConstants.kLaserSightAttachPoint
+	if self:GetLaserSightActive() and not self.laserActive then
+		self:InitializeLaser()
+		self.laserActive = true
 	end
 	
 end
@@ -94,6 +88,7 @@ function LaserSightMixin:UpdateLaserSightLevel()
 	local player = self:GetParent()
     if player and HasMixin(player, "WeaponUpgrade") and self.laserSightLevel ~= player:GetLaserSightLevel() then
 	
+		Shared.Message("NEW LASER SIGHT LEVEL" .. player:GetLaserSightLevel())
 		self:SetLaserSightLevel(player:GetLaserSightLevel())
 		
     end
@@ -109,17 +104,20 @@ end
 
 function LaserSightMixin:GetLaserAttachCoords()
 
-    local coords = self:GetCoords()
+	local mixinConstants = self:GetMixinConstants()    
+	local laserSightAttachPoint = mixinConstants.kLaserSightAttachPoint
+	local coords = self:GetAttachPointOrigin(laserSightAttachPoint)
     local tempCoords = coords
     coords.xAxis = tempCoords.yAxis
     coords.yAxis = tempCoords.zAxis
     coords.zAxis = tempCoords.xAxis
-
-    return coords   
+	
+	return coords
+		
 end
 
 function LaserSightMixin:GetIsLaserActive()
-    return true
+    return self:GetLaserSightActive()
 end
 
 function LaserSightMixin:OverrideLaserLength()
@@ -127,7 +125,7 @@ function LaserSightMixin:OverrideLaserLength()
 end
 
 function LaserSightMixin:GetLaserMaxLength()
-    return 10
+    return 100
 end
 
 function LaserSightMixin:GetLaserWidth()
@@ -153,40 +151,10 @@ function LaserSightMixin:SetEndPoint()
     
     self.endPoint = trace.endPoint
     self.length = length 
+	
 end
-
-local function CreateTrigger(self, endPoint, coords, length)
-    
-    if self.triggerBody then
-        Shared.DestroyCollisionObject(self.triggerBody)
-        self.triggerBody = nil        
-    end
-
-    //local coords = Coords.GetTranslation((self:GetOrigin() - endPoint) * .5 + endPoint)
-    local width = self:GetLaserWidth()
-    local extents = Vector(width + 0.2, width + 0.2, width + 0.2)
-    extents.y = length
-
-    //DebugLine(coords.origin, self.endPoint, 20, 0,0,1,1)  
-
-    self.triggerBody = Shared.CreatePhysicsBoxBody(false, extents, 0, coords)
-    self.triggerBody:SetTriggerEnabled(true)
-    self.triggerBody:SetCollisionEnabled(true)
-    
-    self.triggerBody:SetEntity(self)    
-    
-end
-
-function LaserSightMixin:CreateLaserTrigger()
-    self:SetEndPoint()
-    local coords = self:GetCoords()
-    CreateTrigger(self, self.endPoint, coords, self.length)
-    self.laserTriggerSet = true
-end
-
 
 // Laser things (laser mixin hasnt worked like it should)
-
 function LaserSightMixin:InitializeLaser()
 
     self:SetEndPoint()

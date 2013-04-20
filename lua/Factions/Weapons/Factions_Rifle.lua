@@ -38,7 +38,7 @@ function Rifle:OnCreate()
 	InitMixin(self, IronSightMixin, ironSightParameters)
 	
 	local laserSightParameters = { kLaserSightAttachPoint = Rifle.kLaserSightAttachPoint }
-	//InitMixin(self, LaserSightMixin, laserSightParameters)
+	InitMixin(self, LaserSightMixin, laserSightParameters)
 	
 	assert(HasMixin(self, "IronSight"))
 	//assert(HasMixin(self, "LaserSight"))
