@@ -39,6 +39,7 @@ WeaponUpgradeMixin.networkVars =
 	fireRateLevel = "integer (0 to " .. #FireRateUpgrade.cost .. ")",
 	damageLevel = "integer (0 to " .. #DamageUpgrade.cost .. ")",
 	laserSightLevel = "integer (0 to " .. #LaserSightUpgrade.cost .. ")",
+	ironSightLevel = "integer (0 to " .. #IronSightUpgrade.cost .. ")",
 }
 
 function WeaponUpgradeMixin:__initmixin()
@@ -47,6 +48,7 @@ function WeaponUpgradeMixin:__initmixin()
 	self.fireRateLevel = 0
 	self.damageLevel = 0
 	self.laserSightLevel = 0
+	self.ironSightLevel = 0
 
 end
 
@@ -56,6 +58,7 @@ function WeaponUpgradeMixin:CopyPlayerDataFrom(player)
 	self.fireRateLevel = player.fireRateLevel
 	self.damageLevel = player.damageLevel
 	self.laserSightLevel = player.laserSightLevel
+	self.ironSightLevel = player.ironSightLevel
 
 end
 
@@ -88,7 +91,12 @@ function WeaponUpgradeMixin:UpdateLaserSightLevel(newLevel)
 	if weapon and HasMixin(weapon, "LaserSight") then
 		weapon:SetLaserSightLevel(newLevel)
 	end
+	
+end
 
+function WeaponUpgradeMixin:UpdateIronSightLevel(newLevel)
+
+	self.ironSightLevel = newLevel
 	
 end
 
@@ -113,5 +121,11 @@ end
 function WeaponUpgradeMixin:GetLaserSightLevel()
 
 	return self.laserSightLevel
+
+end
+
+function WeaponUpgradeMixin:GetIronSightLevel()
+
+	return self.ironSightLevel
 
 end

@@ -52,12 +52,6 @@ function FactionsTimedUpgrade:OnTrigger(player)
 	Shared.Message("Default timer triggered for upgrade type " .. self:GetClassName() .. " on player " .. player:GetName())
 end
 
-function FactionsTimedUpgrade:OnAdd(player)
-	if Server then
-		player:AddTimer(self:GetClassName(), self, self.OnTrigger, self:GetTimerInterval())
-	end
-end
-
 function FactionsTimedUpgrade:CanApplyUpgrade(player)
 	if Server then
 		if not HasMixin(player, "Timer") then
@@ -65,6 +59,12 @@ function FactionsTimedUpgrade:CanApplyUpgrade(player)
 		end
 	end
 	return ""
+end
+
+function FactionsTimedUpgrade:OnAdd(player)
+	if Server then
+		player:AddTimer(self:GetClassName(), self, self.OnTrigger, self:GetTimerInterval())
+	end
 end
 
 function FactionsTimedUpgrade:SendAddMessage(player)

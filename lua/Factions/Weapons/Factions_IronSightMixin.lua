@@ -63,6 +63,15 @@ function IronSightMixin:GetIronSightActive()
 	
 end
 
+function IronSightMixin:GetHasIronSight()
+	local player = self:GetParent()
+	if player and HasMixin(player, "WeaponUpgrade") and player:GetIronSightLevel() > 0 then
+		return true
+	end
+	
+	return false
+end
+
 // Set the texture for the iron sight if defined by the weapon.
 function IronSightMixin:OnSetActive() 
 
@@ -103,29 +112,41 @@ function IronSightMixin:ProcessMoveOnWeapon(player, input)
 end
 
 function IronSightMixin:GetHasSecondary(player)
-    return true
+    return self:GetHasIronSight() or self:isa("Rifle")
 end
 
 function IronSightMixin:OnSecondaryAttack(player)
 
-	player.ironSightActive = true
-	// Override any default secondary attacking behaviour here (e.g. rifle butt).
-	player.secondaryAttacking = false
-	
-	if player.ironSightGUI then
-		player.ironSightGUI:ShowIronSight()
+	if self:GetHasIronSight() then
+		player.ironSightActive = true
+		// Override any default secondary attacking behaviour here (e.g. rifle butt).
+		player.secondaryAttacking = false
+		
+		if player.ironSightGUI then
+			player.ironSightGUI:ShowIronSight()
+		end
+	else
+		if self:isa("Rifle") then
+			Rifle.OnSecondaryAttack(self, player)
+		end
 	end
     
 end
 
 function IronSightMixin:OnSecondaryAttackEnd(player)
-    
-	player.ironSightActive = false
-	player.secondaryAttacking = false
-	
-	if player.ironSightGUI then
-		player.ironSightGUI:HideIronSight()
-	end
+
+	if self:GetHasIronSight() then
+		player.ironSightActive = false
+		player.secondaryAttacking = false
+		
+		if player.ironSightGUI then
+			player.ironSightGUI:HideIronSight()
+		end
+	else
+		if self:isa("Rifle") then
+			Rifle.OnSecondaryAttackEnd(self, player)
+		end
+	end    
 
 end
 
