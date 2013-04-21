@@ -12,6 +12,7 @@
 local networkVars = {
 }
 
+AddMixinNetworkVars(IronSightMixin, networkVars)
 AddMixinNetworkVars(FireRateMixin, networkVars)
 
 // Reload Speed etc.

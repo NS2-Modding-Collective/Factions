@@ -28,4 +28,16 @@ function ClipWeapon:OnCreate()
 	
 end
 
+function ClipWeapon:SetupIronSight()
+
+	local player = self:GetParent()
+	if player and HasMixin(player, "WeaponUpgrade") and player:GetIronSightLevel() > 0 then
+		if self.GetIronSightParameters then
+			InitMixin(self, IronSightMixin, self:GetIronSightParameters())
+			assert(HasMixin(self, "IronSight"))
+		end
+	end
+
+end
+
 Class_Reload("ClipWeapon", networkVars)

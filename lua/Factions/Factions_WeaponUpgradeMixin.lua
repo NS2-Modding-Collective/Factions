@@ -97,6 +97,10 @@ end
 function WeaponUpgradeMixin:UpdateIronSightLevel(newLevel)
 
 	self.ironSightLevel = newLevel
+	local weapon = self:GetActiveWeapon()
+	if weapon then
+		weapon:SetupIronSight()
+	end
 	
 end
 
