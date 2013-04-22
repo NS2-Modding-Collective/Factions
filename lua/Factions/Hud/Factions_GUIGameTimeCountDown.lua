@@ -5,29 +5,29 @@
 //
 //________________________________
 
-// combat_GUIGameTimeCountDown.lua
+// Factions_GUIGameTimeCountDown.lua
 
-Script.Load("lua/combat_Utility.lua")
+Script.Load("lua/Factions/Factions_Utility.lua")
 
-class 'combat_GUIGameTimeCountDown' (GUIAnimatedScript)
+class 'Factions_GUIGameTimeCountDown' (GUIAnimatedScript)
 
-combat_GUIGameTimeCountDown.kBackgroundTexture = "ui/combat_count_down_bg.dds"
+Factions_GUIGameTimeCountDown.kBackgroundTexture = "ui/Factions/timer/timer_bg.dds"
 
-combat_GUIGameTimeCountDown.kBackgroundWidth = GUIScale(135)
-combat_GUIGameTimeCountDown.kBackgroundHeight = GUIScale(50)
-combat_GUIGameTimeCountDown.kBackgroundOffsetX = GUIScale(0)
-combat_GUIGameTimeCountDown.kBackgroundOffsetY = GUIScale(0)
+Factions_GUIGameTimeCountDown.kBackgroundWidth = GUIScale(135)
+Factions_GUIGameTimeCountDown.kBackgroundHeight = GUIScale(50)
+Factions_GUIGameTimeCountDown.kBackgroundOffsetX = GUIScale(0)
+Factions_GUIGameTimeCountDown.kBackgroundOffsetY = GUIScale(0)
 
-combat_GUIGameTimeCountDown.kTimeOffset = Vector(0, GUIScale(-5), 0)
-combat_GUIGameTimeCountDown.kTimeFontName = "fonts/AgencyFB_small.fnt"
-combat_GUIGameTimeCountDown.kTimeFontSize = 16
-combat_GUIGameTimeCountDown.kTimeBold = true
+Factions_GUIGameTimeCountDown.kTimeOffset = Vector(0, GUIScale(-5), 0)
+Factions_GUIGameTimeCountDown.kTimeFontName = "fonts/Arial_20.fnt"
+Factions_GUIGameTimeCountDown.kTimeFontSize = 20
+Factions_GUIGameTimeCountDown.kTimeBold = true
 
-combat_GUIGameTimeCountDown.kBgCoords = {14, 0, 112, 34}
+Factions_GUIGameTimeCountDown.kBgCoords = {14, 0, 112, 34}
 
-combat_GUIGameTimeCountDown.kBackgroundColor = Color(1, 1, 1, 0.7)
-combat_GUIGameTimeCountDown.kMarineTextColor = kMarineFontColor
-combat_GUIGameTimeCountDown.kAlienTextColor = kAlienFontColor
+Factions_GUIGameTimeCountDown.kBackgroundColor = Color(1, 1, 1, 0.7)
+Factions_GUIGameTimeCountDown.kMarineTextColor = kMarineFontColor
+Factions_GUIGameTimeCountDown.kAlienTextColor = kAlienFontColor
 
 local function GetTeamType()
 
@@ -52,7 +52,7 @@ local function GetTeamType()
 end
 
 
-function combat_GUIGameTimeCountDown:Initialize()    
+function Factions_GUIGameTimeCountDown:Initialize()    
 
 	GUIAnimatedScript.Initialize(self)
     
@@ -67,27 +67,27 @@ function combat_GUIGameTimeCountDown:Initialize()
 	
     // Timer display background
     self.timerBackground = self:CreateAnimatedGraphicItem()
-    self.timerBackground:SetSize( Vector(combat_GUIGameTimeCountDown.kBackgroundWidth, combat_GUIGameTimeCountDown.kBackgroundHeight, 0) )
-    self.timerBackground:SetPosition(Vector(combat_GUIGameTimeCountDown.kBackgroundOffsetX - (combat_GUIGameTimeCountDown.kBackgroundWidth / 2), combat_GUIGameTimeCountDown.kBackgroundOffsetY, 0))
+    self.timerBackground:SetSize( Vector(Factions_GUIGameTimeCountDown.kBackgroundWidth, Factions_GUIGameTimeCountDown.kBackgroundHeight, 0) )
+    self.timerBackground:SetPosition(Vector(Factions_GUIGameTimeCountDown.kBackgroundOffsetX - (Factions_GUIGameTimeCountDown.kBackgroundWidth / 2), Factions_GUIGameTimeCountDown.kBackgroundOffsetY, 0))
     self.timerBackground:SetAnchor(GUIItem.Middle, GUIItem.Top) 
     self.timerBackground:SetLayer(kGUILayerPlayerHUD)
-    self.timerBackground:SetTexture(combat_GUIGameTimeCountDown.kBackgroundTexture)
-    self.timerBackground:SetTexturePixelCoordinates(unpack(combat_GUIGameTimeCountDown.kBgCoords))
-	self.timerBackground:SetColor( combat_GUIGameTimeCountDown.kBackgroundColor )
+    self.timerBackground:SetTexture(Factions_GUIGameTimeCountDown.kBackgroundTexture)
+    self.timerBackground:SetTexturePixelCoordinates(unpack(Factions_GUIGameTimeCountDown.kBgCoords))
+	self.timerBackground:SetColor( Factions_GUIGameTimeCountDown.kBackgroundColor )
 	self.timerBackground:SetIsVisible(false)
 	
 	// Time remaining
     self.timeRemainingText = self:CreateAnimatedTextItem()
     self.timeRemainingText:SetAnchor(GUIItem.Middle, GUIItem.Center)
-    self.timeRemainingText:SetPosition(combat_GUIGameTimeCountDown.kTimeOffset)
+    self.timeRemainingText:SetPosition(Factions_GUIGameTimeCountDown.kTimeOffset)
 	self.timeRemainingText:SetLayer(kGUILayerPlayerHUDForeground1)
 	self.timeRemainingText:SetTextAlignmentX(GUIItem.Align_Center)
     self.timeRemainingText:SetTextAlignmentY(GUIItem.Align_Center)
 	self.timeRemainingText:SetText("")
 	self.timeRemainingText:SetColor(Color(1,1,1,1))
-	self.timeRemainingText:SetFontSize(combat_GUIGameTimeCountDown.kTimeFontSize)
-    self.timeRemainingText:SetFontName(combat_GUIGameTimeCountDown.kTimeFontName)
-	self.timeRemainingText:SetFontIsBold(combat_GUIGameTimeCountDown.kTimeBold)
+	self.timeRemainingText:SetFontSize(Factions_GUIGameTimeCountDown.kTimeFontSize)
+    self.timeRemainingText:SetFontName(Factions_GUIGameTimeCountDown.kTimeFontName)
+	self.timeRemainingText:SetFontIsBold(Factions_GUIGameTimeCountDown.kTimeBold)
 	self.timeRemainingText:SetIsVisible(true)
  
 	self.background:AddChild(self.timerBackground)
@@ -96,7 +96,7 @@ function combat_GUIGameTimeCountDown:Initialize()
 
 end
 
-function combat_GUIGameTimeCountDown:Update(deltaTime)
+function Factions_GUIGameTimeCountDown:Update(deltaTime)
 
     local player = Client.GetLocalPlayer()
 	
@@ -109,24 +109,21 @@ function combat_GUIGameTimeCountDown:Update(deltaTime)
 	
 	if (newTeam) then
 		if (self.playerTeam == "Marines") then
-			self.timeRemainingText:SetColor(combat_GUIGameTimeCountDown.kMarineTextColor)
+			self.timeRemainingText:SetColor(Factions_GUIGameTimeCountDown.kMarineTextColor)
 			self.showTimer = true
 		elseif (self.playerTeam == "Aliens") then
-			self.timeRemainingText:SetColor(combat_GUIGameTimeCountDown.kAlienTextColor)
+			self.timeRemainingText:SetColor(Factions_GUIGameTimeCountDown.kAlienTextColor)
 			self.showTimer = true
 		else
 			self.timerBackground:SetIsVisible(false)
 			self.showTimer = false
 		end
 	end
-	
-	// Update the client-side clock.
-	kCombatTimeSinceGameStart = kCombatTimeSinceGameStart + deltaTime
     
 	local player = Client.GetLocalPlayer()
 	if (self.showTimer and player:GetIsAlive()) then
 		self.timerBackground:SetIsVisible(true)
-		local TimeRemaining = PlayerUI_GetTimeRemaining()
+		local TimeRemaining = GetGamerulesInfo():GetTimeRemainingDigital()
 		self.timeRemainingText:SetText(TimeRemaining)
 	else
 		self.timerBackground:SetIsVisible(false)
@@ -135,7 +132,7 @@ function combat_GUIGameTimeCountDown:Update(deltaTime)
 end
 
 
-function combat_GUIGameTimeCountDown:Uninitialize()
+function Factions_GUIGameTimeCountDown:Uninitialize()
 
 	GUI.DestroyItem(self.timeRemainingText)
 	GUI.DestroyItem(self.timerBackground)
