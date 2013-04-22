@@ -106,11 +106,13 @@ function LaserSightMixin:GetLaserAttachCoords()
 
 	local mixinConstants = self:GetMixinConstants()    
 	local laserSightAttachPoint = mixinConstants.kLaserSightAttachPoint
-	local coords = self:GetAttachPointOrigin(laserSightAttachPoint)
+	local origin = self:GetAttachPointOrigin(laserSightAttachPoint)
+	local coords = self:GetCoords()
+	coords.origin = origin
     local tempCoords = coords
     coords.xAxis = tempCoords.yAxis
-    coords.yAxis = tempCoords.zAxis
-    coords.zAxis = tempCoords.xAxis
+    coords.yAxis = tempCoords.xAxis
+    coords.zAxis = tempCoords.zAxis
 	
 	return coords
 		
@@ -121,7 +123,7 @@ function LaserSightMixin:GetIsLaserActive()
 end
 
 function LaserSightMixin:OverrideLaserLength()
-	return 10
+	return 100
 end
 
 function LaserSightMixin:GetLaserMaxLength()
@@ -184,8 +186,8 @@ function LaserSightMixin:InitializeLaser()
     coordsRight.yAxis = -coords.xAxis
     coordsRight.xAxis = coords.yAxis
 
-    local startColor = Color(1, 0, 0, 0.7)
-    local endColor = Color(1, 0, 0, 0.07)
+    local startColor = Color(1, 0, 0, 0.8)
+    local endColor = Color(1, 0, 0, 0.01)
 
     DynamicMesh_SetLine(self.dynamicMesh1, coordsLeft, width, self.length, startColor, endColor)
     DynamicMesh_SetLine(self.dynamicMesh2, coordsRight, width, self.length, startColor, endColor)

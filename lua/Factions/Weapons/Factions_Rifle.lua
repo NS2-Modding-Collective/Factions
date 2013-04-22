@@ -20,7 +20,7 @@ Rifle.kIronSightTexture = "ui/Factions/testing_ironsights.png"
 Rifle.kIronSightZoomFOV = 55
 Rifle.kIronSightActivateTime = 0.1
 Rifle.kLaserSightAttachPoint = "fxnode_riflemuzzle"
-Rifle.kLaserSightAttachPoint = "LMG_Scope"
+//Rifle.kLaserSightAttachPoint = "LMG_Scope"
 
 // Iron Sights
 local overrideOnCreate = Rifle.OnCreate
