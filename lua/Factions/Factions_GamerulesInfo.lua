@@ -172,6 +172,14 @@ function FactionsGamerulesInfo:GetTimeRemaining()
 	end
 end
 
+function FactionsGamerulesInfo:GetTimeRemainingText()
+	return GetTimeText(self:GetTimeRemaining)
+end
+
+function FactionsGamerulesInfo:GetTimeRemainingDigital()
+	return GetTimeDigital(self:GetTimeRemaining)
+end
+
 local function UpdateLocalGameTimer(self, dt)
 	if self.timeLimitCache == nil or self.timeLimitCache ~= self.timeLimit then
 		self.timeLimitCache = self.timeLimit
