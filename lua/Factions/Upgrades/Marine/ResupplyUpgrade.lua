@@ -66,7 +66,7 @@ local function NeedsResupply(player)
 
 end
 
-local function GiveAllAmmo(player)
+local function GiveAmmoToEveryWeapon(player)
 
 	for i = 0, player:GetNumChildren() - 1 do
 
@@ -88,21 +88,13 @@ end
 local function ResupplyNow(player)
 
 	local success = false
-	local mapNameHealth = LookupTechData(kTechId.MedPack, kTechDataMapName) 
-	local position = player:GetOrigin()
-
-	if (mapNameHealth) then
+	local newHealth = math.min(player:GetHealth() + MedPack.kHealth, player:GetMaxHealth())
+	player:SetHealth(newHealth)
 	
-		local droppackHealth = CreateEntity(mapNameHealth, position, player:GetTeamNumber())
-		// dont drop a ammo pack, give ammo via a new function
-		GiveAllAmmo(player)
+	// dont drop a ammo pack, give ammo via a new function
+	GiveAmmoToEveryWeapon()
 		
-		StartSoundEffectAtOrigin(MedPack.kHealthSound, player:GetOrigin())
-		success = true
-		
-		//Destroy them so they can't be used by somebody else (if they are unused)
-		DestroyEntity(droppackHealth)		
-	end
+	StartSoundEffectAtOrigin(MedPack.kHealthSound, player:GetOrigin())
 
 	return success
 
