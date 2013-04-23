@@ -24,6 +24,7 @@ SpreadMixin.expectedCallbacks =
 
 SpreadMixin.overrideFunctions =
 {
+	GetSpread = "To actually set the spread up",
 }
 
 SpreadMixin.expectedConstants =
@@ -75,4 +76,15 @@ end
 
 function SpreadMixin:GetSpreadScalar()
 	return self.spreadScalar
+end
+
+// Override the spread func using some _G magic.
+function SpreadMixin:GetSpread()
+	local spreadFunc = _G[self:GetClassName()].GetSpread
+	local spread = spreadFunc(self)
+	if spread and spread ~= ClipWeapon.kCone0Degrees then
+		return spread * spreadScalar
+	else
+		return return ClipWeapon.kCone0Degrees
+	end
 end
