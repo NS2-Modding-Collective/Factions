@@ -36,8 +36,8 @@ LightMachineGun.kIronSightTexture = "ui/Factions/testing_ironsights.png"
 LightMachineGun.kIronSightZoomFOV = 80
 LightMachineGun.kIronSightActivateTime = 0.1
 
-LightMachineGun.kLaserSightWorldAttachPoint = "fxnode_riflemuzzle"
-LightMachineGun.kLaserSightViewAttachPoint = "fxnode_riflemuzzle"
+LightMachineGun.kLaserSightWorldModelAttachPoint = "fxnode_riflemuzzle"
+LightMachineGun.kLaserSightViewModelAttachPoint = "fxnode_riflemuzzle"
 
 local kRange = 250
 // 4 degrees in NS1
@@ -119,8 +119,8 @@ function LightMachineGun:OnCreate()
 		
 	assert(HasMixin(self, "IronSight"))
 		
-	local laserSightParameters = { kLaserSightWorldAttachPoint = LightMachineGun.kLaserSightWorldAttachPoint,
-								   kLaserSightViewAttachPoint = LightMachineGun.kLaserSightViewAttachPoint }
+	local laserSightParameters = { kLaserSightWorldModelAttachPoint = LightMachineGun.kLaserSightWorldModelAttachPoint,
+								   kLaserSightViewModelAttachPoint = LightMachineGun.kLaserSightViewModelAttachPoint }
 	InitMixin(self, LaserSightMixin, laserSightParameters)
 	
 	assert(HasMixin(self, "LaserSight"))
