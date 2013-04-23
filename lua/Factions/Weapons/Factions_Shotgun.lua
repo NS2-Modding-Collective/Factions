@@ -17,19 +17,18 @@ local networkVars = {
 AddMixinNetworkVars(LaserSightMixin, networkVars)
 
 //"shotgun_reloader"
-Shotgun.kLaserSightAttachPoint = "shotgun_barrels"
+Shotgun.kLaserSightWorldAttachPoint = "shotgun_barrels"
+Shotgun.kLaserSightViewAttachPoint = "shotgun_barrels"
 
 local overrideOnCreate = Shotgun.OnCreate
 function Shotgun:OnCreate()
 
 	overrideOnCreate(self)
 	
-	//InitMixin(self, LaserMixin)
-	
-	local laserSightParameters = { kLaserSightAttachPoint = Shotgun.kLaserSightAttachPoint }
-	//InitMixin(self, LaserSightMixin, laserSightParameters)
-	
-	//assert(HasMixin(self, "LaserSight"))
+	local laserSightParameters = { kLaserSightWorldAttachPoint = Shotgun.kLaserSightWorldAttachPoint,
+								   kLaserSightViewAttachPoint = Shotgun.kLaserSightViewAttachPoint }
+	InitMixin(self, LaserSightMixin, laserSightParameters)
+	assert(HasMixin(self, "LaserSight"))
 	
 end
 

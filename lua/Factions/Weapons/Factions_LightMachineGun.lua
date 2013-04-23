@@ -36,6 +36,9 @@ LightMachineGun.kIronSightTexture = "ui/Factions/testing_ironsights.png"
 LightMachineGun.kIronSightZoomFOV = 80
 LightMachineGun.kIronSightActivateTime = 0.1
 
+LightMachineGun.kLaserSightWorldAttachPoint = "fxnode_riflemuzzle"
+LightMachineGun.kLaserSightViewAttachPoint = "fxnode_riflemuzzle"
+
 local kRange = 250
 // 4 degrees in NS1
 local kSpread = ClipWeapon.kCone5Degrees
@@ -62,6 +65,8 @@ local networkVars =
 }
 
 AddMixinNetworkVars(LiveMixin, networkVars)
+AddMixinNetworkVars(IronSightMixin, networkVars)
+AddMixinNetworkVars(LaserSightMixin, networkVars)
 
 local kMuzzleEffect = PrecacheAsset("cinematics/marine/rifle/muzzle_flash.cinematic")
 local kMuzzleAttachPoint = "fxnode_riflemuzzle"
@@ -102,18 +107,23 @@ function LightMachineGun:OnCreate()
     
     if Client then
         InitMixin(self, ClientWeaponEffectsMixin)
-		
-		local ironSightParameters = { kIronSightTexture = LightMachineGun.kIronSightTexture,
-									  kIronSightZoomFOV = LightMachineGun.kIronSightZoomFOV,
-									  kIronSightActivateTime = LightMachineGun.kIronSightActivateTime }
-		InitMixin(self, IronSightMixin, ironSightParameters)
-		
-		assert(HasMixin(self, "IronSight"))
-		
     elseif Server then
         self.soundVariant = Shared.GetRandomInt(1, kNumberOfVariants)
         self.soundType = self.soundVariant
-    end
+	end
+	
+	local ironSightParameters = { kIronSightTexture = LightMachineGun.kIronSightTexture,
+								  kIronSightZoomFOV = LightMachineGun.kIronSightZoomFOV,
+								  kIronSightActivateTime = LightMachineGun.kIronSightActivateTime }
+	InitMixin(self, IronSightMixin, ironSightParameters)
+		
+	assert(HasMixin(self, "IronSight"))
+		
+	local laserSightParameters = { kLaserSightWorldAttachPoint = LightMachineGun.kLaserSightWorldAttachPoint,
+								   kLaserSightViewAttachPoint = LightMachineGun.kLaserSightViewAttachPoint }
+	InitMixin(self, LaserSightMixin, laserSightParameters)
+	
+	assert(HasMixin(self, "LaserSight"))
     
 end
 

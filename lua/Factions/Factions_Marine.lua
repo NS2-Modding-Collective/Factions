@@ -45,6 +45,7 @@ function Marine:SetupFactionsMovement()
 
 	Marine.kCrouchSpeedScalar = 0.4
 	Marine.kWallWalkSpeedScalar = 0.5
+	Marine.kWallWalkSlowdownTime = 1.0
 
 	Marine.kWalkMaxSpeed = 5.0                // Four miles an hour = 6,437 meters/hour = 1.8 meters/second (increase for FPS tastes)
 	Marine.kRunMaxSpeed = 9.0               // 10 miles an hour = 16,093 meters/hour = 4.4 meters/second (increase for FPS tastes)
@@ -178,10 +179,6 @@ if false then
 
 	function Marine:GetCrouchSpeedScalar()
 		return Marine.kCrouchSpeedScalar
-	end
-
-	function Marine:GetWallWalkSpeedScalar()
-		return Marine.kWallWalkSpeedScalar
 	end
 
 	function Marine:GetRollSmoothRate()
