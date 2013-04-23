@@ -40,16 +40,27 @@ IronSightMixin.expectedConstants =
 
 IronSightMixin.networkVars =
 {
+	ironSightAvailable = "boolean",
 }
 
 function IronSightMixin:__initmixin()
 
+	self.ironSightAvailable = false
     self.secondaryAttacking = false
     self.lastSecondaryAttackTime = 0
 	self.ironSightActive = false
 	self.ironSightZoom = kDefaultFov
 	self.ironSightZoomRate = (kDefaultFov - Rifle.kIronSightZoomFOV) / Rifle.kIronSightActivateTime
 
+end
+
+function IronSightMixin:GetIronSightAvailable()
+	local player = self:GetParent()
+	if player and HasMixin(player, "WeaponUpgrade") and player:GetLaserSightLevel() > 0 then
+		return true
+	end
+	
+	return false
 end
 
 function IronSightMixin:GetIronSightActive()

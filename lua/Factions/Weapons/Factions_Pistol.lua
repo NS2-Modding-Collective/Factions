@@ -21,26 +21,24 @@ AddMixinNetworkVars(LaserSightMixin, networkVars)
 Pistol.kIronSightTexture = "ui/Factions/testing_ironsights.png"
 Pistol.kIronSightZoomFOV = 70
 Pistol.kIronSightActivateTime = 0.10
-Pistol.kLaserSightAttachPoint = "fxnode_laser"
+Pistol.kLaserSightWorldAttachPoint = "fxnode_laser"
+Pistol.kLaserSightViewAttachPoint = "fxnode_laser"
 
 // Iron Sights
 local overrideOnCreate = Pistol.OnCreate
 function Pistol:OnCreate()
 
 	overrideOnCreate(self)
-	
-	//InitMixin(self, LaserMixin)
 
 	local ironSightParameters = { kIronSightTexture = Pistol.kIronSightTexture,
 								  kIronSightZoomFOV = Pistol.kIronSightZoomFOV,
 								  kIronSightActivateTime = Pistol.kIronSightActivateTime }
 	InitMixin(self, IronSightMixin, ironSightParameters)
 	
-	local laserSightParameters = { kLaserSightAttachPoint = Pistol.kLaserSightAttachPoint }
-	//InitMixin(self, LaserSightMixin, laserSightParameters)
-	
-	assert(HasMixin(self, "IronSight"))
-	//assert(HasMixin(self, "LaserSight"))
+	local laserSightParameters = { kLaserSightWorldAttachPoint = Pistol.kLaserSightWorldAttachPoint,
+								   kLaserSightViewAttachPoint = Pistol.kLaserSightViewAttachPoint }
+	InitMixin(self, LaserSightMixin, laserSightParameters)
+	assert(HasMixin(self, "LaserSight"))
 	
 end
 

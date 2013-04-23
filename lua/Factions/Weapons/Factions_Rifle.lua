@@ -9,11 +9,13 @@
 
 // Factions_Rifle.lua
 
+Script.Load("lua/Factions/Weapons/Factions_IronSightMixin.lua")
 Script.Load("lua/Factions/Weapons/Factions_LaserSightMixin.lua")
 
 local networkVars = {
 }
 
+AddMixinNetworkVars(IronSightMixin, networkVars)
 AddMixinNetworkVars(LaserSightMixin, networkVars)
 
 Rifle.kIronSightTexture = "ui/Factions/testing_ironsights.png"
@@ -28,17 +30,16 @@ function Rifle:OnCreate()
 
 	overrideOnCreate(self)
 	
+	local ironSightParameters = { kIronSightTexture = Rifle.kIronSightTexture,
+								  kIronSightZoomFOV = Rifle.kIronSightZoomFOV,
+								  kIronSightActivateTime = Rifle.kIronSightActivateTime }
+	InitMixin(self, IronSightMixin, ironSightParameters)
+	
 	local laserSightParameters = { kLaserSightAttachPoint = Rifle.kLaserSightAttachPoint }
 	InitMixin(self, LaserSightMixin, laserSightParameters)
 	
-	//assert(HasMixin(self, "LaserSight"))
+	assert(HasMixin(self, "LaserSight"))
 
-end
-
-function Rifle:GetIronSightParameters()	
-		return { 	kIronSightTexture = Rifle.kIronSightTexture,
-					kIronSightZoomFOV = Rifle.kIronSightZoomFOV,
-					kIronSightActivateTime = Rifle.kIronSightActivateTime }
 end
 
 function Rifle:GetSpread()
