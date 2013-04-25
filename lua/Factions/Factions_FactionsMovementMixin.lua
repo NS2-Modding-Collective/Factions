@@ -779,6 +779,6 @@ end
 
 function FactionsMovementMixin:GetWallWalkSpeedScalar()
 	local timeSinceLastWallWalk = Shared.GetTime() - self.timeStartedWallWalking
-	local wallWalkTimeFraction = math.min(timeSinceLastWallWalk)/Marine.kWallWalkSlowdownTime, 1)
+	local wallWalkTimeFraction = math.min(timeSinceLastWallWalk/Marine.kWallWalkSlowdownTime, 1)
 	return Marine.kWallWalkSpeedScalar * wallWalkTimeFraction
 end

@@ -9,16 +9,16 @@
 						
 class 'RegenerationUpgrade' (FactionsTimedUpgrade)
 
-RegenerationUpgrade.kBaseRegenScalar = 0.5
-RegenerationUpgrade.kBoostRegenScalarPerLevel = 0.2
+RegenerationUpgrade.kBaseRegenScalar = 0.05
+RegenerationUpgrade.kBoostRegenScalarPerLevel = 0.02
 
 // Define these statically so we can easily access them without instantiating too.
-RegenerationUpgrade.cost = { 400, 400, 400 }                              					// Cost of the upgrade in xp
+RegenerationUpgrade.cost = { 250, 250, 400, 400, 800 }                              	// Cost of the upgrade in xp
 RegenerationUpgrade.upgradeName = "regen"                     							// Text code of the upgrade if using it via console
-RegenerationUpgrade.upgradeTitle = "Regeneration"               								// Title of the upgrade, e.g. Submachine Gun
-RegenerationUpgrade.upgradeDesc = "Periodically stock up on health and ammo"				// Description of the upgrade
-RegenerationUpgrade.upgradeTechId = kTechId.Regeneration									// TechId of the upgrade, default is kTechId.Move cause its the first entry
-RegenerationUpgrade.triggerInterval	= { 3, 2, 1 } 										// Specify the timer interval (in seconds) per level.
+RegenerationUpgrade.upgradeTitle = "Regeneration"               						// Title of the upgrade, e.g. Submachine Gun
+RegenerationUpgrade.upgradeDesc = "Periodically regenerate health and armor"			// Description of the upgrade
+RegenerationUpgrade.upgradeTechId = kTechId.Regeneration								// TechId of the upgrade, default is kTechId.Move cause its the first entry
+RegenerationUpgrade.triggerInterval	= { 3, 3, 2, 2, 1 } 								// Specify the timer interval (in seconds) per level.
 RegenerationUpgrade.teamType = kFactionsUpgradeTeamType.AlienTeam						// Team Type
 
 function RegenerationUpgrade:Initialize()
@@ -51,7 +51,7 @@ function RegenerationUpgrade:GetTimerDescription()
 	return "You will regenerate by " .. self:GetRegenPercentString() .. " every "
 end
 
-local function NeedsRegenerate(player)
+function RegenerationUpgrade:NeedsRegenerate(player)
         
 	// Ammo packs give ammo to clip as well (so pass true to GetNeedsAmmo())
 	// check every weapon the player got
@@ -63,27 +63,27 @@ local function NeedsRegenerate(player)
 
 end
 
-local function RegenerateNow(player)
+function RegenerationUpgrade:RegenerateNow(player)
 
 	local regenAmount = (player:GetMaxHealth() + player:GetMaxArmor()) * self:GetRegenScalar()
 	local oldHealth = player:GetHealth()
 	local oldArmor = player:GetArmor()
 	
 	// Health first, then Armor!
-	local newHealth = math.max(player:GetHealth() + regenAmount, player:GetMaxHealth())
+	local newHealth = math.min(player:GetHealth() + regenAmount, player:GetMaxHealth())
 	player:SetHealth(newHealth)
 	regenAmount = newHealth - oldHealth
 	
 	if regenAmount > 0 then
-		local newArmor = math.max(player:GetArmor() + regenAmount, player:GetMaxArmor())
+		local newArmor = math.min(player:GetArmor() + regenAmount, player:GetMaxArmor())
 		player:SetArmor(newArmor)
 	end
 
 end
 
 function RegenerationUpgrade:OnTrigger(player)
-	if player and NeedsRegenerate(player) then
-		RegenerateNow(player)
+	if player and self:NeedsRegenerate(player) then
+		self:RegenerateNow(player)
 	end
 end
 
