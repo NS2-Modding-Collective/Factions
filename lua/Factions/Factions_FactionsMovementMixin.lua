@@ -81,6 +81,7 @@ FactionsMovementMixin.networkVars =
 	wallWalkingNormalCurrent = "private compensated vector (-1 to 1 by 0.001 [ 8 ], -1 to 1 by 0.001 [ 9 ])",
 	
 	wallWalkingEnabled = "private compensated boolean",
+	timeStartedWallWalking = "private compensated time",
 	timeOfLastJumpLand = "private compensated time",
 	timeLastWallJump = "private compensated time",
 	jumpLandSpeed = "private compensated float",
@@ -256,6 +257,7 @@ function FactionsMovementMixin:PreUpdateMove(input, runningPrediction)
 			
 				self.wallWalkingNormalGoal = goal
 				self.wallWalking = true
+				self.timeStartedWallWalking = Shared.GetTime()
 					   
 			else
 				self.wallWalking = false                
@@ -773,4 +775,10 @@ function FactionsMovementMixin:ComputeForwardVelocity(input)
     
     return forwardVelocity + pushVelocity * (self:GetGroundFrictionForce()/7)
 
+end
+
+function FactionsMovementMixin:GetWallWalkSpeedScalar()
+	local timeSinceLastWallWalk = Shared.GetTime() - self.timeStartedWallWalking
+	local wallWalkTimeFraction = math.min(timeSinceLastWallWalk/Marine.kWallWalkSlowdownTime, 1)
+	return Marine.kWallWalkSpeedScalar * wallWalkTimeFraction
 end

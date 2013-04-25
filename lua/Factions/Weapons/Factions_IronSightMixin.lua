@@ -40,16 +40,27 @@ IronSightMixin.expectedConstants =
 
 IronSightMixin.networkVars =
 {
+	ironSightAvailable = "boolean",
 }
 
 function IronSightMixin:__initmixin()
 
+	self.ironSightAvailable = false
     self.secondaryAttacking = false
     self.lastSecondaryAttackTime = 0
 	self.ironSightActive = false
 	self.ironSightZoom = kDefaultFov
 	self.ironSightZoomRate = (kDefaultFov - Rifle.kIronSightZoomFOV) / Rifle.kIronSightActivateTime
 
+end
+
+function IronSightMixin:GetIronSightAvailable()
+	local player = self:GetParent()
+	if player and HasMixin(player, "WeaponUpgrade") and player:GetLaserSightLevel() > 0 then
+		return true
+	end
+	
+	return false
 end
 
 function IronSightMixin:GetIronSightActive()
@@ -108,23 +119,35 @@ end
 
 function IronSightMixin:OnSecondaryAttack(player)
 
-	player.ironSightActive = true
-	// Override any default secondary attacking behaviour here (e.g. rifle butt).
-	player.secondaryAttacking = false
+	if not self:GetIronSightAvailable() then
+		if _G[self:GetClassName()].OnSecondaryAttack then
+			_G[self:GetClassName()].OnSecondaryAttack(self, player)
+		end
+	else
+		player.ironSightActive = true
+		// Override any default secondary attacking behaviour here (e.g. rifle butt).
+		player.secondaryAttacking = false
 	
-	if player.ironSightGUI then
-		player.ironSightGUI:ShowIronSight()
+		if player.ironSightGUI then
+			player.ironSightGUI:ShowIronSight()
+		end
 	end
     
 end
 
 function IronSightMixin:OnSecondaryAttackEnd(player)
 
-	player.ironSightActive = false
-	player.secondaryAttacking = false
+	if not self:GetIronSightAvailable() then
+		if _G[self:GetClassName()].OnSecondaryAttackEnd then
+			_G[self:GetClassName()].OnSecondaryAttackEnd(self, player)
+		end
+	else
+		player.ironSightActive = false
+		player.secondaryAttacking = false
 	
-	if player.ironSightGUI then
-		player.ironSightGUI:HideIronSight()
+		if player.ironSightGUI then
+			player.ironSightGUI:HideIronSight()
+		end
 	end
 
 end

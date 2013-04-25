@@ -42,19 +42,29 @@ function InkUpgrade:GetTimerDescription()
 	return "Ink will be available every "
 end
 
-local function InkAvailable(player)
-	if player and HasMixin(player, "Ink") then
-		player:SetInkAvailable(true)
-		player:SendDirectMessage("Ink is available!")
+local function InkAvailable(self, player)
+	player:SetInkAvailable(true)
+	player:SendDirectMessage("Ink is available!")
+end
+
+function InkUpgrade:CanApplyUpgrade(player)
+	local baseText = FactionsTimedUpgrade.CanApplyUpgrade(self, player)
+	
+	if baseText ~= "" then
+		return baseText
+	elseif not HasMixin(player, "Ink") then
+		return "Entity must implement InkMixin!"
+	else
+		return ""
 	end
 end
 
 function InkUpgrade:OnAdd(player)
 	FactionsTimedUpgrade.OnAdd(self, player)
 	
-	InkAvailable(player)
+	InkAvailable(self, player)
 end
 
 function InkUpgrade:OnTrigger(player)
-	InkAvailable(player)
+	InkAvailable(self, player)
 end

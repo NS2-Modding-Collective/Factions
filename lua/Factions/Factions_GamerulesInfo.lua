@@ -173,11 +173,11 @@ function FactionsGamerulesInfo:GetTimeRemaining()
 end
 
 function FactionsGamerulesInfo:GetTimeRemainingText()
-	return GetTimeText(self:GetTimeRemaining)
+	return GetTimeText(self:GetTimeRemaining())
 end
 
 function FactionsGamerulesInfo:GetTimeRemainingDigital()
-	return GetTimeDigital(self:GetTimeRemaining)
+	return GetTimeDigital(self:GetTimeRemaining())
 end
 
 local function UpdateLocalGameTimer(self, dt)

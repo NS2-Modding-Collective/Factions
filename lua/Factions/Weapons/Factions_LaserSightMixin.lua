@@ -50,21 +50,18 @@ function LaserSightMixin:__initmixin()
 
 	self.laserSightAccuracyScalar = LaserSightMixin.baseAccuracy
 	self.laserSightLevel = 0
-	self.laserSightActive = true
-	
-	self:InitializeLaser()
-	self.laserActive = true
+	self.laserSightActive = false
 	
 end
 
 function LaserSightMixin:GetLaserSightActive()
 
-	return self.laserActive
+	return self.laserSightActive
 	
 end
 
 function LaserSightMixin:GetLaserMaxLength()
-	local player = self:GetOwner()
+	local player = self:GetParent()
 	if player and player:GetIsLocalPlayer() and not player:GetIsThirdPerson() then
 		return LaserSightMixin.kViewMaxRange
 	else
@@ -73,20 +70,30 @@ function LaserSightMixin:GetLaserMaxLength()
 end
 
 function LaserSightMixin:GetLaserWidth()
-    return 0.05
+
+	local player = self:GetParent()
+	assert(player)
+	
+	local laserSightAttachPoint = nil
+	if player:GetIsLocalPlayer() and not player:GetIsThirdPerson() then
+		return 0.05
+	else
+		return 0.10
+	end
+	
 end
 
 // Switch on the laser
 function LaserSightMixin:OnUpdateRender() 
 
-	if self:GetLaserSightActive() 
-		self:InitialiseLaser()
+	if self:GetLaserSightActive() then
+		self:InitializeLaser()
 	
 		if not self.laserActive then
 			self.laserActive = true
 		end
 	else
-		if laserActive then
+		if self.laserActive then
 			self:UninitializeLaser()
 			self.laserActive = false
 		end
@@ -124,23 +131,33 @@ end
 function LaserSightMixin:GetLaserAttachCoords()
 
 	local mixinConstants = self:GetMixinConstants()    
-	local player = self:GetOwner()
+	local player = self:GetParent()
 	assert(player)
 	
 	local laserSightAttachPoint = nil
 	if player:GetIsLocalPlayer() and not player:GetIsThirdPerson() then
-		laserSightAttachPoint = mixinConstants.kLaserSightViewModelAttachPoint
-	else
-		laserSightAttachPoint = mixinConstants.kLaserSightWorldModelAttachPoint
+		
+		local attachCoords = self:GetAttachPointCoords(mixinConstants.kLaserSightViewModelAttachPoint)
+		local zAxis = attachCoords.zAxis
+		attachCoords.zAxis = attachCoords.yAxis
+		attachCoords.yAxis = zAxis
+		attachCoords.origin = attachCoords.origin - attachCoords.zAxis * 0.1
+		return attachCoords
+	
 	end
 	
-	return self:GetAttachPointCoords(laserSightAttachPoint)
+	local attachCoords = self:GetAttachPointCoords(mixinConstants.kLaserSightWorldModelAttachPoint)
+	local zAxis = attachCoords.zAxis
+	attachCoords.zAxis = attachCoords.xAxis
+	attachCoords.xAxis = zAxis
+	attachCoords.origin = attachCoords.origin - attachCoords.zAxis * 0.1
+	return attachCoords
 		
 end
 
 function LaserSightMixin:SetEndPoint()
 
-	local player = self:GetOwner()
+	local player = self:GetParent()
 	assert(player)
 	
 	local attachCoords = self:GetLaserAttachCoords()
@@ -156,10 +173,10 @@ function LaserSightMixin:SetEndPoint()
 	
     // Filter ourself out of the trace so that we don't hit ourselves.
     local filter = EntityFilterTwo(player, self)
-	local endPoint = startPoint + shootCoords * range
+	local endPoint = startPoint + shootCoords.zAxis * range
 	
-	local trace = Shared.TraceRay(startPoint, endPoint, CollisionRep.LOS, PhysicsMask.All, filter)
-    local length = math.abs( (trace.endPoint - weaponCoords.origin):GetLength() )
+	local trace = Shared.TraceRay(startPoint, endPoint, CollisionRep.Default, PhysicsMask.Bullets, filter)
+    local length = math.abs( (trace.endPoint - shootCoords.origin):GetLength() )
     
     self.endPoint = trace.endPoint
     self.length = length
@@ -204,7 +221,7 @@ function LaserSightMixin:InitializeLaser()
     
 end
 
-function LaserSightMixin:UninitializeLaser()
+function LaserSightMixin:OnDestroy()
 
     if self.dynamicMesh1 then
         DynamicMesh_Destroy(self.dynamicMesh1)
