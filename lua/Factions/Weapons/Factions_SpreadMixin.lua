@@ -24,6 +24,7 @@ SpreadMixin.expectedCallbacks =
 
 SpreadMixin.overrideFunctions =
 {
+	"GetSpread",
 }
 
 SpreadMixin.expectedConstants =
@@ -37,6 +38,8 @@ SpreadMixin.expectedConstants =
 SpreadMixin.networkVars =
 {
 	spreadScalar = "float",
+	baseSpreadScalar = "float",
+	worstSpreadScalar = "float",
 }
 
 function SpreadMixin:__initmixin()
@@ -46,33 +49,70 @@ function SpreadMixin:__initmixin()
 		
 end
 
-// Adjust the spread
-// TODO: make the increase happen OnFire
-function SpreadMixin:OnUpdateRender(dt) 
-
-	local mixinConstants = self:GetMixinConstants()
+function SpreadMixin:UpdateSpreadScalar()
 	
-	if self.primaryAttacking or self.secondaryAttacking
-		 and self.spreadScalar.x ~= mixinConstants.kWorstSpread.x then
+	if self.primaryAttacking or self.secondaryAttacking then
+		if self.spreadScalar ~= self:GetWorstSpread() then
 		 
-		self.spreadScalar = self.spreadScalar + dt * mixinConstants.kSpreadIncreaseRate
+			self.spreadScalar = self.spreadScalar + dt * mixinConstants.kSpreadIncreaseRate
 		
-		if self.spreadScalar.x > mixinConstants.kWorstSpread.x then
-			self.spreadScalar = mixinConstants.kWorstSpread
+			if self.spreadScalar > self.GetWorstSpread() then
+				self.spreadScalar = self.GetWorstSpread()
+			end
 		end
 		
-	elseif self.spreadScalar =~ mixinConstants.kBaseSpread then
+	elseif self.spreadScalar =~ self:GetBaseSpread() then
 	
 		self.spreadScalar = self.spreadScalar - dt * mixinConstants.kSpreadDecreaseRate
 		
-		if self.spreadScalar.x < mixinConstants.kBaseSpread.x then
-			self.spreadScalar = mixinConstants.kBaseSpread
+		if self.spreadScalar < self:GetBaseSpread() then
+			self.spreadScalar = self:GetBaseSpread()
 		end
 		
 	end
+end
+
+// Adjust the spread
+// TODO: make the increase happen OnFire
+function SpreadMixin:OnUpdate(dt) 
+
+	self:UpdateSpreadScalar()
 	
+end
+
+function SpreadMixin:OnUpdateRender(dt) 
+
+	self:UpdateSpreadScalar()
+	
+end
+
+function SpreadMixin:GetDefaultBaseSpread()
+	local mixinConstants = self:GetMixinConstants()
+	return mixinConstants.kBaseSpread
+end
+
+function SpreadMixin:GetBaseSpread()
+	return self.baseSpread
+end
+
+function SpreadMixin:GetDefaultWorstSpread()
+	local mixinConstants = self:GetMixinConstants()
+	return mixinConstants.kWorstSpread
+end
+
+function SpreadMixin:GetWorstSpread()
+	return self.worstSpread
+end
+
+function SpreadMixin:ApplyLaserSightSpreadScalar(scalarValue)
+	self.baseSpread = self:GetDefaultBaseSpread()*scalarValue
+	self.worstSpread = self:GetDefaultWorstSpread()*scalarValue
 end
 
 function SpreadMixin:GetSpreadScalar()
 	return self.spreadScalar
+end
+
+function SpreadMixin:GetSpread()
+	return _G[self:GetClassName()].GetSpread(self) * self:GetSpreadScalar()
 end

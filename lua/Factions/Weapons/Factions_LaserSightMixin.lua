@@ -42,7 +42,6 @@ LaserSightMixin.expectedConstants =
 
 LaserSightMixin.networkVars =
 {
-	laserSightAccuracyScalar = "float",
 	laserSightActive = "boolean",
 }
 
@@ -111,7 +110,12 @@ function LaserSightMixin:SetLaserSightLevel(newLevel)
 
 	if Server then
 		self.laserSightLevel = newLevel
-		self.laserSightAccuracyScalar = LaserSightMixin.baseAccuracy * (self.laserSightLevel * LaserSightMixin.accuracyBoostPerLevel)
+		self.laserSightAccuracyScalar = LaserSightMixin.baseAccuracy + (self.laserSightLevel * LaserSightMixin.accuracyBoostPerLevel)
+		
+		if HasMixin(self, "Spread") then
+			self:ApplyLaserSightSpreadScalar(self.laserSightAccuracyScalar)
+		end
+		
 		if self.laserSightLevel > 0 then
 			self.laserSightActive = true
 		else
