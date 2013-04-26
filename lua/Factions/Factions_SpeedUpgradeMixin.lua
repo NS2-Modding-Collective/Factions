@@ -36,6 +36,11 @@ SpeedUpgradeMixin.networkVars =
 	upgradeSpeedLevel = "integer (0 to " .. #SpeedUpgrade.cost .. ")"
 }
 
+SpeedUpgradeMixin.overrideFunctions =
+{
+	"GetMaxSpeed",
+}
+
 function SpeedUpgradeMixin:__initmixin()
 
 	self.upgradeSpeedLevel = 0
@@ -85,4 +90,36 @@ function SpeedUpgradeMixin:GetUpgradedMaxSpeed()
 		return _G[self:GetClassName()].kWalkMaxSpeed
 	end
 
+end
+
+function SpeedUpgradeMixin:GetMaxSpeed(possible)
+
+	local maxRunSpeed = self:GetUpgradedMaxSprintSpeed()
+	local maxWalkSpeed = self:GetUpgradedMaxSpeed()
+	if possible then
+		return maxRunSpeed
+	end
+
+	local onInfestation = self:GetGameEffectMask(kGameEffect.OnInfestation)
+	local sprintingScalar = self:GetSprintingScalar()
+	local maxSprintSpeed = maxWalkSpeed + (maxRunSpeed - maxWalkSpeed)*sprintingScalar
+	local maxSpeed = ConditionalValue(self:GetIsSprinting(), maxSprintSpeed, maxWalkSpeed)
+	
+	// Take into account our weapon inventory and current weapon. Assumes a vanilla marine has a scalar of around .8.
+	local inventorySpeedScalar = self:GetInventorySpeedScalar() + .17
+
+	// Take into account crouching
+	if not self:GetIsJumping() then
+		maxSpeed = ( 1 - self:GetCrouchAmount() * self:GetCrouchSpeedScalar() ) * maxSpeed
+	end
+	
+	// Take into account crouching
+	if self:GetIsWallWalking() then
+		maxSpeed = ( 1 - self:GetWallWalkSpeedScalar() ) * maxSpeed
+	end
+
+	local adjustedMaxSpeed = maxSpeed * self:GetCatalystMoveSpeedModifier() * inventorySpeedScalar 
+	//Print("Adjusted max speed => %.2f (without inventory: %.2f)", adjustedMaxSpeed, adjustedMaxSpeed / inventorySpeedScalar )
+	return adjustedMaxSpeed
+	
 end
