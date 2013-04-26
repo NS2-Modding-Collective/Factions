@@ -72,7 +72,7 @@ end
 
 function SpeedUpgradeMixin:GetUpgradedMaxSprintSpeed()
 
-	if HasMixin(self, "FactionsClass") then
+	if HasMixin(self, "FactionsClass") and self:GetHasFactionsClass() then
 		local baseSpeed = self:GetBaseMaxSprintSpeed()
 		return baseSpeed + baseSpeed*self.upgradeSpeedLevel*SpeedUpgrade.speedBoostPerLevel
 	else
@@ -81,45 +81,27 @@ function SpeedUpgradeMixin:GetUpgradedMaxSprintSpeed()
 
 end
 
-function SpeedUpgradeMixin:GetUpgradedMaxSpeed()
+function SpeedUpgradeMixin:GetUpgradedMaxSpeed(possible)
 
-	if HasMixin(self, "FactionsClass") then
-		local baseSpeed = self:GetBaseMaxSpeed()
-		return baseSpeed + baseSpeed*self.upgradeSpeedLevel*SpeedUpgrade.speedBoostPerLevel
+	local baseSpeed = 0
+	if HasMixin(self, "FactionsClass") and self:GetHasFactionsClass() then
+		baseSpeed = self:GetBaseMaxSpeed()
+	elseif _G[self:GetClassName()].GetMaxSpeed then
+		baseSpeed = _G[self:GetClassName()].GetMaxSpeed(self, possible)
 	else
-		return _G[self:GetClassName()].kWalkMaxSpeed
+		baseSpeed = Player.GetMaxSpeed(self, possible)
 	end
+	
+	return baseSpeed + baseSpeed*self.upgradeSpeedLevel*SpeedUpgrade.speedBoostPerLevel
 
 end
 
 function SpeedUpgradeMixin:GetMaxSpeed(possible)
 
-	local maxRunSpeed = self:GetUpgradedMaxSprintSpeed()
-	local maxWalkSpeed = self:GetUpgradedMaxSpeed()
-	if possible then
-		return maxRunSpeed
+	if HasMixin(self, "FactionsMovement") then
+		return FactionsMovement.GetMaxSpeed(self, possible)
+	else
+		return self:GetUpgradedMaxSpeed()
 	end
-
-	local onInfestation = self:GetGameEffectMask(kGameEffect.OnInfestation)
-	local sprintingScalar = self:GetSprintingScalar()
-	local maxSprintSpeed = maxWalkSpeed + (maxRunSpeed - maxWalkSpeed)*sprintingScalar
-	local maxSpeed = ConditionalValue(self:GetIsSprinting(), maxSprintSpeed, maxWalkSpeed)
-	
-	// Take into account our weapon inventory and current weapon. Assumes a vanilla marine has a scalar of around .8.
-	local inventorySpeedScalar = self:GetInventorySpeedScalar() + .17
-
-	// Take into account crouching
-	if not self:GetIsJumping() then
-		maxSpeed = ( 1 - self:GetCrouchAmount() * self:GetCrouchSpeedScalar() ) * maxSpeed
-	end
-	
-	// Take into account crouching
-	if self:GetIsWallWalking() then
-		maxSpeed = ( 1 - self:GetWallWalkSpeedScalar() ) * maxSpeed
-	end
-
-	local adjustedMaxSpeed = maxSpeed * self:GetCatalystMoveSpeedModifier() * inventorySpeedScalar 
-	//Print("Adjusted max speed => %.2f (without inventory: %.2f)", adjustedMaxSpeed, adjustedMaxSpeed / inventorySpeedScalar )
-	return adjustedMaxSpeed
 	
 end
