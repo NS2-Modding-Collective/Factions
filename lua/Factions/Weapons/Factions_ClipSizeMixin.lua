@@ -40,31 +40,14 @@ ClipSizeMixin.networkVars =
 function ClipSizeMixin:__initmixin()
 
 	local mixinConstants = self:GetMixinConstants()    
-	self.spreadScalar = mixinConstants.kBaseSpread
+	self.clipSize = mixinConstants.kBaseClipSize
 		
 end
 
-function SpreadMixin:UpdateSpreadScalar()
+function SpreadMixin:UpdateClipSizeLevel(newValue)
 	
-	if self.primaryAttacking or self.secondaryAttacking then
-		if self.spreadScalar ~= self:GetWorstSpread() then
-		 
-			self.spreadScalar = self.spreadScalar + dt * mixinConstants.kSpreadIncreaseRate
-		
-			if self.spreadScalar > self.GetWorstSpread() then
-				self.spreadScalar = self.GetWorstSpread()
-			end
-		end
-		
-	elseif self.spreadScalar =~ self:GetBaseSpread() then
 	
-		self.spreadScalar = self.spreadScalar - dt * mixinConstants.kSpreadDecreaseRate
-		
-		if self.spreadScalar < self:GetBaseSpread() then
-			self.spreadScalar = self:GetBaseSpread()
-		end
-		
-	end
+	
 end
 
 // Adjust the spread
