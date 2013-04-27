@@ -145,8 +145,8 @@ function WeaponUpgradeMixin:GetIronSightLevel()
 
 end
 
-function WeaponUpgradeMixin:GetIronSightLevel()
+function WeaponUpgradeMixin:GetClipSizeLevel()
 
-	return self.ironSightLevel
+	return self.clipSizeLevel
 
 end
