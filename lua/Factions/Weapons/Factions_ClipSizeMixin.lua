@@ -12,7 +12,7 @@
 Script.Load("lua/FunctionContracts.lua")
 
 ClipSizeMixin = CreateMixin( SpreadMixin )
-ClipSizeMixin.type = "ClipSize"
+ClipSizeMixin.type = "VariableClipSize"
 
 ClipSizeMixin.expectedMixins =
 {
