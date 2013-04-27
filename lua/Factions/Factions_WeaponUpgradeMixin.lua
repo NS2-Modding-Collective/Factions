@@ -40,6 +40,7 @@ WeaponUpgradeMixin.networkVars =
 	damageLevel = "integer (0 to " .. #DamageUpgrade.cost .. ")",
 	laserSightLevel = "integer (0 to " .. #LaserSightUpgrade.cost .. ")",
 	ironSightLevel = "integer (0 to " .. #IronSightUpgrade.cost .. ")",
+	clipSizeLevel = "integer (0 to " .. #ClipSizeUpgrade.cost .. ")",
 }
 
 function WeaponUpgradeMixin:__initmixin()
@@ -98,8 +99,18 @@ function WeaponUpgradeMixin:UpdateIronSightLevel(newLevel)
 
 	self.ironSightLevel = newLevel
 	local weapon = self:GetActiveWeapon()
-	if weapon then
+	if weapon and HasMixin(weapon, "IronSight") then
 		weapon:SetupIronSight()
+	end
+	
+end
+
+function WeaponUpgradeMixin:UpdateClipSizeLevel(newLevel)
+
+	self.clipSizeLevel = newLevel
+	local weapon = self:GetActiveWeapon()
+	if weapon and weapon:isa("ClipWeapon") then
+		weapon:SetClipSizeLevel()
 	end
 	
 end
@@ -125,6 +136,12 @@ end
 function WeaponUpgradeMixin:GetLaserSightLevel()
 
 	return self.laserSightLevel
+
+end
+
+function WeaponUpgradeMixin:GetIronSightLevel()
+
+	return self.ironSightLevel
 
 end
 
