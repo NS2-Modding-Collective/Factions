@@ -13,6 +13,7 @@ Script.Load("lua/GUIBulletDisplay.lua")
 // Global state that can be externally set to adjust the display.
 weaponClip     = 0
 weaponAmmo     = 0
+weaponClipSize = 8
 
 bulletDisplay  = nil
 
@@ -21,6 +22,7 @@ bulletDisplay  = nil
  */
 function Update(deltaTime)
 
+	bulletDisplay:SetClipSize(weaponClipSize)
     bulletDisplay:SetClip(weaponClip)
     bulletDisplay:SetAmmo(weaponAmmo)
     bulletDisplay:Update(deltaTime)
@@ -36,7 +38,6 @@ function Initialize()
 
     bulletDisplay = GUIBulletDisplay()
     bulletDisplay:Initialize()
-    bulletDisplay:SetClipSize(8)
 
 end
 

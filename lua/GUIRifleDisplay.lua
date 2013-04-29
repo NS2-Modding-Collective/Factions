@@ -15,6 +15,7 @@ Script.Load("lua/GUIGrenadeDisplay.lua")
 weaponClip     = 0
 weaponAmmo     = 0
 weaponAuxClip  = 0
+weaponClipSize = 30
 
 bulletDisplay  = nil
 grenadeDisplay = nil
@@ -26,6 +27,7 @@ function Update(deltaTime)
 
     PROFILE("GUIRifleDisplay:Update")
 
+	bulletDisplay:SetClipSize(weaponClipSize)
     bulletDisplay:SetClip(weaponClip)
     bulletDisplay:SetAmmo(weaponAmmo)
     bulletDisplay:Update(deltaTime)
@@ -44,7 +46,6 @@ function Initialize()
 
     bulletDisplay = GUIBulletDisplay()
     bulletDisplay:Initialize()
-    bulletDisplay:SetClipSize(30)
 
     grenadeDisplay = GUIGrenadeDisplay()
     grenadeDisplay:Initialize()

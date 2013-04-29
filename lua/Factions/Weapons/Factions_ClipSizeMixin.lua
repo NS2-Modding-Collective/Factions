@@ -35,12 +35,14 @@ ClipSizeMixin.expectedConstants =
 ClipSizeMixin.networkVars =
 {
 	clipSize = "integer (1 to 100)",
+	clipSizeLevel = "integer (0 to " .. #ClipSizeUpgrade.cost .. ")",
 }
 
 function ClipSizeMixin:__initmixin()
 
-	local mixinConstants = self:GetMixinConstants()    
-	self:CalculateNewClipSize(0)
+	local mixinConstants = self:GetMixinConstants()
+	self.clipSizeLevel = 0
+	self:UpdateClipSizeLevel()
 		
 end
 
@@ -48,9 +50,9 @@ function ClipSizeMixin:UpdateClipSizeLevel(newValue)
 	
 	if Server then
 		local player = self:GetParent()
-		if player and HasMixin(player, "WeaponUpgrade") then
+		if player and HasMixin(player, "WeaponUpgrade") and self.clipSizeLevel ~= player:GetClipSizeLevel() then
 		
-			self:CalculateNewClipSize(newValue)
+			self:CalculateNewClipSize(player:GetClipSizeLevel())
 			
 		end
 	end
@@ -59,6 +61,7 @@ end
 
 function ClipSizeMixin:CalculateNewClipSize(newLevel)
 
+	self.clipSizeLevel = newLevel
 	local mixinConstants = self:GetMixinConstants()
 	self.clipSize = mixinConstants.kBaseClipSize + newLevel * mixinConstants.kClipSizeIncrease
 	self:UpdateClipSizeGUI()
@@ -79,7 +82,7 @@ function ClipSizeMixin:UpdateClipSizeGUI()
 		local activeWeapon = player:GetActiveWeapon()
 		
 		if activeWeapon == self then
-			kClipSize = self:GetClipSize()
+			weaponClipSize = self:GetClipSize()
 		end
 	end
 
