@@ -109,8 +109,8 @@ function WeaponUpgradeMixin:UpdateClipSizeLevel(newLevel)
 
 	self.clipSizeLevel = newLevel
 	local weapon = self:GetActiveWeapon()
-	if weapon and weapon:isa("ClipWeapon") then
-		weapon:SetClipSizeLevel()
+	if weapon and HasMixin(weapon, "VariableClipSize") then
+		weapon:SetClipSizeLevel(newLevel)
 	end
 	
 end

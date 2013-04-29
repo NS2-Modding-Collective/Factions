@@ -46,7 +46,7 @@ function ClipSizeMixin:__initmixin()
 		
 end
 
-function ClipSizeMixin:UpdateClipSizeLevel(newValue)
+function ClipSizeMixin:UpdateClipSizeLevel()
 	
 	if Server then
 		local player = self:GetParent()
@@ -57,6 +57,12 @@ function ClipSizeMixin:UpdateClipSizeLevel(newValue)
 		end
 	end
 	
+end
+
+function ClipSizeMixin:SetClipSizeLevel(newValue)
+
+	self:CalculateNewClipSize(newValue)
+
 end
 
 function ClipSizeMixin:CalculateNewClipSize(newLevel)
