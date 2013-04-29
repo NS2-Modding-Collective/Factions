@@ -40,57 +40,53 @@ ClipSizeMixin.networkVars =
 function ClipSizeMixin:__initmixin()
 
 	local mixinConstants = self:GetMixinConstants()    
-	self.clipSize = mixinConstants.kBaseClipSize
+	self:CalculateNewClipSize(0)
 		
 end
 
-function SpreadMixin:UpdateClipSizeLevel(newValue)
+function ClipSizeMixin:UpdateClipSizeLevel(newValue)
 	
-	
-	
-end
-
-// Adjust the spread
-// TODO: make the increase happen OnFire
-function SpreadMixin:OnUpdate(dt) 
-
-	self:UpdateSpreadScalar()
-	
-end
-
-function SpreadMixin:OnUpdateRender(dt) 
-
-	self:UpdateSpreadScalar()
+	if Server then
+		local player = self:GetParent()
+		if player and HasMixin(player, "WeaponUpgrade") then
+		
+			self:CalculateNewClipSize(newValue)
+			
+		end
+	end
 	
 end
 
-function SpreadMixin:GetDefaultBaseSpread()
+function ClipSizeMixin:CalculateNewClipSize(newLevel)
+
 	local mixinConstants = self:GetMixinConstants()
-	return mixinConstants.kBaseSpread
+	self.clipSize = mixinConstants.kBaseClipSize + newLevel * mixinConstants.kClipSizeIncrease
+	self:UpdateClipSizeGUI()
+	
 end
 
-function SpreadMixin:GetBaseSpread()
-	return self.baseSpread
+function ClipSizeMixin:OnSetActive()
+
+	self:UpdateClipSizeGUI()
+	
 end
 
-function SpreadMixin:GetDefaultWorstSpread()
-	local mixinConstants = self:GetMixinConstants()
-	return mixinConstants.kWorstSpread
+function ClipSizeMixin:UpdateClipSizeGUI()
+
+	// Update global variable for the GUI
+	if Client then
+		local player = Client.GetLocalPlayer()
+		local activeWeapon = player:GetActiveWeapon()
+		
+		if activeWeapon == self then
+			kClipSize = self:GetClipSize()
+		end
+	end
+
 end
 
-function SpreadMixin:GetWorstSpread()
-	return self.worstSpread
-end
+function ClipSizeMixin:GetClipSize()
 
-function SpreadMixin:ApplyLaserSightSpreadScalar(scalarValue)
-	self.baseSpread = self:GetDefaultBaseSpread()*scalarValue
-	self.worstSpread = self:GetDefaultWorstSpread()*scalarValue
-end
-
-function SpreadMixin:GetSpreadScalar()
-	return self.spreadScalar
-end
-
-function SpreadMixin:GetSpread()
-	return _G[self:GetClassName()].GetSpread(self) * self:GetSpreadScalar()
+	return self.clipSize
+	
 end
