@@ -1,0 +1,6 @@
+name        = "Project Titan Movement Test"
+source_dir  = "source/"
+output_dir  = "output/"
+description = [=[]=]
+image       = "preview.jpg"
+publish_id  = "7E64C1A"
