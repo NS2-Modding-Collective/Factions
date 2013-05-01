@@ -1,8 +1,9 @@
 <game>
-    <name>ns2</name>
-    <description>Xenoswarm Debug</description>
-    <client>lua/ModClient.lua</client>
-    <server>lua/ModServer.lua</server>
-    <loading>lua/ModLoading.lua</loading>
+	<name>Factions</name>
+	<description>Factions</description>
+	<client>lua/Client_Modded.lua</client>
+	<server>lua/Server_Modded.lua</server>
+	<predict>lua/Predict_Modded.lua</predict>
+	<loading>lua/Loading.lua</loading>
     <soundinfo>sound/NS2.soundinfo</soundinfo>
 </game>
