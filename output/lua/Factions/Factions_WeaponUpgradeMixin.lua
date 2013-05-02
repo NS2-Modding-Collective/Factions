@@ -50,6 +50,7 @@ function WeaponUpgradeMixin:__initmixin()
 	self.damageLevel = 0
 	self.laserSightLevel = 0
 	self.ironSightLevel = 0
+	self.clipSizeLevel = 0
 
 end
 
@@ -60,6 +61,7 @@ function WeaponUpgradeMixin:CopyPlayerDataFrom(player)
 	self.damageLevel = player.damageLevel
 	self.laserSightLevel = player.laserSightLevel
 	self.ironSightLevel = player.ironSightLevel
+	self.clipSizeLevel = player.clipSizeLevel
 
 end
 
@@ -100,7 +102,7 @@ function WeaponUpgradeMixin:UpdateIronSightLevel(newLevel)
 	self.ironSightLevel = newLevel
 	local weapon = self:GetActiveWeapon()
 	if weapon and HasMixin(weapon, "IronSight") then
-		weapon:SetupIronSight()
+		weapon:SetIronSightAvailable(true)
 	end
 	
 end

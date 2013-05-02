@@ -54,13 +54,23 @@ function IronSightMixin:__initmixin()
 
 end
 
-function IronSightMixin:GetIronSightAvailable()
+function IronSightMixin:GetPlayerHasIronSight()
+
 	local player = self:GetParent()
-	if player and HasMixin(player, "WeaponUpgrade") and player:GetLaserSightLevel() > 0 then
+	if player and HasMixin(player, "WeaponUpgrade") and player:GetIronSightLevel() > 0 then
 		return true
 	end
 	
 	return false
+	
+end
+
+function IronSightMixin:GetIronSightAvailable()
+	return self.ironSightAvailable
+end
+
+function IronSightMixin:SetIronSightAvailable(newValue)
+	self.ironSightAvailable = newValue
 end
 
 function IronSightMixin:GetIronSightActive()
@@ -91,6 +101,7 @@ function IronSightMixin:OnSetActive()
 	self.ironSightZoomRate = (kDefaultFov - mixinConstants.kIronSightZoomFOV) / mixinConstants.kIronSightActivateTime
 	self.ironSightZoom = kDefaultFov
 	player.ironSightActive = false
+	self.ironSightAvailable = self:GetPlayerHasIronSight()
 	
 end
 

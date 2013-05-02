@@ -29,11 +29,17 @@ local overrideOnCreate = Rifle.OnCreate
 function Rifle:OnCreate()
 
 	overrideOnCreate(self)
+
+	local ironSightParameters = { kIronSightTexture = Rifle.kIronSightTexture,
+								  kIronSightZoomFOV = Rifle.kIronSightZoomFOV,
+								  kIronSightActivateTime = Rifle.kIronSightActivateTime }
+	InitMixin(self, IronSightMixin, ironSightParameters)
 	
 	local laserSightParameters = { kLaserSightWorldModelAttachPoint = Rifle.kLaserSightWorldModelAttachPoint,
 								   kLaserSightViewModelAttachPoint = Rifle.kLaserSightViewModelAttachPoint,	}
 	InitMixin(self, LaserSightMixin, laserSightParameters)
-	
+
+	assert(HasMixin(self, "IronSight"))	
 	assert(HasMixin(self, "LaserSight"))
 
 end

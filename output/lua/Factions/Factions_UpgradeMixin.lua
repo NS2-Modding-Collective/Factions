@@ -62,7 +62,7 @@ local function ReapplyUpgrades(self)
 			
 			// give upgrades back when the player respawns
 			if self:GetIsAlive() and self:GetTeamNumber() ~= kNeutralTeamType then
-				local errorMessage = self:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade)
+				local errorMessage = self:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade, true)
 				if errorMessage == "" then
 					upgrade:OnAdd(self)
 				end
@@ -82,13 +82,13 @@ function UpgradeMixin:CopyPlayerDataFrom(player)
 end
 
 // Remove code duplication and possible differences in logic by combining logic and messages here
-function UpgradeMixin:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade)
+function UpgradeMixin:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade, reapplyUpgrade)
 	local upgrade = self:GetUpgradeById(upgradeId)
 	local factionsClass = self:GetFactionsClass()
 	
     if upgrade == nil then
 		return "Cannot find upgrade with ID " .. upgradeId
-	elseif upgrade:GetIsAtMaxLevel() then
+	elseif upgrade:GetIsAtMaxLevel() and not reapplyUpgrade then
 		return "Upgrade is already at max level!"
 	elseif not self:GetHasPrerequisites(upgrade) then
 		return "You are missing some requirements for this upgrade..."
@@ -110,8 +110,8 @@ function UpgradeMixin:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade)
 end
 
 // For when you just need a true/false value!
-function UpgradeMixin:GetCanBuyUpgrade(upgradeId, freeUpgrade)
-	return self:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade) == ""
+function UpgradeMixin:GetCanBuyUpgrade(upgradeId, freeUpgrade, reapplyUpgrade)
+	return self:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade, reapplyUpgrade) == ""
 end
 
 
