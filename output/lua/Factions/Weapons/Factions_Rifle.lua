@@ -11,12 +11,14 @@
 
 Script.Load("lua/Factions/Weapons/Factions_IronSightMixin.lua")
 Script.Load("lua/Factions/Weapons/Factions_LaserSightMixin.lua")
+Script.Load("lua/Factions/Weapons/Factions_ClipSizeMixin.lua")
 
 local networkVars = {
 }
 
 AddMixinNetworkVars(IronSightMixin, networkVars)
 AddMixinNetworkVars(LaserSightMixin, networkVars)
+AddMixinNetworkVars(ClipSizeMixin, networkVars)
 
 Rifle.kIronSightTexture = "ui/Factions/testing_ironsights.png"
 Rifle.kIronSightZoomFOV = 55
@@ -38,9 +40,14 @@ function Rifle:OnCreate()
 	local laserSightParameters = { kLaserSightWorldModelAttachPoint = Rifle.kLaserSightWorldModelAttachPoint,
 								   kLaserSightViewModelAttachPoint = Rifle.kLaserSightViewModelAttachPoint,	}
 	InitMixin(self, LaserSightMixin, laserSightParameters)
+	
+	local clipSizeParameters = { kBaseClipSize = kRifleClipSize,
+								 kClipSizeIncrease = 10, }
+	InitMixin(self, ClipSizeMixin, clipSizeParameters)
 
 	assert(HasMixin(self, "IronSight"))	
 	assert(HasMixin(self, "LaserSight"))
+	assert(HasMixin(self, "VariableClipSize"))	
 
 end
 

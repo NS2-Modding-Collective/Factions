@@ -14,7 +14,7 @@ Script.Load("lua/GUIBulletDisplay.lua")
 weaponClip     = 0
 weaponAmmo     = 0
 weaponClipSize = 8
-
+weaponMaxAmmo  = 4 * weaponClipSize
 bulletDisplay  = nil
 
 /**
@@ -22,6 +22,7 @@ bulletDisplay  = nil
  */
 function Update(deltaTime)
 
+	bulletDisplay:SetMaxAmmo(weaponMaxAmmo)
 	bulletDisplay:SetClipSize(weaponClipSize)
     bulletDisplay:SetClip(weaponClip)
     bulletDisplay:SetAmmo(weaponAmmo)

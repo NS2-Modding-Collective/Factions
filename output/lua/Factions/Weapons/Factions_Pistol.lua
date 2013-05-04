@@ -34,11 +34,17 @@ function Pistol:OnCreate()
 								  kIronSightZoomFOV = Pistol.kIronSightZoomFOV,
 								  kIronSightActivateTime = Pistol.kIronSightActivateTime }
 	InitMixin(self, IronSightMixin, ironSightParameters)
+	assert(HasMixin(self, "IronSight"))
 	
 	local laserSightParameters = { kLaserSightWorldModelAttachPoint = Pistol.kLaserSightWorldModelAttachPoint,
 								   kLaserSightViewModelAttachPoint = Pistol.kLaserSightViewModelAttachPoint }
 	InitMixin(self, LaserSightMixin, laserSightParameters)
 	assert(HasMixin(self, "LaserSight"))
+	
+	local clipSizeParameters = { kBaseClipSize = kRifleClipSize,
+								 kClipSizeIncrease = 10, }
+	InitMixin(self, ClipSizeMixin, clipSizeParameters)
+	assert(HasMixin(self, "VariableClipSize"))
 	
 end
 

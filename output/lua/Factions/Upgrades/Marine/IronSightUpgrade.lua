@@ -21,7 +21,6 @@ function IronSightUpgrade:Initialize()
 
 	FactionsUpgrade.Initialize(self)
 
-	self.hideUpgrade = true
 	self.cost = IronSightUpgrade.cost
 	self.upgradeName = IronSightUpgrade.upgradeName
 	self.upgradeTitle = IronSightUpgrade.upgradeTitle

@@ -34,6 +34,11 @@ LaserSightMixin.overrideFunctions =
 {
 }
 
+LaserSightMixin.optionalCallbacks =
+{
+	AdjustLaserSightViewCoords = "Manipulates the laser sight coords on a per-weapon basis.",
+}
+
 LaserSightMixin.expectedConstants =
 {
 	kLaserSightViewModelAttachPoint = "The name of the node to attach the laser to on the view model",
@@ -100,17 +105,15 @@ function LaserSightMixin:OnUpdateRender()
 	
 end
 
-function LaserSightMixin:UpdateLaserSightLevel()
+function LaserSightMixin:OnSetActive() 
 
-	if Server then
-		local player = self:GetParent()
+	local player = self:GetParent()
 		if player and HasMixin(player, "WeaponUpgrade") and self.laserSightLevel ~= player:GetLaserSightLevel() then
 		
 			self:SetLaserSightLevel(player:GetLaserSightLevel())
 			
-		end
 	end
-
+	
 end
 
 function LaserSightMixin:SetLaserSightLevel(newLevel)
@@ -142,11 +145,15 @@ function LaserSightMixin:GetLaserAttachCoords()
 	if player:GetIsLocalPlayer() and not player:GetIsThirdPerson() then
 		
 		local attachCoords = self:GetAttachPointCoords(mixinConstants.kLaserSightViewModelAttachPoint)
-		local zAxis = attachCoords.zAxis
-		attachCoords.zAxis = attachCoords.yAxis
-		attachCoords.yAxis = zAxis
-		attachCoords.origin = attachCoords.origin - attachCoords.zAxis * 0.1
-		return attachCoords
+		if self.AdjustLaserSightViewCoords then
+			return self:AdjustLaserSightViewCoords(attachCoords)
+		else
+			local zAxis = attachCoords.zAxis
+			attachCoords.zAxis = attachCoords.yAxis
+			attachCoords.yAxis = zAxis
+			attachCoords.origin = attachCoords.origin - attachCoords.zAxis * 0.5
+			return attachCoords
+		end
 	
 	end
 	
@@ -225,18 +232,33 @@ function LaserSightMixin:InitializeLaser()
     
 end
 
-function LaserSightMixin:OnDestroy()
+function LaserSightMixin:DestroyLasers()
 
     if self.dynamicMesh1 then
         DynamicMesh_Destroy(self.dynamicMesh1)
+		self.dynamicMesh1 = nil
     end    
     
     if self.dynamicMesh2 then
         DynamicMesh_Destroy(self.dynamicMesh2)
+		self.dynamicMesh2 = nil
     end
     
     if self.laserLight then        
         Client.DestroyRenderLight(self.laserLight)            
+		self.laserLight = nil
     end
     
+end
+
+function LaserSightMixin:OnDestroy()
+
+	self:DestroyLasers()
+	
+end
+
+function LaserSightMixin:OnHolsterClient()
+
+	self:DestroyLasers()
+
 end
