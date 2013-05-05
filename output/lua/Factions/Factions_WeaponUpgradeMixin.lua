@@ -65,13 +65,31 @@ function WeaponUpgradeMixin:CopyPlayerDataFrom(player)
 
 end
 
+function WeaponUpgradeMixin:GetAvailableWeapons()
+
+	local allWeapons = { }
+    for i = 0, self:GetNumChildren() - 1 do
+    
+        local child = self:GetChildAtIndex(i)
+        if child:isa("Weapon") then
+            table.insert(allWeapons, child)
+        end
+        
+    end
+    
+	return allWeapons
+
+end
+
 function WeaponUpgradeMixin:UpdateReloadSpeedLevel(newLevel)
 	
 	self.reloadSpeedLevel = newLevel
-	local weapon = self:GetActiveWeapon()
-	if weapon and HasMixin(weapon, "VariableReloadSpeed") then
-		weapon:SetReloadSpeedLevel(newLevel)
-	end
+	local allWeapons = self:GetAvailableWeapons()
+	for i, weapon in ipairs(allWeapons) do
+        if HasMixin(weapon, "VariableReloadSpeed") then
+			weapon:SetReloadSpeedLevel(newLevel)
+		end
+    end
     
 end
 
@@ -90,30 +108,36 @@ end
 function WeaponUpgradeMixin:UpdateLaserSightLevel(newLevel)
 
 	self.laserSightLevel = newLevel
-	local weapon = self:GetActiveWeapon()
-	if weapon and HasMixin(weapon, "LaserSight") then
-		weapon:SetLaserSightLevel(newLevel)
-	end
+	local allWeapons = self:GetAvailableWeapons()
+	for i, weapon in ipairs(allWeapons) do
+        if HasMixin(weapon, "LaserSight") then
+			weapon:SetLaserSightLevel(newLevel)
+		end
+    end
 	
 end
 
 function WeaponUpgradeMixin:UpdateIronSightLevel(newLevel)
 
 	self.ironSightLevel = newLevel
-	local weapon = self:GetActiveWeapon()
-	if weapon and HasMixin(weapon, "IronSight") then
-		weapon:SetIronSightAvailable(true)
-	end
+	local allWeapons = self:GetAvailableWeapons()
+	for i, weapon in ipairs(allWeapons) do
+        if HasMixin(weapon, "IronSight") then
+			weapon:SetIronSightAvailable(true)
+		end
+    end
 	
 end
 
 function WeaponUpgradeMixin:UpdateClipSizeLevel(newLevel)
 
 	self.clipSizeLevel = newLevel
-	local weapon = self:GetActiveWeapon()
-	if weapon and HasMixin(weapon, "VariableClipSize") then
-		weapon:SetClipSizeLevel(newLevel)
-	end
+	local allWeapons = self:GetAvailableWeapons()
+	for i, weapon in ipairs(allWeapons) do
+        if HasMixin(weapon, "VariableClipSize") then
+			weapon:SetClipSizeLevel(newLevel)
+		end
+    end
 	
 end
 

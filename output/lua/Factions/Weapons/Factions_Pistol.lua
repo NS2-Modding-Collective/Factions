@@ -41,15 +41,11 @@ function Pistol:OnCreate()
 	InitMixin(self, LaserSightMixin, laserSightParameters)
 	assert(HasMixin(self, "LaserSight"))
 	
-	local clipSizeParameters = { kBaseClipSize = kRifleClipSize,
-								 kClipSizeIncrease = 10, }
+	local clipSizeParameters = { kBaseClipSize = kPistolClipSize,
+								 kClipSizeIncrease = 4, }
 	InitMixin(self, ClipSizeMixin, clipSizeParameters)
 	assert(HasMixin(self, "VariableClipSize"))
 	
-end
-
-function Pistol:GetNumStartClips()
-	return 6
 end
 
 function Pistol:GetClipSize()

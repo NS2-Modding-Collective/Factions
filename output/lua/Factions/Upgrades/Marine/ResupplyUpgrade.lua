@@ -92,7 +92,7 @@ local function ResupplyNow(player)
 	player:SetHealth(newHealth)
 	
 	// dont drop a ammo pack, give ammo via a new function
-	GiveAmmoToEveryWeapon()
+	GiveAmmoToEveryWeapon(player)
 		
 	StartSoundEffectAtOrigin(MedPack.kHealthSound, player:GetOrigin())
 

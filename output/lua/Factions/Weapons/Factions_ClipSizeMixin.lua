@@ -76,15 +76,17 @@ function ClipSizeMixin:CalculateNewClipSize(newLevel)
 
 	local mixinConstants = self:GetMixinConstants()
 	local player = self:GetParent()
+	local oldClipSize = self.clipSize
 	// Increase the clip size
 	self.clipSizeLevel = newLevel
 	self.clipSize = mixinConstants.kBaseClipSize + newLevel * mixinConstants.kClipSizeIncrease
+	local clipSizeDifference = self.clipSize - oldClipSize
 	// Give a little ammo
-	self:GiveAmmo(1, false)
+	self.ammo = self.ammo + clipSizeDifference
 	// Trigger effects to update the display
 	if Server then
 		self:TriggerEffects("armory_ammo", {effecthostcoords = Coords.GetTranslation(player:GetOrigin())})
-		player:Reload()
+		self.clip = self.clip + clipSizeDifference
 	elseif Client then
 		self:UpdateClipSizeGUI()
 	end
@@ -110,14 +112,9 @@ function ClipSizeMixin:UpdateClipSizeGUI()
 
 	// Update global variable for the GUI
 	if Client then
-		local player = Client.GetLocalPlayer()
-		local activeWeapon = player:GetActiveWeapon()
-		
-		if activeWeapon == self then
-			if self.ammoDisplayUI then
-				self.ammoDisplayUI:SetGlobal("weaponMaxAmmo", self:GetMaxAmmo())
-				self.ammoDisplayUI:SetGlobal("weaponClipSize", self:GetClipSize())
-			end
+		if self.ammoDisplayUI then
+			self.ammoDisplayUI:SetGlobal("weaponMaxAmmo", self:GetMaxAmmo())
+			self.ammoDisplayUI:SetGlobal("weaponClipSize", self:GetClipSize())
 		end
 	end
 
@@ -126,7 +123,7 @@ end
 function ClipSizeMixin:GetMaxAmmo()
 
 	local mixinConstants = self:GetMixinConstants()
-	return mixinConstants.kBaseClipSize * 4
+	return mixinConstants.kBaseClipSize * self:GetNumStartClips()
 	
 end
 

@@ -95,9 +95,9 @@ function GUIBulletDisplay:Update(deltaTime)
     
     // Update the reserve clip.
     
-    local reserveMax      = self.weaponMaxAmmo
-    local reserve         = self.weaponAmmo
-    local reserveFraction = (reserve / reserveMax) * self.numClips
+    local reserveMax      		= self.weaponMaxAmmo
+    local reserve         		= self.weaponAmmo
+    local reserveFraction 		= reserve / self.weaponClipSize
 
     for i=1,self.numClips do
         self:SetClipFraction( i, Math.Clamp(reserveFraction - i + 1, 0, 1) )
