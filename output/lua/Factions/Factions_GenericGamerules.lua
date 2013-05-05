@@ -32,6 +32,7 @@ if Server then
 		if self.isFactionsMovemement == nil then self.isFactionsMovemement = false end
 		if self.usesMarineColours == nil then self.usesMarineColours = false end
 		if self.lightsStartOff == nil then self.lightsStartOff = false end
+		if self.powerPointsTakeDamage == nil then self.powerPointsTakeDamage = false end
 		
 		local gameInfo = Server.CreateEntity(FactionsGamerulesInfo.kMapName)
 		gameInfo:SetIsMarinevsMarine(self.isMarinevsMarine)
@@ -42,6 +43,7 @@ if Server then
 		gameInfo:SetUsesMarineColours(self.usesMarineColours)
 		gameInfo:SetGameType(self.factionsGameType)
 		gameInfo:SetLightsStartOff(self.lightsStartOff)
+		gameInfo:SetPowerPointsTakeDamage(self.powerPointsTakeDamage)
 		gameInfo:SetIsInSuddenDeath(false)
 		
 		Shared.Message("******************")
