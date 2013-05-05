@@ -21,6 +21,7 @@ function LaserSightUpgrade:Initialize()
 
 	FactionsUpgrade.Initialize(self)
 
+	self.hideUpgrade = true
 	self.cost = LaserSightUpgrade.cost
 	self.upgradeName = LaserSightUpgrade.upgradeName
 	self.upgradeTitle = LaserSightUpgrade.upgradeTitle

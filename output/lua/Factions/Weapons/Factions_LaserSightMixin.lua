@@ -145,15 +145,7 @@ function LaserSightMixin:GetLaserAttachCoords()
 	if player:GetIsLocalPlayer() and not player:GetIsThirdPerson() then
 		
 		local attachCoords = self:GetAttachPointCoords(mixinConstants.kLaserSightViewModelAttachPoint)
-		if self.AdjustLaserSightViewCoords then
-			return self:AdjustLaserSightViewCoords(attachCoords)
-		else
-			local zAxis = attachCoords.zAxis
-			attachCoords.zAxis = attachCoords.yAxis
-			attachCoords.yAxis = zAxis
-			attachCoords.origin = attachCoords.origin - attachCoords.zAxis * 0.5
-			return attachCoords
-		end
+		return attachCoords
 	
 	end
 	
@@ -178,13 +170,13 @@ function LaserSightMixin:SetEndPoint()
 	/*local viewAngles = player:GetViewAngles()
 	local shootCoords = viewAngles:GetCoords()*/
 	
-	local shootCoords = self:GetLaserAttachCoords()
+	local shootCoords = self:GetCoords()
     
 	local range = self:GetLaserMaxLength()
 	
     // Filter ourself out of the trace so that we don't hit ourselves.
     local filter = EntityFilterTwo(player, self)
-	local endPoint = startPoint + shootCoords.zAxis * range
+	local endPoint = startPoint + shootCoords.yAxis * range
 	
 	local trace = Shared.TraceRay(startPoint, endPoint, CollisionRep.Default, PhysicsMask.Bullets, filter)
     local length = math.abs( (trace.endPoint - shootCoords.origin):GetLength() )
@@ -209,17 +201,18 @@ function LaserSightMixin:InitializeLaser()
         self.dynamicMesh2:SetMaterial(LaserMixin.kLaserMaterial)
     end
 
-    local coords = self:GetLaserAttachCoords()    
+    local origin = self:GetLaserAttachCoords().origin
+	local coords = self:GetCoords()
     local width = self:GetLaserWidth()
     
     local coordsLeft = Coords.GetIdentity()
-    coordsLeft.origin = coords.origin
+    coordsLeft.origin = origin
     coordsLeft.zAxis = coords.zAxis
     coordsLeft.yAxis = coords.xAxis
     coordsLeft.xAxis = -coords.yAxis
 
     local coordsRight = Coords.GetIdentity()
-    coordsRight.origin = coords.origin
+    coordsRight.origin = origin
     coordsRight.zAxis = coords.zAxis
     coordsRight.yAxis = -coords.xAxis
     coordsRight.xAxis = coords.yAxis
