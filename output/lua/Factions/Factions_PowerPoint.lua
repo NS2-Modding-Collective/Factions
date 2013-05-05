@@ -58,7 +58,7 @@ function PowerPoint:Reset()
 end
 
 function PowerPoint:PowerPointGetCanTakeDamageOverride(self)
-    return false
+    return GetGamerulesInfo():GetPowerPointsTakeDamage()
 end
 
 Class_Reload("PowerPoint", networkVars)

@@ -50,6 +50,7 @@ local networkVars =
 	isFactionsMovemement = "boolean",
 	isInSuddenDeath = "boolean",
 	lightsStartOff = "boolean",
+	powerPointsTakeDamage = "boolean",
 	usesMarineColours = "boolean",
 	usesAlienColours = "boolean",
 	timeLimit = "time",
@@ -106,6 +107,10 @@ if Server then
 	function FactionsGamerulesInfo:SetLightsStartOff(value)
 		self.lightsStartOff = value
 	end
+	
+	function FactionsGamerulesInfo:SetPowerPointsTakeDamage(value)
+		self.powerPointsTakeDamage = value
+	end
 end
 
 function FactionsGamerulesInfo:GetGameType()
@@ -158,6 +163,10 @@ end
 
 function FactionsGamerulesInfo:GetLightsStartOff()
 	return self.lightsStartOff
+end
+
+function FactionsGamerulesInfo:GetPowerPointsTakeDamage()
+	return self.powerPointsTakeDamage
 end
 
 function FactionsGamerulesInfo:GetTimeRemaining()

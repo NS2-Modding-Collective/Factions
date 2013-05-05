@@ -36,6 +36,7 @@ if Server then
 		self.usesMarineColours = false
 		self.usesAlienColours = false
 		self.lightsStartOff = true
+		self.powerPointsTakeDamage = false
 		self.factionsGameType = kFactionsGameType.Xenoswarm
 	
 		GenericGamerules.OnCreate(self)

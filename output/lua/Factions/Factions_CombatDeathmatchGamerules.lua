@@ -33,6 +33,7 @@ if Server then
 		self.usesMarineColours = false
 		self.usesAlienColours = false
 		self.lightsStartOff = false
+		self.powerPointsTakeDamage = true
 		self.factionsGameType = kFactionsGameType.CombatDeathmatch
 	
 		GenericGamerules.OnCreate(self)
