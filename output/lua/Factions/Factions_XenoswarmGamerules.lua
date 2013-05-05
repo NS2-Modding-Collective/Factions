@@ -33,7 +33,7 @@ if Server then
 		self.isClassBased = true
 		self.isCombatRules = true
 		self.isFactionsMovement = true
-		self.usesMarineColours = false
+		self.usesMarineColours = true
 		self.usesAlienColours = false
 		self.lightsStartOff = true
 		self.powerPointsTakeDamage = false
