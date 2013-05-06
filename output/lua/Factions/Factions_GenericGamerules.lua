@@ -29,7 +29,7 @@ if Server then
 		if self.isCompetitive == nil then self.isCompetitive = false end
 		if self.isCombatRules == nil then self.isCombatRules = false end
 		if self.isClassBased == nil then self.isClassBased = false end
-		if self.isFactionsMovemement == nil then self.isFactionsMovemement = false end
+		if self.isFactionsMovement == nil then self.isFactionsMovement = false end
 		if self.usesMarineColours == nil then self.usesMarineColours = false end
 		if self.lightsStartOff == nil then self.lightsStartOff = false end
 		if self.powerPointsTakeDamage == nil then self.powerPointsTakeDamage = false end
@@ -39,7 +39,7 @@ if Server then
 		gameInfo:SetIsCompetitive(self.isCompetitive)
 		gameInfo:SetIsCombatRules(self.isCombatRules)
 		gameInfo:SetIsClassBased(self.isClassBased)
-		gameInfo:SetIsFactionsMovement(self.isFactionsMovemement)
+		gameInfo:SetIsFactionsMovement(self.isFactionsMovement)
 		gameInfo:SetUsesMarineColours(self.usesMarineColours)
 		gameInfo:SetGameType(self.factionsGameType)
 		gameInfo:SetLightsStartOff(self.lightsStartOff)

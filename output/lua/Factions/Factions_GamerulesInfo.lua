@@ -47,7 +47,7 @@ local networkVars =
 	isCompetitive = "boolean",
 	isCombatRules = "boolean",
 	isClassBased = "boolean",
-	isFactionsMovemement = "boolean",
+	isFactionsMovement = "boolean",
 	isInSuddenDeath = "boolean",
 	lightsStartOff = "boolean",
 	powerPointsTakeDamage = "boolean",
@@ -81,7 +81,7 @@ if Server then
 	end
 
 	function FactionsGamerulesInfo:SetIsFactionsMovement(value)
-		self.isFactionsMovemement = value
+		self.isFactionsMovement = value
 	end
 
 	function FactionsGamerulesInfo:SetIsMarinevsMarine(value)
@@ -138,7 +138,7 @@ function FactionsGamerulesInfo:GetIsClassBased()
 end
 
 function FactionsGamerulesInfo:GetIsFactionsMovement()
-	return self.isFactionsMovemement
+	return self.isFactionsMovement
 end
 
 function FactionsGamerulesInfo:GetIsInSuddenDeath()

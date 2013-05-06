@@ -218,40 +218,4 @@ function Marine:GiveItem(itemMapName)
     
 end
 
-//if GetGamerulesInfo():GetIsFactionsMovement() then
-// TODO: Fix how this is controlled. Move it to FactionsMovementMixin!
-if false then
-	// Functions to control movement, angles.
-	function Marine:GetAngleSmoothRate()
-
-		if self:GetIsWallWalking() then
-			return 1.5
-		end    
-
-		return 7
-		
-	end
-
-	function Marine:GetCrouchSpeedScalar()
-		return Marine.kCrouchSpeedScalar
-	end
-
-	function Marine:GetRollSmoothRate()
-		return 4
-	end
-
-	function Marine:GetPitchSmoothRate()
-		return 3
-	end
-
-	function Marine:GetAirFrictionForce()
-		return 0.2
-	end 
-
-	function Marine:GetJumpHeight()
-		//return Marine.kJumpHeight - Marine.kJumpHeight * self.slowAmount * 0.8
-		return Marine.kJumpHeight
-	end
-end
-
 Class_Reload("Marine", networkVars)

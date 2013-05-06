@@ -24,9 +24,6 @@ FactionsMovementMixin.expectedMixins =
 
 FactionsMovementMixin.expectedCallbacks =
 {
-	GetAngleSmoothRate = "The smooth rate for the angle changes as the player moves from wall to wall",
-	GetRollSmoothRate = "The smooth rate for the angle changes as the player moves from wall to wall",
-	GetPitchSmoothRate = "The smooth rate for the angle changes as the player moves from wall to wall",
 	GetUpgradedMaxSprintSpeed = "The speed that the player runs",
 	GetUpgradedSprintAcceleration = "The speed that the player runs",
 	GetUpgradedMaxSpeed = "The speed that the player walks",
@@ -781,4 +778,36 @@ function FactionsMovementMixin:GetWallWalkSpeedScalar()
 	local timeSinceLastWallWalk = Shared.GetTime() - self.timeStartedWallWalking
 	local wallWalkTimeFraction = math.min(timeSinceLastWallWalk/Marine.kWallWalkSlowdownTime, 1)
 	return Marine.kWallWalkSpeedScalar * wallWalkTimeFraction
+end
+
+// Functions to control movement, angles.
+function FactionsMovementMixin:GetAngleSmoothRate()
+
+	if self:GetIsWallWalking() then
+		return 1.5
+	end    
+
+	return 7
+	
+end
+
+function FactionsMovementMixin:GetCrouchSpeedScalar()
+	return Marine.kCrouchSpeedScalar
+end
+
+function FactionsMovementMixin:GetRollSmoothRate()
+	return 4
+end
+
+function FactionsMovementMixin:GetPitchSmoothRate()
+	return 3
+end
+
+function FactionsMovementMixin:GetAirFrictionForce()
+	return 0.2
+end 
+
+function FactionsMovementMixin:GetJumpHeight()
+	//return Marine.kJumpHeight - Marine.kJumpHeight * self.slowAmount * 0.8
+	return Marine.kJumpHeight
 end
