@@ -86,7 +86,7 @@ kRailgunDamage = 50
 kRailgunChargeDamage = 100
 kRailgunDamageType = kDamageType.Puncture
 
-kMineDamage = 100
+kMineDamage = 150
 
 kSentryAttackBaseROF = .15
 kSentryAttackRandROF = 0.0

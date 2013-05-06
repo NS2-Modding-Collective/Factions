@@ -29,7 +29,7 @@ local overrideOnUpdateRender = Marine.OnUpdateRender
 function Marine:OnUpdateRender()
 
 	overrideOnUpdateRender(self)
-	HiveVision_SetEnabled( GetIsAlienUnit(self) )
+	HiveVision_SetEnabled( true )
     HiveVision_SyncCamera( gRenderCamera, self:isa("Commander") )
 	
 end
