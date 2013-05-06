@@ -42,7 +42,7 @@ function Rifle:OnCreate()
 	InitMixin(self, LaserSightMixin, laserSightParameters)
 	
 	local clipSizeParameters = { kBaseClipSize = kRifleClipSize,
-								 kClipSizeIncrease = 10, }
+								 kClipSizeIncrease = 5, }
 	InitMixin(self, ClipSizeMixin, clipSizeParameters)
 
 	assert(HasMixin(self, "IronSight"))	

@@ -32,3 +32,7 @@ end
 function MinesUpgrade:GetClassName()
 	return "MinesUpgrade"
 end
+
+function MinesUpgrade:SendAddMessage(player)
+	player:SendDirectMessage("You bought " .. self:GetUpgradeTitle() .. "!")
+end

@@ -15,7 +15,7 @@ class 'FactionsUpgrade'
 kFactionsUpgradeTypes = enum({'Lifeform', 'Attribute', 'Ability', 'Tech', 'Weapon'})
 kFactionsTriggerTypes = enum({'NoTrigger', 'ByTime', 'ByKey'})
 kFactionsUpgradeTeamType = enum({'MarineTeam', 'AlienTeam', 'AnyTeam'})
-kUpgradeUniqueSlot = enum({'None', 'Weapon1', 'Weapon2', 'Weapon3', 'Weapon4', 'AlienClass'})
+kUpgradeUniqueSlot = enum({'None', 'Weapon1', 'Weapon2', 'Weapon3', 'Weapon4', 'AlienClass', 'LessReloads' })
 
 kRefundPenalty = 0.2 // 20% is taken away from any refunded amount of xp.
 
@@ -27,13 +27,13 @@ FactionsUpgrade.upgradeName = "nil"                         	// Name of the upgr
 FactionsUpgrade.upgradeTitle = "nil"                         	// Title of the upgrade, e.g. Submachine Gun
 FactionsUpgrade.upgradeDesc = "No discription"                 	// Description of the upgrade
 FactionsUpgrade.upgradeTechId = { kTechId.Move }             	// Table of the techIds of the upgrade
-FactionsUpgrade.hardCapScale = 0                               	// How many people of your team can max. take this upgrade, 1/5 for 1 upgrade per 5 player
-FactionsUpgrade.mutuallyExclusive = { }                        	// Upgrades that can not bought when you got this (like no jp when have exo)
 FactionsUpgrade.requirements = { }                        		// Upgrades you must get before you can get this one.
 FactionsUpgrade.permanent = true								// Controls whether you get the upgrade back when you respawn
 FactionsUpgrade.disallowedGameModes = { }						// Controls which game modes this applies to
 FactionsUpgrade.teamType = kFactionsUpgradeTeamType.AnyTeam		// Controls which team type this applies to
 FactionsUpgrade.uniqueSlot = kUpgradeUniqueSlot.None			// Use this to specify that an upgrade occupies a unique slot. When you buy another upgrade in this slot you get a refund for any previous ones.
+FactionsUpgrade.mutuallyExclusive = false						// Cannot buy another upgrade in this slot when you have this one.
+FactionsUpgrade.hardCapScale = 0                               	// How many people of your team can max. take this upgrade, 1/5 for 1 upgrade per 5 player
 FactionsUpgrade.minPlayerLvl = 1								// Controls whether this upgrade requires the recipient to be a minimum level
 
 function FactionsUpgrade:Initialize()
@@ -49,12 +49,12 @@ function FactionsUpgrade:Initialize()
 	self.upgradeTitle = FactionsUpgrade.upgradeTitle
 	self.upgradeDesc = FactionsUpgrade.upgradeDesc
 	self.upgradeTechId = FactionsUpgrade.upgradeTechId
-	self.hardCapScale = FactionsUpgrade.hardCapScale
-	self.mutuallyExclusive = FactionsUpgrade.mutuallyExclusive
 	self.permanent = FactionsUpgrade.permanent
 	self.disallowedGameModes = FactionsUpgrade.disallowedGameModes
 	self.teamType = FactionsUpgrade.teamType
 	self.uniqueSlot = FactionsUpgrade.uniqueSlot
+	self.mutuallyExclusive = FactionsUpgrade.mutuallyExclusive
+	self.hardCapScale = FactionsUpgrade.hardCapScale
 	self.minLevel = FactionsUpgrade.minLevel
 end
 
@@ -183,6 +183,13 @@ function FactionsUpgrade:GetMinPlayerLvl()
 	return self.minPlayerLvl
 end
 
+function FactionsUpgrade:GetHardcapScale()
+	return self.hardCapScale
+end
+
+function FactionsUpgrade:GetIsMutuallyExclusive()
+	return self.mutuallyExclusive
+end
 
 function FactionsUpgrade:GetDisallowedGameModes()
 	return self.disallowedGameModes

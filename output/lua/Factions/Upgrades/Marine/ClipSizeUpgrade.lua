@@ -10,12 +10,14 @@
 class 'ClipSizeUpgrade' (FactionsUpgrade)
 
 // Define these statically so we can easily access them without instantiating too.
-ClipSizeUpgrade.cost = { 100, 200, 400, 600, 600 }                              			// Cost of the upgrade in xp
+ClipSizeUpgrade.cost = { 100, 200, 400, 600, 600 }                              		// Cost of the upgrade in xp
 ClipSizeUpgrade.upgradeName = "clipsize"                     							// Text code of the upgrade if using it via console
 ClipSizeUpgrade.upgradeTitle = "Clip Size Upgrade"               						// Title of the upgrade, e.g. Submachine Gun
-ClipSizeUpgrade.upgradeDesc = "Upgrade your clip size"								// Description of the upgrade
+ClipSizeUpgrade.upgradeDesc = "Upgrade your clip size"									// Description of the upgrade
 ClipSizeUpgrade.upgradeTechId = kTechId.Speed1											// TechId of the upgrade, default is kTechId.Move cause its the first entry
 ClipSizeUpgrade.teamType = kFactionsUpgradeTeamType.MarineTeam							// Team Type
+ClipSizeUpgrade.uniqueSlot = kUpgradeUniqueSlot.LessReloads								// Unique slot
+ClipSizeUpgrade.mutuallyExclusive = true												// Cannot buy another upgrade in this slot when you have this one.
 
 function ClipSizeUpgrade:Initialize()
 
@@ -27,6 +29,8 @@ function ClipSizeUpgrade:Initialize()
 	self.upgradeDesc = ClipSizeUpgrade.upgradeDesc
 	self.upgradeTechId = ClipSizeUpgrade.upgradeTechId
 	self.teamType = ClipSizeUpgrade.teamType
+	self.uniqueSlot = ClipSizeUpgrade.uniqueSlot
+	self.mutuallyExclusive = ClipSizeUpgrade.mutuallyExclusive
 	
 end
 

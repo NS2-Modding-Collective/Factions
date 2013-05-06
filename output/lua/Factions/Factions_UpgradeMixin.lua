@@ -88,8 +88,10 @@ function UpgradeMixin:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade, reapplyUpg
 	
     if upgrade == nil then
 		return "Cannot find upgrade with ID " .. upgradeId
-	elseif upgrade:GetIsAtMaxLevel() and not reapplyUpgrade then
+	elseif not reapplyUpgrade and upgrade:GetIsAtMaxLevel() then
 		return "Upgrade is already at max level!"
+	elseif not reapplyUpgrade and upgrade:GetIsMutuallyExclusive() and #self:GetActiveUpgradesBySlot(upgrade:GetUniqueSlot(), upgrade:GetId()) > 0 then
+		return "You already have an upgrade in this slot and they are mutually exclusive"
 	elseif not self:GetHasPrerequisites(upgrade) then
 		return "You are missing some requirements for this upgrade..."
 	elseif not freeUpgrade and not (self:GetResources() >= upgrade:GetCostForNextLevel()) then
@@ -124,14 +126,10 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
         if upgradeMessage == "" then
         	// Refund any other upgrades in this slot
         	local upgradeSlot = upgrade:GetUniqueSlot()
-        	if upgradeSlot ~= kUpgradeUniqueSlot.None then
-        		local slotUpgrades = self:GetUpgradesBySlot(upgradeSlot)
-				for index, slotUpgrade in ipairs(slotUpgrades) do
-					if slotUpgrade:GetCurrentLevel() > 0 then
-						Shared.Message("Refunding " .. slotUpgrade:GetUpgradeTitle() .. " for " .. self:GetName())
-						self:RefundUpgradeComplete(slotUpgrade:GetId())
-					end
-				end
+        	local slotUpgrades = self:GetActiveUpgradesBySlot(upgradeSlot, upgradeId)
+			for index, slotUpgrade in ipairs(slotUpgrades) do
+				Shared.Message("Refunding " .. slotUpgrade:GetUpgradeTitle() .. " for " .. self:GetName())
+				self:RefundUpgradeComplete(slotUpgrade:GetId())
 			end
         
         	local upgradeCost = upgrade:GetCostForNextLevel()
@@ -221,6 +219,26 @@ end
 
 function UpgradeMixin:GetAvailableUpgradesByType(upgradeType)
     return self.UpgradeList:GetAvailableUpgradesByType(self:GetFactionsClass(), self:GetTeamNumber(), upgradeType)
+end
+
+function UpgradeMixin:GetActiveUpgradesBySlot(upgradeSlot, ignoreUpgradeId)
+
+	local activeUpgrades = {}
+	if ignoreUpgradeId == nil then
+		ignoreUpgradeId = -1
+	end
+
+	if upgradeSlot ~= kUpgradeUniqueSlot.None then
+		local slotUpgrades = self:GetUpgradesBySlot(upgradeSlot)
+		for index, slotUpgrade in ipairs(slotUpgrades) do
+			if slotUpgrade:GetId() ~= ignoreUpgradeId and slotUpgrade:GetCurrentLevel() > 0 then
+				table.insert(activeUpgrades, slotUpgrade)
+			end
+		end
+	end
+	
+	return activeUpgrades
+	
 end
 
 function UpgradeMixin:GetUpgradesBySlot(upgradeSlot)

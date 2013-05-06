@@ -42,10 +42,14 @@ function Pistol:OnCreate()
 	assert(HasMixin(self, "LaserSight"))
 	
 	local clipSizeParameters = { kBaseClipSize = kPistolClipSize,
-								 kClipSizeIncrease = 4, }
+								 kClipSizeIncrease = 2, }
 	InitMixin(self, ClipSizeMixin, clipSizeParameters)
 	assert(HasMixin(self, "VariableClipSize"))
 	
+end
+
+function Rifle:GetSpread()
+	return ClipWeapon.kCone5Degrees
 end
 
 function Pistol:GetClipSize()

@@ -16,6 +16,8 @@ ReloadSpeedUpgrade.upgradeTitle = "Reload Speed Upgrade"               						// 
 ReloadSpeedUpgrade.upgradeDesc = "Upgrade your reload speed"								// Description of the upgrade
 ReloadSpeedUpgrade.upgradeTechId = kTechId.Speed1											// TechId of the upgrade, default is kTechId.Move cause its the first entry
 ReloadSpeedUpgrade.teamType = kFactionsUpgradeTeamType.MarineTeam							// Team Type
+ReloadSpeedUpgrade.uniqueSlot = kUpgradeUniqueSlot.LessReloads								// Unique slot
+ReloadSpeedUpgrade.mutuallyExclusive = true													// Cannot buy another upgrade in this slot when you have this one.
 
 function ReloadSpeedUpgrade:Initialize()
 
@@ -27,6 +29,8 @@ function ReloadSpeedUpgrade:Initialize()
 	self.upgradeDesc = ReloadSpeedUpgrade.upgradeDesc
 	self.upgradeTechId = ReloadSpeedUpgrade.upgradeTechId
 	self.teamType = ReloadSpeedUpgrade.teamType
+	self.uniqueSlot = ReloadSpeedUpgrade.uniqueSlot
+	self.mutuallyExclusive = ReloadSpeedUpgrade.mutuallyExclusive
 	
 end
 

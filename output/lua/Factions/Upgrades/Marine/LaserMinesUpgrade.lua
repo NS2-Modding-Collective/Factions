@@ -32,3 +32,7 @@ end
 function LaserMinesUpgrade:GetClassName()
 	return "LaserMinesUpgrade"
 end
+
+function LaserMinesUpgrade:SendAddMessage(player)
+	player:SendDirectMessage("You bought " .. self:GetUpgradeTitle() .. "!")
+end
