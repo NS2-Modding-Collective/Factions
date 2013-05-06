@@ -17,6 +17,7 @@ MagnoBootsUpgrade.upgradeTitle = "Magno Boots"               							// Title of 
 MagnoBootsUpgrade.upgradeDesc = "Allows you to walk on walls"							// Description of the upgrade
 MagnoBootsUpgrade.upgradeTechId = kTechId.Speed1										// TechId of the upgrade, default is kTechId.Move cause its the first entry
 MagnoBootsUpgrade.teamType = kFactionsUpgradeTeamType.MarineTeam						// Team Type
+MagnoBootsUpgrade.disallowedGameModes = { kFactionsGameType.CombatDeathmatch }			// Controls which game modes this applies to
 
 function MagnoBootsUpgrade:Initialize()
 
@@ -28,6 +29,7 @@ function MagnoBootsUpgrade:Initialize()
 	self.upgradeTitle = MagnoBootsUpgrade.upgradeTitle
 	self.upgradeDesc = MagnoBootsUpgrade.upgradeDesc
 	self.upgradeTechId = MagnoBootsUpgrade.upgradeTechId
+	self.disallowedGameModes = MagnoBootsUpgrade.disallowedGameModes
 	
 end
 

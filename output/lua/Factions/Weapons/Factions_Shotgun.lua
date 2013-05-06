@@ -10,11 +10,13 @@
 // Factions_Shotgun.lua
 
 Script.Load("lua/Factions/Weapons/Factions_LaserSightMixin.lua")
+Script.Load("lua/Factions/Weapons/Factions_ClipSizeMixin.lua")
 
 local networkVars = {
 }
 
 AddMixinNetworkVars(LaserSightMixin, networkVars)
+AddMixinNetworkVars(ClipSizeMixin, networkVars)
 
 //"shotgun_reloader"
 Shotgun.kLaserSightWorldModelAttachPoint = "fxnode_shotgunmuzzle"
@@ -29,6 +31,11 @@ function Shotgun:OnCreate()
 								   kLaserSightViewModelAttachPoint = Shotgun.kLaserSightViewModelAttachPoint }
 	InitMixin(self, LaserSightMixin, laserSightParameters)
 	assert(HasMixin(self, "LaserSight"))
+	
+	local clipSizeParameters = { kBaseClipSize = kShotgunClipSize,
+								 kClipSizeIncrease = 1, }
+	InitMixin(self, ClipSizeMixin, clipSizeParameters)
+	assert(HasMixin(self, "VariableClipSize"))	
 	
 end
 

@@ -36,17 +36,16 @@ function Rifle:OnCreate()
 								  kIronSightZoomFOV = Rifle.kIronSightZoomFOV,
 								  kIronSightActivateTime = Rifle.kIronSightActivateTime }
 	InitMixin(self, IronSightMixin, ironSightParameters)
+	assert(HasMixin(self, "IronSight"))	
 	
 	local laserSightParameters = { kLaserSightWorldModelAttachPoint = Rifle.kLaserSightWorldModelAttachPoint,
 								   kLaserSightViewModelAttachPoint = Rifle.kLaserSightViewModelAttachPoint,	}
 	InitMixin(self, LaserSightMixin, laserSightParameters)
+	assert(HasMixin(self, "LaserSight"))
 	
 	local clipSizeParameters = { kBaseClipSize = kRifleClipSize,
 								 kClipSizeIncrease = 5, }
 	InitMixin(self, ClipSizeMixin, clipSizeParameters)
-
-	assert(HasMixin(self, "IronSight"))	
-	assert(HasMixin(self, "LaserSight"))
 	assert(HasMixin(self, "VariableClipSize"))	
 
 end

@@ -95,6 +95,7 @@ end
 
 function ClipSizeMixin:OnSetActive()
 
+	self:UpdateClipSizeLevel()
 	self:UpdateClipSizeGUI()
 	
 end
