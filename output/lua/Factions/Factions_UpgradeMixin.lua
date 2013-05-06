@@ -62,7 +62,7 @@ local function ReapplyUpgrades(self)
 			
 			// give upgrades back when the player respawns
 			if self:GetIsAlive() and self:GetTeamNumber() ~= kNeutralTeamType then
-				local errorMessage = self:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade, true)
+				local errorMessage = self:GetCanBuyUpgradeMessage(upgradeId, true, true)
 				if errorMessage == "" then
 					upgrade:OnAdd(self)
 				end
@@ -102,7 +102,7 @@ function UpgradeMixin:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade, reapplyUpg
 		return "Upgrade cannot be bought in this game mode"
 	elseif not upgrade:GetIsAllowedForTeam(self:GetTeamNumber()) then
 		return "Upgrade is not allowed for your team"
-	elseif not upgrade:CanApplyUpgrade(self) == "" then
+	elseif not (upgrade:CanApplyUpgrade(self) == "") then
 		return upgrade:CanApplyUpgrade(self)
 	else
         return ""

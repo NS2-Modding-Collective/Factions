@@ -60,7 +60,7 @@ if Server then
 		
 		// Lock the command chairs
 		self:LockCommandChairs()
-		self.difficulty = 0
+		self.difficulty = self.team1:GetNumPlayersWithAnyClass()
 		
 	end
 	
