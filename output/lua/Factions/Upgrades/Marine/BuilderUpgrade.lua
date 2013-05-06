@@ -16,7 +16,7 @@ BuilderUpgrade.upgradeName 		= "builder"                       											// Tex
 BuilderUpgrade.upgradeTitle 	= "Builder"               													// Title of the upgrade, e.g. Submachine Gun
 BuilderUpgrade.upgradeDesc 		= "Build Stuff"																// Description of the upgrade
 BuilderUpgrade.upgradeTechId 	= kTechId.MarineStructureAbility 	    									// TechId of the upgrade, default is kTechId.Move cause its the first entry
-BuilderUpgrade.primaryWeapon 	= false																		// Is this a primary weapon?
+BuilderUpgrade.hudSlot		 	= kWelderHUDSlot															// Is this a primary weapon?
 
 function BuilderUpgrade:Initialize()
 
@@ -28,7 +28,7 @@ function BuilderUpgrade:Initialize()
 	self.upgradeTitle = BuilderUpgrade.upgradeTitle
 	self.upgradeDesc = BuilderUpgrade.upgradeDesc
 	self.upgradeTechId = BuilderUpgrade.upgradeTechId
-	self.primaryWeapon = BuilderUpgrade.primaryWeapon
+	self.hudSlot = BuilderUpgrade.hudSlot
 	
 end
 

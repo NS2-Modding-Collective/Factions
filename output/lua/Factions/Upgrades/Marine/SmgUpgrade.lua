@@ -16,7 +16,7 @@ SMGUpgrade.upgradeName 		= "smg"                       											// Text code o
 SMGUpgrade.upgradeTitle 	= "Submachine Gun"               										// Title of the upgrade, e.g. Submachine Gun
 SMGUpgrade.upgradeDesc 		= "Rapid firing, mini version of the rifle. Great at medium range."		// Description of the upgrade
 SMGUpgrade.upgradeTechId 	= kTechId.LightMachineGun 	    										// TechId of the upgrade, default is kTechId.Move cause its the first entry
-SMGUpgrade.primaryWeapon 	= true																	// Is this a primary weapon?
+SMGUpgrade.hudSlot 			= kPrimaryWeaponSlot													// Is this a primary weapon?
 
 function SMGUpgrade:Initialize()
 
@@ -27,7 +27,7 @@ function SMGUpgrade:Initialize()
 	self.upgradeTitle = SMGUpgrade.upgradeTitle
 	self.upgradeDesc = SMGUpgrade.upgradeDesc
 	self.upgradeTechId = SMGUpgrade.upgradeTechId
-	self.primaryWeapon = SMGUpgrade.primaryWeapon
+	self.hudSlot = SMGUpgrade.hudSlot
 	
 end
 

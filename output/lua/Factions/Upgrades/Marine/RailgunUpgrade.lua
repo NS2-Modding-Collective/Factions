@@ -16,7 +16,7 @@ RailgunUpgrade.upgradeName 		= "railgun"                       											// Tex
 RailgunUpgrade.upgradeTitle 	= "Railgun"               													// Title of the upgrade, e.g. Submachine Gun
 RailgunUpgrade.upgradeDesc 		= "Kapow!"																	// Description of the upgrade
 RailgunUpgrade.upgradeTechId 	= kTechId.Railgun 	    													// TechId of the upgrade, default is kTechId.Move cause its the first entry
-RailgunUpgrade.primaryWeapon 	= true																		// Is this a primary weapon?
+RailgunUpgrade.hudSlot		 	= kPrimaryWeaponSlot														// Is this a primary weapon?
 
 function RailgunUpgrade:Initialize()
 
@@ -28,7 +28,7 @@ function RailgunUpgrade:Initialize()
 	self.upgradeTitle = RailgunUpgrade.upgradeTitle
 	self.upgradeDesc = RailgunUpgrade.upgradeDesc
 	self.upgradeTechId = RailgunUpgrade.upgradeTechId
-	self.primaryWeapon = RailgunUpgrade.primaryWeapon
+	self.hudSlot = RailgunUpgrade.hudSlot
 	
 end
 

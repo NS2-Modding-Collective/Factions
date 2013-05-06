@@ -18,7 +18,7 @@ GrenadeLauncherUpgrade.upgradeTitle 	= "Grenade Launcher"       									// Titl
 GrenadeLauncherUpgrade.upgradeDesc 		= "Launches grenades... What more do you need to know?"  	// Description of the upgrade
 GrenadeLauncherUpgrade.upgradeTechId	= kTechId.GrenadeLauncher 		    						// TechId of the upgrade, default is kTechId.Move cause its the first entry
 GrenadeLauncherUpgrade.requirements 	= { "UnlockGrenadeLauncherUpgrade" }						// Any requirements?
-GrenadeLauncherUpgrade.primaryWeapon	= true														// Is this a primary weapon?
+GrenadeLauncherUpgrade.hudSlot			= kPrimaryWeaponSlot										// Is this a primary weapon?
 
 function GrenadeLauncherUpgrade:Initialize()
 
@@ -30,7 +30,7 @@ function GrenadeLauncherUpgrade:Initialize()
 	self.upgradeDesc = GrenadeLauncherUpgrade.upgradeDesc
 	self.upgradeTechId = GrenadeLauncherUpgrade.upgradeTechId
 	self.requirements = GrenadeLauncherUpgrade.requirements
-	self.primaryWeapon = GrenadeLauncherUpgrade.primaryWeapon
+	self.hudSlot = GrenadeLauncherUpgrade.hudSlot
 	
 end
 

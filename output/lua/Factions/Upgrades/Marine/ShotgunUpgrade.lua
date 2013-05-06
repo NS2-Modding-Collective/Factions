@@ -16,7 +16,7 @@ ShotgunUpgrade.upgradeName 		= "shotgun"	                        						// Text c
 ShotgunUpgrade.upgradeTitle 	= "Shotgun"       											// Title of the upgrade, e.g. Submachine Gun
 ShotgunUpgrade.upgradeDesc 		= "Does high damage at close range, contains 5 shells."		// Description of the upgrade
 ShotgunUpgrade.upgradeTechId 	= kTechId.Shotgun 	 		    							// TechId of the upgrade, default is kTechId.Move cause its the first entry
-ShotgunUpgrade.primaryWeapon 	= true														// Is this a primary weapon?
+ShotgunUpgrade.hudSlot		 	= kPrimaryWeaponSlot														// Is this a primary weapon?
 
 function ShotgunUpgrade:Initialize()
 
@@ -27,7 +27,7 @@ function ShotgunUpgrade:Initialize()
 	self.upgradeTitle = ShotgunUpgrade.upgradeTitle
 	self.upgradeDesc = ShotgunUpgrade.upgradeDesc
 	self.upgradeTechId = ShotgunUpgrade.upgradeTechId
-	self.primaryWeapon = ShotgunUpgrade.primaryWeapon
+	self.hudSlot = ShotgunUpgrade.hudSlot
 	
 end
 

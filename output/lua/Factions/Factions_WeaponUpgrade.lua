@@ -18,8 +18,8 @@ class 'FactionsWeaponUpgrade' (FactionsUpgrade)
 FactionsWeaponUpgrade.upgradeType 	= kFactionsUpgradeTypes.Weapon        	// the type of the upgrade
 FactionsWeaponUpgrade.triggerType 	= kFactionsTriggerTypes.NoTrigger   	// how the upgrade is gonna be triggered
 FactionsWeaponUpgrade.permanent		= false									// Controls whether you get the upgrade back when you respawn
-FactionsWeaponUpgrade.primaryWeapon = false									// Is this a primary weapon?
-FactionsWeaponUpgrade.teamType		= kFactionsUpgradeTeamType.MarineTeam		// Team Type
+FactionsWeaponUpgrade.hudSlot		= 4										// Is this a primary weapon?
+FactionsWeaponUpgrade.teamType		= kFactionsUpgradeTeamType.MarineTeam	// Team Type
 
 function FactionsWeaponUpgrade:Initialize()
 
@@ -32,7 +32,7 @@ function FactionsWeaponUpgrade:Initialize()
 	self.upgradeType = FactionsWeaponUpgrade.upgradeType
 	self.triggerType = FactionsWeaponUpgrade.triggerType
 	self.permanent = FactionsWeaponUpgrade.permanent
-	self.primaryWeapon = FactionsWeaponUpgrade.primaryWeapon
+	self.hudSlot = FactionsWeaponUpgrade.hudSlot
 	self.teamType = FactionsWeaponUpgrade.teamType
 	
 end
@@ -41,8 +41,8 @@ function FactionsWeaponUpgrade:GetClassName()
 	return "FactionsWeaponUpgrade"
 end
 
-function FactionsWeaponUpgrade:GetIsPrimaryWeapon()
-    return self.primaryWeapon
+function FactionsWeaponUpgrade:GetHUDSlot()
+    return self.hudSlot
 end
 
 // Give the weapon to the player when they buy the upgrade.
@@ -50,13 +50,11 @@ function FactionsWeaponUpgrade:OnAdd(player)
 
 	local mapName = LookupTechData(self:GetUpgradeTechId(), kTechDataMapName)
 	if mapName then
-		// if this is a primary weapon, destroy the old one.
-		if self:GetIsPrimaryWeapon() then
-			local weapon = player:GetWeaponInHUDSlot(1)
-			if (weapon) then
-				player:RemoveWeapon(weapon)
-				DestroyEntity(weapon)
-			end
+		// Destroy the old weapon in this slot.
+		local weapon = player:GetWeaponInHUDSlot(self:GetHUDSlot())
+		if (weapon) then
+			player:RemoveWeapon(weapon)
+			DestroyEntity(weapon)
 		end
 	
 		player:GiveItem(mapName)

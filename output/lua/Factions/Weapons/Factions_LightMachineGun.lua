@@ -203,8 +203,8 @@ if Client then
         end
         
     end
-    function Rifle:GetUIDisplaySettings()
-        return { xSize = 256, ySize = 417, script = "lua/GUIRifleDisplay.lua" }
+    function LightMachineGun:GetUIDisplaySettings()
+        return { xSize = 256, ySize = 417, script = "lua/GUIRifleDisplay.lua", textureNameOverride = "rifle" }
     end
 end
 

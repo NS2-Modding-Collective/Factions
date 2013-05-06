@@ -14,7 +14,7 @@ LaserMinesUpgrade.upgradeName		= "lasermines"	                    // text code o
 LaserMinesUpgrade.upgradeTitle 		= "Laser Mines"       				// Title of the upgrade, e.g. Submachine Gun
 LaserMinesUpgrade.upgradeDesc 		= "Get some Laser Mines"            // Description of the upgrade
 LaserMinesUpgrade.upgradeTechId 	= kTechId.LayLaserMines  			// techId of the upgrade, default is kTechId.Move cause its the first entry
-LaserMinesUpgrade.primaryWeapon 	= false								// Is this a primary weapon?
+LaserMinesUpgrade.hudSlot		 	= 4									// Is this a primary weapon?
 
 function LaserMinesUpgrade:Initialize()
 
@@ -25,7 +25,7 @@ function LaserMinesUpgrade:Initialize()
 	self.upgradeTitle = LaserMinesUpgrade.upgradeTitle
 	self.upgradeDesc = LaserMinesUpgrade.upgradeDesc
 	self.upgradeTechId = LaserMinesUpgrade.upgradeTechId
-	self.primaryWeapon = LaserMinesUpgrade.primaryWeapon
+	self.hudSlot = LaserMinesUpgrade.hudSlot
 	
 end
 

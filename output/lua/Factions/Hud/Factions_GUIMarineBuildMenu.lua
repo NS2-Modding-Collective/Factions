@@ -56,7 +56,7 @@ end
 
 function MarineBuild_GetIsAbilityAvailable(index)
 
-    return DropStructureAbility.kSupportedStructures[index] and DropStructureAbility.kSupportedStructures[index]:IsAllowed(Client.GetLocalPlayer())
+    return MarineStructureAbility.kSupportedStructures[index] and MarineStructureAbility.kSupportedStructures[index]:IsAllowed(Client.GetLocalPlayer())
 
 end
 
@@ -283,7 +283,7 @@ function Factions_GUIMarineBuildMenu:Reset()
     
     self.background:SetUniformScale(self.scale)
 
-    for index, structureAbility in ipairs(DropStructureAbility.kSupportedStructures) do
+    for index, structureAbility in ipairs(MarineStructureAbility.kSupportedStructures) do
     
         // TODO: pass keybind from options instead of index
         table.insert( self.buttons, self:CreateButton(structureAbility.GetDropStructureId(), self.scale, self.background, MarineBuild_GetKeybindForIndex(index), index - 1) )

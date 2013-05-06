@@ -18,7 +18,7 @@ FlamethrowerUpgrade.upgradeTitle 		= "Flamethrower"       										// Title of 
 FlamethrowerUpgrade.upgradeDesc 		= "Come on baby light my fire"  							// Description of the upgrade
 FlamethrowerUpgrade.upgradeTechId		= kTechId.Flamethrower 		    							// TechId of the upgrade, default is kTechId.Move cause its the first entry
 FlamethrowerUpgrade.requirements 		= { "UnlockFlamethrowerUpgrade" }							// Any requirements?
-FlamethrowerUpgrade.primaryWeapon		= true														// Is this a primary weapon?
+FlamethrowerUpgrade.hudSlot				= kPrimaryWeaponSlot										// Is this a primary weapon?
 
 function FlamethrowerUpgrade:Initialize()
 
@@ -30,7 +30,7 @@ function FlamethrowerUpgrade:Initialize()
 	self.upgradeDesc = FlamethrowerUpgrade.upgradeDesc
 	self.upgradeTechId = FlamethrowerUpgrade.upgradeTechId
 	self.requirements = FlamethrowerUpgrade.requirements
-	self.primaryWeapon = FlamethrowerUpgrade.primaryWeapon
+	self.hudSlot = FlamethrowerUpgrade.hudSlot
 	
 end
 

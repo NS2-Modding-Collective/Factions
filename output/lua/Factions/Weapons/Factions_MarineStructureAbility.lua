@@ -30,7 +30,7 @@ local kDropCooldown = 1
 local kViewModelName = PrecacheAsset("models/marine/welder/welder_view.model")
 local kAnimationGraph = PrecacheAsset("models/marine/welder/welder_view.animation_graph")
 
-MarineStructureAbility.kMapName = "drop_structure_ability"
+MarineStructureAbility.kMapName = "marine_drop_structure_ability"
 
 local kCreateFailSound = PrecacheAsset("sound/NS2.fev/alien/gorge/create_fail")
 
@@ -474,32 +474,7 @@ function MarineStructureAbility:ProcessMoveOnWeapon(input)
         if Server then
 
             local team = player:GetTeam()
-            local hiveCount = team:GetNumHives()
-            local numAllowedHydras = LookupTechData(kTechId.Hydra, kTechDataMaxAmount, -1) 
-            local numAllowedClogs = LookupTechData(kTechId.Clog, kTechDataMaxAmount, -1) 
-            local numAllowedTunnels = LookupTechData(kTechId.GorgeTunnel, kTechDataMaxAmount, -1) 
-            local numAllowedWebs = LookupTechData(kTechId.Web, kTechDataMaxAmount, -1) 
-            local numAllowedBabblers = LookupTechData(kTechId.BabblerEgg, kTechDataMaxAmount, -1) 
-
-            if numAllowedHydras >= 0 then     
-                self.numSentriesLeft = team:GetNumDroppedGorgeStructures(player, kTechId.Hydra)           
-            end
-   
-            if numAllowedClogs >= 0 then     
-                self.numArmoriesLeft = team:GetNumDroppedGorgeStructures(player, kTechId.Clog)           
-            end
-            
-            if numAllowedTunnels >= 0 then     
-                self.numTunnelsLeft = team:GetNumDroppedGorgeStructures(player, kTechId.GorgeTunnel)           
-            end
-            
-            if numAllowedWebs >= 0 then     
-                self.numWebsLeft = team:GetNumDroppedGorgeStructures(player, kTechId.Web)           
-            end
-            
-            if numAllowedBabblers >= 0 then     
-                self.numBabblersLeft = team:GetNumDroppedGorgeStructures(player, kTechId.BabblerEgg)           
-            end
+            // This is where you limit the number of entities that are alive
             
         end
         

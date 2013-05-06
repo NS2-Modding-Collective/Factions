@@ -61,7 +61,7 @@ Script.Load("lua/Factions/Weapons/Factions_Flamethrower.lua")
 Script.Load("lua/Factions/Factions_Mine.lua")
 Script.Load("lua/Factions/Weapons/Factions_LayLaserMines.lua")
 Script.Load("lua/Factions/Factions_LaserMine.lua")
-//Script.Load("lua/Factions/Weapons/Factions_MarineStructureAbility.lua")
+Script.Load("lua/Factions/Weapons/Factions_MarineStructureAbility.lua")
 
 // New classes here
 Script.Load("lua/Factions/Factions_GenericGamerules.lua")

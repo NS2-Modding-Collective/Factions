@@ -29,8 +29,11 @@ local overrideOnUpdateRender = Marine.OnUpdateRender
 function Marine:OnUpdateRender()
 
 	overrideOnUpdateRender(self)
-	HiveVision_SetEnabled( true )
-    HiveVision_SyncCamera( gRenderCamera, self:isa("Commander") )
+	
+	if not GetGamerulesInfo():GetIsCompetitive() then
+		HiveVision_SetEnabled( true )
+		HiveVision_SyncCamera( gRenderCamera, self:isa("Commander") )
+	end
 	
 end
 

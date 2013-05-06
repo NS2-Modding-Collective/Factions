@@ -12,8 +12,8 @@ class 'IronSightUpgrade' (FactionsUpgrade)
 // Define these statically so we can easily access them without instantiating too.
 IronSightUpgrade.cost = { 250 }                              						// Cost of the upgrade in xp
 IronSightUpgrade.upgradeName = "ironsight"                     						// Text code of the upgrade if using it via console
-IronSightUpgrade.upgradeTitle = "iron sight"			               				// Title of the upgrade, e.g. Submachine Gun
-IronSightUpgrade.upgradeDesc = "Improves the accuracy of your weapon"				// Description of the upgrade
+IronSightUpgrade.upgradeTitle = "Iron Sights"			               				// Title of the upgrade, e.g. Submachine Gun
+IronSightUpgrade.upgradeDesc = "Lets you attack better at range"					// Description of the upgrade
 IronSightUpgrade.upgradeTechId = kTechId.IronSight									// TechId of the upgrade, default is kTechId.Move cause its the first entry
 IronSightUpgrade.teamType = kFactionsUpgradeTeamType.MarineTeam
 
