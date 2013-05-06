@@ -1,0 +1,8 @@
+modEntry = [[
+	Requires: extraentities,
+	Client: lua/Factions/Factions_Client.lua,
+	Server: lua/Factions/Factions_Server.lua,
+	Predict: lua/Factions/Factions_Predict.lua,
+	Shared: lua/Factions/Factions_Shared.lua,
+	Priority: 5
+]]

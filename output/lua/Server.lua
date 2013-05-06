@@ -9,6 +9,8 @@
 // Set the name of the VM for debugging
 decoda_name = "Server"
 
+Script.Load("lua/PreLoadMod.lua")
+
 Script.Load("lua/Shared.lua")
 Script.Load("lua/MapEntityLoader.lua")
 Script.Load("lua/TechData.lua")
@@ -29,6 +31,9 @@ Script.Load("lua/ConsistencyConfig.lua")
 
 Script.Load("lua/ConsoleCommands_Server.lua")
 Script.Load("lua/NetworkMessages_Server.lua")
+
+// Factions
+Script.Load("lua/Factions/Factions_GamerulesPicker.lua")
 
 Script.Load("lua/dkjson.lua")
 
@@ -108,6 +113,7 @@ function GetCreateEntityOnStart(mapName, groupName, values)
        and mapName ~= CommandStation.kMapName
        and mapName ~= Cyst.kMapName
        and mapName ~= InfantryPortal.kMapName
+       and mapName ~= "spawn_selection_override"
     
 end
 
@@ -156,6 +162,12 @@ function GetLoadSpecial(mapName, groupName, values)
             end
             
         end
+        
+    elseif mapName == "spawn_selection_override" then
+    
+        Server.spawnSelectionOverrides = Server.spawnSelectionOverrides or { }
+        table.insert(Server.spawnSelectionOverrides, { alienSpawn = string.lower(values.alienSpawn), marineSpawn = string.lower(values.marineSpawn) })
+        success = true
         
     end
     
@@ -385,3 +397,5 @@ Event.Hook("MapPreLoad", OnMapPreLoad)
 Event.Hook("MapPostLoad", OnMapPostLoad)
 Event.Hook("MapLoadEntity", OnMapLoadEntity)
 Event.Hook("CanPlayerHearPlayer", OnCanPlayerHearPlayer)
+
+Script.Load("lua/PostLoadMod.lua")

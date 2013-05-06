@@ -59,3 +59,5 @@ ExtraEntitiesMod
 /output/materials/water.surface_shader
 /output/materials/water_norm.dds
 /output/materials/water_spec.dds
+
+/output/lua/entry/extraentities.entry

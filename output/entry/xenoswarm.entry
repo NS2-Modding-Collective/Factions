@@ -1,9 +1,0 @@
-modEntry = [[
-	Requires: extraentities,
-	Client: lua/Client_Modded.lua,
-	Server: lua/Server_Modded.lua,
-	Predict: lua/Predict_Modded.lua,
-	Loading: lua/Loading.lua,
-	Shared: lua/TestShared.lua,
-	Priority: 5
-]]
