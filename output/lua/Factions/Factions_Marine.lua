@@ -163,6 +163,61 @@ function Marine:Drop(weapon, ignoreDropTimeLimit, ignoreReplacementWeapon)
 
 end
 
+// special threatment for mines, laser mines and welders
+function Marine:GiveItem(itemMapName)
+
+    local newItem = nil
+
+    if itemMapName then
+        
+        local continue = true
+        local setActive = true
+        
+        if itemMapName == LayMines.kMapName then
+        
+            local mineWeapon = self:GetWeapon(LayMines.kMapName)
+            
+            if mineWeapon then
+                mineWeapon:Refill(kNumMines)
+                continue = false
+                setActive = false
+            end
+		
+		elseif itemMapName == LayLaserMines.kMapName then
+        
+            local mineWeapon = self:GetWeapon(LayLaserMines.kMapName)
+            
+            if mineWeapon then
+                mineWeapon:Refill(kNumMines)
+                continue = false
+                setActive = false
+            end
+            
+        elseif itemMapName == Welder.kMapName then
+        
+            // since axe cannot be dropped we need to delete it before adding the welder (shared hud slot)
+            local switchAxe = self:GetWeapon(Axe.kMapName)
+            
+            if switchAxe then
+                self:RemoveWeapon(switchAxe)
+                DestroyEntity(switchAxe)
+                continue = true
+            else
+                continue = false // don't give a second welder
+            end
+        
+        end
+        
+        if continue == true then
+            return Player.GiveItem(self, itemMapName, setActive)
+        end
+        
+    end
+    
+    return newItem
+    
+end
+
 //if GetGamerulesInfo():GetIsFactionsMovement() then
 // TODO: Fix how this is controlled. Move it to FactionsMovementMixin!
 if false then

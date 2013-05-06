@@ -30,6 +30,46 @@ function LayLaserMines:OnInitialized()
     
 end
 
+function LayLaserMines:GetIsValidRecipient(recipient)
+
+    if self:GetParent() == nil and recipient and not GetIsVortexed(recipient) and recipient:isa("Marine") then
+    
+        local laymines = recipient:GetWeapon(LayLaserMines.kMapName)
+        return laymines == nil
+        
+    end
+    
+    return false
+    
+end
+
+function LayLaserMines:GetDropStructureId()
+    return kTechId.LaserMine
+end
+
+function LayLaserMines:GetViewModelName()
+    return kViewModelName
+end
+
+function LayLaserMines:GetAnimationGraphName()
+    return kAnimationGraph
+end
+
+function LayLaserMines:GetSuffixName()
+    return "mine"
+end
+
+function LayLaserMines:GetDropClassName()
+    return "LaserMine"
+end
+
+function LayLaserMines:GetDropMapName()
+    return LaserMine.kMapName
+end
+
+function LayLaserMines:GetHUDSlot()
+    return 4
+end
 local function DropStructure(self, player)
 
     if Server then
@@ -82,34 +122,6 @@ local function DropStructure(self, player)
     
 end
 
-function LayLaserMines:GetDropStructureId()
-    return kTechId.LaserMine
-end
-
-function LayLaserMines:GetViewModelName()
-    return kViewModelName
-end
-
-function LayLaserMines:GetAnimationGraphName()
-    return kAnimationGraph
-end
-
-function LayLaserMines:GetSuffixName()
-    return "mine"
-end
-
-function LayLaserMines:GetDropClassName()
-    return "LaserMine"
-end
-
-function LayLaserMines:GetDropMapName()
-    return LaserMine.kMapName
-end
-
-function LayLaserMines:GetHUDSlot()
-    return 4
-end
-
 function LayLaserMines:PerformPrimaryAttack(player)
 
     local success = true
@@ -151,6 +163,18 @@ function LayLaserMines:Dropped(prevOwner)
     Weapon.Dropped(self, prevOwner)
     
     self:SetModel(kDropModelName)
+    
+end
+
+function LayMines:GetGhostModelName()
+    return LookupTechData(self:GetDropStructureId(), kTechDataModel)
+end
+
+if Client then
+	    
+    function LayLaserMines:GetUIDisplaySettings()
+        return { xSize = 256, ySize = 417, script = "lua/GUIMineDisplay.lua", textureNameOverride = "mine" }
+    end
     
 end
 

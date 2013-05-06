@@ -33,7 +33,6 @@ local kAnimationGraph = PrecacheAsset("models/marine/welder/welder_view.animatio
 MarineStructureAbility.kMapName = "drop_structure_ability"
 
 local kCreateFailSound = PrecacheAsset("sound/NS2.fev/alien/gorge/create_fail")
-local kAnimationGraph = PrecacheAsset("models/alien/gorge/gorge_view.animation_graph")
 
 MarineStructureAbility.kSupportedStructures = { SentryAbility }
 
@@ -531,6 +530,10 @@ function MarineStructureAbility:GetGhostModelTechId()
 end
 
 if Client then
+
+    function MarineStructureAbility:GetUIDisplaySettings()
+        return { xSize = 512, ySize = 512, script = "lua/GUIWelderDisplay.lua", textureNameOverride = "welder" }
+    end
 
     function MarineStructureAbility:OnProcessIntermediate(input)
 

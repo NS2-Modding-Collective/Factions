@@ -27,11 +27,11 @@ local function addTechId(techIdName)
 end
 
 addTechId("LightMachineGun")
+addTechId("LayLaserMines")
+addTechId("MarineStructureAbility")
 addTechId("Speed1")
 addTechId("Health1")
 addTechId("Resupply")
-addTechId("MarineStructureAbility")
 addTechId("LaserSight")
 addTechId("LaserMine")
-addTechId("LayLaserMines")
 addTechId("IronSight")
