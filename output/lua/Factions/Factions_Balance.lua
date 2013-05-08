@@ -95,8 +95,11 @@ kConfusedSentryBaseROF = 2.0
 
 // Building
 kNumSentriesPerPlayer = 2
-kSentryDamage = 5
+kSentryCost = 250
+kSentryDamage = 15
+kPhaseGateCost = 250
 kNumPhasegatesPerPlayer = 2
+kArmoryCost = 250
 kNumArmoriesPerPlayer = 1
 
 kWeapons1DamageScalar = 1.1

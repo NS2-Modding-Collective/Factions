@@ -26,7 +26,7 @@ class 'MarineStructureAbility' (Weapon)
 
 local kMaxStructures = {}
 kMaxStructures[kTechId.Sentry] = 2
-kMaxStructures[kTechId.Armory] = 1
+kMaxStructures[kTechId.MiniArmory] = 1
 kMaxStructures[kTechId.PhaseGate] = 2
 kMaxStructures[kTechId.Observatory] = 1
 local kDropCooldown = 3
@@ -43,7 +43,7 @@ MarineStructureAbility.kSupportedStructures = { SentryAbility, ArmoryAbility, Ph
 local networkVars =
 {
     numSentriesLeft = string.format("private integer (0 to %d)", kMaxStructures[kTechId.Sentry]),
-    numArmoriesLeft = string.format("private integer (0 to %d)", kMaxStructures[kTechId.Armory]),
+    numMiniArmoriesLeft = string.format("private integer (0 to %d)", kMaxStructures[kTechId.MiniArmory]),
 	numPhaseGatesLeft = string.format("private integer (0 to %d)", kMaxStructures[kTechId.PhaseGate]),
 	numObservatoriesLeft = string.format("private integer (0 to %d)", kMaxStructures[kTechId.Observatory]),
 }
@@ -76,7 +76,7 @@ function MarineStructureAbility:OnCreate()
         
     // for GUI
     self.numSentriesLeft = 0
-    self.numArmoriesLeft = 0
+    self.numMiniArmoriesLeft = 0
 	self.numPhaseGatesLeft = 0
     self.numObservatoriesLeft = 0
     self.lastClickedPosition = nil
@@ -136,8 +136,8 @@ function MarineStructureAbility:GetNumStructuresBuilt(techId)
         return self.numSentriesLeft
     end
 	
-	if techId == kTechId.Armory then
-        return self.numArmoriesLeft
+	if techId == kTechId.MiniArmory then
+        return self.numMiniArmoriesLeft
     end
 	
 	if techId == kTechId.PhaseGate then
@@ -202,7 +202,7 @@ function MarineStructureAbility:GetDamageType()
 end
 
 function MarineStructureAbility:GetHUDSlot()
-    return kWelderHUDSlot
+    return 4
 end
 
 function MarineStructureAbility:GetHasSecondary(player)
@@ -492,7 +492,7 @@ function MarineStructureAbility:ProcessMoveOnWeapon(input)
             // This is where you limit the number of entities that are alive
 			local team = player:GetTeam()
             local numAllowedSentries = LookupTechData(kTechId.Sentry, kTechDataMaxAmount, -1) 
-            local numAllowedArmories = LookupTechData(kTechId.Armory, kTechDataMaxAmount, -1) 
+            local numAllowedMiniArmories = LookupTechData(kTechId.MiniArmory, kTechDataMaxAmount, -1) 
             local numAllowedPhaseGates = LookupTechData(kTechId.PhaseGate, kTechDataMaxAmount, -1) 
             local numAllowedObservatories = LookupTechData(kTechId.Observatory, kTechDataMaxAmount, -1) 
 
@@ -500,8 +500,8 @@ function MarineStructureAbility:ProcessMoveOnWeapon(input)
                 self.numSentriesLeft = team:GetNumDroppedMarineStructures(player, kTechId.Hydra)           
             end
    
-            if numAllowedArmories >= 0 then     
-                self.numArmoriesLeft = team:GetNumDroppedMarineStructures(player, kTechId.Clog)           
+            if numAllowedMiniArmories >= 0 then     
+                self.numMiniArmoriesLeft = team:GetNumDroppedMarineStructures(player, kTechId.Clog)           
             end
             
             if numAllowedPhaseGates >= 0 then     

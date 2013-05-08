@@ -35,10 +35,11 @@ TeamColoursMixin.networkVars =
 {
 	factionsArmorColour = "vector",
 	factionsBadassColour  = "boolean",
+	teamColoursOwnerId = "entityid"
 }
 
 function TeamColoursMixin:__initmixin()
-	
+	self.teamColoursOwnerId = Entity.invalidId
 end
 
 function TeamColoursMixin:CopyPlayerDataFrom(player)
@@ -46,6 +47,13 @@ function TeamColoursMixin:CopyPlayerDataFrom(player)
 	self.factionsArmorColour = player.factionsArmorColour
 	self.factionsBadassColour = player.factionsBadassColour
 
+end
+
+function TeamColoursMixin:OnOwnerChanged(oldOwner, newOwner)
+    self.teamColoursOwnerId = Entity.invalidId
+    if newOwner ~= nil then
+        self.teamColoursOwnerId = newOwner:GetId()    
+    end    
 end
 
 
@@ -56,15 +64,22 @@ function TeamColoursMixin:OnUpdateRender()
 	// Use an emissive map set in a material.
 	local model = self:GetRenderModel()
 	if model then
-	
+
+		// Added 
+		if self.teamColoursOwnerId ~= Entity.invalidId then
+			entity = Shared.GetEntity(self.teamColoursOwnerId)
+		else
+			entity = self
+		end
+		
 		// Set the colours
 		local teamColours = nil
-		if self.factionsBadassColour then
+		if entity.factionsBadassColour then
 			teamColours = Color(math.random(), math.random(), math.random())
-		elseif self.factionsArmorColour ~= nil and (self.factionsArmorColour.x > 0 or self.factionsArmorColour.y > 0 or self.factionsArmorColour.z > 0) then
-			teamColours = Color(self.factionsArmorColour.x, self.factionsArmorColour.y, self.factionsArmorColour.z)
+		elseif entity.factionsArmorColour ~= nil and (entity.factionsArmorColour.x > 0 or entity.factionsArmorColour.y > 0 or entity.factionsArmorColour.z > 0) then
+			teamColours = Color(entity.factionsArmorColour.x, entity.factionsArmorColour.y, entity.factionsArmorColour.z)
 		else
-			if self:GetTeamNumber() == kTeam2Index then
+			if entity:GetTeamNumber() == kTeam2Index then
 				teamColours = kAlienTeamColorFloat
 			else
 				teamColours = kMarineTeamColorFloat
@@ -72,7 +87,7 @@ function TeamColoursMixin:OnUpdateRender()
 		end
 		
 		if not self.teamColourMaterial then
-			self.teamColourMaterial = AddMaterial(model, "materials/test.material")
+			self.teamColourMaterial = AddMaterial(model, "materials/team_colours.material")
 		end
 		
 		self.teamColourMaterial:SetParameter("colourR", teamColours.r)

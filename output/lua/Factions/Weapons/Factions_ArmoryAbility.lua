@@ -36,7 +36,7 @@ function ArmoryAbility:GetGhostModelName(ability)
 end
 
 function ArmoryAbility:GetDropStructureId()
-    return kTechId.Armory
+    return kTechId.MiniArmory
 end
 
 function ArmoryAbility:GetSuffixName()

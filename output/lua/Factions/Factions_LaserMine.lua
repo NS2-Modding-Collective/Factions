@@ -27,7 +27,6 @@ local networkVars =
     laserActive = "boolean",
 }
 
-
 local originalMineOnInitialized
 function LaserMine:OnInitialized()
 	

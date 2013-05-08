@@ -29,6 +29,7 @@ end
 addTechId("LightMachineGun")
 addTechId("LayLaserMines")
 addTechId("MarineStructureAbility")
+addTechId("MiniArmory")
 addTechId("Speed1")
 addTechId("Health1")
 addTechId("Resupply")

@@ -70,7 +70,7 @@ function MarineBuild_GetCanAffordAbility(techId)
     local abilityCost = LookupTechData(techId, kTechDataCostKey, 0)
     local exceededLimit = not MarineBuild_AllowConsumeDrop(techId) and MarineBuild_GetNumStructureBuilt(techId) >= MarineBuild_GetMaxNumStructure(techId)
 
-    return player:GetResources() >= abilityCost and not exceededLimit
+    return Shared.GetCheatsEnabled() or (player:GetResources() >= abilityCost and not exceededLimit)
 
 end
 
@@ -154,7 +154,7 @@ local function GetRowForTechId(techId)
     
         rowTable = {}
         rowTable[kTechId.Sentry] = 1
-        rowTable[kTechId.Armory] = 2
+        rowTable[kTechId.MiniArmory] = 2
 		rowTable[kTechId.PhaseGate] = 3
 		rowTable[kTechId.Observatory] = 4
     

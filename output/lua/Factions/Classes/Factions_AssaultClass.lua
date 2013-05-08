@@ -23,7 +23,8 @@ AssaultClass.baseRunSpeed 			= 9.0                												// the initial run
 AssaultClass.icon					= "ui/Factions/badges/badge_assault.dds"							// the badge for this class
 AssaultClass.picture				= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
 AssaultClass.initialUpgrades		= { }																// the upgrades that you start the game with
-AssaultClass.disallowedUpgrades		= { "SpeedUpgrade" }												// the upgrades that you are not allowed to buy
+AssaultClass.disallowedUpgrades		= { "SpeedUpgrade", 												// the upgrades that you are not allowed to buy
+										"BuilderUpgrade" }									
 
 function AssaultClass:Initialize()
 	self.type = AssaultClass.type

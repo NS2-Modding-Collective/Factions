@@ -217,6 +217,10 @@ function UpgradeMixin:GetUpgradeByName(upgradeName)
     return self.UpgradeList:GetUpgradeByName(upgradeName)
 end
 
+function UpgradeMixin:GetUpgradeByClassName(className)
+	return self.UpgradeList:GetUpgradeByClassName(className)
+end
+
 function UpgradeMixin:GetAvailableUpgradesByType(upgradeType)
     return self.UpgradeList:GetAvailableUpgradesByType(self:GetFactionsClass(), self:GetTeamNumber(), upgradeType)
 end
