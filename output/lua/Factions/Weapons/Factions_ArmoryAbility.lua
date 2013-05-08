@@ -15,6 +15,10 @@ function ArmoryAbility:GetIsPositionValid(position)
     return true
 end
 
+function ArmoryAbility:AllowBackfacing()
+    return false
+end
+
 function ArmoryAbility:GetDropRange()
     return kGorgeCreateDistance
 end

@@ -19,13 +19,17 @@
 // Factions_MarineStructureAbility.lua
 
 Script.Load("lua/Factions/Weapons/Factions_SentryAbility.lua")
+Script.Load("lua/Factions/Weapons/Factions_ArmoryAbility.lua")
+Script.Load("lua/Factions/Weapons/Factions_PhaseGateAbility.lua")
 
 class 'MarineStructureAbility' (Weapon)
 
 local kMaxStructures = {}
 kMaxStructures[kTechId.Sentry] = 2
 kMaxStructures[kTechId.Armory] = 1
-local kDropCooldown = 1
+kMaxStructures[kTechId.PhaseGate] = 2
+kMaxStructures[kTechId.Observatory] = 1
+local kDropCooldown = 3
 
 local kViewModelName = PrecacheAsset("models/marine/welder/welder_view.model")
 local kAnimationGraph = PrecacheAsset("models/marine/welder/welder_view.animation_graph")
@@ -34,12 +38,14 @@ MarineStructureAbility.kMapName = "marine_drop_structure_ability"
 
 local kCreateFailSound = PrecacheAsset("sound/NS2.fev/alien/gorge/create_fail")
 
-MarineStructureAbility.kSupportedStructures = { SentryAbility }
+MarineStructureAbility.kSupportedStructures = { SentryAbility, ArmoryAbility, PhaseGateAbility }
 
 local networkVars =
 {
     numSentriesLeft = string.format("private integer (0 to %d)", kMaxStructures[kTechId.Sentry]),
     numArmoriesLeft = string.format("private integer (0 to %d)", kMaxStructures[kTechId.Armory]),
+	numPhaseGatesLeft = string.format("private integer (0 to %d)", kMaxStructures[kTechId.PhaseGate]),
+	numObservatoriesLeft = string.format("private integer (0 to %d)", kMaxStructures[kTechId.Observatory]),
 }
 
 function MarineStructureAbility:GetAnimationGraphName()
@@ -71,6 +77,8 @@ function MarineStructureAbility:OnCreate()
     // for GUI
     self.numSentriesLeft = 0
     self.numArmoriesLeft = 0
+	self.numPhaseGatesLeft = 0
+    self.numObservatoriesLeft = 0
     self.lastClickedPosition = nil
     
 end
@@ -127,11 +135,19 @@ function MarineStructureAbility:GetNumStructuresBuilt(techId)
     if techId == kTechId.Sentry then
         return self.numSentriesLeft
     end
-
-    if techId == kTechId.Armory then
+	
+	if techId == kTechId.Armory then
         return self.numArmoriesLeft
     end
-        
+	
+	if techId == kTechId.PhaseGate then
+        return self.numPhaseGatesLeft
+    end
+
+    if techId == kTechId.Observatory then
+        return self.numObservatoriesLeft
+    end
+
     // unlimited
     return -1
 end
@@ -258,6 +274,10 @@ local function DropStructure(self, player, origin, direction, structureAbility, 
         
         local maxStructures = -1
         
+        if not LookupTechData(techId, kTechDataAllowConsumeDrop, false) then
+            maxStructures = LookupTechData(techId, kTechDataMaxAmount, 0) 
+        end
+        
         valid = valid and self:GetNumStructuresBuilt(techId) ~= maxStructures // -1 is unlimited
         
         local cost = LookupTechData(structureAbility:GetDropStructureId(), kTechDataCostKey, 0)
@@ -270,6 +290,7 @@ local function DropStructure(self, player, origin, direction, structureAbility, 
             if structure then
             
                 structure:SetOwner(player)
+				player:GetTeam():AddMarineStructure(player, structure)
                 
                 // Check for space
                 if structure:SpaceClearForEntity(coords.origin) then
@@ -401,7 +422,7 @@ function MarineStructureAbility:GetPositionForStructure(startPosition, direction
         
     end
     
-    if trace.normal:DotProduct(GetNormalizedVector(startPosition - trace.endPoint)) < 0 then
+    if not structureAbility.AllowBackfacing() and trace.normal:DotProduct(GetNormalizedVector(startPosition - trace.endPoint)) < 0 then
         validPosition = false
     end    
     
@@ -468,8 +489,28 @@ function MarineStructureAbility:ProcessMoveOnWeapon(input)
     
         if Server then
 
-            local team = player:GetTeam()
             // This is where you limit the number of entities that are alive
+			local team = player:GetTeam()
+            local numAllowedSentries = LookupTechData(kTechId.Sentry, kTechDataMaxAmount, -1) 
+            local numAllowedArmories = LookupTechData(kTechId.Armory, kTechDataMaxAmount, -1) 
+            local numAllowedPhaseGates = LookupTechData(kTechId.PhaseGate, kTechDataMaxAmount, -1) 
+            local numAllowedObservatories = LookupTechData(kTechId.Observatory, kTechDataMaxAmount, -1) 
+
+            if numAllowedSentries >= 0 then     
+                self.numSentriesLeft = team:GetNumDroppedMarineStructures(player, kTechId.Hydra)           
+            end
+   
+            if numAllowedArmories >= 0 then     
+                self.numArmoriesLeft = team:GetNumDroppedMarineStructures(player, kTechId.Clog)           
+            end
+            
+            if numAllowedPhaseGates >= 0 then     
+                self.numPhaseGatesLeft = team:GetNumDroppedMarineStructures(player, kTechId.GorgeTunnel)           
+            end
+            
+            if numAllowedObservatories >= 0 then     
+                self.numObservatoriesLeft = team:GetNumDroppedMarineStructures(player, kTechId.Web)           
+            end
             
         end
         

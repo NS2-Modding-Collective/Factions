@@ -15,6 +15,10 @@ function SentryAbility:GetIsPositionValid(position)
     return true
 end
 
+function SentryAbility:AllowBackfacing()
+    return false
+end
+
 function SentryAbility:GetDropRange()
     return kGorgeCreateDistance
 end
