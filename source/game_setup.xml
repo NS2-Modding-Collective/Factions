@@ -1,9 +1,4 @@
 <game>
-	<name>Factions</name>
-	<description>Factions</description>
-	<client>lua/Client_Modded.lua</client>
-	<server>lua/Server_Modded.lua</server>
-	<predict>lua/Predict_Modded.lua</predict>
-	<loading>lua/Loading.lua</loading>
-    <soundinfo>sound/NS2.soundinfo</soundinfo>
+	<name>xenocombat</name>
+	<description>Xenoswarm/Combat 2.0</description>
 </game>

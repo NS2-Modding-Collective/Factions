@@ -31,6 +31,17 @@ function WelderUpgrade:Initialize()
 	
 end
 
+// Give the weapon to the player when they buy the upgrade.
+// Welders are special - do not destroy what's already in the slot because of logic in Marine:GiveItem
+function WelderUpgrade:OnAdd(player)
+
+	local mapName = LookupTechData(self:GetUpgradeTechId(), kTechDataMapName)
+	if mapName then
+		player:GiveItem(mapName)
+	end          
+
+end
+
 function WelderUpgrade:GetClassName()
 	return "WelderUpgrade"
 end

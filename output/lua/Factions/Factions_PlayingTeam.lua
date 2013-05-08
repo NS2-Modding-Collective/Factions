@@ -165,7 +165,7 @@ if Server then
 
 		// Don't bother trying to spawn the player if they are a human and still yet to choose a class.
 		if GetGamerulesInfo():GetIsClassBased() and not Server.GetOwner(player):GetIsVirtual() and player.GetHasFactionsClass and not player:GetHasFactionsClass() then
-			player:SendDirectMessage("Please choose a class using e.g. 'assault', 'support' or 'scout' in console...")
+			player:SendDirectMessage("Please choose a class using e.g. 'assault', 'support' in console...")
 			return false
 		end
 		

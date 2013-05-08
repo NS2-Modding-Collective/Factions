@@ -11,20 +11,6 @@
 
 Script.Load("lua/Factions/Hud/Factions_GUIExperienceBar.lua")
 
-// New Xp bars
-local overrideOnInitLocalClient = Marine.OnInitLocalClient
-function Marine:OnInitLocalClient()
-
-	overrideOnInitLocalClient(self)
-
-    /*if self:GetTeamNumber() ~= kTeamReadyRoom then
-        if self.marineXpBar == nil then
-            self.marineXpBar = GetGUIManager():CreateGUIScript("Factions/Hud/Factions_GUIExperienceBar")
-        end
-    end*/
-	
-end
-
 local overrideOnUpdateRender = Marine.OnUpdateRender
 function Marine:OnUpdateRender()
 
@@ -37,15 +23,64 @@ function Marine:OnUpdateRender()
 	
 end
 
-local overrideOnKillClient = Marine.OnKillClient
-function Marine:OnKillClient()
+function Marine:OverrideInput(input)
 
-	overrideOnKillClient(self)
+	// Always let the MarineStructureAbility override input, since it handles client-side-only build menu
 
-    /*if self.marineXpBar then        
-        GetGUIManager():DestroyGUIScript(self.marineXpBar)
-        self.marineXpBar = nil            
-    end*/
+	local buildAbility = self:GetWeapon(MarineStructureAbility.kMapName)
+
+	if buildAbility then
+		input = buildAbility:OverrideInput(input)
+	end
 	
+	return Player.OverrideInput(self, input)
+        
+end
+
+function Marine:GetShowGhostModel()
+    
+	local weapon = self:GetActiveWeapon()
+	if weapon and weapon:isa("MarineStructureAbility") then
+		return weapon:GetShowGhostModel()
+	end
+	
+	return false
+	
+end    
+
+function Marine:GetGhostModelTechId()
+
+	local weapon = self:GetActiveWeapon()
+	if weapon and weapon:isa("MarineStructureAbility") then
+		return weapon:GetGhostModelTechId()
+	end
+	
+end
+
+function Marine:GetGhostModelCoords()
+
+	local weapon = self:GetActiveWeapon()
+	if weapon and weapon:isa("MarineStructureAbility") then
+		return weapon:GetGhostModelCoords()
+	end
+
+end
+
+function Marine:GetLastClickedPosition()
+
+	local weapon = self:GetActiveWeapon()
+	if weapon and weapon:isa("MarineStructureAbility") then
+		return weapon.lastClickedPosition
+	end
+	
+end
+
+function Marine:GetIsPlacementValid()
+
+	local weapon = self:GetActiveWeapon()
+	if weapon and weapon:isa("MarineStructureAbility") then
+		return weapon:GetIsPlacementValid()
+	end
+
 end
 

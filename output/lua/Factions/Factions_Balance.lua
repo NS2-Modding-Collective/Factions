@@ -93,7 +93,11 @@ kSentryAttackRandROF = 0.0
 kSentryAttackBulletsPerSalvo = 1
 kConfusedSentryBaseROF = 2.0
 
+// Building
+kNumSentriesPerPlayer = 2
 kSentryDamage = 5
+kNumPhasegatesPerPlayer = 2
+kNumArmoriesPerPlayer = 1
 
 kWeapons1DamageScalar = 1.1
 kWeapons2DamageScalar = 1.2

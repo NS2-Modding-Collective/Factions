@@ -225,7 +225,7 @@ function MarineStructureAbility:PerformPrimaryAttack(player)
             local cost = GetCostForTech(self:GetActiveStructure().GetDropStructureId())
             if player:GetResources() >= cost and not self:GetHasDropCooldown() then
 
-                local message = BuildGorgeDropStructureMessage(player:GetEyePos(), player:GetViewCoords().zAxis, self.activeStructure, self.lastClickedPosition)
+                local message = BuildMarineDropStructureMessage(player:GetEyePos(), player:GetViewCoords().zAxis, self.activeStructure, self.lastClickedPosition)
                 Client.SendNetworkMessage("MarineBuildStructure", message, true)
                 self.timeLastDrop = Shared.GetTime()
                 success = true
@@ -288,7 +288,7 @@ local function DropStructure(self, player, origin, direction, structureAbility, 
                         self.lastCreatedId = structure:GetId()
                     end
                     
-                    self:TriggerEffects("spit_structure", {effecthostcoords = Coords.GetLookIn(origin, direction)} )
+                    self:TriggerEffects("spawn", {effecthostcoords = Coords.GetLookIn(origin, direction)} )
                     
                     if structureAbility.OnStructureCreated then
                         structureAbility:OnStructureCreated(structure, lastClickedPosition)
@@ -383,10 +383,7 @@ function MarineStructureAbility:GetPositionForStructure(startPosition, direction
     
         if trace.entity == nil then
             validPosition = true
-            
-        elseif trace.entity:isa("Infestation") or trace.entity:isa("Clog") then
-            validPosition = true
-        end
+		end
         
         displayOrigin = trace.endPoint
         
@@ -454,8 +451,6 @@ end
 function MarineStructureAbility:OnUpdateAnimationInput(modelMixin)
 
     PROFILE("MarineStructureAbility:OnUpdateAnimationInput")
-
-    modelMixin:SetAnimationInput("ability", "chamber")
     
     local activityString = "none"
     if self.dropping then
@@ -579,7 +574,7 @@ if Client then
         end
  
         if self.buildMenu then
-            self.buildMenu:SetIsVisible(player and localPlayer == player and player:isa("Gorge") and self.menuActive)
+            self.buildMenu:SetIsVisible(player and localPlayer == player and player:isa("Marine") and self.menuActive)
         end
     
     end
