@@ -214,6 +214,10 @@ function Factions_GUIExperienceBar:CalculateExperienceData()
 	local player = Client.GetLocalPlayer()
 	self.experienceData.isVisible = player:GetIsAlive()
 	self.experienceData.targetExperience = player:GetScore()
+	// Handle the case when the round changes and we are set back to 0 experience.
+	if self.currentExperience > self.experienceData.targetExperience then
+		self.currentExperience = 0
+	end
 	self.experienceData.experienceToNextLevel = player:XPUntilNextLevel()
 	self.experienceData.nextLevelExperience = player:GetNextLevelXP()
 	self.experienceData.thisLevel = player:GetLvl()
@@ -246,10 +250,16 @@ function Factions_GUIExperienceBar:UpdateExperienceBar(deltaTime)
 		end
 	end
 	
+	// Handle extreme values here.
 	if (self.experienceData.targetExperience >= kMaxXp) then
 		currentBarWidth = Factions_GUIExperienceBar.kExperienceBarWidth
 		targetBarWidth = Factions_GUIExperienceBar.kExperienceBarWidth
 		calculatedBarWidth = Factions_GUIExperienceBar.kExperienceBarWidth
+		self.rankIncreased = false
+	elseif (self.experienceData.targetExperience == 0) then
+		currentBarWidth = 0
+		targetBarWidth = 0
+		calculatedBarWidth = 0
 		self.rankIncreased = false
 	end
 	
@@ -300,11 +310,6 @@ function Factions_GUIExperienceBar:UpdateText(deltaTime)
 	   
 	// Tween the experience text too!
 	self.currentExperience = Slerp(self.currentExperience, self.experienceData.targetExperience, deltaTime*updateRate)
-	
-	// Handle the case when the round changes and we are set back to 0 experience.
-	if self.currentExperience > self.experienceData.targetExperience then
-		self.currentExperience = 0
-	end
 	
 	if (self.experienceData.targetExperience >= kMaxXp) then
 		self.experienceText:SetText("Level " .. self.experienceData.thisLevel .. " / " .. kMaxLvl .. ": " .. tostring(math.ceil(self.currentExperience)) .. " (" .. self.experienceData.thisLevelName .. ")")
