@@ -63,3 +63,8 @@ ExtraEntitiesMod
 /output/lua/entry/extraentities.entry
 /output/materials/test.material
 /output/maps/minegate.level
+
+/output/maps/ns2_xs_descent.level
+/output/maps/overviews/ns2_xs_descent.hmp
+/output/maps/overviews/ns2_xs_descent.tga
+/output/maps/skyboxes/descent.cinematic
