@@ -37,3 +37,7 @@ end
 function DropAmmoUpgrade:GetClassName()
 	return "DropAmmoUpgrade"
 end
+
+function DropAmmoUpgrade:SendAddMessage(player)
+	player:SendDirectMessage("Dropped " .. self.count .. " Ammo Packs!")
+end

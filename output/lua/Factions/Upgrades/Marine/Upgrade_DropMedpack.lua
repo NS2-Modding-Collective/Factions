@@ -22,18 +22,22 @@ function DropMedpackUpgrade:Initialize()
 
 	FactionsWeaponUpgrade.Initialize(self)
 	
-	self.upgradeType = DropAmmoUpgrade.upgradeType
-	self.cost = DropAmmoUpgrade.cost
-	self.upgradeName = DropAmmoUpgrade.upgradeName
-	self.upgradeTitle = DropAmmoUpgrade.upgradeTitle
-	self.upgradeDesc = DropAmmoUpgrade.upgradeDesc
-	self.upgradeTechId = DropAmmoUpgrade.upgradeTechId
-	self.hudSlot = DropAmmoUpgrade.hudSlot
-	self.count = DropAmmoUpgrade.count
-	self.teamType = DropAmmoUpgrade.teamType
+	self.upgradeType = DropMedpackUpgrade.upgradeType
+	self.cost = DropMedpackUpgrade.cost
+	self.upgradeName = DropMedpackUpgrade.upgradeName
+	self.upgradeTitle = DropMedpackUpgrade.upgradeTitle
+	self.upgradeDesc = DropMedpackUpgrade.upgradeDesc
+	self.upgradeTechId = DropMedpackUpgrade.upgradeTechId
+	self.hudSlot = DropMedpackUpgrade.hudSlot
+	self.count = DropMedpackUpgrade.count
+	self.teamType = DropMedpackUpgrade.teamType
 	
 end
 
 function DropMedpackUpgrade:GetClassName()
 	return "DropMedpackUpgrade"
+end
+
+function DropMedpackUpgrade:SendAddMessage(player)
+	player:SendDirectMessage("Dropped " .. self.count .. " Medpacks!")
 end

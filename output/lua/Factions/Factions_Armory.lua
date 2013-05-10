@@ -26,6 +26,8 @@ function Armory:OnInitialized()
 		assert(HasMixin(self, "TeamColours"))
 	end
 	
+	self.isGhostStructure = false
+	
 end
 
 function Armory:GetRequiresPower()

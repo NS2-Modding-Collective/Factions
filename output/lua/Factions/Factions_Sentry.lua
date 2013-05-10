@@ -25,6 +25,9 @@ function Sentry:OnCreate()
 		InitMixin(self, TeamColoursMixin)
 		assert(HasMixin(self, "TeamColours"))
 	end
+	
+	self.isGhostStructure = false
+	
 end
 
 if Server then

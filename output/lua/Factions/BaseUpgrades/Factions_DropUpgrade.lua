@@ -57,8 +57,3 @@ function FactionsDropUpgrade:OnAdd(player)
 	end
 
 end
-
-function FactionsDropUpgrade:SendAddMessage(player)
-	local upgradeTitle = Locale.ResolveString(LookupTechData(self:GetUpgradeTechId(), kTechDataDisplayName))
-	player:SendDirectMessage("Dropped " .. upgradeTitle .. "!")
-end
