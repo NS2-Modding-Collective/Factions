@@ -34,7 +34,7 @@ if Server then
 		if self.lightsStartOff == nil then self.lightsStartOff = false end
 		if self.powerPointsTakeDamage == nil then self.powerPointsTakeDamage = false end
 		
-		local gameInfo = Server.CreateEntity(FactionsGamerulesInfo.kMapName)
+		local gameInfo = GetGamerulesInfo()
 		gameInfo:SetIsMarinevsMarine(self.isMarinevsMarine)
 		gameInfo:SetIsCompetitive(self.isCompetitive)
 		gameInfo:SetIsCombatRules(self.isCombatRules)

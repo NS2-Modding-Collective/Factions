@@ -22,9 +22,19 @@ function NS2Gamerules:OnCreate()
 		Server.CreateEntity(GamerulesPicker.kMapName)
 	end
 	
+	// Create the gamerules info straight away.
+	local gamerulesInfo = Server.CreateEntity(FactionsGamerulesInfo.kMapName)
+	
 	local gamerulesPicker = GetGamerulesPicker()
 	// Work out what entity we need to use as the gamerules.
-	Server.CreateEntity(gamerulesPicker:GetGamerulesMapName())
+	local newGamerules = Server.CreateEntity(gamerulesPicker:GetGamerulesMapName())
+	
+	// Switch the lights off if the gamerulespicker has defined this.
+	if newGamerules:isa("GenericGamerules") then
+		if gamerulesPicker:GetPowerNodesStartDestroyed() then
+			gamerulesInfo:SetLightsStartOff(true)
+		end
+	end
 	
 	// Commit harikari.
 	DestroyEntity(self)

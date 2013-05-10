@@ -24,7 +24,8 @@ AssaultClass.icon					= "ui/Factions/badges/badge_assault.dds"							// the badg
 AssaultClass.picture				= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
 AssaultClass.initialUpgrades		= { }																// the upgrades that you start the game with
 AssaultClass.disallowedUpgrades		= { "SpeedUpgrade", 												// the upgrades that you are not allowed to buy
-										"BuilderUpgrade" }									
+										"BuilderUpgrade",
+										"DropMedpackUpgrade", }									
 
 function AssaultClass:Initialize()
 	self.type = AssaultClass.type

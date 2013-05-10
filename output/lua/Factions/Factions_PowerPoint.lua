@@ -20,86 +20,91 @@ PowerPoint.kAutoRepairTime = 30
 local networkVars = {
 }
 
-if Server then
+// Do this on a delay so GetIsBuilt is ready.
+local function SwitchOffNodes(self)
 
-	// Do this on a delay so GetIsBuilt is ready.
-	local function SwitchOffNodes(self)
-
-		// Start socketed but unbuilt
-		// TODO: allow the mapper to define the default power mode!
-		if not self:GetIsBuilt() then
-			self:FactionsPowerUp()
-			self:OnKill()
-		end
-		
-		return false
-
+	// Start socketed but unbuilt
+	// TODO: allow the mapper to define the default power mode!
+	if self:GetIsBuilt() then
+		self:SetHealth(0)
+		self:SetInternalPowerState(PowerPoint.kPowerState.destroyed)
+        self:SetLightMode(kLightMode.NoPower)
+		self.timeOfDestruction = 0
 	end
+	
+	return false
 
-	function PowerPoint:FactionsPowerUp()
+end
 
-		self:SetModel(kSocketedModelName, kSocketedAnimationGraph)
-		self:SetInternalPowerState(PowerPoint.kPowerState.socketed)
-		self:SetConstructionComplete()
-		self:SetLightMode(kLightMode.Normal)
-		self:StopSound(kAuxPowerBackupSound)
-		self:TriggerEffects("fixed_power_up")
-		self:SetPoweringState(true)
-		
-	end
+function PowerPoint:FactionsPowerUp()
 
-	local function AutoMagicRepair(self)
-		self.health = kPowerPointHealth
-		self.armor = kPowerPointArmor
-		
-		self.maxHealth = kPowerPointHealth
-		self.maxArmor = kPowerPointArmor
-		
-		self.alive = true
-		
-		self:FactionsPowerUp()
-		return false
-	end
+	self:SetModel(kSocketedModelName, kSocketedAnimationGraph)
+	self:SetInternalPowerState(PowerPoint.kPowerState.socketed)
+	self:SetConstructionComplete()
+	self:SetLightMode(kLightMode.Normal)
+	self:StopSound(kAuxPowerBackupSound)
+	self:TriggerEffects("fixed_power_up")
+	self:SetPoweringState(true)
+	
+end
 
-	function PowerPoint:FactionsSetUpPowerNodes()
+local function AutoMagicRepair(self)
+	self.health = kPowerPointHealth
+	self.armor = kPowerPointArmor
+	
+	self.maxHealth = kPowerPointHealth
+	self.maxArmor = kPowerPointArmor
+	
+	self.alive = true
+	
+	self:FactionsPowerUp()
+	return false
+end
 
+function PowerPoint:FactionsSetUpPowerNodes()
+
+	if Server then
 		if GetGamerulesInfo():GetLightsStartOff() then
-			self:AddTimedCallback(SwitchOffNodes, 0.2)
-		elseif GetGamerulesInfo():GetIsCombatRules() then
+			self:AddTimedCallback(SwitchOffNodes, 0.3)
+		end
+		
+		if GetGamerulesInfo():GetIsCombatRules() then
 			self:FactionsPowerUp()
 		end
-
 	end
 
+end
+
+// Team Colours
+local overrideOnInitialized = PowerPoint.OnInitialized
+function PowerPoint:OnInitialized()
+
+	overrideOnInitialized(self)
+	
+	self:FactionsSetUpPowerNodes()
+	
 	// Team Colours
-	local overrideOnInitialized = PowerPoint.OnInitialized
-	function PowerPoint:OnInitialized()
-
-		overrideOnInitialized(self)
-		
-		self:FactionsSetUpPowerNodes()
-		
-		// Team Colours
-		if GetGamerulesInfo():GetUsesMarineColours() then
-			InitMixin(self, TeamColoursMixin)
-			assert(HasMixin(self, "TeamColours"))
-		end
-
+	if GetGamerulesInfo():GetUsesMarineColours() then
+		InitMixin(self, TeamColoursMixin)
+		assert(HasMixin(self, "TeamColours"))
 	end
 
-	local overrideReset = PowerPoint.Reset
-	function PowerPoint:Reset()
-		
-		overrideReset(self)
-		
-		self:FactionsSetUpPowerNodes()
-		
-	end
+end
 
-	function PowerPoint:PowerPointGetCanTakeDamageOverride(self)
-		return GetGamerulesInfo():GetPowerPointsTakeDamage()
-	end
+local overrideReset = PowerPoint.Reset
+function PowerPoint:Reset()
+	
+	overrideReset(self)
+	
+	self:FactionsSetUpPowerNodes()
+	
+end
 
+function PowerPoint:PowerPointGetCanTakeDamageOverride(self)
+	return GetGamerulesInfo():GetPowerPointsTakeDamage()
+end
+
+if Server then
 	local overrideOnKill = PowerPoint.OnKill
 	// Add an auto-repair timer if needed.
 	function PowerPoint:OnKill(attacker, doer, point, direction)

@@ -17,12 +17,14 @@ kFactionsUpgrade = {}
 Script.Load("lua/Factions/Factions_Utility.lua")
 
 // Load the upgrade base classes
-Script.Load("lua/Factions/Factions_Upgrade.lua")
-Script.Load("lua/Factions/Factions_AlienClassUpgrade.lua")
-Script.Load("lua/Factions/Factions_AlienUpgrade.lua")
-Script.Load("lua/Factions/Factions_UnlockUpgrade.lua")
-Script.Load("lua/Factions/Factions_WeaponUpgrade.lua")
-Script.Load("lua/Factions/Factions_TimedUpgrade.lua")
+Script.Load("lua/Factions/BaseUpgrades/Factions_Upgrade.lua")
+Script.Load("lua/Factions/BaseUpgrades/Factions_AlienClassUpgrade.lua")
+Script.Load("lua/Factions/BaseUpgrades/Factions_AlienUpgrade.lua")
+Script.Load("lua/Factions/BaseUpgrades/Factions_UnlockUpgrade.lua")
+Script.Load("lua/Factions/BaseUpgrades/Factions_WeaponUpgrade.lua")
+Script.Load("lua/Factions/BaseUpgrades/Factions_TimedUpgrade.lua")
+Script.Load("lua/Factions/BaseUpgrades/Factions_DropUpgrade.lua")
+Script.Load("lua/Factions/BaseUpgrades/Factions_LevelTiedUpgrade.lua")
 
 // Used to merge all values from one table into another.
 local function RegisterNewUpgrades(newValuesTable)
@@ -66,6 +68,8 @@ local function BuildAllUpgrades()
 		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsWeaponUpgrade"))
 		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsUnlockUpgrade"))
 		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsTimedUpgrade"))
+		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsDropUpgrade"))
+		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsLevelTiedUpgrade"))
     end
     
 end

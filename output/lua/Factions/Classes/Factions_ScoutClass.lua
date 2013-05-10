@@ -25,7 +25,9 @@ ScoutClass.picture					= "ui/Factions/badges/badge_assault.dds"							// the big
 ScoutClass.initialUpgrades			= { }																// the upgrades that you start the game with
 ScoutClass.disallowedUpgrades		= { "BuilderUpgrade", 												// the upgrades that you are not allowed to buy
 										"UnlockGrenadeLauncherUpgrade", 
-										"UnlockFlamethrowerUpgrade" }									
+										"UnlockFlamethrowerUpgrade",
+										"DropAmmoUpgrade",
+										"DropMedpackUpgrade", }										
 
 
 function ScoutClass:Initialize()

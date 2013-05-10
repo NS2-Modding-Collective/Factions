@@ -39,7 +39,7 @@ kLightMachineGunClipSize = 50
 kLightMachineGunDamageType = kDamageType.Light
 kLightMachineGunCost = 10
 
-kPistolDamage = 40
+kPistolDamage = 30
 kPistolDamageType = kDamageType.Normal
 SetCachedTechData(kTechId.Pistol, kTechDataDamageType, kPistolDamageType)
 kPistolClipSize = 8
@@ -53,7 +53,7 @@ kAxeDamage = 50
 kAxeDamageType = kDamageType.Structural
 SetCachedTechData(kTechId.Axe, kTechDataDamageType, kAxeDamageType)
 
-kGrenadeLauncherGrenadeDamage = 150
+kGrenadeLauncherGrenadeDamage = 100
 kGrenadeLauncherClipSize = 4
 kGrenadeLauncherGrenadeDamageRadius = 8
 kGrenadeLifetime = 2.0

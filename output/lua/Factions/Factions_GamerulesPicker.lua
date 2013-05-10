@@ -35,6 +35,10 @@ if Server then
 		end
 	end
 	
+	function GamerulesPicker:GetPowerNodesStartDestroyed()
+		return self.powerNodesStartDestroyed
+	end
+	
 	function GamerulesPicker:GetGamerulesMapName()
 		if self.gameType == nil then
 			return CombatDeathmatchGamerules.kMapName

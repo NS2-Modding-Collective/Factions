@@ -35,7 +35,7 @@ if Server then
 		self.isFactionsMovement = true
 		self.usesMarineColours = true
 		self.usesAlienColours = false
-		self.lightsStartOff = true
+		self.lightsStartOff = false
 		self.powerPointsTakeDamage = false
 		self.factionsGameType = kFactionsGameType.Xenoswarm
 	
