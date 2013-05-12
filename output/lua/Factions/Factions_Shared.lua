@@ -66,6 +66,8 @@ Script.Load("lua/Factions/Factions_CombatDeathmatchGamerules.lua")
 Script.Load("lua/Factions/Factions_XenoswarmGamerules.lua")
 Script.Load("lua/Factions/Factions_XpMixin.lua")
 Script.Load("lua/Factions/Weapons/Factions_LightMachineGun.lua")
+Script.Load("lua/Factions/Factions_AttachModel.lua")
+Script.Load("lua/Factions/Factions_MarineChops.lua")
 
 // TechData
 Script.Load("lua/Factions/Factions_TechData.lua")

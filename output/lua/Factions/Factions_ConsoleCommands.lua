@@ -223,6 +223,14 @@ if Server then
 		SwitchClass(client, "Support")
 	end
 	
+    function OnCommandMarineChops(client)
+        Print("chops")
+        local player = client:GetControllingPlayer()
+        if Shared.GetCheatsEnabled() then
+            player:Replace(MarineChops.kMapName, player:GetTeamNumber(), false)
+        end
+	end
+	
 	Event.Hook("Console_badass", OnCommandBadass)
 	Event.Hook("Console_setcolour", OnCommandSetColour)
 
@@ -237,4 +245,5 @@ if Server then
 	Event.Hook("Console_forceclass", OnCommandForceClass) 
 	Event.Hook("Console_forcegivexp", OnCommandGiveXp) 
 	Event.Hook("Console_forcebuy", OnCommandForceBuy) 
+	Event.Hook("Console_marine_chops", OnCommandMarineChops) 
 end
