@@ -66,28 +66,13 @@ function MarineChops:OnInitialized()
         // cyst head
         self:AddAttachedModel(Cyst.kModelName , "Head", Vector(0.5,0,0) , Vector(0.4,0.4,0.4), Angles(0,0,-90))
         
-    end
-end
-
-
-if Server then
-
-    function MarineChops:AddAttachedModel(model, attachPoint, offset, scale, rotation)
-
-        local extraValues = {   
-                                model = model,                       
-                                offset = offset or Vector(0,0,0),         
-                                scale = scale or Vector(0,0,0),   
-                                rotation = rotation or Angles(0,0,0),
-                            }
+        // flamethrower on back
+        self:AddAttachedModel(Flamethrower.kModelName , "Spine3", Vector(0,-0.2,-0.18) , nil, Angles( math.pi / 2, math.pi,180))   
+               
         
-        local attachedModel = CreateEntity(AttachModel.kMapName, self:GetAttachPointOrigin(attachPoint), self:GetTeamNumber(), extraValues)  
-        attachedModel:SetParent(self)
-        attachedModel:SetAttachPoint(attachPoint)
-       
     end
-
 end
+
 
 function MarineChops:MakeSpecialEdition()
 end
