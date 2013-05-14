@@ -65,13 +65,15 @@ kXpList[3] = { Level=3, 		XP=250, 	MarineName="Corporal", 				XpMultiplier=1.2}
 kXpList[4] = { Level=4, 		XP=500, 	MarineName="Sergeant", 				XpMultiplier=1.3}
 kXpList[5] = { Level=5, 		XP=800, 	MarineName="Lieutenant", 			XpMultiplier=1.4}
 kXpList[6] = { Level=6, 		XP=1100, 	MarineName="Captain", 				XpMultiplier=1.5}
-kXpList[7] = { Level=7, 		XP=1450, 	MarineName="Commander", 			XpMultiplier=1.6}
-kXpList[8] = { Level=8, 		XP=1900, 	MarineName="Major", 				XpMultiplier=1.7}
-kXpList[9] = { Level=9, 		XP=2300, 	MarineName="Field Marshal", 		XpMultiplier=1.8}
-kXpList[10] = { Level=10, 	XP=2800, 	MarineName="General", 				XpMultiplier=1.9}
-kXpList[11] = { Level=11, 	XP=3500, 	MarineName="President", 			XpMultiplier=2.0}
-kXpList[12] = { Level=12, 	XP=4500, 	MarineName="Badass", 				XpMultiplier=2.1}
-kXpList[13] = { Level=13, 	XP=8000, 	MarineName="Rambo", 				XpMultiplier=2.2}
+kXpList[7] = { Level=7, 		XP=1450, 	MarineName="Veteran", 				XpMultiplier=1.6}
+kXpList[8] = { Level=8, 		XP=1900, 	MarineName="Commander", 			XpMultiplier=1.7}
+kXpList[9] = { Level=9, 		XP=2300, 	MarineName="Major", 				XpMultiplier=1.8}
+kXpList[10] = { Level=10, 		XP=2800, 	MarineName="Field Marshal", 		XpMultiplier=1.9}
+kXpList[11] = { Level=11, 		XP=3500, 	MarineName="General", 				XpMultiplier=2.0}
+kXpList[12] = { Level=12, 		XP=4000, 	MarineName="President", 			XpMultiplier=2.1}
+kXpList[13] = { Level=13, 		XP=4500, 	MarineName="Badass", 				XpMultiplier=2.2}
+kXpList[14] = { Level=14, 		XP=5000, 	MarineName="Rambo", 				XpMultiplier=2.3}
+kXpList[15] = { Level=15, 		XP=5500, 	MarineName="Ninja", 				XpMultiplier=2.4}
 kMaxLvl = table.maxn(kXpList)
 kMaxXp = kXpList[kMaxLvl]["XP"]
 
@@ -175,6 +177,7 @@ end
 
 // gives res back when rejoining
 function XpMixin:Reset()
+	self:ApplyLevelTiedUpgrades()
 end
 
 function XpMixin:CheckLvlUp()    
@@ -186,12 +189,12 @@ function XpMixin:CheckLvlUp()
         // Trigger sound on level up
         //StartSoundEffectAtOrigin(CombatEffects.kMarineLvlUpSound, self:GetOrigin())        
         local LvlName = self:GetLvlName(self:GetLvl())
-        //self:SendDirectMessage( "!! Level UP !! New Lvl: " .. LvlName .. " (" .. self:GetLvl() .. ")")
         
         // Trigger an effect
         //self:TriggerEffects("combat_level_up") 
-        // For Debugging:
-        self:SendDirectMessage( "!! Level UP !! New Lvl: " .. LvlName .. " (" .. self:GetLvl() .. ")")      
+		
+		// Apply any new level tied upgrades.
+		self:ApplyLevelTiedUpgrades()
     end   
 end  
 

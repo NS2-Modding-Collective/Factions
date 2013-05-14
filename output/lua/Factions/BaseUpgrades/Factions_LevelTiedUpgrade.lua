@@ -7,21 +7,21 @@
 //  Licensed under LGPL v3.0
 //________________________________
 
-// Factions_FactionsLevelTiedUpgrade.lua
+// Factions_LevelTiedUpgrade.lua
 
 // Base class for all weapons and their upgrades
 
 Script.Load("lua/Factions/BaseUpgrades/Factions_Upgrade.lua")
 							
-class 'FactionsLevelTiedUpgrade' (FactionsUpgrade)
+class 'LevelTiedUpgrade' (FactionsUpgrade)
 
-FactionsLevelTiedUpgrade.baseCost		= 0										// the 
-FactionsLevelTiedUpgrade.upgradeType 	= kFactionsUpgradeTypes.LevelTied      	// the type of the upgrade
-FactionsLevelTiedUpgrade.triggerType 	= kFactionsTriggerTypes.NoTrigger   	// how the upgrade is gonna be triggered
-FactionsLevelTiedUpgrade.permanent		= true									// Controls whether you get the upgrade back when you respawn
-FactionsLevelTiedUpgrade.teamType		= kFactionsUpgradeTeamType.AnyTeam		// Team Type
+LevelTiedUpgrade.baseCost		= 0										// the 
+LevelTiedUpgrade.upgradeType 	= kFactionsUpgradeTypes.LevelTied      	// the type of the upgrade
+LevelTiedUpgrade.triggerType 	= kFactionsTriggerTypes.NoTrigger   	// how the upgrade is gonna be triggered
+LevelTiedUpgrade.permanent		= true									// Controls whether you get the upgrade back when you respawn
+LevelTiedUpgrade.teamType		= kFactionsUpgradeTeamType.AnyTeam		// Team Type
 
-function FactionsLevelTiedUpgrade:Initialize()
+function LevelTiedUpgrade:Initialize()
 
 	FactionsUpgrade.Initialize(self)
 
@@ -29,19 +29,19 @@ function FactionsLevelTiedUpgrade:Initialize()
 	self.hideUpgrade = true
 	self.cost = { }
 	for i = 1, kMaxLvl do
-		table.insert(self.cost, FactionsLevelTiedUpgrade.baseCost)
+		table.insert(self.cost, LevelTiedUpgrade.baseCost)
 	end 
-	self.upgradeType = FactionsLevelTiedUpgrade.upgradeType
-	self.triggerType = FactionsLevelTiedUpgrade.triggerType
-	self.permanent = FactionsLevelTiedUpgrade.permanent
-	self.teamType = FactionsLevelTiedUpgrade.teamType
+	self.upgradeType = LevelTiedUpgrade.upgradeType
+	self.triggerType = LevelTiedUpgrade.triggerType
+	self.permanent = LevelTiedUpgrade.permanent
+	self.teamType = LevelTiedUpgrade.teamType
 	
 end
 
-function FactionsLevelTiedUpgrade:GetClassName()
-	return "FactionsLevelTiedUpgrade"
+function LevelTiedUpgrade:GetClassName()
+	return "LevelTiedUpgrade"
 end
 
 // Default behaviour is to have no message at all.
-function FactionsLevelTiedUpgrade:SendAddMessage(player)
+function LevelTiedUpgrade:SendAddMessage(player)
 end

@@ -53,6 +53,9 @@ local function ReapplyUpgrades(self)
 	if owner == nil then
 		owner = self
 	end
+	
+	// Apply any level tied upgrades first.
+	self:ApplyLevelTiedUpgrades()
 
 	for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
 		if upgrade:GetCurrentLevel() > 0 and upgrade:GetIsPermanent() then
@@ -245,6 +248,19 @@ function UpgradeMixin:GetActiveUpgradesBySlot(upgradeSlot, ignoreUpgradeId)
 	
 end
 
+// Apply any upgrades that should be given for free when the player levels up.
+function UpgradeMixin:ApplyLevelTiedUpgrades()
+	for index, upgrade in ipairs(self:GetLevelTiedUpgrades()) do
+	
+		local upgradeMessage = self:GetCanBuyUpgradeMessage(upgrade:GetId(), true)
+		if upgradeMessage ~= "" then
+			upgrade:SetLevel(self:GetLvl())
+			upgrade:OnAdd(self)
+		end
+		
+	end
+end
+
 function UpgradeMixin:GetUpgradesBySlot(upgradeSlot)
     return self.UpgradeList:GetUpgradesBySlot(upgradeSlot)
 end
@@ -259,4 +275,8 @@ end
 
 function UpgradeMixin:GetActiveUpgrades()
 	return self.UpgradeList:GetActiveUpgrades()
+end
+
+function UpgradeMixin:GetLevelTiedUpgrades()
+	return self.UpgradeList:GetLevelTiedUpgrades(self:GetFactionsClass(), self:GetTeamNumber())
 end

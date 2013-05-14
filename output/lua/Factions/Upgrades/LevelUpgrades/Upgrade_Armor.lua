@@ -7,11 +7,10 @@
 //  Licensed under LGPL v3.0
 //________________________________
 						
-class 'ArmorUpgrade' (FactionsUpgrade)
+class 'ArmorUpgrade' (LevelTiedUpgrade)
 
 // Define these statically so we can easily access them without instantiating too.
 ArmorUpgrade.upgradeType 		= kFactionsUpgradeTypes.Attribute        				// the type of the upgrade
-ArmorUpgrade.cost 				= { 100, 200, 400 }                              		// Cost of the upgrade in xp
 ArmorUpgrade.upgradeName 		= "armor"                     							// Text code of the upgrade if using it via console
 ArmorUpgrade.upgradeTitle 		= "Armor Upgrade"               						// Title of the upgrade, e.g. Submachine Gun
 ArmorUpgrade.upgradeDesc 		= "Upgrade your player's armor"							// Description of the upgrade
@@ -22,7 +21,6 @@ function ArmorUpgrade:Initialize()
 	FactionsUpgrade.Initialize(self)
 
 	self.upgradeType = ArmorUpgrade.upgradeType
-	self.cost = ArmorUpgrade.cost
 	self.upgradeName = ArmorUpgrade.upgradeName
 	self.upgradeTitle = ArmorUpgrade.upgradeTitle
 	self.upgradeDesc = ArmorUpgrade.upgradeDesc

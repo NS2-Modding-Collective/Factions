@@ -69,7 +69,7 @@ local function BuildAllUpgrades()
 		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsUnlockUpgrade"))
 		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsTimedUpgrade"))
 		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsDropUpgrade"))
-		RegisterNewUpgrades(Script.GetDerivedClasses("FactionsLevelTiedUpgrade"))
+		RegisterNewUpgrades(Script.GetDerivedClasses("LevelTiedUpgrade"))
     end
     
 end
@@ -208,6 +208,23 @@ function UpgradeList:GetAvailableUpgrades(playerClass, playerTeamNumber)
 	
 	// TODO: Order these correctly by priority before returning to the user
 	return availableUpgrades
+end
+
+// Get all the upgrades which are tied to the player's level and automatically increase.
+function UpgradeList:GetLevelTiedUpgrades(playerClass, playerTeamNumber)
+	local levelTiedUpgrades = {}
+	for upgradeId, upgrade in pairs(self:GetAvailableUpgrades(playerClass, playerTeamNumber)) do
+	
+		if  upgrade:isa("LevelTiedUpgrade") then
+			
+			table.insert(levelTiedUpgrades, upgrade)
+			
+		end
+		
+	end
+	
+	// TODO: Order these correctly by priority before returning to the user
+	return levelTiedUpgrades
 end
 
 function UpgradeList:GetActiveUpgrades()
