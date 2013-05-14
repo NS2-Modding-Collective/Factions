@@ -53,6 +53,11 @@ kAxeDamage = 50
 kAxeDamageType = kDamageType.Structural
 SetCachedTechData(kTechId.Axe, kTechDataDamageType, kAxeDamageType)
 
+kKnifeWeight = 0.05
+kKnifeDamage = 70
+kKnifeDamageType = kDamageType.Normal
+kKnifeCost = 10
+
 kGrenadeLauncherGrenadeDamage = 100
 kGrenadeLauncherClipSize = 4
 kGrenadeLauncherGrenadeDamageRadius = 8
