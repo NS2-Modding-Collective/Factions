@@ -14,7 +14,7 @@ Script.Load("lua/Factions/Factions_FactionsClassMixin.lua")
 HealthUpgradeMixin = CreateMixin( HealthUpgradeMixin )
 HealthUpgradeMixin.type = "HealthUpgrade"
 
-HealthUpgrade.healthBoostPerLevel = 0.2
+HealthUpgrade.healthBoostPerLevel = 0.1
 
 HealthUpgradeMixin.expectedMixins =
 {

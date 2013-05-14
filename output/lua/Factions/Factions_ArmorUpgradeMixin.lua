@@ -14,7 +14,7 @@ Script.Load("lua/Factions/Factions_FactionsClassMixin.lua")
 ArmorUpgradeMixin = CreateMixin( ArmorUpgradeMixin )
 ArmorUpgradeMixin.type = "ArmorUpgrade"
 
-ArmorUpgrade.armorBoostPerLevel = 0.2
+ArmorUpgrade.armorBoostPerLevel = 0.1
 
 ArmorUpgradeMixin.expectedMixins =
 {

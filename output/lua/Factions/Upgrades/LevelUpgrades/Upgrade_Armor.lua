@@ -18,7 +18,7 @@ ArmorUpgrade.upgradeTechId		= kTechId.Armor1										// TechId of the upgrade, 
 
 function ArmorUpgrade:Initialize()
 
-	FactionsUpgrade.Initialize(self)
+	LevelTiedUpgrade.Initialize(self)
 
 	self.upgradeType = ArmorUpgrade.upgradeType
 	self.upgradeName = ArmorUpgrade.upgradeName

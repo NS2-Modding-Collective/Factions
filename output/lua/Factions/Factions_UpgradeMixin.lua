@@ -124,7 +124,7 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
 	local upgrade = self:GetUpgradeById(upgradeId)
 	
     if Server then
-        local upgradeMessage = self:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade)
+        local upgradeMessage = self:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade, false)
 		
         if upgradeMessage == "" then
         	// Refund any other upgrades in this slot
@@ -252,8 +252,7 @@ end
 function UpgradeMixin:ApplyLevelTiedUpgrades()
 	for index, upgrade in ipairs(self:GetLevelTiedUpgrades()) do
 	
-		local upgradeMessage = self:GetCanBuyUpgradeMessage(upgrade:GetId(), true)
-		if upgradeMessage ~= "" then
+		if self:GetCanBuyUpgrade(upgrade:GetId(), true, true) then
 			upgrade:SetLevel(self:GetLvl())
 			upgrade:OnAdd(self)
 		end

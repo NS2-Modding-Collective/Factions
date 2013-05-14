@@ -18,7 +18,7 @@ HealthUpgrade.upgradeTechId 	= kTechId.Health1											// TechId of the upgrad
 
 function HealthUpgrade:Initialize()
 
-	FactionsUpgrade.Initialize(self)
+	LevelTiedUpgrade.Initialize(self)
 
 	self.upgradeType = HealthUpgrade.upgradeType
 	self.upgradeName = HealthUpgrade.upgradeName

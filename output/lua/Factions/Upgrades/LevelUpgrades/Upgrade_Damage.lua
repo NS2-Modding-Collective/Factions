@@ -18,7 +18,7 @@ DamageUpgrade.upgradeTechId = kTechId.Weapons1										// TechId of the upgrade
 
 function DamageUpgrade:Initialize()
 
-	FactionsUpgrade.Initialize(self)
+	LevelTiedUpgrade.Initialize(self)
 
 	self.upgradeType = DamageUpgrade.upgradeType
 	self.upgradeName = DamageUpgrade.upgradeName
