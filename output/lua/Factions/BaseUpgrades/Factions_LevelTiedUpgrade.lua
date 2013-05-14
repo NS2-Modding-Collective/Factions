@@ -20,6 +20,7 @@ LevelTiedUpgrade.upgradeType 	= kFactionsUpgradeTypes.LevelTied      	// the typ
 LevelTiedUpgrade.triggerType 	= kFactionsTriggerTypes.NoTrigger   	// how the upgrade is gonna be triggered
 LevelTiedUpgrade.permanent		= true									// Controls whether you get the upgrade back when you respawn
 LevelTiedUpgrade.teamType		= kFactionsUpgradeTeamType.AnyTeam		// Team Type
+LevelTiedUpgrade.isLevelTied	 = true									// Upgrade is tied to player level
 
 function LevelTiedUpgrade:Initialize()
 
@@ -35,6 +36,7 @@ function LevelTiedUpgrade:Initialize()
 	self.triggerType = LevelTiedUpgrade.triggerType
 	self.permanent = LevelTiedUpgrade.permanent
 	self.teamType = LevelTiedUpgrade.teamType
+	self.isLevelTied = LevelTiedUpgrade.isLevelTied
 	
 end
 

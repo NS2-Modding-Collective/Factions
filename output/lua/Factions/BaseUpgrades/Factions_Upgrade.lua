@@ -35,6 +35,8 @@ FactionsUpgrade.uniqueSlot = kUpgradeUniqueSlot.None			// Use this to specify th
 FactionsUpgrade.mutuallyExclusive = false						// Cannot buy another upgrade in this slot when you have this one.
 FactionsUpgrade.hardCapScale = 0                               	// How many people of your team can max. take this upgrade, 1/5 for 1 upgrade per 5 player
 FactionsUpgrade.minPlayerLvl = 1								// Controls whether this upgrade requires the recipient to be a minimum level
+FactionsUpgrade.isLevelTied = false								// Upgrade is tied to player level
+
 
 function FactionsUpgrade:Initialize()
 	// This is a base class so never show it in the menu.
@@ -56,6 +58,7 @@ function FactionsUpgrade:Initialize()
 	self.mutuallyExclusive = FactionsUpgrade.mutuallyExclusive
 	self.hardCapScale = FactionsUpgrade.hardCapScale
 	self.minLevel = FactionsUpgrade.minLevel
+	self.isLevelTied = FactionsUpgrade.isLevelTied
 end
 
 function FactionsUpgrade:GetHideUpgrade()
@@ -181,6 +184,10 @@ end
 
 function FactionsUpgrade:GetMinPlayerLvl()
 	return self.minPlayerLvl
+end
+
+function FactionsUpgrade:GetIsTiedToPlayerLvl()
+	return self.isLevelTied
 end
 
 function FactionsUpgrade:GetHardcapScale()

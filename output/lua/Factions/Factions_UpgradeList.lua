@@ -215,7 +215,7 @@ function UpgradeList:GetLevelTiedUpgrades(playerClass, playerTeamNumber)
 	local levelTiedUpgrades = {}
 	for upgradeId, upgrade in pairs(self:GetAvailableUpgrades(playerClass, playerTeamNumber)) do
 	
-		if  upgrade:isa("LevelTiedUpgrade") then
+		if  upgrade:GetIsTiedToPlayerLvl() then
 			
 			table.insert(levelTiedUpgrades, upgrade)
 			
