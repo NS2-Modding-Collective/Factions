@@ -26,6 +26,7 @@ local function SwitchOffNodes(self)
 	// Start socketed but unbuilt
 	// TODO: allow the mapper to define the default power mode!
 	if self:GetIsBuilt() then
+		self:SetModel(kSocketedModelName, kSocketedAnimationGraph)
 		self:SetArmor(0)
 		self:SetHealth(0)
 		self:SetInternalPowerState(PowerPoint.kPowerState.destroyed)
