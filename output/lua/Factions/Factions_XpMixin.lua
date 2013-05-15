@@ -215,7 +215,7 @@ function XpMixin:GetXp()
     end         
 end
 
-
+// Todo: implement caching here
 function XpMixin:GetLvlForXp(xp)
 
 	local returnlevel = 1
@@ -287,6 +287,10 @@ function XpMixin:GetNextLevelXP()
 	    return kXpList[lvl + 1]["XP"]
     end
 
+end
+
+function XpMixin:SetLevel(newLevel)
+	local XpNeeded = 
 end
 
 // Return the proportion of this level that we've progressed.

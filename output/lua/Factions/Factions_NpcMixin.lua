@@ -9,15 +9,19 @@
 
 // Factions_NpcMixin.lua
 
-function NpcMixin:SetBaseDifficulty()
-	if self.baseDifficulty then
-		if HasMixin(self, "Xp") then
-			self:SetLevel()
+if Server then
+
+	function NpcMixin:SetBaseDifficulty()
+		if self.baseDifficulty then
+			if HasMixin(self, "Xp") then
+				self:SetLevel()
+			end
 		end
 	end
-end
 
-function NpcMixin:ApplyNpcUpgrades()
-	if self.npcUpgrades then
+	function NpcMixin:ApplyNpcUpgrades()
+		if self.npcUpgrades then
+		end
 	end
+
 end
