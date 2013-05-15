@@ -290,7 +290,8 @@ function XpMixin:GetNextLevelXP()
 end
 
 function XpMixin:SetLevel(newLevel)
-	local XpNeeded = 
+	local XpNeeded = self:XpForLvl(newLevel)
+	
 end
 
 // Return the proportion of this level that we've progressed.
