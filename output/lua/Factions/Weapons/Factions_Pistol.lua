@@ -56,4 +56,8 @@ function Pistol:GetClipSize()
 	return kPistolClipSize
 end
 
+function Pistol:GetNumStartClips()
+	return 6
+end
+
 Class_Reload("Pistol", networkVars)

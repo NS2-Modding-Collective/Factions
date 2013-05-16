@@ -54,4 +54,8 @@ function Rifle:GetSpread()
 	return ClipWeapon.kCone4Degrees
 end
 
+function Rifle:GetNumStartClips()
+	return 7
+end
+
 Class_Reload("Rifle", networkVars)

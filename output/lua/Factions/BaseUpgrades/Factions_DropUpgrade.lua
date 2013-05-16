@@ -52,7 +52,8 @@ function FactionsDropUpgrade:OnAdd(player)
 				team = player:GetTeamNumber(),
 				startsActive = true,
 				}
-			Server.CreateEntity(mapName, values)
+			local ammoPack = Server.CreateEntity(mapName, values)
+			ammoPack:SetTeamNumber(player:GetTeamNumber())
 		end
 	end
 

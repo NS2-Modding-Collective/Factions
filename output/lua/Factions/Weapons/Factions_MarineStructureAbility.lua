@@ -202,7 +202,7 @@ function MarineStructureAbility:GetDamageType()
 end
 
 function MarineStructureAbility:GetHUDSlot()
-    return 4
+    return 5
 end
 
 function MarineStructureAbility:GetHasSecondary(player)

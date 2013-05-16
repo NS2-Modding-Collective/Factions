@@ -28,7 +28,7 @@ kSpawnProtectTime = 2
 kNanoShieldDamageReductionDamage = 0.1
 
 // MARINE DAMAGE VALUES
-kRifleDamage = 20
+kRifleDamage = 15
 kRifleDamageType = kDamageType.Normal
 SetCachedTechData(kTechId.Rifle, kTechDataDamageType, kRifleDamageType)
 kRifleClipSize = 30
@@ -39,7 +39,7 @@ kLightMachineGunClipSize = 50
 kLightMachineGunDamageType = kDamageType.Light
 kLightMachineGunCost = 10
 
-kPistolDamage = 30
+kPistolDamage = 25
 kPistolDamageType = kDamageType.Normal
 SetCachedTechData(kTechId.Pistol, kTechDataDamageType, kPistolDamageType)
 kPistolClipSize = 8
@@ -49,12 +49,12 @@ kWelderDamageType = kDamageType.Flame
 SetCachedTechData(kTechId.Welder, kTechDataDamageType, kWelderDamageType)
 kWelderFireDelay = 0.2
 
-kAxeDamage = 50
+kAxeDamage = 40
 kAxeDamageType = kDamageType.Structural
 SetCachedTechData(kTechId.Axe, kTechDataDamageType, kAxeDamageType)
 
 kKnifeWeight = 0.05
-kKnifeDamage = 70
+kKnifeDamage = 60
 kKnifeDamageType = kDamageType.Normal
 kKnifeCost = 10
 
@@ -65,7 +65,7 @@ kGrenadeLifetime = 2.0
 
 kShotgunDamage = 15
 kShotgunClipSize = 5
-kShotgunBulletsPerShot = 17
+kShotgunBulletsPerShot = 12
 kShotgunRange = 40
 
 kNadeLauncherClipSize = 4

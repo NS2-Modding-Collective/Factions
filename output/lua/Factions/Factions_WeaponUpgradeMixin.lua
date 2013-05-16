@@ -18,7 +18,7 @@ WeaponUpgradeMixin = CreateMixin( WeaponUpgradeMixin )
 WeaponUpgradeMixin.type = "WeaponUpgrade"
 
 WeaponUpgradeMixin.baseDamage = 1.0
-WeaponUpgradeMixin.damageBoostPerLevel = 0.2
+WeaponUpgradeMixin.damageBoostPerLevel = 0.1
 
 WeaponUpgradeMixin.expectedMixins =
 {
