@@ -22,7 +22,7 @@ SupportClass.baseWalkSpeed 			= 6.0                												// the initial wa
 SupportClass.baseRunSpeed 			= 9.0                												// the initial run speed of this class
 SupportClass.icon					= "ui/Factions/badges/badge_assault.dds"							// the badge for this class
 SupportClass.picture				= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
-SupportClass.initialUpgrades		= { "SMGUpgrade", "BuilderUpgrade", "WelderUpgrade" }				// the upgrades that you start the game with
+SupportClass.initialUpgrades		= { "ShotgunUpgrade", "BuilderUpgrade", "WelderUpgrade" }			// the upgrades that you start the game with
 SupportClass.disallowedUpgrades		= { "SpeedUpgrade", 												// the upgrades that you are not allowed to buy
 										"UnlockGrenadeLauncherUpgrade", 
 										"UnlockFlamethrowerUpgrade",

@@ -22,7 +22,7 @@ ScoutClass.baseWalkSpeed 			= 6.5                												// the initial walk
 ScoutClass.baseRunSpeed 			= 10.0             													// the initial run speed of this class
 ScoutClass.icon						= "ui/Factions/badges/badge_assault.dds"							// the badge for this class
 ScoutClass.picture					= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
-ScoutClass.initialUpgrades			= { "KnifeUpgrade" }												// the upgrades that you start the game with
+ScoutClass.initialUpgrades			= { "SMGUpgrade", "KnifeUpgrade" }												// the upgrades that you start the game with
 ScoutClass.disallowedUpgrades		= { "BuilderUpgrade", 												// the upgrades that you are not allowed to buy
 										"UnlockGrenadeLauncherUpgrade", 
 										"UnlockFlamethrowerUpgrade",

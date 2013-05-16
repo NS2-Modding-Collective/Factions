@@ -34,7 +34,7 @@ SetCachedTechData(kTechId.Rifle, kTechDataDamageType, kRifleDamageType)
 kRifleClipSize = 30
 
 kLightMachineGunWeight = 0.05
-kLightMachineGunDamage = 15
+kLightMachineGunDamage = 10
 kLightMachineGunClipSize = 50
 kLightMachineGunDamageType = kDamageType.Light
 kLightMachineGunCost = 10
