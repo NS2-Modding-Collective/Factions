@@ -15,9 +15,9 @@ class 'Knife' (Axe)
 
 Knife.kMapName = "knife"
 
-Knife.kModelName = PrecacheAsset("models/marine/knife/knife.model")
+Knife.kModelName = PrecacheAsset("models/marine/axe/axe.model")
 local kViewModelName = PrecacheAsset("models/marine/knife/knife_view.model")
-local kAnimationGraph = PrecacheAsset("models/marine/knife/knife_view.animation_graph")
+local kAnimationGraph = PrecacheAsset("models/marine/axe/axe_view.animation_graph")
 
 LightMachineGun.kIronSightTexture = "ui/Factions/testing_ironsights.png"
 LightMachineGun.kIronSightZoomFOV = 80
@@ -28,9 +28,6 @@ LightMachineGun.kLaserSightViewModelAttachPoint = "fxnode_riflemuzzle"
 
 // 4 degrees in NS1
 local kSpread = Vector(0, 0, 0)
-
-local kAttackSoundName = PrecacheAsset("sound/NS2.fev/marine/structures/sentry_fire_loop")
-local kEndSound = PrecacheAsset("sound/NS2.fev/marine/structures/sentry_spin_down")
 
 local networkVars =
 {
