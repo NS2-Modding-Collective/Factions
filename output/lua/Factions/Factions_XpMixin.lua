@@ -291,7 +291,8 @@ end
 
 function XpMixin:SetLevel(newLevel)
 	local XpNeeded = self:XpForLvl(newLevel)
-	
+	self.score = XpNeeded
+	self.level = newLevel
 end
 
 // Return the proportion of this level that we've progressed.
