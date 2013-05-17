@@ -51,6 +51,8 @@ local networkVars =
 	isInSuddenDeath = "boolean",
 	lightsStartOff = "boolean",
 	powerPointsTakeDamage = "boolean",
+	startWithArmory = "boolean",
+	startWithPhaseGate = "boolean",
 	usesMarineColours = "boolean",
 	usesAlienColours = "boolean",
 	timeLimit = "time",
@@ -111,6 +113,14 @@ if Server then
 	function FactionsGamerulesInfo:SetPowerPointsTakeDamage(value)
 		self.powerPointsTakeDamage = value
 	end
+	
+	function FactionsGamerulesInfo:SetStartWithArmory(value)
+		self.startWithArmory = value
+	end
+	
+	function FactionsGamerulesInfo:SetStartWithPhaseGate(value)
+		self.startWithPhaseGate = value
+	end
 end
 
 function FactionsGamerulesInfo:GetGameType()
@@ -167,6 +177,14 @@ end
 
 function FactionsGamerulesInfo:GetPowerPointsTakeDamage()
 	return self.powerPointsTakeDamage
+end
+
+function FactionsGamerulesInfo:GetStartWithArmory(value)
+	return self.startWithArmory
+end
+
+function FactionsGamerulesInfo:GetStartWithPhaseGate(value)
+	return self.startWithPhaseGate
 end
 
 function FactionsGamerulesInfo:GetTimeRemaining()

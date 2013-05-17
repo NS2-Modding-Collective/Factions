@@ -186,6 +186,7 @@ function XpMixin:CheckLvlUp()
     if diffLevels > 0 then
         //Lvl UP
         self.level = self:GetLvlForXp(xp)        
+		
         // Trigger sound on level up
         //StartSoundEffectAtOrigin(CombatEffects.kMarineLvlUpSound, self:GetOrigin())        
         local LvlName = self:GetLvlName(self:GetLvl())

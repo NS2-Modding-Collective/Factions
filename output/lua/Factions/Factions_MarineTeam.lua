@@ -27,6 +27,52 @@ function MarineTeam:OnInitialized()
     self.clientOwnedStructures = { }
 	
 end
+
+local function SpawnMarineStructure(self, techPoint, techId, mapName, spawnPointsTable, maxRange)
+
+	local techPointOrigin = techPoint:GetOrigin() + Vector(0, 2, 0)
+	local newStructureExtents = LookupTechData(kTechId.Marine, kTechDataMaxExtents)
+	local newStructureHeight = newStructureExtents.y
+	local newStructureWidth = math.max(newStructureExtents.x, newStructureExtents.z)
+	
+	local spawnPoint = nil
+	
+	// First check the predefined spawn points. Look for a close one.
+	for p = 1, #spawnPointsTable do
+	
+		local predefinedSpawnPoint = spawnPointsTable[p]
+		if (predefinedSpawnPoint - techPointOrigin):GetLength() <= maxRange then
+			spawnPoint = predefinedSpawnPoint
+		end
+		
+	end
+	
+	// Fallback on the random method if there is no nearby spawn point.
+	if not spawnPoint then
+	
+		for i = 1, 100 do
+		
+			local origin = GetRandomSpawnForCapsule(newStructureHeight, newStructureWidth, techPointOrigin + Vector(0, 0.4, 0), kInfantryPortalMinSpawnDistance, maxRange, EntityFilterAll())
+			
+			if origin then
+				origin = GetGroundAtPosition(origin, nil, PhysicsMask.AllButPCs, newStructureExtents)
+				spawnPoint = origin - Vector(0, 0.1, 0)
+			end
+			
+		end
+		
+	end
+	
+	if spawnPoint then
+	
+		local structure = CreateEntity(mapName, spawnPoint, self:GetTeamNumber())
+		
+		SetRandomOrientation(structure)
+		structure:SetConstructionComplete()
+		
+	end
+	
+end
 	
 // Different game logic for different game modes.
 local originalSpawnInitialStructures = MarineTeam.SpawnInitialStructures
@@ -38,28 +84,12 @@ function MarineTeam:SpawnInitialStructures(techPoint)
 	if GetGamerulesInfo():GetIsCombatRules() then
 		local tower, commandStation = PlayingTeam.SpawnInitialStructures(self, techPoint)
 
-		//Check if there is already an Armory
-		if #GetEntitiesForTeam("Armory", self:GetTeamNumber()) == 0 then	
-			// Don't Spawn an IP, make an armory instead!
-			// spawn initial Armory for marine team    
-			local techPointOrigin = techPoint:GetOrigin() + Vector(0, 2, 0)
-			
-			for i = 1, kSpawnMaxRetries do
-				// Use a reduced distance for spawn logic.
-				local kArmorySpawnMaxDistance = kSpawnMaxDistance / 3
-			
-				// Increase the spawn distance on a gradual basis.
-				local origin = CalculateRandomSpawn(nil, techPointOrigin, kTechId.Armory, true, kArmorySpawnMaxDistance, (kArmorySpawnMaxDistance * i / kSpawnMaxRetries), nil)
-
-				if origin then			
-					local armory = CreateEntity(Armory.kMapName, origin - Vector(0, 0.1, 0), self:GetTeamNumber())
-					
-					SetRandomOrientation(armory)
-					armory:SetConstructionComplete()
-					
-					break				
-				end		
-			end
+		if GetGamerulesInfo():GetStartWithArmory() then
+			SpawnMarineStructure(self, techPoint, kTechId.Armory, Armory.kMapName, Server.armorySpawnPoints, kSpawnMaxDistance)
+		end
+		
+		if GetGamerulesInfo():GetStartWithPhaseGate() then
+			SpawnMarineStructure(self, techPoint, kTechId.PhaseGate, PhaseGate.kMapName, Server.phaseGateSpawnPoints, kSpawnMaxDistance)
 		end
 		
 		self.ipsToConstruct = 0

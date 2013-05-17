@@ -11,6 +11,9 @@
  */
 Script.Load("lua/Factions/Factions_Shared.lua")
 
+/* Hooks to allow mappers to place entities like armories etc */
+Script.Load("lua/Factions/Factions_Server_Hooks.lua")
+
 // Hooks for files that are not in Shared.lua need to go here.
 Script.Load("lua/Factions/Factions_NS2Utility.lua")
 Script.Load("lua/Factions/Factions_MarineTeam.lua")

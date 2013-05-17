@@ -37,6 +37,8 @@ if Server then
 		self.usesAlienColours = false
 		self.lightsStartOff = false
 		self.powerPointsTakeDamage = false
+		self.startWithArmory = true
+		self.startWithPhaseGate = true
 		self.factionsGameType = kFactionsGameType.Xenoswarm
 	
 		GenericGamerules.OnCreate(self)

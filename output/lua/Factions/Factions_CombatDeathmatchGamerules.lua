@@ -34,6 +34,8 @@ if Server then
 		self.usesAlienColours = false
 		self.lightsStartOff = false
 		self.powerPointsTakeDamage = true
+		self.startWithArmory = true
+		self.startWithPhaseGate = false
 		self.factionsGameType = kFactionsGameType.CombatDeathmatch
 	
 		GenericGamerules.OnCreate(self)
