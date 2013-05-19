@@ -15,8 +15,13 @@ Script.Load("lua/Factions/Weapons/Factions_ClipSizeMixin.lua")
 local networkVars = {
 }
 
+AddMixinNetworkVars(IronSightMixin, networkVars)
 AddMixinNetworkVars(LaserSightMixin, networkVars)
 AddMixinNetworkVars(ClipSizeMixin, networkVars)
+
+Shotgun.kIronSightTexture = "ui/Factions/testing_ironsights.png"
+Shotgun.kIronSightZoomFOV = 70
+Shotgun.kIronSightActivateTime = 0.10
 
 //"shotgun_reloader"
 Shotgun.kLaserSightWorldModelAttachPoint = "fxnode_shotgunmuzzle"
@@ -26,6 +31,12 @@ local overrideOnCreate = Shotgun.OnCreate
 function Shotgun:OnCreate()
 
 	overrideOnCreate(self)
+	
+	local ironSightParameters = { kIronSightTexture = Shotgun.kIronSightTexture,
+								  kIronSightZoomFOV = Shotgun.kIronSightZoomFOV,
+								  kIronSightActivateTime = Shotgun.kIronSightActivateTime }
+	InitMixin(self, IronSightMixin, ironSightParameters)
+	assert(HasMixin(self, "IronSight"))
 	
 	local laserSightParameters = { kLaserSightWorldModelAttachPoint = Shotgun.kLaserSightWorldModelAttachPoint,
 								   kLaserSightViewModelAttachPoint = Shotgun.kLaserSightViewModelAttachPoint }

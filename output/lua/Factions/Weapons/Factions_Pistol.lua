@@ -15,6 +15,7 @@ Script.Load("lua/Factions/Weapons/Factions_LaserSightMixin.lua")
 local networkVars = {
 }
 
+AddMixinNetworkVars(ClipSizeMixin, networkVars)
 AddMixinNetworkVars(IronSightMixin, networkVars)
 AddMixinNetworkVars(LaserSightMixin, networkVars)
 
