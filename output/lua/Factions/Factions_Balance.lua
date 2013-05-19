@@ -100,12 +100,14 @@ kConfusedSentryBaseROF = 2.0
 
 // Building
 kNumSentriesPerPlayer = 2
-kSentryCost = 250
+kSentryCost = 150
 kSentryDamage = 15
-kPhaseGateCost = 250
+kPhaseGateCost = 350
 kNumPhasegatesPerPlayer = 2
 kArmoryCost = 250
 kNumArmoriesPerPlayer = 1
+kObservatoryCost = 250
+kNumObservatoriesPerPlayer = 1
 
 kWeapons1DamageScalar = 1.1
 kWeapons2DamageScalar = 1.2
@@ -113,10 +115,6 @@ kWeapons3DamageScalar = 1.3
 
 kNanoShieldDamageReductionDamage = 0.5
 
-// Conversely, reduce the welder's effectiveness from its original value of 150.
-kStructureWeldRate = 100
-// The rate at which players heal the hive/cc should be multiplied by this ratio.
-kHiveCCHealRate = 0.3
 // The rate at which players gain XP for healing... relative to damage dealt.
 kHealXpRate = 1
 // Rate at which players gain XP for healing other players...
