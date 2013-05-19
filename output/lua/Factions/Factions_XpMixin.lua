@@ -19,6 +19,8 @@ Script.Load("lua/MixinUtility.lua")
 */
 
 kSkulkPointValue = 30
+kGorgePointValue = 90
+kLerkPointValue = 70
 kFadePointValue = 150
 kOnosPointValue = 400
 kMarinePointValue = 60
