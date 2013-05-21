@@ -9,6 +9,7 @@
 
 // Factions_Shotgun.lua
 
+Script.Load("lua/Factions/Weapons/Factions_IronSightMixin.lua")
 Script.Load("lua/Factions/Weapons/Factions_LaserSightMixin.lua")
 Script.Load("lua/Factions/Weapons/Factions_ClipSizeMixin.lua")
 

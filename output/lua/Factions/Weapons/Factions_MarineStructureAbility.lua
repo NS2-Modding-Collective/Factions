@@ -21,6 +21,7 @@
 Script.Load("lua/Factions/Weapons/Factions_SentryAbility.lua")
 Script.Load("lua/Factions/Weapons/Factions_ArmoryAbility.lua")
 Script.Load("lua/Factions/Weapons/Factions_PhaseGateAbility.lua")
+Script.Load("lua/Factions/Weapons/Factions_ObservatoryAbility.lua")
 
 class 'MarineStructureAbility' (Weapon)
 
@@ -38,7 +39,7 @@ MarineStructureAbility.kMapName = "marine_drop_structure_ability"
 
 local kCreateFailSound = PrecacheAsset("sound/NS2.fev/alien/gorge/create_fail")
 
-MarineStructureAbility.kSupportedStructures = { SentryAbility, ArmoryAbility, PhaseGateAbility }
+MarineStructureAbility.kSupportedStructures = { SentryAbility, ArmoryAbility, PhaseGateAbility, ObservatoryAbility }
 
 local networkVars =
 {
@@ -497,19 +498,19 @@ function MarineStructureAbility:ProcessMoveOnWeapon(input)
             local numAllowedObservatories = LookupTechData(kTechId.Observatory, kTechDataMaxAmount, -1) 
 
             if numAllowedSentries >= 0 then     
-                self.numSentriesLeft = team:GetNumDroppedMarineStructures(player, kTechId.Hydra)           
+                self.numSentriesLeft = team:GetNumDroppedMarineStructures(player, kTechId.Sentry)           
             end
    
             if numAllowedMiniArmories >= 0 then     
-                self.numMiniArmoriesLeft = team:GetNumDroppedMarineStructures(player, kTechId.Clog)           
+                self.numMiniArmoriesLeft = team:GetNumDroppedMarineStructures(player, kTechId.Armory)           
             end
             
             if numAllowedPhaseGates >= 0 then     
-                self.numPhaseGatesLeft = team:GetNumDroppedMarineStructures(player, kTechId.GorgeTunnel)           
+                self.numPhaseGatesLeft = team:GetNumDroppedMarineStructures(player, kTechId.PhaseGate)           
             end
             
             if numAllowedObservatories >= 0 then     
-                self.numObservatoriesLeft = team:GetNumDroppedMarineStructures(player, kTechId.Web)           
+                self.numObservatoriesLeft = team:GetNumDroppedMarineStructures(player, kTechId.Observatory)           
             end
             
         end
