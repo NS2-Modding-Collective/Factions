@@ -14,7 +14,7 @@ kInitialTimeLeft = 25
 kInitialTokenValue = 500
 
 // Sprinting
-SprintMixin.kMaxSprintTime = 6 // 1 sec
+SprintMixin.kMaxSprintTime = 7 // 1 sec
 SprintMixin.kSprintRecoveryRate = .5 // 0.5 sec
 
 // Spawning logic
@@ -28,33 +28,33 @@ kSpawnProtectTime = 2
 kNanoShieldDamageReductionDamage = 0.1
 
 // MARINE DAMAGE VALUES
-kRifleDamage = 15
+kRifleDamage = 18
 kRifleDamageType = kDamageType.Normal
 SetCachedTechData(kTechId.Rifle, kTechDataDamageType, kRifleDamageType)
 kRifleClipSize = 30
 
 kLightMachineGunWeight = 0.05
-kLightMachineGunDamage = 10
+kLightMachineGunDamage = 15
 kLightMachineGunClipSize = 50
 kLightMachineGunDamageType = kDamageType.Light
 kLightMachineGunCost = 10
 
-kPistolDamage = 25
+kPistolDamage = 30
 kPistolDamageType = kDamageType.Normal
 SetCachedTechData(kTechId.Pistol, kTechDataDamageType, kPistolDamageType)
 kPistolClipSize = 8
 
-kWelderDamagePerSecond = 50
+kWelderDamagePerSecond = 60
 kWelderDamageType = kDamageType.Flame
 SetCachedTechData(kTechId.Welder, kTechDataDamageType, kWelderDamageType)
 kWelderFireDelay = 0.2
 
-kAxeDamage = 40
+kAxeDamage = 45
 kAxeDamageType = kDamageType.Structural
 SetCachedTechData(kTechId.Axe, kTechDataDamageType, kAxeDamageType)
 
 kKnifeWeight = 0.05
-kKnifeDamage = 60
+kKnifeDamage = 65
 kKnifeDamageType = kDamageType.Normal
 kKnifeCost = 10
 
@@ -63,9 +63,9 @@ kGrenadeLauncherClipSize = 4
 kGrenadeLauncherGrenadeDamageRadius = 8
 kGrenadeLifetime = 2.0
 
-kShotgunDamage = 15
+kShotgunDamage = 16
 kShotgunClipSize = 5
-kShotgunBulletsPerShot = 12
+kShotgunBulletsPerShot = 15
 kShotgunRange = 40
 
 kNadeLauncherClipSize = 4
@@ -106,7 +106,7 @@ kPhaseGateCost = 350
 kNumPhasegatesPerPlayer = 2
 kArmoryCost = 250
 kNumArmoriesPerPlayer = 1
-kObservatoryCost = 250
+kObservatoryCost = 150
 kNumObservatoriesPerPlayer = 1
 
 kWeapons1DamageScalar = 1.1
