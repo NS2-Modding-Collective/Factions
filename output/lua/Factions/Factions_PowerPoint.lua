@@ -28,14 +28,25 @@ local function SwitchOffNodes(self)
 	if self:GetIsBuilt() then
 		self:SetModel(kSocketedModelName, kSocketedAnimationGraph)
 		self:SetArmor(0)
-		self:SetHealth(0)
+		self:SetHealth(kPowerPointHealth/2)
 		self:SetInternalPowerState(PowerPoint.kPowerState.destroyed)
         self:SetLightMode(kLightMode.NoPower)
-		self.timeOfDestruction = 0
+		self.timeOfLightModeChange = 9999
 	end
 	
 	return false
 
+end
+
+local originalOnWeldOverride = PowerPoint.OnWeldOverride
+function PowerPoint:OnWeldOverride(entity, elapsedTime)
+
+	if self.timeOfLightModeChange == 9999 then
+		self.timeOfLightModeChange = Shared.GetTime()
+	end
+	
+	originalOnWeldOverride(self, entity, elapsedTime)
+	
 end
 
 function PowerPoint:FactionsPowerUp()
@@ -66,12 +77,12 @@ end
 function PowerPoint:FactionsSetUpPowerNodes()
 
 	if Server then
-		if GetGamerulesInfo():GetLightsStartOff() then
-			self:AddTimedCallback(SwitchOffNodes, 0.3)
-		end
-		
 		if GetGamerulesInfo():GetIsCombatRules() then
 			self:FactionsPowerUp()
+		end
+		
+		if GetGamerulesInfo():GetLightsStartOff() then
+			self:AddTimedCallback(SwitchOffNodes, 0.3)
 		end
 	end
 
