@@ -32,7 +32,9 @@ local function RegisterNewUpgrades(newValuesTable)
 	for index, value in ipairs(newValuesTable) do
 		// Save the factions upgrades in a regular table
 		// Don't register the base classes.
-		if not _G[value]:GetHideUpgrade() then
+		local instantiatedUpgrade = _G[value]()
+		instantiatedUpgrade:Initialize()
+		if not instantiatedUpgrade:GetIsBaseUpgrade() then
 			table.insert(kAllFactionsUpgrades, value)
 		end
 		

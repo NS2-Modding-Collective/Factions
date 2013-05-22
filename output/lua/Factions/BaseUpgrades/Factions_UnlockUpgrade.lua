@@ -26,6 +26,7 @@ function FactionsUnlockUpgrade:Initialize()
 	// This is a base class so never show it in the menu.
 	if (self:GetClassName() == "FactionsUnlockUpgrade") then
 		self.hideUpgrade = true
+		self.baseUpgrade = true
 	end
 	self.upgradeType = FactionsUnlockUpgrade.upgradeType
 	self.triggerType = FactionsUnlockUpgrade.triggerType

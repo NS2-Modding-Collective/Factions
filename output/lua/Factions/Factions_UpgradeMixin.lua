@@ -141,12 +141,13 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
 				Server.SendNetworkMessage(self, "UpdateUpgrade",  BuildUpdateUpgradeMessage(upgradeId, upgrade:GetCurrentLevel()), true)
 			end		
 			
-			upgrade:SendAddMessage(self)
-			upgrade:OnAdd(self)
-			
 			if not freeUpgrade then
 				self:AddResources(-upgradeCost)
             end
+			
+			upgrade:SendAddMessage(self)
+			upgrade:OnAdd(self)
+			
         else
             self:SendDirectMessage("Could not buy upgrade! " .. upgradeMessage)
         end

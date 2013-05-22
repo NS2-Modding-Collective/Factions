@@ -26,6 +26,18 @@ local networkVars =
 {
 }
 
+/*
+function Knife:OnTag(tagName)
+	// Do some multiple-hit logic here
+	// A cone?
+	local teamNumber = 2
+	local hits = Shared.FindEntitiesForTeamInRange(teamNumber, kAxeAttackRange)
+	for index, victim in ientitylist(hits) do
+		victim:TakeDamage(kKnifeDamage)
+	end
+end
+*/
+
 function Knife:GetAnimationGraphName()
     return kAnimationGraph
 end

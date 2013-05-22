@@ -27,6 +27,7 @@ function FactionsTimedUpgrade:Initialize()
 	// This is a base class so never show it in the menu.
 	if (self:GetClassName() == "FactionsTimedUpgrade") then
 		self.hideUpgrade = true
+		self.baseUpgrade = true
 	end
 	self.upgradeType = FactionsTimedUpgrade.upgradeType
 	self.triggerType = FactionsTimedUpgrade.triggerType

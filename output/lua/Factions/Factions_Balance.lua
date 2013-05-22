@@ -55,8 +55,15 @@ SetCachedTechData(kTechId.Axe, kTechDataDamageType, kAxeDamageType)
 
 kKnifeWeight = 0.05
 kKnifeDamage = 65
+kKnifeRange = 30
 kKnifeDamageType = kDamageType.Normal
 kKnifeCost = 10
+
+kSwordWeight = 0.05
+kSwordDamage = 65
+kSwordRange = 30
+kSwordDamageType = kDamageType.Normal
+kSwordCost = 10
 
 kGrenadeLauncherGrenadeDamage = 100
 kGrenadeLauncherClipSize = 4
