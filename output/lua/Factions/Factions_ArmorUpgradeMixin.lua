@@ -15,11 +15,12 @@ ArmorUpgradeMixin = CreateMixin( ArmorUpgradeMixin )
 ArmorUpgradeMixin.type = "ArmorUpgrade"
 
 ArmorUpgrade.armorBoostPerLevel = 0.1
+ArmorUpgrade.botArmorBoostPerLevel = 0.05
 
 ArmorUpgradeMixin.expectedMixins =
 {
 	Live = "For setting the armor values",
-	FactionsClass = "For getting the base health and armor values",
+	FactionsClass = "For getting the base armor and armor values",
 }
 
 ArmorUpgradeMixin.expectedCallbacks =
@@ -69,7 +70,11 @@ function ArmorUpgradeMixin:UpgradeArmor()
 		// Calculate the new max armor
 		local oldMaxArmor = self:GetMaxArmor()
 		local baseMaxArmor = self:GetBaseArmor()
-		local newMaxArmor = baseMaxArmor + baseMaxArmor*self.upgradeArmorLevel*ArmorUpgrade.armorBoostPerLevel
+		local armorboost = ArmorUpgrade.armorBoostPerLevel
+		if HasMixin(self, "Npc") then
+			ArmorUpgrade.botArmorBoostPerLevel
+		end
+		local newMaxArmor = baseMaxArmor + baseMaxArmor*self.upgradeArmorLevel*armorboost
 		self:SetMaxArmor(newMaxArmor)
 		
 		// Add the difference to the player's current armor

@@ -155,7 +155,12 @@ end
 
 function WeaponUpgradeMixin:GetDamageScalar()
 
-	return WeaponUpgradeMixin.baseDamage + (self.damageLevel * WeaponUpgradeMixin.damageBoostPerLevel)
+	// No damage upgrades for bots. Let EEM take care of this.
+	if HasMixin(self, "Npc") then
+		return 1
+	else
+		return WeaponUpgradeMixin.baseDamage + (self.damageLevel * WeaponUpgradeMixin.damageBoostPerLevel)
+	end
 
 end
 
