@@ -70,11 +70,11 @@ function HealthUpgradeMixin:UpgradeHealth()
 		// Calculate the new max health
 		local oldMaxHealth = self:GetMaxHealth()
 		local baseMaxHealth = self:GetBaseHealth()
-		local healthboost = HealthUpgrade.healthBoostPerLevel
+		local healthBoost = HealthUpgrade.healthBoostPerLevel
 		if HasMixin(self, "Npc") then
-			HealthUpgrade.botHealthBoostPerLevel
+			healthBoost = HealthUpgrade.botHealthBoostPerLevel
 		end
-		local newMaxHealth = baseMaxHealth + baseMaxHealth*self.upgradeHealthLevel*healthboost
+		local newMaxHealth = baseMaxHealth + baseMaxHealth*self.upgradeHealthLevel*healthBoost
 		self:SetMaxHealth(newMaxHealth)
 		
 		// Add the difference to the player's current health
