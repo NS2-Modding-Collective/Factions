@@ -125,13 +125,13 @@ function IronSightMixin:ProcessMoveOnWeapon(player, input)
 end
 
 function IronSightMixin:GetHasSecondary(player)
-    return true
+    return self:GetIronSightAvailable() or self:isa("Rifle")
 end
 
 function IronSightMixin:OnSecondaryAttack(player)
 
 	if not self:GetIronSightAvailable() then
-		if _G[self:GetClassName()].OnSecondaryAttack then
+		if _G[self:GetClassName()].OnSecondaryAttack ~= nil then
 			_G[self:GetClassName()].OnSecondaryAttack(self, player)
 		end
 	else
