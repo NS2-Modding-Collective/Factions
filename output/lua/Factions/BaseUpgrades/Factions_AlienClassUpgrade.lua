@@ -28,6 +28,7 @@ function AlienClassUpgrade:Initialize()
 	// This is a base class so never show it in the menu.
 	if (self:GetClassName() == "AlienClassUpgrade") then
 		self.hideUpgrade = true
+		self.baseUpgrade = true
 	end
 	self.upgradeType = AlienClassUpgrade.upgradeType
 	self.triggerType = AlienClassUpgrade.triggerType

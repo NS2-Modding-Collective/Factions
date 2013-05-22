@@ -37,11 +37,11 @@ FactionsUpgrade.hardCapScale = 0                               	// How many peop
 FactionsUpgrade.minPlayerLvl = 1								// Controls whether this upgrade requires the recipient to be a minimum level
 FactionsUpgrade.isLevelTied = false								// Upgrade is tied to player level
 
-
 function FactionsUpgrade:Initialize()
 	// This is a base class so never show it in the menu.
 	if (self:GetClassName() == "FactionsUpgrade") then
 		self.hideUpgrade = true
+		self.baseUpgrade = true
 	end
 	self.upgradeType = FactionsUpgrade.upgradeType
 	self.triggerType = FactionsUpgrade.triggerType
@@ -59,6 +59,15 @@ function FactionsUpgrade:Initialize()
 	self.hardCapScale = FactionsUpgrade.hardCapScale
 	self.minLevel = FactionsUpgrade.minLevel
 	self.isLevelTied = FactionsUpgrade.isLevelTied
+end
+
+function FactionsUpgrade:GetIsBaseUpgrade()
+	// Convert nil to false!
+	if self.baseUpgrade then
+		return true
+	else
+		return false
+	end
 end
 
 function FactionsUpgrade:GetHideUpgrade()
