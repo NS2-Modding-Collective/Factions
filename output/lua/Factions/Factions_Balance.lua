@@ -100,6 +100,11 @@ kRailgunDamageType = kDamageType.Puncture
 
 kMineDamage = 150
 
+// Power points
+kPowerPointHealth = 1000	
+kPowerPointArmor = 400	
+kPowerPointPointValue = 0
+
 kSentryAttackBaseROF = .15
 kSentryAttackRandROF = 0.0
 kSentryAttackBulletsPerSalvo = 1
