@@ -10,12 +10,12 @@
 class 'DropCountUpgrade' (FactionsUpgrade)
 
 // Define these statically so we can easily access them without instantiating too.
-DropCountUpgrade.upgradeType = kFactionsUpgradeTypes.Attribute        					// the type of the upgrade
-DropCountUpgrade.cost = { 250, 250, 250, 400 }                              		// Cost of the upgrade in xp
-DropCountUpgrade.upgradeName = "drops"                     								// Text code of the upgrade if using it via console
-DropCountUpgrade.upgradeTitle = "Drop Count Upgrade"               							// Title of the upgrade, e.g. Submachine Gun
-DropCountUpgrade.upgradeDesc = "Upgrade the number of packs you drop when dropping health/ammo"							// Description of the upgrade
-DropCountUpgrade.upgradeTechId = kTechId.AmmoPack											// TechId of the upgrade, default is kTechId.Move cause its the first entry
+DropCountUpgrade.upgradeType = kFactionsUpgradeTypes.Attribute        									// the type of the upgrade
+DropCountUpgrade.cost = { 250, 250, 400 }                              									// Cost of the upgrade in xp
+DropCountUpgrade.upgradeName = "drops"                     												// Text code of the upgrade if using it via console
+DropCountUpgrade.upgradeTitle = "Drop Count Upgrade"               										// Title of the upgrade, e.g. Submachine Gun
+DropCountUpgrade.upgradeDesc = "Upgrade the number of packs you drop when dropping health/ammo"			// Description of the upgrade
+DropCountUpgrade.upgradeTechId = kTechId.AmmoPack														// TechId of the upgrade, default is kTechId.Move cause its the first entry
 
 function DropCountUpgrade:Initialize()
 
