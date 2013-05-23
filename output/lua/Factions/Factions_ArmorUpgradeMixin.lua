@@ -69,7 +69,7 @@ function ArmorUpgradeMixin:UpgradeArmor()
 		// Calculate the new max armor
 		local oldMaxArmor = self:GetMaxArmor()
 		local baseMaxArmor = self:GetBaseArmor()
-		local newMaxArmor = baseMaxArmor + baseMaxArmor*self.upgradeArmorLevel*ArmorUpgrade.armorBoostPerLevel
+		local newMaxArmor = baseMaxArmor + baseMaxArmor*math.max(0, self.upgradeArmorLevel - 1)*ArmorUpgrade.armorBoostPerLevel
 		self:SetMaxArmor(newMaxArmor)
 		
 		// Add the difference to the player's current armor

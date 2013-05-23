@@ -69,7 +69,7 @@ function HealthUpgradeMixin:UpgradeHealth()
 		// Calculate the new max health
 		local oldMaxHealth = self:GetMaxHealth()
 		local baseMaxHealth = self:GetBaseHealth()
-		local newMaxHealth = baseMaxHealth + baseMaxHealth*self.upgradeHealthLevel*HealthUpgrade.healthBoostPerLevel
+		local newMaxHealth = baseMaxHealth + baseMaxHealth*math.max(0, self.upgradeHealthLevel - 1)*HealthUpgrade.healthBoostPerLevel
 		self:SetMaxHealth(newMaxHealth)
 		
 		// Add the difference to the player's current health

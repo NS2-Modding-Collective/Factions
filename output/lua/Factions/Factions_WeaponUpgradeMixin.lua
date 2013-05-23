@@ -155,7 +155,7 @@ end
 
 function WeaponUpgradeMixin:GetDamageScalar()
 
-	return WeaponUpgradeMixin.baseDamage + (self.damageLevel * WeaponUpgradeMixin.damageBoostPerLevel)
+	return WeaponUpgradeMixin.baseDamage + math.max(0, self.damageLevel - 1) * WeaponUpgradeMixin.damageBoostPerLevel
 
 end
 
