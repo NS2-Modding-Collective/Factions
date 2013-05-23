@@ -260,3 +260,13 @@ function FactionsClassMixin:GetBaseArmor()
 	end
 
 end
+
+function FactionsClassMixin:GetBaseDropCount()
+
+	if self:GetHasFactionsClass() then
+		return self.factionsClass:GetBaseDropCount()
+	else
+		return 3
+	end
+
+end

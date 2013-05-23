@@ -18,7 +18,6 @@ class 'FactionsDropUpgrade' (FactionsUpgrade)
 FactionsDropUpgrade.upgradeType 	= kFactionsUpgradeTypes.Tech        	// the type of the upgrade
 FactionsDropUpgrade.triggerType 	= kFactionsTriggerTypes.NoTrigger   	// how the upgrade is gonna be triggered
 FactionsDropUpgrade.permanent		= false									// Controls whether you get the upgrade back when you respawn
-FactionsDropUpgrade.count 			= 1
 
 function FactionsDropUpgrade:Initialize()
 
@@ -32,7 +31,6 @@ function FactionsDropUpgrade:Initialize()
 	self.upgradeType = FactionsDropUpgrade.upgradeType
 	self.triggerType = FactionsDropUpgrade.triggerType
 	self.permanent = FactionsDropUpgrade.permanent
-	self.count = FactionsDropUpgrade.count
 	
 end
 
@@ -45,7 +43,9 @@ function FactionsDropUpgrade:OnAdd(player)
 
 	local mapName = LookupTechData(self:GetUpgradeTechId(), kTechDataMapName)
 	if mapName then
-		for index = 1,self.count,1 do
+		local count = player:GetDropCount()
+	
+		for index = 1,count,1 do
 			local origin = player:GetOrigin() + Vector(math.random() * 2 - 1, 0, math.random() * 2 - 1) 
 			local values = { 
 			    origin = origin,

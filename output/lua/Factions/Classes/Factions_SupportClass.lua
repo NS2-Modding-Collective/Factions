@@ -20,6 +20,7 @@ SupportClass.baseHealth 			= kMarineHealth											     		// the base health v
 SupportClass.baseArmor 				= kMarineArmor											     		// the base armor value of this class
 SupportClass.baseWalkSpeed 			= 6.0                												// the initial walk speed of this class
 SupportClass.baseRunSpeed 			= 9.0                												// the initial run speed of this class
+SupportClass.baseDropCount 			= 3                												// how many packs get dropped when you drop health/ammo
 SupportClass.icon					= "ui/Factions/badges/badge_assault.dds"							// the badge for this class
 SupportClass.picture				= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
 SupportClass.initialUpgrades		= { "ShotgunUpgrade", "BuilderUpgrade", "WelderUpgrade" }			// the upgrades that you start the game with
@@ -36,6 +37,7 @@ function SupportClass:Initialize()
 	self.baseArmor = SupportClass.baseArmor
 	self.baseWalkSpeed = SupportClass.baseWalkSpeed
 	self.baseRunSpeed = SupportClass.baseRunSpeed
+	self.baseDropCount = SupportClass.baseDropCount
 	self.icon = SupportClass.icon
 	self.picture = SupportClass.picture
 	self.initialUpgrades = SupportClass.initialUpgrades

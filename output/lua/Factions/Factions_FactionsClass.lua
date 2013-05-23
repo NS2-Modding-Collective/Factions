@@ -20,6 +20,7 @@ FactionsClass.baseHealth 				= kMarineHealth											     		// the base health
 FactionsClass.baseArmor 				= kMarineArmor											     		// the base armor value of this class
 FactionsClass.baseWalkSpeed 			= 6.0                												// the initial walk speed of this class
 FactionsClass.baseRunSpeed 				= 9.0                												// the initial run speed of this class
+FactionsClass.baseDropCount 			= 3                												// how many packs get dropped when you drop health/ammo
 FactionsClass.icon						= "ui/Factions/badges/badge_assault.dds"							// the badge for this class
 FactionsClass.picture					= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
 FactionsClass.initialUpgrades			= { }																// the upgrades that you start the game with
@@ -33,6 +34,7 @@ function FactionsClass:Initialize()
 	self.baseArmor = FactionsClass.baseArmor
 	self.baseWalkSpeed = FactionsClass.baseWalkSpeed
 	self.baseRunSpeed = FactionsClass.baseRunSpeed
+	self.baseDropCount = FactionsClass.baseDropCount
 	self.icon = FactionsClass.icon
 	self.picture = FactionsClass.picture
 	self.initialUpgrades = FactionsClass.initialUpgrades
@@ -75,6 +77,10 @@ end
 
 function FactionsClass:GetBaseSpeed()
     return self.baseWalkSpeed
+end
+
+function FactionsClass:GetBaseDropCount()
+    return self.baseDropCount
 end
 
 function FactionsClass:GetIcon()

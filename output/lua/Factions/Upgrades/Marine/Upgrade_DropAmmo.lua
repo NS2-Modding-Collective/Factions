@@ -15,7 +15,6 @@ DropAmmoUpgrade.upgradeName			= "ammo"	                        	// text code of 
 DropAmmoUpgrade.upgradeTitle 		= "Ammo Pack Drop"      				// Title of the upgrade, e.g. Submachine Gun
 DropAmmoUpgrade.upgradeDesc 		= "Drops some ammo Packs"           	// Description of the upgrade
 DropAmmoUpgrade.upgradeTechId 		= kTechId.AmmoPack  					// techId of the upgrade, default is kTechId.Move cause its the first entry
-DropAmmoUpgrade.count	 			= 3										// How many to drop?
 DropAmmoUpgrade.teamType			= kFactionsUpgradeTeamType.MarineTeam	// Team Type
 
 function DropAmmoUpgrade:Initialize()
@@ -29,7 +28,6 @@ function DropAmmoUpgrade:Initialize()
 	self.upgradeDesc = DropAmmoUpgrade.upgradeDesc
 	self.upgradeTechId = DropAmmoUpgrade.upgradeTechId
 	self.hudSlot = DropAmmoUpgrade.hudSlot
-	self.count = DropAmmoUpgrade.count
 	self.teamType = DropAmmoUpgrade.teamType
 	
 end
@@ -39,5 +37,5 @@ function DropAmmoUpgrade:GetClassName()
 end
 
 function DropAmmoUpgrade:SendAddMessage(player)
-	player:SendDirectMessage("Dropped " .. self.count .. " Ammo Packs!")
+	player:SendDirectMessage("Dropped " .. player:GetDropCount() .. " Ammo Packs!")
 end

@@ -20,6 +20,7 @@ ScoutClass.baseHealth 				= kMarineHealth	- 20									     		// the base health
 ScoutClass.baseArmor 				= kMarineArmor - 20										     		// the base armor value of this class
 ScoutClass.baseWalkSpeed 			= 6.5                												// the initial walk speed of this class
 ScoutClass.baseRunSpeed 			= 10.0             													// the initial run speed of this class
+ScoutClass.baseDropCount 			= 2                												// how many packs get dropped when you drop health/ammo
 ScoutClass.icon						= "ui/Factions/badges/badge_assault.dds"							// the badge for this class
 ScoutClass.picture					= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
 ScoutClass.initialUpgrades			= { "SMGUpgrade", "KnifeUpgrade" }												// the upgrades that you start the game with
@@ -38,6 +39,7 @@ function ScoutClass:Initialize()
 	self.baseArmor = ScoutClass.baseArmor
 	self.baseWalkSpeed = ScoutClass.baseWalkSpeed
 	self.baseRunSpeed = ScoutClass.baseRunSpeed
+	self.baseDropCount = ScoutClass.baseDropCount
 	self.icon = ScoutClass.icon
 	self.picture = ScoutClass.picture
 	self.initialUpgrades = ScoutClass.initialUpgrades

@@ -15,7 +15,6 @@ DropMedpackUpgrade.upgradeName			= "medpack"	                       	 	// text c
 DropMedpackUpgrade.upgradeTitle 		= "Med Pack Drop"      					// Title of the upgrade, e.g. Submachine Gun
 DropMedpackUpgrade.upgradeDesc 			= "Drops some Med Packs"           		// Description of the upgrade
 DropMedpackUpgrade.upgradeTechId 		= kTechId.MedPack	  					// techId of the upgrade, default is kTechId.Move cause its the first entry
-DropMedpackUpgrade.count	 			= 3										// How many to drop?
 DropMedpackUpgrade.teamType				= kFactionsUpgradeTeamType.MarineTeam	// Team Type
 
 function DropMedpackUpgrade:Initialize()
@@ -29,7 +28,6 @@ function DropMedpackUpgrade:Initialize()
 	self.upgradeDesc = DropMedpackUpgrade.upgradeDesc
 	self.upgradeTechId = DropMedpackUpgrade.upgradeTechId
 	self.hudSlot = DropMedpackUpgrade.hudSlot
-	self.count = DropMedpackUpgrade.count
 	self.teamType = DropMedpackUpgrade.teamType
 	
 end
@@ -39,5 +37,5 @@ function DropMedpackUpgrade:GetClassName()
 end
 
 function DropMedpackUpgrade:SendAddMessage(player)
-	player:SendDirectMessage("Dropped " .. self.count .. " Medpacks!")
+	player:SendDirectMessage("Dropped " .. player:GetDropCount() .. " Medpacks!")
 end
