@@ -15,6 +15,7 @@ HealthUpgradeMixin = CreateMixin( HealthUpgradeMixin )
 HealthUpgradeMixin.type = "HealthUpgrade"
 
 HealthUpgrade.healthBoostPerLevel = 0.1
+HealthUpgrade.botHealthBoostPerLevel = 0.05
 
 HealthUpgradeMixin.expectedMixins =
 {
@@ -69,7 +70,11 @@ function HealthUpgradeMixin:UpgradeHealth()
 		// Calculate the new max health
 		local oldMaxHealth = self:GetMaxHealth()
 		local baseMaxHealth = self:GetBaseHealth()
-		local newMaxHealth = baseMaxHealth + baseMaxHealth*math.max(0, self.upgradeHealthLevel - 1)*HealthUpgrade.healthBoostPerLevel
+		local healthBoost = HealthUpgrade.healthBoostPerLevel
+		if HasMixin(self, "Npc") then
+			healthBoost = HealthUpgrade.botHealthBoostPerLevel
+		end
+		local newMaxHealth = baseMaxHealth + baseMaxHealth*math.max(0, self.upgradeHealthLevel - 1)*healthBoost
 		self:SetMaxHealth(newMaxHealth)
 		
 		// Add the difference to the player's current health

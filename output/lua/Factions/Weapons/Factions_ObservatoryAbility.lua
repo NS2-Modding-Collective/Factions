@@ -36,7 +36,7 @@ function ObservatoryAbility:GetGhostModelName(ability)
 end
 
 function ObservatoryAbility:GetDropStructureId()
-    return kTechId.MiniObservatory
+    return kTechId.Observatory
 end
 
 function ObservatoryAbility:GetSuffixName()

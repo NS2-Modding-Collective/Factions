@@ -26,6 +26,10 @@ function Observatory:OnCreate()
 		assert(HasMixin(self, "TeamColours"))
 	end
 	
+	if not HasMixin(self, "MapBlip") then
+        InitMixin(self, MapBlipMixin)
+    end
+	
 	self.isGhostStructure = false
 	
 end

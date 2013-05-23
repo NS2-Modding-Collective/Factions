@@ -16,11 +16,11 @@ local kShowOnTeam = { }
 kShowOnTeam["all"] = { GUIFeedback = true, GUIScoreboard = true, GUIDeathMessages = true, GUIChat = true,
                        GUIVoiceChat = true, GUIMinimapFrame = true, GUIMapAnnotations = true,
                        GUICommunicationStatusIcons = true, GUIUnitStatus = true, GUIDeathScreen = true,
-                       GUITipVideo = true }
+                       GUITipVideo = true, /* STEVETEMP GUIReadyVideoList = true,*/ GUIVoteMenu = true, GUIStartVoteMenu = true }
 
 kShowOnTeam[kTeamReadyRoom] = { GUIReadyRoomOrders = true }
 kShowOnTeam[kTeam1Index] = { }
-kShowOnTeam[kTeam2Index] = { }
+kShowOnTeam[kTeam2Index] = { GUIAlienSpectatorHUD = true }
 kShowOnTeam[kSpectatorIndex] = { GUIGameEnd = true, GUISpectator = true }
 
 local kBothAlienAndMarine = { GUICrosshair = true, GUINotifications = true, GUIDamageIndicators = true, GUIGameEnd = true, GUIWorldText = true,
@@ -42,7 +42,7 @@ kShowAsClass["Marine"] = { ["Hud/Marine/GUIMarineHUD"] = true, GUIPoisonedFeedba
                            GUISensorBlips = true, GUIObjectiveDisplay = true, GUIProgressBar = true, GUIRequestMenu = true,
                            GUIWaypoints = true, ["Factions/Hud/Factions_GUIExperienceBar"] = true }
 kShowAsClass["JetpackMarine"] = { GUIJetpackFuel = true }
-kShowAsClass["Exo"] = { GUIJetpackFuel = true, ["Hud/Marine/GUIMarineHUD"] = true, ["Hud/Marine/GUIExoHUD"] = true, GUIProgressBar = true, GUIRequestMenu = true, GUIWaypoints = true, ["Factions/Hud/Factions_GUIExperienceBar"] = true }
+kShowAsClass["Exo"] = { GUIExoThruster = true, ["Hud/Marine/GUIMarineHUD"] = true, ["Hud/Marine/GUIExoHUD"] = true, GUIProgressBar = true, GUIRequestMenu = true, GUIWaypoints = true, ["Factions/Hud/Factions_GUIExperienceBar"] = true }
 kShowAsClass["MarineSpectator"] = { GUIRequestMenu = true, ["Factions/Hud/Factions_GUIExperienceBar"] = true }
 kShowAsClass["Alien"] = { GUIObjectiveDisplay = true, GUIProgressBar = true, GUIRequestMenu = true, GUIWaypoints = true, GUIAlienHUD = true,
                           GUIEggDisplay = true, GUIRegenerationFeedback = true, ["Factions/Hud/Factions_GUIExperienceBar"] = true }
@@ -59,6 +59,7 @@ function AddClientUIScriptForClass(className, scriptName)
 end
 
 local scripts = { }
+local scriptCreationEventListeners = { }
 
 function ClientUI.GetScript(name)
     return scripts[name]
@@ -71,6 +72,10 @@ function ClientUI.DestroyUIScripts()
     end
     scripts = { }
     
+end
+
+function ClientUI.AddScriptCreationEventListener(listener)
+    table.insert(scriptCreationEventListeners, listener)
 end
 
 local function CheckPlayerIsOnTeam(forPlayer, teamType)
@@ -150,6 +155,14 @@ local function RemoveScripts(forPlayer)
     
 end
 
+local function NotifyListenersOfScriptCreation(scriptName, script)
+
+    for i = 1, #scriptCreationEventListeners do
+        scriptCreationEventListeners[i](scriptName, script)
+    end
+    
+end
+
 local function AddScripts(forPlayer)
 
     if forPlayer then
@@ -162,7 +175,10 @@ local function AddScripts(forPlayer)
                 for name, exists in pairs(kShowOnTeam[teamType]) do
                 
                     if exists and scripts[name] == nil then
+                    
                         scripts[name] = GetGUIManager():CreateGUIScript(name)
+                        NotifyListenersOfScriptCreation(name, scripts[name])
+                        
                     end
                     
                 end
@@ -184,7 +200,10 @@ local function AddScripts(forPlayer)
                     end
                     
                     if allowed and scripts[name] == nil then
+                    
                         scripts[name] = GetGUIManager():CreateGUIScript(name)
+                        NotifyListenersOfScriptCreation(name, scripts[name])
+                        
                     end
                     
                 end
