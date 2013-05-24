@@ -28,13 +28,19 @@ local networkVars =
 
 /*
 function Knife:OnTag(tagName)
-	// Do some multiple-hit logic here
-	// A cone?
-	local teamNumber = 2
-	local hits = Shared.FindEntitiesForTeamInRange(teamNumber, kAxeAttackRange)
-	for index, victim in ientitylist(hits) do
-		victim:TakeDamage(kKnifeDamage)
-	end
+	
+	if tagName == "swipe_sound" then
+        self:TriggerEffects("axe_attack")
+    elseif tagName == "hit" then
+    
+        local player = self:GetParent()
+        if player then
+            AttackMeleeCapsuleMulti(self, player, kAxeDamage, self:GetRange())
+        end
+        
+    elseif tagName == "attack_end" then
+        self.sprintAllowed = true
+    end
 end
 */
 

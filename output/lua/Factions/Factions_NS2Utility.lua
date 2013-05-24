@@ -96,3 +96,102 @@ function CanEntityDoDamageTo(attacker, target, cheats, devMode, friendlyFire, da
 	return overrideCanEntityDoDamageTo(attacker, target, cheats, devMode, friendlyFire, damageType)
 	
 end
+
+ /**
+  * Bullets are small and will hit exactly where you looked. 
+  * Melee, however, is different. We select targets from a volume, and we expect the melee'er to be able
+  * to basically select the "best" target from that volume. 
+  * Right now, the Trace methods available is limited (spheres or world-axis aligned boxes), so we have to
+  * compensate by doing multiple traces.
+  * We specify the size of the width and base height and its range.
+  * Then we split the space into 9 parts and trace/select all of them, choose the "best" target. If no good target is found,
+  * we use the middle trace for effects.
+  */
+/*
+function CheckMeleeCapsuleMulti(weapon, player, damage, range, optionalCoords, traceRealAttack, scale, priorityFunc, filter, maxHits)
+
+    scale = scale or 1
+	maxHits = maxHits or 99
+
+    local eyePoint = player:GetEyePos()
+    
+    if not teamNumber then
+        teamNumber = GetEnemyTeamNumber( player:GetTeamNumber() )
+    end
+    
+    local coords = optionalCoords or player:GetViewAngles():GetCoords()
+    local axis = coords.zAxis
+    local forwardDirection = Vector(coords.zAxis)
+    forwardDirection.y = 0
+
+    if forwardDirection:GetLength() ~= 0 then
+        forwardDirection:Normalize()
+    end
+    
+    local width, height = weapon:GetMeleeBase()
+    width = scale * width
+    height = scale * height
+        
+    // extents defines a world-axis aligned box, so x and z must be the same. 
+    local extents = Vector(width / 6, height / 6, width / 6)
+    if not filter then
+        filter = EntityFilterOne(player)
+    end
+        
+    local middleTrace,middleStart
+    local targets = {}, endPoints = {}, surfaces = {}, startPoints = {}
+    
+    if not priorityFunc then
+        priorityFunc = IsBetterMeleeTarget
+    end
+    
+    for _, pointIndex in ipairs(kTraceOrder) do
+    
+        local dx = pointIndex % 3 - 1
+        local dy = math.floor(pointIndex / 3) - 1
+        local point = eyePoint + coords.xAxis * (dx * width / 3) + coords.yAxis * (dy * height / 3)
+        local trace, sp, ep = TraceMeleeBox(weapon, point, axis, extents, range, PhysicsMask.Melee, filter)
+        
+        if dx == 0 and dy == 0 then
+            middleTrace, middleStart = trace, sp
+        end
+        
+        if trace.entity and IsNotBehind(eyePoint, trace.endPoint, forwardDirection) then
+        
+            table.insert(targets, trace.entity)
+            startPoints = sp
+            endPoint = trace.endPoint
+            surface = trace.surface
+            
+        end
+        
+    end
+    
+    // if we have not found a target, we use the middleTrace to possibly bite a wall (or when cheats are on, teammates)
+    targets = targets or middleTrace.entity
+    endPoint = endPoint or middleTrace.endPoint
+    surface = surface or middleTrace.surface
+    startPoint = startPoint or middleStart
+    
+    local direction = targets and (endPoint - startPoint):GetUnit() or coords.zAxis
+    return targets ~= nil or middleTrace.fraction < 1, target, endPoint, direction, surface
+    
+end
+*/
+/**
+ * Does an attack with a melee capsule.
+ */
+ /*
+function AttackMeleeCapsuleMulti(weapon, player, damage, range, optionalCoords, altMode, filter, maxHits)
+
+    // Enable tracing on this capsule check, last argument.
+    local didHit, target, endPoint, direction, surface = CheckMeleeCapsuleMulti(weapon, player, damage, range, optionalCoords, true, 1, nil, filter, maxHits)
+    
+    if didHit then
+        weapon:DoDamage(damage, target, endPoint, direction, surface, altMode)
+    end
+    
+    return didHit, target, endPoint, surface
+    
+end
+*/
