@@ -53,6 +53,7 @@ function GUIBulletDisplay:Initialize()
     self.flashInOverlay:SetPosition( Vector(0, 0, 0))    
     self.flashInOverlay:SetColor(Color(1,1,1,0.7))
     
+    self.clip = { }
     self:CreateClipIndicators()
     
     // Force an update so our initial state is correct.
@@ -80,9 +81,9 @@ function GUIBulletDisplay:CreateClipIndicators()
         self.clip[i] = GUIManager:CreateGraphicItem()
         self.clip[i]:SetTexture("ui/RifleDisplay.dds")
         local clipWidth = math.min(self.numClips / self.clipAreaWidth, self.clipWidthMax)
-        self.clip[i]:SetSize( Vector(clip, self.clipHeight, 0) )
+        self.clip[i]:SetSize( Vector(clipWidth, self.clipHeight, 0) )
         self.clip[i]:SetBlendTechnique( GUIItem.Add )
-        local clipLeft = self.clipLeft + (i * self.clipAreaWidth / math.min(self.numClips - 1, 0))
+        local clipLeft = self.clipLeft + (i * self.clipAreaWidth / math.min(self.numClips - 1, 1))
         self.clip[i]:SetPosition(Vector( clipLeft, self.clipTop, 0))
     end
     
