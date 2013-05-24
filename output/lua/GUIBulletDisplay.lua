@@ -53,6 +53,8 @@ function GUIBulletDisplay:Initialize()
     self.flashInOverlay:SetPosition( Vector(0, 0, 0))    
     self.flashInOverlay:SetColor(Color(1,1,1,0.7))
     
+    self:CreateClipIndicators()
+    
     // Force an update so our initial state is correct.
     self:Update(0)
 
@@ -71,7 +73,7 @@ function GUIBulletDisplay:CreateClipIndicators()
     self.clipLeft = 70
     self.clipAreaWidth = 200 - self.clipLeft
     
-    self.numClips = math.ceil(self.weaponMaxAmmo / self.clipSize)
+    self.numClips = math.ceil(self.weaponMaxAmmo / self.weaponClipSize)
     self.clip = { }
     
     for i = 1,self.numClips do
@@ -128,10 +130,12 @@ end
 
 function GUIBulletDisplay:SetMaxAmmo(weaponMaxAmmo)
     self.weaponMaxAmmo = weaponMaxAmmo
+    self:CreateClipIndicators()
 end
 
 function GUIBulletDisplay:SetClipSize(weaponClipSize)
     self.weaponClipSize = weaponClipSize
+    self:CreateClipIndicators()
 end
 
 function GUIBulletDisplay:SetAmmo(weaponAmmo)
