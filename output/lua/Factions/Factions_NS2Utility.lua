@@ -139,12 +139,17 @@ function CheckMeleeCapsuleMulti(weapon, player, damage, range, optionalCoords, t
     end
         
     local middleTrace,middleStart
-    local targets = {}, endPoints = {}, surfaces = {}, startPoints = {}
+    local hitEntities = {}
+    local targets = {}
+    local endPoints = {}
+    local surfaces = {}
+    local startPoints = {}
     
     if not priorityFunc then
         priorityFunc = IsBetterMeleeTarget
     end
     
+    // Add each target to a big list
     for _, pointIndex in ipairs(kTraceOrder) do
     
         local dx = pointIndex % 3 - 1
@@ -156,25 +161,32 @@ function CheckMeleeCapsuleMulti(weapon, player, damage, range, optionalCoords, t
             middleTrace, middleStart = trace, sp
         end
         
-        if trace.entity and IsNotBehind(eyePoint, trace.endPoint, forwardDirection) then
+        if trace.entity and not hitEntities[trace.entity:GetId()] and IsNotBehind(eyePoint, trace.endPoint, forwardDirection) then
         
+        	hitEntities[trace.entity:GetId()] = true
             table.insert(targets, trace.entity)
-            startPoints = sp
-            endPoint = trace.endPoint
-            surface = trace.surface
+            table.insert(startPoints, sp)
+            table.insert(endPoints, trace.endPoint)
+            table.insert(surfaces, trace.surface)
             
         end
         
     end
     
-    // if we have not found a target, we use the middleTrace to possibly bite a wall (or when cheats are on, teammates)
-    targets = targets or middleTrace.entity
-    endPoint = endPoint or middleTrace.endPoint
-    surface = surface or middleTrace.surface
-    startPoint = startPoint or middleStart
+    // if we have not found a target, we use the middleTrace to possibly bite a wall (or when cheats are on, teammate)
+    if #targets == 0 then
+    	targets = { middleTrace.entity }
+    	endPoints = { middleTrace.endPoint }
+  	  surfaces = { middleTrace.surface }
+ 	   startPoints = { middleStart }
+    end
     
-    local direction = targets and (endPoint - startPoint):GetUnit() or coords.zAxis
-    return targets ~= nil or middleTrace.fraction < 1, target, endPoint, direction, surface
+    local directions = {}
+    for index, target in ipairs(targets) do
+    	local direction = target and (endPoints[index] - startPoints[index]):GetUnit() or coords.zAxis
+    	table.insert(directions, direction)
+    end
+    return #targets > 0 or middleTrace.fraction < 1, targets, endPoints, directions, surfaces
     
 end
 */
@@ -185,13 +197,15 @@ end
 function AttackMeleeCapsuleMulti(weapon, player, damage, range, optionalCoords, altMode, filter, maxHits)
 
     // Enable tracing on this capsule check, last argument.
-    local didHit, target, endPoint, direction, surface = CheckMeleeCapsuleMulti(weapon, player, damage, range, optionalCoords, true, 1, nil, filter, maxHits)
+    local didHit, targets, endPoints, directions, surfaces = CheckMeleeCapsuleMulti(weapon, player, damage, range, optionalCoords, true, 1, nil, filter, maxHits)
     
     if didHit then
-        weapon:DoDamage(damage, target, endPoint, direction, surface, altMode)
+    	for i, target in ipairs[targets] do
+       	 weapon:DoDamage(damage, target, endPoints[i], directions[i], surfaces[i], altMode)
+    	end
     end
     
-    return didHit, target, endPoint, surface
+    return didHit, targets, endPoints, surfaces
     
 end
 */
