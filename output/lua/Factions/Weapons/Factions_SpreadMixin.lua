@@ -80,11 +80,13 @@ function SpreadMixin:OnUpdate(dt)
 	
 end
 
+/*
 function SpreadMixin:OnUpdateRender(dt) 
 
 	self:UpdateSpreadScalar()
 	
 end
+*\
 
 function SpreadMixin:GetDefaultBaseSpread()
 	local mixinConstants = self:GetMixinConstants()
