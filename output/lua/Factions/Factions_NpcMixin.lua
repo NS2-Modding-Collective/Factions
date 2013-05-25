@@ -28,7 +28,7 @@ if Server then
 		Shared.Message("Spawned a " .. self:GetClassName() .. " at base difficulty " .. baseDifficulty)
 		Shared.Message("Spawned a " .. self:GetClassName() .. " at base + game (actual) difficulty " .. self.difficulty)
 		if HasMixin(self, "Xp") then
-			self:SetLevel(self.difficulty)
+			self:SetLevel(math.max(self.difficulty, 1))
 			// Apply any new level tied upgrades.
 			self:ApplyLevelTiedUpgrades()
 		end

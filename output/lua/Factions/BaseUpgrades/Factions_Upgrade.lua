@@ -57,7 +57,7 @@ function FactionsUpgrade:Initialize()
 	self.uniqueSlot = FactionsUpgrade.uniqueSlot
 	self.mutuallyExclusive = FactionsUpgrade.mutuallyExclusive
 	self.hardCapScale = FactionsUpgrade.hardCapScale
-	self.minLevel = FactionsUpgrade.minLevel
+	self.minPlayerLevel = FactionsUpgrade.minPlayerLevel
 	self.isLevelTied = FactionsUpgrade.isLevelTied
 end
 

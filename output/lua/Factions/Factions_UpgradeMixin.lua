@@ -100,7 +100,7 @@ function UpgradeMixin:GetCanBuyUpgradeMessage(upgradeId, freeUpgrade, reapplyUpg
 	elseif not freeUpgrade and not (self:GetResources() >= upgrade:GetCostForNextLevel()) then
 		return "Cannot afford upgrade"
 	elseif self:GetLvl() < upgrade:GetMinPlayerLvl() then
-		return "Cannot get upgrade until level " .. upgrade:GetMinPlayerLevel()
+		return "Cannot get upgrade until level " .. upgrade:GetMinPlayerLvl()
 	elseif factionsClass and not factionsClass:GetIsUpgradeAllowed(upgrade) then
 		return "Your class cannot buy this upgrade"
 	elseif not upgrade:GetIsAllowedForThisGameMode() then
