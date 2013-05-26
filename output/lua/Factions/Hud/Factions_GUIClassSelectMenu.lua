@@ -34,6 +34,10 @@ Factions_GUIClassSelectMenu.kClassButtonTexture =  "ui/class.jpg"
 Factions_GUIClassSelectMenu.kClassButtonXOffset = GUIScale(64)
 Factions_GUIClassSelectMenu.kClassButtonYOffset = GUIScale(64)
 
+// class buttons
+Factions_GUIClassSelectMenu.kColorPicker = GUIScale( Vector(32, 32, 0) )
+Factions_GUIClassSelectMenu.ColorPickerTexture =  "ui/arrow.png"
+
 function Factions_GUIClassSelectMenu:Initialize()
 
     self.mouseOverStates = { }
@@ -67,11 +71,30 @@ function Factions_GUIClassSelectMenu:Initialize()
     //self.selectClassText:SetColor(Factions_GUIClassSelectMenu.kCloseButtonColor)
     self.content:AddChild(self.selectClassText)
     
+    // OK button    
+    self.okButton = GUIManager:CreateGraphicItem()
+    self.okButton:SetAnchor(GUIItem.Right, GUIItem.Bottom)
+    self.okButton:SetSize(Vector(Factions_GUIClassSelectMenu.kButtonWidth, Factions_GUIClassSelectMenu.kButtonHeight, 0))
+    self.okButton:SetPosition(Vector(-Factions_GUIClassSelectMenu.kButtonWidth, Factions_GUIClassSelectMenu.kPadding, 0))
+    self.okButton:SetTexture(Factions_GUIClassSelectMenu.kButtonTexture)
+    self.okButton:SetLayer(kGUILayerMainMenu - 1)
+    self.content:AddChild(self.okButton)
+    
+    self.okButtonText = GUIManager:CreateTextItem()
+    self.okButtonText:SetAnchor(GUIItem.Middle, GUIItem.Center)
+    //self.okButtonText:SetFontName(Factions_GUIClassSelectMenu.kFont)
+    self.okButtonText:SetTextAlignmentX(GUIItem.Align_Center)
+    self.okButtonText:SetTextAlignmentY(GUIItem.Align_Center)
+    self.okButtonText:SetText(Locale.ResolveString("OK"))
+    self.okButtonText:SetFontIsBold(true)
+    self.okButtonText:SetColor(Factions_GUIClassSelectMenu.kCloseButtonColor)
+    self.okButton:AddChild(self.okButtonText)
+    
     // close button    
     self.closeButton = GUIManager:CreateGraphicItem()
     self.closeButton:SetAnchor(GUIItem.Right, GUIItem.Bottom)
     self.closeButton:SetSize(Vector(Factions_GUIClassSelectMenu.kButtonWidth, Factions_GUIClassSelectMenu.kButtonHeight, 0))
-    self.closeButton:SetPosition(Vector(-Factions_GUIClassSelectMenu.kButtonWidth, Factions_GUIClassSelectMenu.kPadding, 0))
+    self.closeButton:SetPosition(Vector(-2 * Factions_GUIClassSelectMenu.kButtonWidth - Factions_GUIClassSelectMenu.kPadding, Factions_GUIClassSelectMenu.kPadding, 0))
     self.closeButton:SetTexture(Factions_GUIClassSelectMenu.kButtonTexture)
     self.closeButton:SetLayer(kGUILayerMainMenu - 1)
     self.closeButton:SetIsVisible(self.player.factionsClassType ~= kFactionsClassType.NoneSelected)
@@ -88,6 +111,7 @@ function Factions_GUIClassSelectMenu:Initialize()
     self.closeButton:AddChild(self.closeButtonText)
 
     self:AddClassButtons()
+    self:AddColorPicker()
 end
 
 
@@ -95,6 +119,8 @@ function Factions_GUIClassSelectMenu:AddClassButtons()
 
     // Create classes buttons        
     self.buttons = {}
+    self.selectedButton = nil
+    
     local classes = self.player:GetAllClasses()
     local xOffset = 0
     
@@ -125,6 +151,73 @@ function Factions_GUIClassSelectMenu:AddClassButtons()
 end
 
 
+function Factions_GUIClassSelectMenu:AddColorPicker()
+
+    self.colorPickerArrow = GUIManager:CreateGraphicItem()
+    self.colorPickerArrow:SetSize(Factions_GUIClassSelectMenu.kColorPicker)
+    self.colorPickerArrow:SetAnchor(GUIItem.Left, GUIItem.Bottom)
+    self.colorPickerArrow:SetPosition(Vector(Factions_GUIClassSelectMenu.kColorPicker.x, -Factions_GUIClassSelectMenu.kClassButtonYOffset / 2 - 40 , 0))
+    self.colorPickerArrow:SetTexture(Factions_GUIClassSelectMenu.ColorPickerTexture)
+    self.content:AddChild(self.colorPickerArrow)
+    
+    self.colorButtons = {}
+
+    local red = 255  
+    local green = 0
+    local blue = 0
+    
+    for i = 0, 310 , 1 do
+    
+        if red == 255 and blue < 255 and green == 0 then
+            blue = blue + 5
+        elseif red > 0 and blue == 255 and green < 255 then
+            red = red - 5   
+        elseif red == 0 and blue == 255 and green < 255 then
+            green = green + 5
+        elseif red == 0 and blue > 0 and green == 255 then
+            blue = blue - 5
+        elseif red < 255 and blue == 0 and green == 255 then
+            red = red + 5
+        elseif red == 255 and blue == 0 and green > 0 then
+            green = green - 5
+        end
+
+    
+        local graphicItem = GUIManager:CreateGraphicItem()
+        graphicItem:SetSize(Factions_GUIClassSelectMenu.kColorPicker)
+        graphicItem:SetAnchor(GUIItem.Left, GUIItem.Bottom)
+        graphicItem:SetPosition(Vector(i + Factions_GUIClassSelectMenu.kColorPicker.x, -Factions_GUIClassSelectMenu.kClassButtonYOffset / 2 , 0))
+        graphicItem:SetColor(Color(red / 255, green / 255, blue / 255, 1))
+        self.content:AddChild(graphicItem)
+        table.insert(self.colorButtons, graphicItem)
+    end    
+    
+    self.colorButtonsStart = self.colorButtons[1]:GetPosition()
+    self.colorButtonsStart.x = self.colorButtonsStart.x - Factions_GUIClassSelectMenu.kColorPicker.x / 2
+    
+    self.colorButtonsEnd = self.colorButtons[#self.colorButtons]:GetPosition()
+    self.colorButtonsEnd.x = self.colorButtonsEnd.x + Factions_GUIClassSelectMenu.kColorPicker.x / 2
+    
+end
+
+
+function Factions_GUIClassSelectMenu:GetColorForX(xValue)
+
+    local sliderEntrys = self.colorButtonsEnd.x - self.colorButtonsStart.x
+    local colorButtonEntrys = #self.colorButtons - 1
+    local i = math.round((colorButtonEntrys / sliderEntrys) * (xValue - self.colorButtonsStart.x)) +1 
+    
+    if i <= 0 then
+        i = 1
+    elseif i > #self.colorButtons then
+        i = #self.colorButtons
+    end
+    
+    if self.colorButtons[i] then
+        return self.colorButtons[i]:GetColor()
+    end
+    
+end
 
 function Factions_GUIClassSelectMenu:Uninitialize()
     GUI.DestroyItem(self.background)
@@ -138,23 +231,44 @@ end
 
 
 function Factions_GUIClassSelectMenu:Update(deltaTime)
-/*
-    for i = 1, #self.buttons do        
-        local item = self.buttons[i]
-        if self:GetIsMouseOver(item) then 
-            // hover            
-        else
-            // not hover
+
+
+    if self.buttons then
+        if self.selectedButton then
+        
+            for i, item in ipairs(self.buttons) do        
+                if self.selectedButton == item then 
+                    item:SetColor(Color(1, 1, 1, 1))
+                else
+                    item:SetColor(Color(0.5, 0.5, 0.5, 1))
+                end 
+            end
+            
         end
     end
-  */  
+    
+    if self.colorPickerArrowSelected then
+        local mouseX, mouseY = Client.GetCursorPosScreen()  
+        mouseX = mouseX - self.colorPickerArrow:GetScreenPosition( Client.GetScreenWidth(),  Client.GetScreenHeight()).x 
+
+        local newPosition = Vector(self.colorPickerArrow:GetPosition().x + mouseX, self.colorPickerArrow:GetPosition().y, 0) 
+
+        if newPosition.x < self.colorButtonsStart.x then
+            newPosition.x = self.colorButtonsStart.x
+        elseif newPosition.x > self.colorButtonsEnd.x then
+            newPosition.x = self.colorButtonsEnd.x
+        end
+
+        self.colorPickerArrow:SetPosition(newPosition)  
+    end  
+  
 end
 
 
 function Factions_GUIClassSelectMenu:GetIsMouseOver(overItem)
     local mouseOver = GUIItemContainsPoint(overItem, Client.GetCursorPosScreen())
     if mouseOver and not self.mouseOverStates[overItem] then
-         MarineBuy_OnMouseOver()
+        MarineBuy_OnMouseOver()
     end
     self.mouseOverStates[overItem] = mouseOver
     return mouseOver
@@ -165,23 +279,47 @@ function Factions_GUIClassSelectMenu:SendKeyEvent(key, down)
 
     // only register key events when everythings loaded
     if self.background then
-        if self:GetIsMouseOver(self.closeButton) then
-            if self.closeButton:GetIsVisible() and key == InputKey.MouseButton0 and down then
-                self.player:CloseClassSelectMenu()
-            end
-        else
-            if self.buttons then
-                for i, item in ipairs(self.buttons) do        
-                    if self:GetIsMouseOver(item) then 
-                        if key == InputKey.MouseButton0 and down then
-                            // change it to client and server (so the ui will dissappear
-                            self.player:ChangeFactionsClassFromString(item.classType)
-                            Shared.ConsoleCommand("class " .. item.classType)
-                            self.player:CloseClassSelectMenu()  
-                        end
-                    end            
+    
+        if key == InputKey.MouseButton0 and down then   
+            
+            if (self:GetIsMouseOver(self.colorPickerArrow)) then
+                self.colorPickerArrowSelected = true
+                
+            elseif self:GetIsMouseOver(self.okButton) then
+                if self.selectedButton then
+                    // change it to client and server (so the ui will dissappear
+                    self.player:ChangeFactionsClassFromString(self.selectedButton.classType)
+                    Shared.ConsoleCommand("class " .. self.selectedButton.classType)
+                    
+                    // set color
+
+
+                    local color = self:GetColorForX(self.colorPickerArrow:GetPosition().x)
+                    if color then
+                        Shared.ConsoleCommand("setcolour " .. math.round(color.r * 255) .. " " .. math.round(color.g * 255) .. " " .. math.round(color.b * 255))
+                    end
+                    
+                    self.player:CloseClassSelectMenu() 
+                end
+                 
+            elseif self:GetIsMouseOver(self.closeButton) then
+                if self.closeButton:GetIsVisible() and key == InputKey.MouseButton0 and down then
+                    self.player:CloseClassSelectMenu()
+                end
+                
+            else
+                if self.buttons then
+                    self.colorPickerArrowSelected = false
+                    for i, item in ipairs(self.buttons) do        
+                        if self:GetIsMouseOver(item) then 
+                            self.selectedButton = item                             
+                        end            
+                    end
                 end
             end
+            
+        else
+            self.colorPickerArrowSelected = false
         end
     end
     

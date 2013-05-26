@@ -37,8 +37,10 @@ if Server then
 	 
 		end
 
-		// Spawn normally		
-		success, newPlayer = player:GetTeam():ReplaceRespawnPlayer(player, nil, nil)
+        if not (GetGamerulesInfo():GetIsClassBased() and not Server.GetOwner(player):GetIsVirtual() and player.GetHasFactionsClass and not player:GetHasFactionsClass()) then
+		    // Spawn normally		
+		    success, newPlayer = player:GetTeam():ReplaceRespawnPlayer(player, nil, nil)
+        end
 		
 		if success then
 			// Make a nice effect when you spawn.
