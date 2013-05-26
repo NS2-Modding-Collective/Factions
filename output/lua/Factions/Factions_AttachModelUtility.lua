@@ -2,10 +2,11 @@
 if Server then
 
     // function to attach a model on every script actor    
-    function Entity:AddAttachedModel(model, attachPoint, offset, scale, rotation)
+    function Entity:AddAttachedModel(model, animationGraph, attachPoint, offset, scale, rotation)
 
         local extraValues = {   
-                                model = model,                       
+                                model = model,   
+                                animationGraph = animationGraph,
                                 offset = offset or Vector(0,0,0),         
                                 scale = scale or Vector(0,0,0),   
                                 rotation = rotation or Angles(0,0,0),
@@ -23,10 +24,10 @@ if Server then
     // console commands for testing
     //****************************************
     
-    function OnCommandAttachNew(client, modelName, attachPoint)
+    function OnCommandAttachNew(client, modelName, animationGraph, attachPoint)
         local player = client:GetControllingPlayer()
         if Shared.GetCheatsEnabled() then
-            player:AddAttachedModel(modelName, attachPoint)
+            player:AddAttachedModel(modelName, animationGraph, attachPoint)
         end
 	end
     
@@ -82,19 +83,19 @@ if Server then
             local attachModels = GetChildEntities(player, "AttachModel")
             if attachModels and #attachModels > 0 then
                 if not number then    
-                    Print("Currently attached models:")        
+                    Shared.Message("Currently attached models:")        
                     for i, attachedModel in ipairs(attachModels) do
-                        //Print(i ..": " .. attachedModel.model .. " ,attached at " .. attachedModel:GetAttached())
-                        Print("%i: %s attached at %s", i, attachedModel.model, attachedModel:GetAttached() or "")
+                        //Shared.Message(i ..": " .. attachedModel.model .. " ,attached at " .. attachedModel:GetAttached())
+                        Shared.Message("%i: %s attached at %s", i, attachedModel.model, attachedModel:GetAttached() or "")
                     end
                 else
                     number = math.min(tonumber(number), #attachModels)
                     player.lastAttachedModel = attachModels[number]
-                    Print("Selected model is now: %s", player.lastAttachedModel.model) 
+                    Shared.Message("Selected model is now: %s", player.lastAttachedModel.model) 
                     
                 end
             else
-                Print("Currently no models attached!")
+                Shared.Message("Currently no models attached!")
             end
         end
 	end

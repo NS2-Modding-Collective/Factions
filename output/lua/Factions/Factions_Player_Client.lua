@@ -19,6 +19,23 @@ function Player:AddTakeDamageIndicator(damagePosition)
 	overrideAddTakeDamageIndicator(self, damagePosition)
 end
 
+
+local overrideUpdateCrossHairText
+overrideUpdateCrossHairText = Class_ReplaceMethod( "Player", "UpdateCrossHairText", 
+	function(self, entity)
+        if self.classSelectMenu ~= nil then
+            self.crossHairText = nil
+            self.crossHairHealth = 0
+            self.crossHairMaturity = 0
+            self.crossHairBuildStatus = 0
+            return
+        else
+            return overrideUpdateCrossHairText(self, entity) 
+        end
+	end
+)
+
+
 function PlayerUI_GetIsUsingIronSight()
 
 	local player = Client.GetLocalPlayer()
@@ -100,3 +117,5 @@ function PlayerUI_GetTeamType()
     return kNeutralTeamType
 
 end
+
+

@@ -211,6 +211,12 @@ if Server then
 		
 	end
 	
+    function OnCommandClass(client, className)
+        if className then
+		    SwitchClass(client, className)
+        end
+	end
+	
 	function OnCommandAssault(client)
 		SwitchClass(client, "Assault")
 	end
@@ -235,6 +241,7 @@ if Server then
 	Event.Hook("Console_setcolour", OnCommandSetColour)
 
     Event.Hook("Console_givexp", OnCommandGiveXp) 
+    Event.Hook("Console_class", OnCommandClass) 
 	Event.Hook("Console_assault", OnCommandAssault) 
 	Event.Hook("Console_scout", OnCommandScout) 
 	Event.Hook("Console_support", OnCommandSupport) 

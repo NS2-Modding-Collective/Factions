@@ -15,6 +15,8 @@ class 'AttachModel' (ScriptActor)
 
 AttachModel.kMapName = "attach_model"
 
+AttachModel.arcadeGorge =  PrecacheAsset("models/props/descent/descent_arcade_gorgetoy_01.model")
+
 local networkVars =
 {   
     offset = "vector",
@@ -42,7 +44,11 @@ function AttachModel:OnInitialized()
     ScriptActor.OnInitialized(self)  
     
     if self.model then
-        self:SetModel(self.model)
+        if self.animationGraph then
+            self:SetModel(self.model, self.animationGraph)
+        else
+            self:SetModel(self.model)
+        end
     end
 
 end
@@ -85,6 +91,20 @@ function AttachModel:OnAdjustModelCoords(modelCoords)
     modelCoords = modelCoords * rotationCoords
 
     return modelCoords
+end
+
+
+function AttachModel:OnProcessMove(input)
+end
+
+// only getting updated when the model has an animation graph
+function AttachModel:OnUpdateAnimationInput(modelMixin)
+    local alive = false
+    local parent = self:GetParent()
+    if parent then
+        alive = parent:GetIsAlive()
+    end
+    modelMixin:SetAnimationInput("alive", alive)
 end
 
 

@@ -106,6 +106,14 @@ function FactionsClassMixin:__initmixin()
 
 end
 
+
+function FactionsClassMixin:OnDestroy()
+    if Client then
+        self:CloseClassSelectMenu()
+    end
+end
+
+
 function FactionsClassMixin:GiveStartingUpgrades()
 
 	// TODO: Reenable when this is fixed.
@@ -133,7 +141,7 @@ function FactionsClassMixin:CopyPlayerDataFrom(player)
 	// At this point we have enough info to give the player their starting equipment
 	if Server then
 		self:GiveStartingUpgrades()
-	end
+    end
 
 end
 
@@ -198,6 +206,14 @@ function FactionsClassMixin:OnUpdatePlayer()
 	if self.factionsClassType ~= self.factionsClassLocalType then
 		self:ChangeFactionsClass(self.factionsClassType)
 	end
+	
+    if Client then	
+        // open the menu
+        if self.factionsClassType == kFactionsClassType.NoneSelected and self.factionsClassLocalType == kFactionsClassType.NoneSelected and not self.classSelectMenuClosed then
+            self:OpenClassSelectMenu()
+        end
+    end
+	
 end
 
 function FactionsClassMixin:ChangeFactionsClass(newClass)
@@ -269,4 +285,31 @@ function FactionsClassMixin:GetBaseDropCount()
 		return 3
 	end
 
+end
+
+if Client then
+    function FactionsClassMixin:OpenClassSelectMenu()
+        
+        // Don't allow display in the ready room
+        if self:GetTeamNumber() ~= 0 and not self:isa("ReadyRoomPlayer") then   
+            if not self.classSelectMenu then                            
+                self.classSelectMenu = GetGUIManager():CreateGUIScript("Factions/Hud/Factions_GUIClassSelectMenu")
+                MouseTracker_SetIsVisible(true, "ui/Cursor_MenuDefault.dds", true)
+            end            
+        end
+        
+    end
+
+    function FactionsClassMixin:CloseClassSelectMenu()   
+     
+        if self.classSelectMenu then
+            GetGUIManager():DestroyGUIScript(self.classSelectMenu)
+            self.classSelectMenu = nil
+            MouseTracker_SetIsVisible(false)
+            // Quick work-around to not fire weapon when closing menu.
+            self.timeClosedMenu = Shared.GetTime()
+            self.classSelectMenuClosed = true
+        end   
+        
+    end    
 end

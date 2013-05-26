@@ -61,13 +61,20 @@ function MarineChops:OnInitialized()
         //self:AddAttachedModel(Skulk.kModelName, Jetpack.kAttachPoint, Vector(0,0.5,-0.5) , Vector(0.5,0.5,0.5), Angles(90,0,0))   
 
         // turret on shoulder
-        self:AddAttachedModel(Sentry.kModelName, "LArm_ShldrPad1", nil , Vector(0.5,0.5,0.5), Angles(0,90,-90))   
+        self:AddAttachedModel(Sentry.kModelName, nil, "LArm_ShldrPad1", nil , Vector(0.5,0.5,0.5), Angles(0,90,-90))   
         
         // cyst head
-        self:AddAttachedModel(Cyst.kModelName , "Head", Vector(0.5,0,0) , Vector(0.4,0.4,0.4), Angles(0,0,-90))
+        self:AddAttachedModel(Cyst.kModelName , Cyst.kAnimationGraph, "Head", Vector(0.5,0,0) , Vector(0.4,0.4,0.4), Angles(0,0,-90))
+        
+        // turret also at head, more models are posible
+        self:AddAttachedModel(Sentry.kModelName , nil, "Head", Vector(0.5,0,0) , Vector(0.4,0.4,0.4), Angles(0,0,-90))
         
         // flamethrower on back
-        self:AddAttachedModel(Flamethrower.kModelName , "Spine3", Vector(0,-0.2,-0.18) , nil, Angles( math.pi / 2, math.pi,180))   
+        self:AddAttachedModel(Flamethrower.kModelName , nil, "Spine3", Vector(0,-0.2,-0.18) , Vector(0.5, 0.5, 0.5), Angles( math.pi / 2, math.pi,180))   
+        
+        // gorge plushi on hip
+        self:AddAttachedModel(AttachModel.arcadeGorge , nil, "LLeg_Hip", Vector(0.2, 0.2, 0), Vector(1.2 ,1.2, 1.2), Angles(4,3,6))
+
                
         
     end
