@@ -56,6 +56,14 @@ function TeamColoursMixin:OnOwnerChanged(oldOwner, newOwner)
     end    
 end
 
+function TeamColoursMixin:SetArmorColour(red, green, blue)
+
+	local dblRed = tonumber(red)
+	local dblGreen = tonumber(green)
+	local dblBlue = tonumber(blue)
+	self.factionsArmorColour = Vector(dblRed, dblGreen, dblBlue)
+
+end
 
 // Set the colour for the objects based on the team colours.
 function TeamColoursMixin:OnUpdateRender()

@@ -138,7 +138,7 @@ function Factions_GUIClassSelectMenu:AddClassButtons()
         local buttonText = GUIManager:CreateTextItem()
         buttonText:SetAnchor(GUIItem.Middle, GUIItem.Top)
         //self.closeButtonText:SetFontName(Factions_GUIClassSelectMenu.kFont)
-        buttonText:SetPosition(Vector(0, 20, 0))
+        buttonText:SetPosition(GUIScale(Vector(0, 20, 0)))
         buttonText:SetTextAlignmentX(GUIItem.Align_Center)
         buttonText:SetTextAlignmentY(GUIItem.Align_Center)
         buttonText:SetText(class.type)
@@ -273,7 +273,6 @@ function Factions_GUIClassSelectMenu:GetIsMouseOver(overItem)
     self.mouseOverStates[overItem] = mouseOver
     return mouseOver
 end
-
 
 function Factions_GUIClassSelectMenu:SendKeyEvent(key, down)
 

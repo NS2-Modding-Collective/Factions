@@ -291,7 +291,7 @@ if Client then
     function FactionsClassMixin:OpenClassSelectMenu()
         
         // Don't allow display in the ready room
-        if self:GetTeamNumber() ~= 0 and not self:isa("ReadyRoomPlayer") then   
+        if Client.GetLocalPlayer() == self and self:GetTeamNumber() ~= 0 and not self:isa("ReadyRoomPlayer") then   
             if not self.classSelectMenu then                            
                 self.classSelectMenu = GetGUIManager():CreateGUIScript("Factions/Hud/Factions_GUIClassSelectMenu")
                 MouseTracker_SetIsVisible(true, "ui/Cursor_MenuDefault.dds", true)

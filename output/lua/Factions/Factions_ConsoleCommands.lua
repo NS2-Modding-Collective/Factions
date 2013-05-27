@@ -37,7 +37,7 @@ if Server then
 			local dblBlue = tonumber(blue) / 255
 			if dblRed and dblGreen and dblBlue then
 				if HasMixin(player, "TeamColours") then
-					player.factionsArmorColour = Vector(dblRed, dblGreen, dblBlue)
+					player:SetArmorColour(dblRed, dblGreen, dblBlue)
 				end			
 			else
 				player:SendDirectMessage("Usage: setcolour <red> <green> <blue>")
@@ -237,9 +237,22 @@ if Server then
         end
 	end
 	
+	function OnCommandDifficulty(client, baseDifficulty)
+		if baseDifficulty and Shared.GetCheatsEnabled() then
+			local numBaseDifficulty = tonumber(baseDifficulty)
+			if numBaseDifficulty and numBaseDifficulty > 0 and numBaseDifficulty < 10 then
+				if  GetGamerules():isa("XenoswarmGamerules") then
+					GetGamerules():SetDifficulty(numBaseDifficulty)
+				end
+			end
+		end
+	end
+	
+	// Colours
 	Event.Hook("Console_badass", OnCommandBadass)
 	Event.Hook("Console_setcolour", OnCommandSetColour)
 
+	// Upgrades
     Event.Hook("Console_givexp", OnCommandGiveXp) 
     Event.Hook("Console_class", OnCommandClass) 
 	Event.Hook("Console_assault", OnCommandAssault) 
@@ -248,6 +261,10 @@ if Server then
     Event.Hook("Console_buy", OnCommandBuy) 
 	Event.Hook("Console_refundall", OnCommandRefundAllUpgrades) 
 	
+	// Game-specific
+	Event.Hook("Console_difficulty", OnCommandDifficulty)
+	
+	// Debug etc.
 	Event.Hook("Console_debugupgrades", OnCommandDebugUpgrades)
 	Event.Hook("Console_forceclass", OnCommandForceClass) 
 	Event.Hook("Console_forcegivexp", OnCommandGiveXp) 

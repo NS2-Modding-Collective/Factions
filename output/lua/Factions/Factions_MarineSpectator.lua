@@ -9,6 +9,8 @@
 
 // Factions_MarineSpectator.lua
 
+Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
+
 local networkVars = {
 }
 	
@@ -29,7 +31,11 @@ function MarineSpectator:OnInitialized()
 
     TeamSpectator.OnInitialized(self)
     
-    //self:SetTeamNumber(1)
+    // Team Colours
+	if GetGamerulesInfo():GetUsesMarineColours() then
+		InitMixin(self, TeamColoursMixin)
+		assert(HasMixin(self, "TeamColours"))
+	end
     
 end
 

@@ -126,7 +126,7 @@ end
 function XenoswarmGamerules:SetDifficulty(newDifficulty)
 
 	self.difficulty = newDifficulty
-	kNPCDamageModifier = 0.1 + (0.05 * self.difficulty)
+	kPoisonDartDamage = 
 	SendGlobalChatMessage("Difficulty set to " .. self.difficulty .. " / " .. kMaxDifficulty)
 
 end
