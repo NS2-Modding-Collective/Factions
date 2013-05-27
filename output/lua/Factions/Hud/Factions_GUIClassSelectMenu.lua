@@ -36,6 +36,7 @@ Factions_GUIClassSelectMenu.kClassButtonYOffset = GUIScale(64)
 
 // class buttons
 Factions_GUIClassSelectMenu.kColorPicker = GUIScale( Vector(32, 32, 0) )
+Factions_GUIClassSelectMenu.kColorPickerYOffset = GUIScale(Factions_GUIClassSelectMenu.kClassButtonYOffset * 1.5)
 Factions_GUIClassSelectMenu.ColorPickerTexture =  "ui/arrow.png"
 
 function Factions_GUIClassSelectMenu:Initialize()
@@ -66,7 +67,7 @@ function Factions_GUIClassSelectMenu:Initialize()
     self.selectClassText:SetPosition(Vector(0, Factions_GUIClassSelectMenu.kClassButtonYOffset / 2, 0))
     self.selectClassText:SetTextAlignmentX(GUIItem.Align_Center)
     self.selectClassText:SetTextAlignmentY(GUIItem.Align_Center)
-    self.selectClassText:SetText("Choose your class")
+    self.selectClassText:SetText("Choose your class and color")
     self.selectClassText:SetFontIsBold(true)
     //self.selectClassText:SetColor(Factions_GUIClassSelectMenu.kCloseButtonColor)
     self.content:AddChild(self.selectClassText)
@@ -122,13 +123,18 @@ function Factions_GUIClassSelectMenu:AddClassButtons()
     self.selectedButton = nil
     
     local classes = self.player:GetAllClasses()
-    local xOffset = 0
+    //local xOffset = 0
     
+    local xOffset = -(Factions_GUIClassSelectMenu.kClassButtonSize.x) * (#classes / 2)
+    if #classes % 2 ~= 0 then
+        xOffset = xOffset + (Factions_GUIClassSelectMenu.kClassButtonSize.x)
+    end
+
     for _, class in pairs(classes) do    
         local graphicItem = GUIManager:CreateGraphicItem()
         graphicItem:SetSize(Factions_GUIClassSelectMenu.kClassButtonSize)
         graphicItem:SetAnchor(GUIItem.Middle, GUIItem.Top)
-        graphicItem:SetPosition(Vector(-xOffset, Factions_GUIClassSelectMenu.kClassButtonYOffset, 0))
+        graphicItem:SetPosition(Vector(xOffset, Factions_GUIClassSelectMenu.kClassButtonYOffset, 0))
         graphicItem:SetTexture(Factions_GUIClassSelectMenu.kClassButtonTexture)
         graphicItem.classType = class.type
         //graphicItem:SetTexturePixelCoordinates(GetSmallIconPixelCoordinates(itemTechId))    
@@ -152,13 +158,6 @@ end
 
 
 function Factions_GUIClassSelectMenu:AddColorPicker()
-
-    self.colorPickerArrow = GUIManager:CreateGraphicItem()
-    self.colorPickerArrow:SetSize(Factions_GUIClassSelectMenu.kColorPicker)
-    self.colorPickerArrow:SetAnchor(GUIItem.Left, GUIItem.Bottom)
-    self.colorPickerArrow:SetPosition(Vector(Factions_GUIClassSelectMenu.kColorPicker.x, -Factions_GUIClassSelectMenu.kClassButtonYOffset / 2 - 40 , 0))
-    self.colorPickerArrow:SetTexture(Factions_GUIClassSelectMenu.ColorPickerTexture)
-    self.content:AddChild(self.colorPickerArrow)
     
     self.colorButtons = {}
 
@@ -185,8 +184,8 @@ function Factions_GUIClassSelectMenu:AddColorPicker()
     
         local graphicItem = GUIManager:CreateGraphicItem()
         graphicItem:SetSize(Factions_GUIClassSelectMenu.kColorPicker)
-        graphicItem:SetAnchor(GUIItem.Left, GUIItem.Bottom)
-        graphicItem:SetPosition(Vector(i + Factions_GUIClassSelectMenu.kColorPicker.x, -Factions_GUIClassSelectMenu.kClassButtonYOffset / 2 , 0))
+        graphicItem:SetAnchor(GUIItem.Middle, GUIItem.Bottom)
+        graphicItem:SetPosition(Vector(i - GUIScale(250), -Factions_GUIClassSelectMenu.kColorPickerYOffset, 0))
         graphicItem:SetColor(Color(red / 255, green / 255, blue / 255, 1))
         self.content:AddChild(graphicItem)
         table.insert(self.colorButtons, graphicItem)
@@ -197,6 +196,20 @@ function Factions_GUIClassSelectMenu:AddColorPicker()
     
     self.colorButtonsEnd = self.colorButtons[#self.colorButtons]:GetPosition()
     self.colorButtonsEnd.x = self.colorButtonsEnd.x + Factions_GUIClassSelectMenu.kColorPicker.x / 2
+    
+    self.colorPickerArrow = GUIManager:CreateGraphicItem()
+    self.colorPickerArrow:SetSize(Factions_GUIClassSelectMenu.kColorPicker)
+    self.colorPickerArrow:SetAnchor(GUIItem.Middle, GUIItem.Bottom)
+    self.colorPickerArrow:SetPosition(Vector(self.colorButtonsEnd.x, -Factions_GUIClassSelectMenu.kColorPickerYOffset - 40 , 0))
+    self.colorPickerArrow:SetTexture(Factions_GUIClassSelectMenu.ColorPickerTexture)
+    self.content:AddChild(self.colorPickerArrow)
+    
+    self.pickedColor = GUIManager:CreateGraphicItem()
+    self.pickedColor:SetSize(GUIScale( Vector(100, 100, 0) ))
+    self.pickedColor:SetAnchor(GUIItem.Middle, GUIItem.Bottom)
+    self.pickedColor:SetPosition(Vector(GUIScale(150), -Factions_GUIClassSelectMenu.kColorPickerYOffset - GUIScale(68), 0))
+    self.pickedColor:SetColor(self:GetColorForX(self.colorPickerArrow:GetPosition().x))
+    self.content:AddChild(self.pickedColor)
     
 end
 
@@ -259,7 +272,8 @@ function Factions_GUIClassSelectMenu:Update(deltaTime)
             newPosition.x = self.colorButtonsEnd.x
         end
 
-        self.colorPickerArrow:SetPosition(newPosition)  
+        self.colorPickerArrow:SetPosition(newPosition)
+        self.pickedColor:SetColor(self:GetColorForX(newPosition.x)) 
     end  
   
 end
@@ -285,14 +299,14 @@ function Factions_GUIClassSelectMenu:SendKeyEvent(key, down)
                 self.colorPickerArrowSelected = true
                 
             elseif self:GetIsMouseOver(self.okButton) then
-                if self.selectedButton then
-                    // change it to client and server (so the ui will dissappear
-                    self.player:ChangeFactionsClassFromString(self.selectedButton.classType)
-                    Shared.ConsoleCommand("class " .. self.selectedButton.classType)
+                if self.selectedButton or self.closeButton:GetIsVisible() then
+                    if self.selectedButton then
+                        // change it to client and server (so the ui will dissappear
+                        self.player:ChangeFactionsClassFromString(self.selectedButton.classType)
+                        Shared.ConsoleCommand("class " .. self.selectedButton.classType)
+                    end
                     
                     // set color
-
-
                     local color = self:GetColorForX(self.colorPickerArrow:GetPosition().x)
                     if color then
                         Shared.ConsoleCommand("setcolour " .. math.round(color.r * 255) .. " " .. math.round(color.g * 255) .. " " .. math.round(color.b * 255))

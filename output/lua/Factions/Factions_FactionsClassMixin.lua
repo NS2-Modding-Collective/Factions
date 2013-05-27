@@ -209,7 +209,7 @@ function FactionsClassMixin:OnUpdatePlayer()
 	
     if Client then	
         // open the menu
-        if self.factionsClassType == kFactionsClassType.NoneSelected and self.factionsClassLocalType == kFactionsClassType.NoneSelected and not self.classSelectMenuClosed then
+        if GetGamerulesInfo():GetIsClassBased() and self.factionsClassType == kFactionsClassType.NoneSelected and self.factionsClassLocalType == kFactionsClassType.NoneSelected and not self.classSelectMenuClosed then
             self:OpenClassSelectMenu()
         end
     end
