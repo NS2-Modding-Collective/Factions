@@ -15,7 +15,7 @@ class 'FactionsUpgrade'
 kFactionsUpgradeTypes = enum({'LevelTied', 'Lifeform', 'Attribute', 'Ability', 'Tech', 'Weapon'})
 kFactionsTriggerTypes = enum({'NoTrigger', 'ByTime', 'ByKey'})
 kFactionsUpgradeTeamType = enum({'MarineTeam', 'AlienTeam', 'AnyTeam'})
-kUpgradeUniqueSlot = enum({'None', 'Weapon1', 'Weapon2', 'Weapon3', 'Weapon4', 'AlienClass', 'LessReloads' })
+kUpgradeUniqueSlot = enum({'None', 'Weapon1', 'Weapon2', 'Weapon3', 'Weapon4', 'Weapon5', 'AlienClass', 'LessReloads' })
 
 kRefundPenalty = 0.2 // 20% is taken away from any refunded amount of xp.
 

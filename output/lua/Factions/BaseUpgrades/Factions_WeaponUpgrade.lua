@@ -46,6 +46,26 @@ function FactionsWeaponUpgrade:GetHUDSlot()
     return self.hudSlot
 end
 
+function FactionsWeaponUpgrade:GetUniqueSlot()
+	// Calculate the unique slot here.
+	// Allows e.g. Welder to replace Knife
+	if self.uniqueSlot == kUniqueSlot.None then
+		if self.hudSlot == 1 then
+			self.uniqueSlot = kUpgradeUniqueSlot.Weapon1
+		elseif self.hudSlot == 2 then
+			self.uniqueSlot = kUpgradeUniqueSlot.Weapon2
+		elseif self.hudSlot == 3 then
+			self.uniqueSlot = kUpgradeUniqueSlot.Weapon3
+		elseif self.hudSlot == 4 then
+			self.uniqueSlot = kUpgradeUniqueSlot.Weapon4
+		elseif self.hudSlot == 5 then
+			self.uniqueSlot = kUpgradeUniqueSlot.Weapon5
+		end
+	end
+	
+	return self.uniqueSlot
+end
+
 // Give the weapon to the player when they buy the upgrade.
 function FactionsWeaponUpgrade:OnAdd(player)
 
