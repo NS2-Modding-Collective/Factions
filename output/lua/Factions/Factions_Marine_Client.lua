@@ -11,6 +11,9 @@
 
 Script.Load("lua/Factions/Hud/Factions_GUIExperienceBar.lua")
 
+local networkVars = {
+}
+
 local overrideOnUpdateRender = Marine.OnUpdateRender
 function Marine:OnUpdateRender()
 
@@ -37,33 +40,51 @@ function Marine:OverrideInput(input)
         
 end
 
-function Marine:GetShowGhostModel()
+function Marine:UpdateGhostModel()
+
+    self.currentTechId = nil
+    self.ghostStructureCoords = nil
+    self.ghostStructureValid = false
+    self.showGhostModel = false
     
-	local weapon = self:GetActiveWeapon()
-	if weapon and weapon:isa("MarineStructureAbility") then
-		return weapon:GetShowGhostModel()
+    local weapon = self:GetActiveWeapon()
+	
+	if weapon then
+		if weapon:isa("MarineStructureAbility") then
+		
+			self.currentTechId = weapon:GetGhostModelTechId()
+			self.ghostStructureCoords = weapon:GetGhostModelCoords()
+			self.ghostStructureValid = weapon:GetIsPlacementValid()
+			self.showGhostModel = weapon:GetShowGhostModel()
+
+			return weapon:GetShowGhostModel()
+			
+		elseif weapon:isa("LayMines") then
+    
+			self.currentTechId = kTechId.Mine
+			self.ghostStructureCoords = weapon:GetGhostModelCoords()
+			self.ghostStructureValid = weapon:GetIsPlacementValid()
+			self.showGhostModel = weapon:GetShowGhostModel()
+    
+		end	
 	end
-	
-	return false
-	
+
+end
+
+function Marine:GetShowGhostModel()
+    return self.showGhostModel
 end    
 
 function Marine:GetGhostModelTechId()
-
-	local weapon = self:GetActiveWeapon()
-	if weapon and weapon:isa("MarineStructureAbility") then
-		return weapon:GetGhostModelTechId()
-	end
-	
+    return self.currentTechId
 end
 
 function Marine:GetGhostModelCoords()
+    return self.ghostStructureCoords
+end
 
-	local weapon = self:GetActiveWeapon()
-	if weapon and weapon:isa("MarineStructureAbility") then
-		return weapon:GetGhostModelCoords()
-	end
-
+function Marine:GetIsPlacementValid()
+    return self.ghostStructureValid
 end
 
 function Marine:GetLastClickedPosition()
@@ -75,12 +96,4 @@ function Marine:GetLastClickedPosition()
 	
 end
 
-function Marine:GetIsPlacementValid()
-
-	local weapon = self:GetActiveWeapon()
-	if weapon and weapon:isa("MarineStructureAbility") then
-		return weapon:GetIsPlacementValid()
-	end
-
-end
-
+Class_Reload("Marine", networkVars)
