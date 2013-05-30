@@ -49,7 +49,7 @@ end
 function FactionsWeaponUpgrade:GetUniqueSlot()
 	// Calculate the unique slot here.
 	// Allows e.g. Welder to replace Knife
-	if self.uniqueSlot == kUniqueSlot.None then
+	if self.uniqueSlot == kUpgradeUniqueSlot.None then
 		if self.hudSlot == 1 then
 			self.uniqueSlot = kUpgradeUniqueSlot.Weapon1
 		elseif self.hudSlot == 2 then
