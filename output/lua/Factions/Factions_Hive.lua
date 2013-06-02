@@ -47,7 +47,7 @@ local function SpawnDefenseNpc(self)
 	local values = { 
                     origin = origin,                    
                     team = self:GetTeamNumber(),
-					baseDifficulty = Hive.kDefenseNpcBaseDifficulty
+					baseDifficulty = Hive.kDefenseNpcBaseDifficulty,
                     startsActive = true,
                     }
 					
