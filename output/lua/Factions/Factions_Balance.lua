@@ -135,3 +135,4 @@ kPlayerHealXpRate = 0
 // Xenoswarm-specific stuff
 Hive.kDefenseNpcClass = Lerk.kMapName
 Hive.kDefenseNpcAmount = 5
+Hive.kDefenseNpcBaseDifficulty = 2

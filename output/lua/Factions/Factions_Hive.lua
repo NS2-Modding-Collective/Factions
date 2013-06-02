@@ -12,6 +12,9 @@
 local networkVars = {
 }
 
+// The interval between spawns - stops lag on server.
+Hive.kDefenseNpcBaseInterval = 0.2
+
 local originalOnCreate = Hive.OnCreate
 function Hive:OnCreate()
 
@@ -38,20 +41,25 @@ function Hive:OnTakeDamage(damage, attacker, doer, point)
 
 end
 
-// Spawn some NPCs to defend the hive when it is under threat.
-function Hive:SpawnEmergencyDefenseNpcs()
-	
+local function SpawnDefenseNpc(self)
 	local className = Hive.kDefenseNpcClass
     local origin = self:GetOrigin()
-    local amount = Hive.kDefenseNpcAmount
 	local values = { 
                     origin = origin,                    
                     team = self:GetTeamNumber(),
+					baseDifficulty = Hive.kDefenseNpcBaseDifficulty
                     startsActive = true,
                     }
 					
+	NpcUtility_Spawn(origin, className, values, nil)
+end
+
+// Spawn some NPCs to defend the hive when it is under threat.
+function Hive:SpawnEmergencyDefenseNpcs()
+
+    local amount = Hive.kDefenseNpcAmount
 	for i = 1, amount do
-		NpcUtility_Spawn(origin, className, values, nil)
+		self:AddTimedCallback(SpawnDefenseNpc, Hive.kDefenseNpcBaseInterval * amount)
 	end
 	
 end
