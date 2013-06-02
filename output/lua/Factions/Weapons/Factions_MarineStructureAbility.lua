@@ -412,7 +412,7 @@ function MarineStructureAbility:GetPositionForStructure(startPosition, direction
     end
     
     // Can only be built on infestation
-    local requiresInfestation = LookupTechData(structureAbility.GetDropStructureId(), kTechDataRequiresInfestation)
+    /*local requiresInfestation = LookupTechData(structureAbility.GetDropStructureId(), kTechDataRequiresInfestation)
     if requiresInfestation and not GetIsPointOnInfestation(displayOrigin) then
     
         if self:GetActiveStructure().OverrideInfestationCheck then
@@ -421,7 +421,7 @@ function MarineStructureAbility:GetPositionForStructure(startPosition, direction
             validPosition = false
         end
         
-    end
+    end*/
     
     if not structureAbility.AllowBackfacing() and trace.normal:DotProduct(GetNormalizedVector(startPosition - trace.endPoint)) < 0 then
         validPosition = false

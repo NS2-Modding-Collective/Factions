@@ -106,14 +106,6 @@ function FactionsClassMixin:__initmixin()
 
 end
 
-
-function FactionsClassMixin:OnDestroy()
-    if Client then
-        self:CloseClassSelectMenu()
-    end
-end
-
-
 function FactionsClassMixin:GiveStartingUpgrades()
 
 	// TODO: Reenable when this is fixed.
@@ -131,6 +123,10 @@ function FactionsClassMixin:GiveStartingUpgrades()
 end
 
 function FactionsClassMixin:CopyPlayerDataFrom(player)
+
+	if Client then
+		self.classSelectMenu = player.classSelectMenu
+	end
 
 	if player.factionsClassType then		
 		self.factionsClassType = player.factionsClassType

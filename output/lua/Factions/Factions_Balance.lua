@@ -131,3 +131,7 @@ kNanoShieldDamageReductionDamage = 0.5
 kHealXpRate = 1
 // Rate at which players gain XP for healing other players...
 kPlayerHealXpRate = 0
+
+// Xenoswarm-specific stuff
+Hive.kDefenseNpcClass = Lerk.kMapName
+Hive.kDefenseNpcAmount = 5

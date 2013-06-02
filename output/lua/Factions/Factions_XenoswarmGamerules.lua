@@ -43,6 +43,12 @@ if Server then
 	
 		GenericGamerules.OnCreate(self)
 		
+		SetCachedTechData(kTechId.Sentry, kTechDataNotOnInfestation, false)
+		SetCachedTechData(kTechId.Armory, kTechDataNotOnInfestation, false)
+		SetCachedTechData(kTechId.MiniArmory, kTechDataNotOnInfestation, false)
+		SetCachedTechData(kTechId.PhaseGate, kTechDataNotOnInfestation, false)
+		SetCachedTechData(kTechId.Observatory, kTechDataNotOnInfestation, false)
+		
 	end
 
 	function XenoswarmGamerules:GetGameModeName()
