@@ -20,20 +20,23 @@ MiniArmory.kScale = Vector(0.5, 0.5, 0.5)
 
 local networkVars =
 {
+    scale = "vector",
 }
 
 AddMixinNetworkVars(ScaledModelMixin, networkVars)
 
 function MiniArmory:OnInitialized()
 	Armory.OnInitialized(self)
-	
+
+    InitModel(self)    	
 	InitMixin(self, ScaledModelMixin)
 	assert(HasMixin(self, "ScaledModel"))
 	
-	self:SetScaledModel(MiniArmory.kModelName, MiniArmory.kAnimationGraph)
 	if not self.scale then
         self.scale = MiniArmory.kScale
     end
+	
+	self:SetScaledModel(MiniArmory.kModelName, MiniArmory.kAnimationGraph)
 end
 
 Shared.LinkClassToMap("MiniArmory", MiniArmory.kMapName, networkVars)

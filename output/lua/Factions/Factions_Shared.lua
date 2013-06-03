@@ -47,6 +47,7 @@ Script.Load("lua/Factions/Factions_MiniArmory.lua")
 Script.Load("lua/Factions/Factions_Observatory.lua")
 Script.Load("lua/Factions/Factions_InfantryPortal.lua")
 Script.Load("lua/Factions/Factions_CommandStation.lua")
+Script.Load("lua/Factions/Factions_Hive.lua")
 Script.Load("lua/Factions/Factions_Extractor.lua")
 
 // Weapons
