@@ -21,6 +21,7 @@ local kMaxDifficulty = 10
 local networkVars =
 {
 	timeLeft = "time",
+	teamScore = "integer (0 to " .. kMaxScore .. ")",
 	difficulty = "integer (0 to " .. kMaxDifficulty .. ")",
 }
 
@@ -126,22 +127,7 @@ end
 function XenoswarmGamerules:SetDifficulty(newDifficulty)
 
 	self.difficulty = newDifficulty
-	kPoisonDartDamage = 
 	SendGlobalChatMessage("Difficulty set to " .. self.difficulty .. " / " .. kMaxDifficulty)
-
-end
-
-function XenoswarmGamerules:IncreaseDifficulty()
-
-	local newDifficulty = self:GetDifficulty() + 1
-	self:SetDifficulty(newDifficulty)
-
-end
-
-function XenoswarmGamerules:DecreaseDifficulty()
-
-	local newDifficulty = self:GetDifficulty() - 1
-	self:SetDifficulty(newDifficulty)
 
 end
 
@@ -154,21 +140,31 @@ function XenoswarmGamerules:JoinTeam(player, newTeamNumber, force)
 	if success then
 	
 		// Adjust the difficulty if a player joins or leaves team 1
-		Print("oldTeamNumber: " .. oldTeamNumber .. " newTeamNumber " .. newTeamNumber)
-		if oldTeamNumber ~= kTeam1Index and newTeamNumber == kTeam1Index then
-			// Increase the difficulty.
-			self:IncreaseDifficulty()
-		elseif oldTeamNumber == kTeam1Index and newTeamNumber ~= kTeam1Index then
-			self:DecreaseDifficulty()
+		if  (oldTeamNumber ~= kTeam1Index and newTeamNumber == kTeam1Index) or
+			(oldTeamNumber == kTeam1Index and newTeamNumber ~= kTeam1Index) then
+			self:RecalculateDifficulty()
 		end
 		
 	end
 
 end
 
-// We definitely need to add some more logic here.
+// Recalculate difficulty on disconnect
 function XenoswarmGamerules:OnClientDisconnect(client)
+
 	GenericGamerules.OnClientDisconnect(self, client)
+	
+	self:RecalculateDifficulty()
+	
+end
+
+function XenoswarmGamerules:RecalculateDifficulty()
+
+	local newDifficulty = self.team1:GetNumPlayers()
+	if self:GetDifficulty() ~= newDifficulty then
+		self:SetDifficulty(newDifficulty)
+	end
+
 end
 
 function XenoswarmGamerules:ResetDifficulty()
