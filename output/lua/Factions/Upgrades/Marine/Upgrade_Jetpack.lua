@@ -11,7 +11,7 @@ class 'JetpackUpgrade' (FactionsUpgrade)
 
 // Define these statically so we can easily access them without instantiating too.
 JetpackUpgrade.upgradeType = kFactionsUpgradeTypes.Ability	       					// The type of the upgrade
-JetpackUpgrade.cost = { 800 }                              							// Cost of the upgrade in xp
+JetpackUpgrade.cost = { 1000 }                              							// Cost of the upgrade in xp
 JetpackUpgrade.upgradeName = "jetpack"                     							// Text code of the upgrade if using it via console
 JetpackUpgrade.upgradeTitle = "Jetpack"               								// Title of the upgrade, e.g. Submachine Gun
 JetpackUpgrade.upgradeDesc = "Allows you to fly like an eagle"						// Description of the upgrade
