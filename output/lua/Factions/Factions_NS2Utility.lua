@@ -97,6 +97,19 @@ function CanEntityDoDamageTo(attacker, target, cheats, devMode, friendlyFire, da
 	
 end
 
+// melee targets must be in front of the player
+local function IsNotBehind(fromPoint, hitPoint, forwardDirection)
+
+    local startPoint = fromPoint + forwardDirection * 0.1
+
+    local toHitPoint = hitPoint - startPoint
+    toHitPoint:Normalize()
+
+    return forwardDirection:DotProduct(toHitPoint) > 0
+
+end
+
+local kTraceOrder = { 4, 1, 3, 5, 7, 0, 2, 6, 8 }
  /**
   * Bullets are small and will hit exactly where you looked. 
   * Melee, however, is different. We select targets from a volume, and we expect the melee'er to be able
@@ -107,7 +120,6 @@ end
   * Then we split the space into 9 parts and trace/select all of them, choose the "best" target. If no good target is found,
   * we use the middle trace for effects.
   */
-/*
 function CheckMeleeCapsuleMulti(weapon, player, damage, range, optionalCoords, traceRealAttack, scale, priorityFunc, filter, maxHits)
 
     scale = scale or 1
@@ -189,23 +201,21 @@ function CheckMeleeCapsuleMulti(weapon, player, damage, range, optionalCoords, t
     return #targets > 0 or middleTrace.fraction < 1, targets, endPoints, directions, surfaces
     
 end
-*/
+
 /**
  * Does an attack with a melee capsule.
  */
- /*
 function AttackMeleeCapsuleMulti(weapon, player, damage, range, optionalCoords, altMode, filter, maxHits)
 
     // Enable tracing on this capsule check, last argument.
     local didHit, targets, endPoints, directions, surfaces = CheckMeleeCapsuleMulti(weapon, player, damage, range, optionalCoords, true, 1, nil, filter, maxHits)
     
     if didHit then
-    	for i, target in ipairs[targets] do
-       	 weapon:DoDamage(damage, target, endPoints[i], directions[i], surfaces[i], altMode)
+    	for i, target in ipairs(targets) do
+			weapon:DoDamage(damage, target, endPoints[i], directions[i], surfaces[i], altMode)
     	end
     end
     
     return didHit, targets, endPoints, surfaces
     
 end
-*/
