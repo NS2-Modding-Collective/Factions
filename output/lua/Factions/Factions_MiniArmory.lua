@@ -28,13 +28,10 @@ AddMixinNetworkVars(ScaledModelMixin, networkVars)
 function MiniArmory:OnInitialized()
 	Armory.OnInitialized(self)
 
-    InitModel(self)    	
+	self.scale = MiniArmory.kScale
+
 	InitMixin(self, ScaledModelMixin)
 	assert(HasMixin(self, "ScaledModel"))
-	
-	if not self.scale then
-        self.scale = MiniArmory.kScale
-    end
 	
 	self:SetScaledModel(MiniArmory.kModelName, MiniArmory.kAnimationGraph)
 end
