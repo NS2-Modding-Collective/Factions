@@ -26,7 +26,6 @@ local networkVars =
 {
 }
 
-/*
 function Knife:OnTag(tagName)
 	
 	if tagName == "swipe_sound" then
@@ -42,7 +41,6 @@ function Knife:OnTag(tagName)
         self.sprintAllowed = true
     end
 end
-*/
 
 function Knife:GetAnimationGraphName()
     return kAnimationGraph

@@ -74,6 +74,9 @@ Script.Load("lua/Factions/Factions_AttachModel.lua")
 Script.Load("lua/Factions/Factions_AttachModelUtility.lua")
 Script.Load("lua/Factions/Factions_MarineChops.lua")
 
+// Utility stuff
+Script.Load("lua/Factions/Factions_NS2Utility.lua")
+
 // NPC stuff
 Script.Load("lua/Factions/Factions_NpcMixin.lua")
 
