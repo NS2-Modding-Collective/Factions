@@ -78,6 +78,12 @@ FactionsClassMixin.expectedConstants =
 {
 }
 
+// These should completely override any existing function defined in the class.
+FactionsClassMixin.overrideFunctions =
+{
+	"GetMaxBackwardSpeedScalar",
+}
+
 FactionsClassMixin.networkVars =
 {
 	factionsClassType = "enum kFactionsClassType"
@@ -273,12 +279,36 @@ function FactionsClassMixin:GetBaseArmor()
 
 end
 
+function FactionsClassMixin:GetBaseHealth()
+
+	if self:GetHasFactionsClass() then
+		return self.factionsClass:GetBaseHealth()
+	else
+		return self:GetOriginalMaxHealth()
+	end
+
+end
+
 function FactionsClassMixin:GetBaseDropCount()
 
 	if self:GetHasFactionsClass() then
 		return self.factionsClass:GetBaseDropCount()
 	else
 		return 3
+	end
+
+end
+
+function FactionsClassMixin:GetMaxBackwardSpeedScalar()
+
+	if self:GetHasFactionsClass() then
+		return self.factionsClass:GetMaxBackwardSpeedScalar()
+	else
+		if _G[self:GetClassName()].GetMaxBackwardSpeedScalar then
+			return _G[self:GetClassName()].GetMaxBackwardSpeedScalar()
+		else
+			return Player.kWalkBackwardSpeedScalar
+		end
 	end
 
 end

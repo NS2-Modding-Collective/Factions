@@ -55,7 +55,7 @@ SetCachedTechData(kTechId.Axe, kTechDataDamageType, kAxeDamageType)
 
 kKnifeWeight = 0.05
 kKnifeDamage = 65
-kKnifeRange = 50
+kKnifeRange = 2 // Axe range is 1
 kKnifeDamageType = kDamageType.Normal
 kKnifeCost = 10
 

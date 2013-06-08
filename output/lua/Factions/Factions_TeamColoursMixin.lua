@@ -35,7 +35,7 @@ TeamColoursMixin.networkVars =
 {
 	factionsArmorColour = "vector",
 	factionsBadassColour  = "boolean",
-	teamColoursOwnerId = "entityid"
+	teamColoursOwnerId = "entityid",
 }
 
 function TeamColoursMixin:__initmixin()
@@ -73,9 +73,12 @@ function TeamColoursMixin:OnUpdateRender()
 	local model = self:GetRenderModel()
 	if model then
 
-		// Added 
+		// Check owner
 		if self.teamColoursOwnerId ~= Entity.invalidId then
-			entity = Shared.GetEntity(self.teamColoursOwnerId)
+			local owner = Shared.GetEntity(self.teamColoursOwnerId)
+			if owner ~= nil then
+				entity = owner
+			end
 		else
 			entity = self
 		end

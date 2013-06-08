@@ -51,6 +51,10 @@ function Knife:GetViewModelName()
     return kViewModelName
 end
 
+function Knife:GetRange()
+    return kKnifeRange
+end
+
 function Knife:GetSpread()
     return kSpread
 end
