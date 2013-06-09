@@ -14,6 +14,8 @@ Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
 local networkVars = {
 }
 
+AddMixinNetworkVars(TeamColoursMixin, networkVars)
+
 // Observatory
 local overrideOnCreate = Observatory.OnCreate
 function Observatory:OnCreate()

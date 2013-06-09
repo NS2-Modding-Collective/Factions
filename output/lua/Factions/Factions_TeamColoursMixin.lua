@@ -39,7 +39,9 @@ TeamColoursMixin.networkVars =
 }
 
 function TeamColoursMixin:__initmixin()
-	self.teamColoursOwnerId = Entity.invalidId
+	if Server then
+		self.teamColoursOwnerId = Entity.invalidId
+	end
 end
 
 function TeamColoursMixin:CopyPlayerDataFrom(player)
@@ -74,7 +76,7 @@ function TeamColoursMixin:OnUpdateRender()
 	if model then
 
 		// Check owner
-		if self.teamColoursOwnerId ~= Entity.invalidId then
+		if self.teamColoursOwnerId ~= nil and self.teamColoursOwnerId ~= Entity.invalidId then
 			local owner = Shared.GetEntity(self.teamColoursOwnerId)
 			if owner ~= nil then
 				entity = owner

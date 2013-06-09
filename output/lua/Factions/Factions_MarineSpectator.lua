@@ -13,6 +13,8 @@ Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
 
 local networkVars = {
 }
+
+AddMixinNetworkVars(TeamColoursMixin, networkVars)
 	
 function MarineSpectator:OnCreate()
 

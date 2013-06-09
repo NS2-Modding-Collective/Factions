@@ -20,6 +20,8 @@ PowerPoint.kAutoRepairTime = 30
 local networkVars = {
 }
 
+AddMixinNetworkVars(TeamColoursMixin, networkVars)
+
 // Do this on a delay so GetIsBuilt is ready.
 local function SwitchOffNodes(self)
 

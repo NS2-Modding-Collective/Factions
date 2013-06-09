@@ -14,6 +14,8 @@ Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
 local networkVars = {
 }
 
+AddMixinNetworkVars(TeamColoursMixin, networkVars)
+
 // Team Colours
 local overrideOnInitialized = Armory.OnInitialized
 function Armory:OnInitialized()

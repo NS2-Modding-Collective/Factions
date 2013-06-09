@@ -14,6 +14,8 @@ Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
 local networkVars = {
 }
 
+AddMixinNetworkVars(TeamColoursMixin, networkVars)
+
 // Sentry
 local overrideOnCreate = Sentry.OnCreate
 function Sentry:OnCreate()
