@@ -32,6 +32,16 @@ function Sentry:OnCreate()
 	
 end
 
+local overrideOnInitialized = Sentry.OnInitialized
+function Sentry:OnInitialized()
+
+	overrideOnInitialized(self)
+
+	if not HasMixin(self, "MapBlip") then
+        InitMixin(self, MapBlipMixin)
+    end
+end
+
 if Server then
 	// check for spores in our way every 0.3 seconds
     local function UpdateConfusedState(self, target)

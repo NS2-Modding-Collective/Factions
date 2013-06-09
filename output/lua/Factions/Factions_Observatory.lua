@@ -28,12 +28,18 @@ function Observatory:OnCreate()
 		assert(HasMixin(self, "TeamColours"))
 	end
 	
+	self.isGhostStructure = false
+	
+end
+
+local overrideOnInitialized = Observatory.OnInitialized
+function Observatory:OnInitialized()
+
+	overrideOnInitialized(self)
+
 	if not HasMixin(self, "MapBlip") then
         InitMixin(self, MapBlipMixin)
     end
-	
-	self.isGhostStructure = false
-	
 end
 
 Class_Reload("Observatory", networkVars)

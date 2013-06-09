@@ -59,7 +59,7 @@ function Hive:SpawnEmergencyDefenseNpcs()
 
     local amount = Hive.kDefenseNpcAmount
 	for i = 1, amount do
-		self:AddTimedCallback(SpawnDefenseNpc, Hive.kDefenseNpcBaseInterval * amount)
+		self:AddTimedCallback(SpawnDefenseNpc, Hive.kDefenseNpcBaseInterval * i)
 	end
 	
 end

@@ -118,4 +118,14 @@ function PlayerUI_GetTeamType()
 
 end
 
+function PlayerUI_GetPlayerJetpackFuel()
 
+    local player = Client.GetLocalPlayer()
+    
+	if player:isa("Marine") then
+		return player:GetFuel()
+	end
+    
+    return 0
+    
+end

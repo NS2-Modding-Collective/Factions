@@ -7,7 +7,7 @@
 //  Licensed under LGPL v3.0
 //________________________________
 
-// Factions_Armory.lua
+// Factions_PhaseGate.lua
 
 Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
 
@@ -15,12 +15,13 @@ local networkVars = {
 }
 
 AddMixinNetworkVars(TeamColoursMixin, networkVars)
+AddMixinNetworkVars(TeamColoursMixin, networkVars)
 
-// Team Colours
-local overrideOnInitialized = Armory.OnInitialized
-function Armory:OnInitialized()
+// PhaseGate
+local overrideOnCreate = PhaseGate.OnCreate
+function PhaseGate:OnCreate()
 
-	overrideOnInitialized(self)
+	overrideOnCreate(self)
 
 	// Team Colours
 	if GetGamerulesInfo():GetUsesMarineColours() then
@@ -28,20 +29,18 @@ function Armory:OnInitialized()
 		assert(HasMixin(self, "TeamColours"))
 	end
 	
-	if not HasMixin(self, "MapBlip") then
-        InitMixin(self, MapBlipMixin)
-    end
-	
 	self.isGhostStructure = false
 	
 end
 
-function Armory:GetRequiresPower()
-   return false
+local overrideOnInitialized = PhaseGate.OnInitialized
+function PhaseGate:OnInitialized()
+
+	overrideOnInitialized(self)
+
+	if not HasMixin(self, "MapBlip") then
+        InitMixin(self, MapBlipMixin)
+    end
 end
 
-function Armory:GetCanBeUsedConstructed()
-    return false
-end    
-
-Class_Reload("Armory", networkVars)
+Class_Reload("PhaseGate", networkVars)
