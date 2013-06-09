@@ -48,35 +48,45 @@ function GUIBulletDisplay:Initialize()
     self.ammoText:SetTextAlignmentY(GUIItem.Align_Center)
     self.ammoText:SetPosition(Vector(135, 88, 0))
     
-    // Create the indicators for the number of bullets in reserve.
-
-    self.clipTop    = 400 - 256
-    self.clipHeight = 69
-    self.clipWidth  = 21
-    
-    self.numClips   = 4
-    self.clip = { }
-    
-    for i =1,self.numClips do
-        self.clip[i] = GUIManager:CreateGraphicItem()
-        self.clip[i]:SetTexture("ui/RifleDisplay.dds")
-        self.clip[i]:SetSize( Vector(21, self.clipHeight, 0) )
-        self.clip[i]:SetBlendTechnique( GUIItem.Add )
-    end
-    
-    self.clip[1]:SetPosition(Vector( 74, self.clipTop, 0))
-    self.clip[2]:SetPosition(Vector( 112, self.clipTop, 0))
-    self.clip[3]:SetPosition(Vector( 145, self.clipTop, 0))
-    self.clip[4]:SetPosition(Vector( 178, self.clipTop, 0))
-    
     self.flashInOverlay = GUIManager:CreateGraphicItem()
     self.flashInOverlay:SetSize( Vector(256, 512, 0) )
     self.flashInOverlay:SetPosition( Vector(0, 0, 0))    
     self.flashInOverlay:SetColor(Color(1,1,1,0.7))
     
+    self.clip = { }
+    self:CreateClipIndicators()
+    
     // Force an update so our initial state is correct.
     self:Update(0)
 
+end
+
+function GUIBulletDisplay:CreateClipIndicators()
+
+	for index, clipIndicator in ipairs(self.clip) do
+		GUI.DestroyItem(self.clipIndicator)
+	end
+
+    // Create the indicators for the number of bullets in reserve.
+    self.clipTop    = 400 - 256
+    self.clipHeight = 69
+    self.clipWidthMax = 21
+    self.clipLeft = 10
+    self.clipAreaWidth = 200 - self.clipLeft
+    
+    self.numClips = math.ceil(self.weaponMaxAmmo / self.weaponClipSize)
+	self.clipWidth = math.min(self.clipAreaWidth / self.numClips, self.clipWidthMax)
+    self.clip = { }
+    
+    for i = 1,self.numClips do
+        self.clip[i] = GUIManager:CreateGraphicItem()
+        self.clip[i]:SetTexture("ui/RifleDisplay.dds")
+        self.clip[i]:SetSize( Vector(self.clipWidth, self.clipHeight, 0) )
+        self.clip[i]:SetBlendTechnique( GUIItem.Add )
+        local clipLeft = self.clipLeft + (i * self.clipAreaWidth / math.min(self.numClips - 1, 1))
+        self.clip[i]:SetPosition(Vector( clipLeft, self.clipTop, 0))
+    end
+    
 end
 
 function GUIBulletDisplay:InitFlashInOverLay()
@@ -98,6 +108,7 @@ function GUIBulletDisplay:Update(deltaTime)
     local reserveMax      		= self.weaponMaxAmmo
     local reserve         		= self.weaponAmmo
     local reserveFraction 		= reserve / self.weaponClipSize
+	self.clipWidth = math.min(self.clipAreaWidth / self.numClips, self.clipWidthMax)
 
     for i=1,self.numClips do
         self:SetClipFraction( i, Math.Clamp(reserveFraction - i + 1, 0, 1) )
@@ -120,11 +131,17 @@ function GUIBulletDisplay:SetClip(weaponClip)
 end
 
 function GUIBulletDisplay:SetMaxAmmo(weaponMaxAmmo)
-    self.weaponMaxAmmo = weaponMaxAmmo
+	if self.weaponMaxAmmo ~= weaponMaxAmmo then
+		self.weaponMaxAmmo = weaponMaxAmmo
+		self:CreateClipIndicators()
+	end
 end
 
 function GUIBulletDisplay:SetClipSize(weaponClipSize)
-    self.weaponClipSize = weaponClipSize
+	if self.weaponClipSize ~= weaponClipSize then
+		self.weaponClipSize = weaponClipSize
+		self:CreateClipIndicators()
+	end
 end
 
 function GUIBulletDisplay:SetAmmo(weaponAmmo)
