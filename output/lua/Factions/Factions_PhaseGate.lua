@@ -15,7 +15,6 @@ local networkVars = {
 }
 
 AddMixinNetworkVars(TeamColoursMixin, networkVars)
-AddMixinNetworkVars(TeamColoursMixin, networkVars)
 
 // PhaseGate
 local overrideOnCreate = PhaseGate.OnCreate
