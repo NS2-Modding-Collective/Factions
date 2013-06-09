@@ -37,7 +37,7 @@ function PhaseGate:OnInitialized()
 
 	overrideOnInitialized(self)
 
-	if not HasMixin(self, "MapBlip") then
+	if Server and not HasMixin(self, "MapBlip") then
         InitMixin(self, MapBlipMixin)
     end
 end
