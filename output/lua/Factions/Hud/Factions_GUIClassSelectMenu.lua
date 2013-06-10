@@ -38,11 +38,12 @@ Factions_GUIClassSelectMenu.kClassButtonYOffset = GUIScale(64)
 Factions_GUIClassSelectMenu.kColorPicker = GUIScale( Vector(32, 32, 0) )
 Factions_GUIClassSelectMenu.kColorPickerYOffset = GUIScale(Factions_GUIClassSelectMenu.kClassButtonYOffset * 1.5)
 Factions_GUIClassSelectMenu.ColorPickerTexture =  "ui/arrow.png"
+Factions_GUIClassSelectMenu.kMaxColorButtons = 310
+Factions_GUIClassSelectMenu.kColorTolerance = 5
 
 function Factions_GUIClassSelectMenu:Initialize()
 
     self.mouseOverStates = { }
-    self.player = Client.GetLocalPlayer()
     
     // This invisible background is used for centering only.
     self.background = GUIManager:CreateGraphicItem()
@@ -113,6 +114,7 @@ function Factions_GUIClassSelectMenu:Initialize()
 
     self:AddClassButtons()
     self:AddColorPicker()
+    self:SetupColorPicker()
 end
 
 
@@ -122,7 +124,7 @@ function Factions_GUIClassSelectMenu:AddClassButtons()
     self.buttons = {}
     self.selectedButton = nil
     
-    local classes = self.player:GetAllClasses()
+    local classes = Client.GetLocalPlayer():GetAllClasses()
     //local xOffset = 0
     
     local xOffset = -(Factions_GUIClassSelectMenu.kClassButtonSize.x) * (#classes / 2)
@@ -165,7 +167,7 @@ function Factions_GUIClassSelectMenu:AddColorPicker()
     local green = 0
     local blue = 0
     
-    for i = 0, 310 , 1 do
+    for i = 0, Factions_GUIClassSelectMenu.kMaxColorButtons , 1 do
     
         if red == 255 and blue < 255 and green == 0 then
             blue = blue + 5
@@ -213,6 +215,22 @@ function Factions_GUIClassSelectMenu:AddColorPicker()
     
 end
 
+function Factions_GUIClassSelectMenu:SetupColorPicker()
+
+	local teamColours = nil
+	local teamNumber = Client.GetLocalPlayer():GetTeamNumber()
+	if teamNumber == kTeam2Index then
+		teamColours = kAlienTeamColorFloat
+	else
+		teamColours = kMarineTeamColorFloat
+	end
+	
+	local sliderPositionX = self:GetXForColor(teamColour)
+	local arrowPosition = self.colorPickerArrow:GetPosition()
+    arrowPosition.x = sliderPositionX
+    self.colorPickerArrow:SetPosition(arrowPosition)
+    self.pickedColor:SetColor(color)
+
 
 function Factions_GUIClassSelectMenu:GetColorForX(xValue)
 
@@ -228,6 +246,48 @@ function Factions_GUIClassSelectMenu:GetColorForX(xValue)
     
     if self.colorButtons[i] then
         return self.colorButtons[i]:GetColor()
+    end
+    
+end
+
+function Factions_GUIClassSelectMenu:GetXForColor(color)
+
+    local sliderEntrys = self.colorButtonsEnd.x - self.colorButtonsStart.x
+    local colorButtonEntrys = #self.colorButtons - 1
+   
+    // There might be a faster way of doing this but we only do it once!
+    local red = 255  
+    local green = 0
+    local blue = 0
+    
+    for i = 0, Factions_GUIClassSelectMenu.kMaxColorButtons , 1 do
+    
+        if red == 255 and blue < 255 and green == 0 then
+            blue = blue + 5
+        elseif red > 0 and blue == 255 and green < 255 then
+            red = red - 5   
+        elseif red == 0 and blue == 255 and green < 255 then
+            green = green + 5
+        elseif red == 0 and blue > 0 and green == 255 then
+            blue = blue - 5
+        elseif red < 255 and blue == 0 and green == 255 then
+            red = red + 5
+        elseif red == 255 and blue == 0 and green > 0 then
+            green = green - 5
+        end
+        
+        if red - Factions_GUIClassSelectMenu.kColorTolerance >= color.r and
+           green - Factions_GUIClassSelectMenu.kColorTolerance >= color.g and
+           blue - Factions_GUIClassSelectMenu.kColorTolerance >= color.b and
+           red + Factions_GUIClassSelectMenu.kColorTolerance <= color.r and
+           green + Factions_GUIClassSelectMenu.kColorTolerance <= color.g and
+           blue + Factions_GUIClassSelectMenu.kColorTolerance <= color.b then
+        	
+        	local sliderPosition = self.colorButtons[i]:GetPosition()
+        	return sliderPosition.x
+        	
+        end
+        
     end
     
 end
@@ -290,6 +350,7 @@ end
 
 function Factions_GUIClassSelectMenu:SendKeyEvent(key, down)
 
+	local player = Client.GetLocalPlayer()
     // only register key events when everythings loaded
     if self.background then
     
@@ -302,7 +363,7 @@ function Factions_GUIClassSelectMenu:SendKeyEvent(key, down)
                 if self.selectedButton or self.closeButton:GetIsVisible() then
                     if self.selectedButton then
                         // change it to client and server (so the ui will dissappear
-                        self.player:ChangeFactionsClassFromString(self.selectedButton.classType)
+                        player:ChangeFactionsClassFromString(self.selectedButton.classType)
                         Shared.ConsoleCommand("class " .. self.selectedButton.classType)
                     end
                     
@@ -312,12 +373,12 @@ function Factions_GUIClassSelectMenu:SendKeyEvent(key, down)
                         Shared.ConsoleCommand("setcolour " .. math.round(color.r * 255) .. " " .. math.round(color.g * 255) .. " " .. math.round(color.b * 255))
                     end
                     
-                    self.player:CloseClassSelectMenu() 
+                    player:CloseClassSelectMenu() 
                 end
                  
             elseif self:GetIsMouseOver(self.closeButton) then
                 if self.closeButton:GetIsVisible() and key == InputKey.MouseButton0 and down then
-                    self.player:CloseClassSelectMenu()
+                    player:CloseClassSelectMenu()
                 end
                 
             else

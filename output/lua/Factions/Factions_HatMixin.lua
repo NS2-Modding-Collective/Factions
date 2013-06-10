@@ -67,6 +67,7 @@ function HatMixin:CopyPlayerDataFrom(player)
 end
 
 function HatMixin:GetHatModelParams()
+	return kHatModels[self.hatType]
 end
 
 function HatMixin:SetHatType(hatType)

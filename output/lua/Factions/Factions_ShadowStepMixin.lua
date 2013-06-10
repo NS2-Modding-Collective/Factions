@@ -11,29 +11,29 @@
 
 Script.Load("lua/Factions/Factions_FactionsClassMixin.lua")
 
-ShadowStepMixin = CreateMixin( ShadowStepMixin )
-ShadowStepMixin.type = "ShadowStepMixin"
+ShadowStepAbilityMixin = CreateMixin( ShadowStepAbilityMixin )
+ShadowStepAbilityMixin.type = "ShadowStepAbility"
 
-ShadowStepMixin.stepDistance = kFadeShadowStepDistance
+ShadowStepAbilityMixin.stepDistance = kFadeShadowStepDistance
 
-ShadowStepMixin.expectedMixins =
+ShadowStepAbilityMixin.expectedMixins =
 {
 }
 
-ShadowStepMixin.expectedCallbacks =
+ShadowStepAbilityMixin.expectedCallbacks =
 {
 }
 
-ShadowStepMixin.expectedConstants =
+ShadowStepAbilityMixin.expectedConstants =
 {
 }
 
-ShadowStepMixin.networkVars =
+ShadowStepAbilityMixin.networkVars =
 {
 	shadowStepLevel = "integer (0 to " .. #ShadowStepUpgrade.cost .. ")",
 }
 
-function ShadowStepMixin:__initmixin()
+function ShadowStepAbilityMixin:__initmixin()
 
 	if Server then
 		self.shadowStepLevel = 0
@@ -41,7 +41,7 @@ function ShadowStepMixin:__initmixin()
 
 end
 
-function ShadowStepMixin:CopyPlayerDataFrom(player)
+function ShadowStepAbilityMixin:CopyPlayerDataFrom(player)
 
 	if Server then
 		self.shadowStepLevel = player.shadowStepLevel
@@ -49,7 +49,7 @@ function ShadowStepMixin:CopyPlayerDataFrom(player)
 
 end
 
-function ShadowStepMixin:OnSprint()
+function ShadowStepAbilityMixin:OnSecondaryAttack()
 	// Copy Shadow Step code here
 	
 end
