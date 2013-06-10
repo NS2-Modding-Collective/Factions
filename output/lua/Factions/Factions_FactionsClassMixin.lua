@@ -130,10 +130,6 @@ end
 
 function FactionsClassMixin:CopyPlayerDataFrom(player)
 
-	if Client then
-		self.classSelectMenu = player.classSelectMenu
-	end
-
 	if player.factionsClassType then		
 		self.factionsClassType = player.factionsClassType
 		self.factionsClassLocalType = player.factionsClassLocalType
