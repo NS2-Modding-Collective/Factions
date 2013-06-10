@@ -16,17 +16,10 @@ class 'ScoutClass' (FactionsClass)
 ScoutClass.type 					= "Scout"						     								// the type of the FactionsClass
 ScoutClass.name 					= "Scout"     														// the friendly name of the FactionsClass
 ScoutClass.description				= "Attacks faster and can cloak"						     		// the description of the FactionsClass
-<<<<<<< HEAD
 ScoutClass.baseHealth 				= kMarineHealth								     		// the base health value of this class
 ScoutClass.baseArmor 				= kMarineArmor									     		// the base armor value of this class
-ScoutClass.baseWalkSpeed 			= 6.5                												// the initial walk speed of this class
-ScoutClass.baseRunSpeed 			= 10.0             													// the initial run speed of this class
-=======
-ScoutClass.baseHealth 				= kMarineHealth	- 20									     		// the base health value of this class
-ScoutClass.baseArmor 				= kMarineArmor - 20										     		// the base armor value of this class
 ScoutClass.baseWalkSpeed 			= 6.7                												// the initial walk speed of this class
 ScoutClass.baseRunSpeed 			= 10.5             													// the initial run speed of this class
->>>>>>> refs/remotes/origin/master
 ScoutClass.baseDropCount 			= 1	                												// how many packs get dropped when you drop health/ammo
 ScoutClass.maxBackwardSpeedScalar 	= 0.9																// the scalar for walking backwards
 ScoutClass.icon						= "ui/Factions/badges/badge_assault.dds"							// the badge for this class
