@@ -196,20 +196,7 @@ function Marine:GiveItem(itemMapName)
                 continue = false
                 setActive = false
             end
-            
-        elseif itemMapName == Welder.kMapName then
-        
-            // since axe cannot be dropped we need to delete it before adding the welder (shared hud slot)
-            local switchAxe = self:GetWeapon(Axe.kMapName)
-            
-            if switchAxe then
-                self:RemoveWeapon(switchAxe)
-                DestroyEntity(switchAxe)
-                continue = true
-            else
-                continue = false // don't give a second welder
-            end
-        
+                    
         end
         
         if continue == true then

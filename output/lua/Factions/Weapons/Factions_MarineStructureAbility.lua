@@ -502,7 +502,7 @@ function MarineStructureAbility:ProcessMoveOnWeapon(input)
             end
    
             if numAllowedMiniArmories >= 0 then     
-                self.numMiniArmoriesLeft = team:GetNumDroppedMarineStructures(player, kTechId.Armory)           
+                self.numMiniArmoriesLeft = team:GetNumDroppedMarineStructures(player, kTechId.MiniArmory)           
             end
             
             if numAllowedPhaseGates >= 0 then     

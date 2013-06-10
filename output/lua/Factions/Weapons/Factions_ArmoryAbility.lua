@@ -44,11 +44,11 @@ function ArmoryAbility:GetSuffixName()
 end
 
 function ArmoryAbility:GetDropClassName()
-    return "Armory"
+    return "MiniArmory"
 end
 
 function ArmoryAbility:GetDropMapName()
-    return Armory.kMapName
+    return MiniArmory.kMapName
 end
 
 function ArmoryAbility:CreateStructure()
