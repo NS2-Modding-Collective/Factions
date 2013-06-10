@@ -44,6 +44,7 @@ Factions_GUIClassSelectMenu.kColorTolerance = 5
 function Factions_GUIClassSelectMenu:Initialize()
 
     self.mouseOverStates = { }
+	local player = Client.GetLocalPlayer()
     
     // This invisible background is used for centering only.
     self.background = GUIManager:CreateGraphicItem()
@@ -99,7 +100,7 @@ function Factions_GUIClassSelectMenu:Initialize()
     self.closeButton:SetPosition(Vector(-2 * Factions_GUIClassSelectMenu.kButtonWidth - Factions_GUIClassSelectMenu.kPadding, Factions_GUIClassSelectMenu.kPadding, 0))
     self.closeButton:SetTexture(Factions_GUIClassSelectMenu.kButtonTexture)
     self.closeButton:SetLayer(kGUILayerMainMenu - 1)
-    self.closeButton:SetIsVisible(self.player.factionsClassType ~= kFactionsClassType.NoneSelected)
+    self.closeButton:SetIsVisible(player.factionsClassType ~= kFactionsClassType.NoneSelected)
     self.content:AddChild(self.closeButton)
     
     self.closeButtonText = GUIManager:CreateTextItem()
@@ -227,8 +228,10 @@ function Factions_GUIClassSelectMenu:SetupColorPicker()
 	
 	local sliderPositionX = self:GetXForColor(teamColours)
 	local arrowPosition = self.colorPickerArrow:GetPosition()
-    arrowPosition.x = sliderPositionX
-    self.colorPickerArrow:SetPosition(arrowPosition)
+	if sliderPositionX then
+		arrowPosition.x = sliderPositionX
+		self.colorPickerArrow:SetPosition(arrowPosition)
+	end
     self.pickedColor:SetColor(teamColours)
 
 end
@@ -260,6 +263,10 @@ function Factions_GUIClassSelectMenu:GetXForColor(color)
     local red = 255  
     local green = 0
     local blue = 0
+	
+	local targetRed = color.r * 255
+	local targetGreen = color.g * 255
+	local targetBlue = color.b * 255
     
     for i = 0, Factions_GUIClassSelectMenu.kMaxColorButtons , 1 do
     
@@ -277,12 +284,12 @@ function Factions_GUIClassSelectMenu:GetXForColor(color)
             green = green - 5
         end
         
-        if red - Factions_GUIClassSelectMenu.kColorTolerance >= color.r and
-           green - Factions_GUIClassSelectMenu.kColorTolerance >= color.g and
-           blue - Factions_GUIClassSelectMenu.kColorTolerance >= color.b and
-           red + Factions_GUIClassSelectMenu.kColorTolerance <= color.r and
-           green + Factions_GUIClassSelectMenu.kColorTolerance <= color.g and
-           blue + Factions_GUIClassSelectMenu.kColorTolerance <= color.b then
+        if red - Factions_GUIClassSelectMenu.kColorTolerance >= targetRed and
+           green - Factions_GUIClassSelectMenu.kColorTolerance >= targetGreen and
+           blue - Factions_GUIClassSelectMenu.kColorTolerance >= targetBlue and
+           red + Factions_GUIClassSelectMenu.kColorTolerance <= targetRed and
+           green + Factions_GUIClassSelectMenu.kColorTolerance <= targetGreen and
+           blue + Factions_GUIClassSelectMenu.kColorTolerance <= targetBlue then
         	
         	local sliderPosition = self.colorButtons[i]:GetPosition()
         	return sliderPosition.x
@@ -369,7 +376,7 @@ function Factions_GUIClassSelectMenu:SendKeyEvent(key, down)
                     end
                     
                     // set color
-                    local color = self:GetColorForX(self.colorPickerArrow:GetPosition().x)
+                    local color = self.pickedColor:GetColor()
                     if color then
                         Shared.ConsoleCommand("setcolour " .. math.round(color.r * 255) .. " " .. math.round(color.g * 255) .. " " .. math.round(color.b * 255))
                     end
