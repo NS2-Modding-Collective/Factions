@@ -225,12 +225,13 @@ function Factions_GUIClassSelectMenu:SetupColorPicker()
 		teamColours = kMarineTeamColorFloat
 	end
 	
-	local sliderPositionX = self:GetXForColor(teamColour)
+	local sliderPositionX = self:GetXForColor(teamColours)
 	local arrowPosition = self.colorPickerArrow:GetPosition()
     arrowPosition.x = sliderPositionX
     self.colorPickerArrow:SetPosition(arrowPosition)
-    self.pickedColor:SetColor(color)
+    self.pickedColor:SetColor(teamColours)
 
+end
 
 function Factions_GUIClassSelectMenu:GetColorForX(xValue)
 
