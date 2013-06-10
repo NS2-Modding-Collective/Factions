@@ -7,7 +7,7 @@
 //  Licensed under LGPL v3.0
 //________________________________
 
-// Factions_Mine.lua
+// Factions_PhaseGate.lua
 
 Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
 
@@ -16,9 +16,9 @@ local networkVars = {
 
 AddMixinNetworkVars(TeamColoursMixin, networkVars)
 
-// Iron Sights
-local overrideOnCreate = Mine.OnCreate
-function Mine:OnCreate()
+// PhaseGate
+local overrideOnCreate = PhaseGate.OnCreate
+function PhaseGate:OnCreate()
 
 	overrideOnCreate(self)
 
@@ -27,6 +27,19 @@ function Mine:OnCreate()
 		InitMixin(self, TeamColoursMixin)
 		assert(HasMixin(self, "TeamColours"))
 	end
+	
+	self.isGhostStructure = false
+	
 end
 
-Class_Reload("Mine", networkVars)
+local overrideOnInitialized = PhaseGate.OnInitialized
+function PhaseGate:OnInitialized()
+
+	overrideOnInitialized(self)
+
+	if Server and not HasMixin(self, "MapBlip") then
+        InitMixin(self, MapBlipMixin)
+    end
+end
+
+Class_Reload("PhaseGate", networkVars)

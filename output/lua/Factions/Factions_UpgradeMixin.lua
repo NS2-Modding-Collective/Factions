@@ -79,7 +79,7 @@ function UpgradeMixin:CopyPlayerDataFrom(player)
 	if HasMixin(player, "FactionsUpgrade") then
 		if player.UpgradeList then 
 			self.UpgradeList:CopyUpgradeDataFrom(player.UpgradeList)
-			self:AddTimedCallback(ReapplyUpgrades, 0.1)
+			self:AddTimedCallback(ReapplyUpgrades, 0.2)
 		end
 	end
 end

@@ -14,6 +14,8 @@ Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
 local networkVars = {
 }
 
+AddMixinNetworkVars(TeamColoursMixin, networkVars)
+
 // Team Colours
 local overrideOnInitialized = Armory.OnInitialized
 function Armory:OnInitialized()
@@ -25,6 +27,10 @@ function Armory:OnInitialized()
 		InitMixin(self, TeamColoursMixin)
 		assert(HasMixin(self, "TeamColours"))
 	end
+	
+	if Server and not HasMixin(self, "MapBlip") then
+        InitMixin(self, MapBlipMixin)
+    end
 	
 	self.isGhostStructure = false
 	

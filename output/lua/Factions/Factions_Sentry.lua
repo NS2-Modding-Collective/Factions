@@ -14,6 +14,8 @@ Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
 local networkVars = {
 }
 
+AddMixinNetworkVars(TeamColoursMixin, networkVars)
+
 // Sentry
 local overrideOnCreate = Sentry.OnCreate
 function Sentry:OnCreate()
@@ -28,6 +30,16 @@ function Sentry:OnCreate()
 	
 	self.isGhostStructure = false
 	
+end
+
+local overrideOnInitialized = Sentry.OnInitialized
+function Sentry:OnInitialized()
+
+	overrideOnInitialized(self)
+
+	if Server and not HasMixin(self, "MapBlip") then
+        InitMixin(self, MapBlipMixin)
+    end
 end
 
 if Server then

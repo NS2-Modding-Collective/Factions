@@ -14,6 +14,8 @@ Script.Load("lua/Factions/Factions_TeamColoursMixin.lua")
 local networkVars = {
 }
 
+AddMixinNetworkVars(TeamColoursMixin, networkVars)
+
 // Observatory
 local overrideOnCreate = Observatory.OnCreate
 function Observatory:OnCreate()
@@ -26,12 +28,18 @@ function Observatory:OnCreate()
 		assert(HasMixin(self, "TeamColours"))
 	end
 	
-	if not HasMixin(self, "MapBlip") then
-        InitMixin(self, MapBlipMixin)
-    end
-	
 	self.isGhostStructure = false
 	
+end
+
+local overrideOnInitialized = Observatory.OnInitialized
+function Observatory:OnInitialized()
+
+	overrideOnInitialized(self)
+
+	if Server and not HasMixin(self, "MapBlip") then
+        InitMixin(self, MapBlipMixin)
+    end
 end
 
 Class_Reload("Observatory", networkVars)

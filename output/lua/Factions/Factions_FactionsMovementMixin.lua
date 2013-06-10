@@ -389,7 +389,14 @@ function FactionsMovementMixin:GetMaxSpeed(possible)
 	end
 
 	local adjustedMaxSpeed = maxSpeed * self:GetCatalystMoveSpeedModifier() * inventorySpeedScalar 
-	//Print("Adjusted max speed => %.2f (without inventory: %.2f)", adjustedMaxSpeed, adjustedMaxSpeed / inventorySpeedScalar )
+	
+	// Proper speed for jetpack users
+	if self:isa("JetpackMarine") then
+		if self:GetIsJetpacking() or (not self:GetIsOnGround() and not self:GetIsWallWalking()) then
+			adjustedMaxSpeed = JetpackMarine.kFlySpeed
+		end
+    end
+	
 	return adjustedMaxSpeed
 	
 end

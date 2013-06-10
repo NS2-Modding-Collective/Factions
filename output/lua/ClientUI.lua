@@ -40,7 +40,7 @@ end
 local kShowAsClass = { }
 kShowAsClass["Marine"] = { ["Hud/Marine/GUIMarineHUD"] = true, GUIPoisonedFeedback = true, GUIPickups = true, GUIOrders = true,
                            GUISensorBlips = true, GUIObjectiveDisplay = true, GUIProgressBar = true, GUIRequestMenu = true,
-                           GUIWaypoints = true, ["Factions/Hud/Factions_GUIExperienceBar"] = true }
+                           GUIWaypoints = true, ["Factions/Hud/Factions_GUIExperienceBar"] = true, GUIJetpackFuel = true }
 kShowAsClass["JetpackMarine"] = { GUIJetpackFuel = true }
 kShowAsClass["Exo"] = { GUIExoThruster = true, ["Hud/Marine/GUIMarineHUD"] = true, ["Hud/Marine/GUIExoHUD"] = true, GUIProgressBar = true, GUIRequestMenu = true, GUIWaypoints = true, ["Factions/Hud/Factions_GUIExperienceBar"] = true }
 kShowAsClass["MarineSpectator"] = { GUIRequestMenu = true, ["Factions/Hud/Factions_GUIExperienceBar"] = true }

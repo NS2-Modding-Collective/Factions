@@ -22,6 +22,7 @@ local networkVars = {
 	hasHiveThree = "boolean",
 }
 
+AddMixinNetworkVars(TeamColoursMixin, networkVars)
 AddMixinNetworkVars(SpeedUpgradeMixin, networkVars)
 AddMixinNetworkVars(WeaponUpgradeMixin, networkVars)
 AddMixinNetworkVars(HealthUpgradeMixin, networkVars)
