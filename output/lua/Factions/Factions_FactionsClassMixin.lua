@@ -318,8 +318,8 @@ if Client then
         
         // Don't allow display in the ready room
         if Client.GetLocalPlayer() == self and self:GetTeamNumber() ~= 0 and not self:isa("ReadyRoomPlayer") then   
-            if not self.classSelectMenu then                            
-                self.classSelectMenu = GetGUIManager():CreateGUIScript("Factions/Hud/Factions_GUIClassSelectMenu")
+            if not g_classSelectMenu then                            
+                g_classSelectMenu = GetGUIManager():CreateGUIScript("Factions/Hud/Factions_GUIClassSelectMenu")
                 MouseTracker_SetIsVisible(true, "ui/Cursor_MenuDefault.dds", true)
             end            
         end
@@ -328,9 +328,9 @@ if Client then
 
     function FactionsClassMixin:CloseClassSelectMenu()   
      
-        if self.classSelectMenu then
-            GetGUIManager():DestroyGUIScript(self.classSelectMenu)
-            self.classSelectMenu = nil
+        if g_classSelectMenu then
+            GetGUIManager():DestroyGUIScript(g_classSelectMenu)
+            g_classSelectMenu = nil
             MouseTracker_SetIsVisible(false)
             // Quick work-around to not fire weapon when closing menu.
             self.timeClosedMenu = Shared.GetTime()
