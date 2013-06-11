@@ -28,7 +28,7 @@ kSpawnProtectTime = 2
 kNanoShieldDamageReductionDamage = 0.1
 
 // MARINE DAMAGE VALUES
-kRifleDamage = 18
+kRifleDamage = 20
 kRifleDamageType = kDamageType.Normal
 SetCachedTechData(kTechId.Rifle, kTechDataDamageType, kRifleDamageType)
 kRifleClipSize = 30
@@ -56,12 +56,12 @@ SetCachedTechData(kTechId.Axe, kTechDataDamageType, kAxeDamageType)
 kKnifeWeight = 0.05
 kKnifeDamage = 65
 kKnifeRange = 2 // Axe range is 1
-kKnifeDamageType = kDamageType.Normal
+kKnifeDamageType = kDamageType.Structural
 kKnifeCost = 10
 
 kSwordWeight = 0.05
-kSwordDamage = 90
-kSwordRange = 60
+kSwordDamage = 100
+kSwordRange = 3
 kSwordDamageType = kDamageType.Normal
 kSwordCost = 10
 
