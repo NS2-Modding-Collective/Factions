@@ -16,8 +16,8 @@ class 'AssaultClass' (FactionsClass)
 AssaultClass.type 					= "Assault"						     								// the type of the FactionsClass
 AssaultClass.name 					= "Assault"     													// the friendly name of the FactionsClass
 AssaultClass.description 			= "A regular dude"										     		// the description of the FactionsClass
-AssaultClass.baseHealth 			= kMarineHealth	+ 10										     	// the base health value of this class
-AssaultClass.baseArmor 				= kMarineArmor + 10										     		// the base armor value of this class
+AssaultClass.baseHealth 			= kMarineHealth	+ 20										     	// the base health value of this class
+AssaultClass.baseArmor 				= kMarineArmor + 20										     		// the base armor value of this class
 AssaultClass.baseWalkSpeed 			= 5.0                												// the initial walk speed of this class
 AssaultClass.baseRunSpeed 			= 8.0                												// the initial run speed of this class
 AssaultClass.baseDropCount 			= 2	                												// how many packs get dropped when you drop health/ammo
