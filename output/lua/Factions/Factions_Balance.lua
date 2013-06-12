@@ -100,6 +100,10 @@ kRailgunDamageType = kDamageType.Puncture
 
 kMineDamage = 150
 
+// Player Health values
+kInjuredPlayerMaxHealth = 5000
+kInjuredPlayerMaxArmor = 100
+
 // Power points
 kPowerPointHealth = 1000	
 kPowerPointArmor = 400	
