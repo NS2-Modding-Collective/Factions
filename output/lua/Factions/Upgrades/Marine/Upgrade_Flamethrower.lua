@@ -12,12 +12,11 @@
 class 'FlamethrowerUpgrade' (FactionsWeaponUpgrade)
 
 // Define these statically so we can easily access them without instantiating.
-FlamethrowerUpgrade.cost				= { 300 }                          							// cost of the upgrade in xp
+FlamethrowerUpgrade.cost				= { 600 }                          							// cost of the upgrade in xp
 FlamethrowerUpgrade.upgradeName 		= "flamer"			                        				// text code of the upgrade if using it via console
 FlamethrowerUpgrade.upgradeTitle 		= "Flamethrower"       										// Title of the upgrade, e.g. Submachine Gun
 FlamethrowerUpgrade.upgradeDesc 		= "Come on baby light my fire"  							// Description of the upgrade
 FlamethrowerUpgrade.upgradeTechId		= kTechId.Flamethrower 		    							// TechId of the upgrade, default is kTechId.Move cause its the first entry
-FlamethrowerUpgrade.requirements 		= { "UnlockFlamethrowerUpgrade" }							// Any requirements?
 FlamethrowerUpgrade.hudSlot				= kPrimaryWeaponSlot										// Is this a primary weapon?
 
 function FlamethrowerUpgrade:Initialize()
@@ -29,7 +28,6 @@ function FlamethrowerUpgrade:Initialize()
 	self.upgradeTitle = FlamethrowerUpgrade.upgradeTitle
 	self.upgradeDesc = FlamethrowerUpgrade.upgradeDesc
 	self.upgradeTechId = FlamethrowerUpgrade.upgradeTechId
-	self.requirements = FlamethrowerUpgrade.requirements
 	self.hudSlot = FlamethrowerUpgrade.hudSlot
 	
 end

@@ -9,7 +9,7 @@
 						
 class 'LaserMinesUpgrade' (FactionsWeaponUpgrade)
 
-LaserMinesUpgrade.cost 				= { 200 }                          	// cost of the upgrade in xp
+LaserMinesUpgrade.cost 				= { 400 }                          	// cost of the upgrade in xp
 LaserMinesUpgrade.upgradeName		= "lasermines"	                    // text code of the upgrade if using it via console
 LaserMinesUpgrade.upgradeTitle 		= "Laser Mines"       				// Title of the upgrade, e.g. Submachine Gun
 LaserMinesUpgrade.upgradeDesc 		= "Get some Laser Mines"            // Description of the upgrade

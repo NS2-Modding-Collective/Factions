@@ -17,7 +17,7 @@ class 'FactionsWeaponUpgrade' (FactionsUpgrade)
 
 FactionsWeaponUpgrade.upgradeType 	= kFactionsUpgradeTypes.Weapon        	// the type of the upgrade
 FactionsWeaponUpgrade.triggerType 	= kFactionsTriggerTypes.NoTrigger   	// how the upgrade is gonna be triggered
-FactionsWeaponUpgrade.permanent		= false									// Controls whether you get the upgrade back when you respawn
+FactionsWeaponUpgrade.permanent		= true									// Controls whether you get the upgrade back when you respawn
 FactionsWeaponUpgrade.hudSlot		= 4										// Is this a primary weapon?
 FactionsWeaponUpgrade.teamType		= kFactionsUpgradeTeamType.MarineTeam	// Team Type
 
