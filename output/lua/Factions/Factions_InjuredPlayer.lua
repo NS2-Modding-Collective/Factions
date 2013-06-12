@@ -21,7 +21,7 @@ function InjuredPlayer:OnCreate()
 
     InjuredPlayer.OnCreate(self)
     
- end
+end
 
 
 function InjuredPlayer:OnInitialized()
@@ -62,8 +62,8 @@ function InjuredPlayer:OverrideInput(input)
 end
 
 
-function InjuredPlayer:GetDevourPercentage()
-    return self.devouringPercentage
+function InjuredPlayer:GetDeathPercentage()
+    return self:GetHealth() / self:GetMaxHealth()
 end
 
 function InjuredPlayer:OnProcessMove(input)
@@ -76,10 +76,6 @@ end
 
 function InjuredPlayer:GetMovePhysicsMask()
     return PhysicsMask.All
-end
-
-function InjuredPlayer:GetTraceCapsule()
-    return 0, 0
 end
 
 function InjuredPlayer:GetCanTakeDamageOverride()
@@ -133,13 +129,8 @@ if Client then
     function DevouredPlayer:OnInitLocalClient()    
         if self:GetTeamNumber() ~=  kTeamReadyRoom then
             Marine.OnInitLocalClient(self)
-            if self.guiDevouredPlayer then    
-                GetGUIManager():DestroyGUIScriptSingle(self.guiDevouredPlayer)        
-            end
             
-            self.guiDevouredPlayer = GetGUIManager():CreateGUIScriptSingle("Hud/GUIDevouredPlayer")                
-            // to get chat working
-            GetGUIManager():CreateGUIScriptSingle("GUIChat")
+            // TODO: Third person camera
         end
     end
   
