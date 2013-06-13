@@ -24,6 +24,8 @@ function InjuredPlayer:OnCreate()
     InjuredPlayer.OnCreate(self)
     InitMixin(self, ConstructMixin)
     
+    assert(HasMixin(self, "Construct"))
+    
 end
 
 
