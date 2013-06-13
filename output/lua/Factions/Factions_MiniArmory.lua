@@ -16,7 +16,7 @@ class 'MiniArmory' (Armory)
 MiniArmory.kMapName = "mini_armory"
 MiniArmory.kModelName = Armory.kModelName
 MiniArmory.kAnimationGraph = Armory.kAnimationGraph
-MiniArmory.kScale = Vector(0.7, 0.7, 0.7)
+MiniArmory.kScale = Vector(0.6, 0.6, 0.6)
 
 local networkVars =
 {
