@@ -132,7 +132,10 @@ function InjuredPlayer:GetTechId()
     return kTechId.Marine
 end
 
-function InjuredPlayer:OnUpdate(deltaTime)
+if Server then
+	function InjuredPlayer:OnUpdate(deltaTime)
+		
+	end
 end
 
 if Client then     
