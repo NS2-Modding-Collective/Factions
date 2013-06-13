@@ -17,9 +17,12 @@ local networkVars =
 {
 }
 
+AddMixinNetworkVars(ConstructMixin, networkVars)
+
 function InjuredPlayer:OnCreate()
 
     InjuredPlayer.OnCreate(self)
+    InitMixin(self, ConstructMixin)
     
 end
 
