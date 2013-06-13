@@ -47,6 +47,9 @@ function InjuredPlayer:OnInitialized()
         
     end
     
+    self:SetHealth(kInjuredPlayerInitialHealth)
+    self:SetArmor(kInjuredPlayerInitialArmor)
+    
 end
 
 // let the player chat, but but nove
@@ -127,6 +130,9 @@ end
 
 function InjuredPlayer:GetTechId()
     return kTechId.Marine
+end
+
+function InjuredPlayer:OnUpdate(deltaTime)
 end
 
 if Client then     

@@ -103,6 +103,9 @@ kMineDamage = 150
 // Player Health values
 kInjuredPlayerMaxHealth = 5000
 kInjuredPlayerMaxArmor = 100
+kInjuredPlayerInitialHealth = 4000
+kInjuredPlayerInitialArmor = 0
+kInjuredPlayerHealthDrainRate = 30
 
 // Power points
 kPowerPointHealth = 1000	
