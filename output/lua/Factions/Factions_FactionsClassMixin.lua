@@ -301,7 +301,7 @@ function FactionsClassMixin:GetMaxBackwardSpeedScalar()
 		return self.factionsClass:GetMaxBackwardSpeedScalar()
 	else
 		if _G[self:GetClassName()].GetMaxBackwardSpeedScalar then
-			return _G[self:GetClassName()].GetMaxBackwardSpeedScalar()
+			return _G[self:GetClassName()].GetMaxBackwardSpeedScalar(self)
 		else
 			return Player.kWalkBackwardSpeedScalar
 		end
