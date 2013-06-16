@@ -221,9 +221,18 @@ function Factions_GUIExperienceBar:CalculateExperienceData()
 	self.experienceData.experienceToNextLevel = player:XPUntilNextLevel()
 	self.experienceData.nextLevelExperience = player:GetNextLevelXP()
 	self.experienceData.thisLevel = player:GetLvl()
-	self.experienceData.thisLevelName = player:GetLvlName(self.experienceData.thisLevel)
 	self.experienceData.experiencePercent = player:GetLevelProgression()
 	self.experienceData.experienceLastTick = self.experienceData.targetExperience
+	
+	if HasMixin(player, "FactionsClass") and player:GetHasFactionsClass() then
+		self.experienceData.thisLevelName = player:GetFactionsClassString()
+		self.experienceData.playerHasClass = true 
+		self.experienceData.playerClass = player:GetFactionsClassString()
+	else
+		self.experienceData.thisLevelName = player:GetLvlName(self.experienceData.thisLevel)
+		self.experienceData.playerHasClass = false 
+		self.experienceData.playerClass = "None Selected"
+	end
 
 end
 
