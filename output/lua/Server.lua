@@ -38,7 +38,16 @@ Script.Load("lua/ConsoleCommands_Server.lua")
 Script.Load("lua/NetworkMessages_Server.lua")
 
 // Factions
-Script.Load("lua/Factions/Factions_GamerulesPicker.lua")
+local f=io.open("lua/Factions/Factions_GamerulesPicker.lua","r")
+local GamerulesPickerAvailable = false
+if f ~= nil then
+	Shared.Message("*****")
+	Shared.Message("Xenocombat codebase detected - checking for Factions_GamerulesPicker entity...")
+	Shared.Message("*****")
+	io.close(f)
+	GamerulesPickerAvailable = true
+	Script.Load("lua/Factions/Factions_GamerulesPicker.lua")
+end
 
 Script.Load("lua/dkjson.lua")
 
@@ -80,7 +89,9 @@ end
  * Map entities with a higher priority are loaded first.
  */
 local kMapEntityLoadPriorities = { }
-kMapEntityLoadPriorities[GamerulesPicker.kMapName] = 2
+if GamerulesPickerAvailable then
+	kMapEntityLoadPriorities[GamerulesPicker.kMapName] = 2
+end
 kMapEntityLoadPriorities[NS2Gamerules.kMapName] = 1
 local function GetMapEntityLoadPriority(mapName)
 
