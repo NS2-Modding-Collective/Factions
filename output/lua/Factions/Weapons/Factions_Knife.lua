@@ -84,7 +84,7 @@ function Knife:GetWeight()
 end
 
 function Knife:OverrideWeaponName()
-    return "knife"
+    return "axe"
 end
 
 Shared.LinkClassToMap("Knife", Knife.kMapName, networkVars)
