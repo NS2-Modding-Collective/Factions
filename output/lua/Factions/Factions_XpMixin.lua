@@ -105,11 +105,13 @@ XpMixin.networkVars =
 	permanentXpAvailable = "integer (0 to " .. kMaxXP .. ")",
     // score was no networkvar so add it that we can refer on it as client
     score = "integer (0 to " .. kMaxScore .. ")",
+    upgradePointsSpent = "integer (0 to " .. kMaxLvl .. ")",
 }
 
 function XpMixin:__initmixin()
     self.level = kStartLevel
 	self.permanentXpAvailable = kStartXPAvailable
+	self:ResetSpentUpgradePoints()
 end
 
 function XpMixin:CopyPlayerDataFrom(player)
@@ -117,6 +119,7 @@ function XpMixin:CopyPlayerDataFrom(player)
 	if player.level then		
 		self.level = player.level
 		self.permanentXpAvailable = player.permanentXpAvailable
+		self.upgradePointsSpent = player.upgradePointsSpent
 	end
 
 end
@@ -160,6 +163,20 @@ end
 
 function XpMixin:GetDisplayResources()
 	return self.permanentXpAvailable
+end
+
+function XpMixin:GetUpgradePointsAvailable()
+	return math.max(0, self.level - self.upgradePointsSpent)
+end
+
+// Keep the same notation as AddResources. Negative number means we are spending.
+function XpMixin:AddUpgradePoints(amount)
+	local spentAmount = amount * -1
+	self.upgradePointsSpent = math.max(self.upgradePointsSpent + spentAmount, kStartLevel)
+end
+
+function XpMixin:ResetSpentUpgradePoints()
+	self.upgradePointsSpent = kStartLevel
 end
 
 // also adds res when score will be added so you can use them to buy something
