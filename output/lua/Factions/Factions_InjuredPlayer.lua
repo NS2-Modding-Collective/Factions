@@ -143,7 +143,7 @@ if Server then
 		local timeNow = Shared.GetTime()
 		// Do this in a while loop so laggy servers don't slow the drain rate
 		while timeNow - self.lastAutoDamageTime > kInjuredPlayerHealthDrainInterval then
-			self:TakeDamage(kInjuredPlayerHealthDrainRate * kInjuredPlayerHealthDrainInterval)
+			self:Damage(kInjuredPlayerHealthDrainRate * kInjuredPlayerHealthDrainInterval)
 			self.lastAutoDamageTime = self.lastAutoDamageTime + kInjuredPlayerHealthDrainInterval
 		end
 	end
