@@ -15,6 +15,7 @@ MinesUpgrade.upgradeTitle 		= "Mines"       					// Title of the upgrade, e.g. S
 MinesUpgrade.upgradeDesc 		= "Get some Mines"             		// Description of the upgrade
 MinesUpgrade.upgradeTechId 		= kTechId.LayMines  				// techId of the upgrade, default is kTechId.Move cause its the first entry
 MinesUpgrade.hudSlot	 		= 4									// Is this a primary weapon?
+MinesUpgrade.permanent			= false
 
 function MinesUpgrade:Initialize()
 
@@ -26,6 +27,7 @@ function MinesUpgrade:Initialize()
 	self.upgradeDesc = MinesUpgrade.upgradeDesc
 	self.upgradeTechId = MinesUpgrade.upgradeTechId
 	self.hudSlot = MinesUpgrade.hudSlot
+	self.permanent = MinesUpgrade.permanent
 	
 end
 

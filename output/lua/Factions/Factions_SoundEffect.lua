@@ -44,6 +44,7 @@ function StartSoundEffectOnEntity(soundName, player, volume, player2)
 		if (tauntSoundType == kFactionsTriggerSoundType.Health) then
 			
 			// Xenoswarm: Fire the health pack upgrade buy logic
+			if GetGamerulesInfo():GetGameType() == and player:isa("Marine") then
 			
 		end
 		

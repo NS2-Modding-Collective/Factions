@@ -11,7 +11,7 @@
 						
 class 'KnifeUpgrade' (FactionsWeaponUpgrade)
 
-KnifeUpgrade.cost 			= { 25 }                           							// Cost of the upgrade in xp
+KnifeUpgrade.cost 			= { 250 }                           							// Cost of the upgrade in xp
 KnifeUpgrade.upgradeName 	= "knife"                       							// Text code of the upgrade if using it via console
 KnifeUpgrade.upgradeTitle 	= "Knife"               									// Title of the upgrade, e.g. Submachine Gun
 KnifeUpgrade.upgradeDesc 	= "Default Scout weapon... Stabby!"							// Description of the upgrade

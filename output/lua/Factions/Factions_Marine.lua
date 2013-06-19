@@ -196,7 +196,15 @@ function Marine:GiveItem(itemMapName)
                 continue = false
                 setActive = false
             end
-                    
+                
+        elseif itemMapName == Welder.kMapName then
+        
+        	local weapon = self:GetWeaponInHUDSlot(kWelderHUDSlot)
+        	if weapon then
+				player:RemoveWeapon(weapon)
+				DestroyEntity(weapon)
+			end
+			
         end
         
         if continue == true then

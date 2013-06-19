@@ -106,6 +106,7 @@ kInjuredPlayerMaxArmor = 100
 kInjuredPlayerInitialHealth = 4000
 kInjuredPlayerInitialArmor = 0
 kInjuredPlayerHealthDrainRate = 30
+kInjuredPlayerHealthDrainInterval = 1.0
 
 // Power points
 kPowerPointHealth = 1000	
