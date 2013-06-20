@@ -50,6 +50,11 @@ function InjuredPlayer:OnInitialized()
     self:SetHealth(kInjuredPlayerInitialHealth)
     self:SetArmor(kInjuredPlayerInitialArmor)
     
+    // Initialise the auto-damage process
+    if Server then
+    	self.lastAutoDamageTime = Shared.GetTime()
+    end
+    
 end
 
 // let the player chat, but but nove
@@ -133,8 +138,14 @@ function InjuredPlayer:GetTechId()
 end
 
 if Server then
+	// Every so often, damage the player!
 	function InjuredPlayer:OnUpdate(deltaTime)
-		
+		local timeNow = Shared.GetTime()
+		// Do this in a while loop so laggy servers don't slow the drain rate
+		while timeNow - self.lastAutoDamageTime > kInjuredPlayerHealthDrainInterval then
+			self:Damage(kInjuredPlayerHealthDrainRate * kInjuredPlayerHealthDrainInterval)
+			self.lastAutoDamageTime = self.lastAutoDamageTime + kInjuredPlayerHealthDrainInterval
+		end
 	end
 end
 

@@ -25,6 +25,15 @@ local kFactionsTriggerSounds =
 	"sound/NS2.fev/marine/voiceovers/ammo" = kFactionsTriggerSoundType.Ammo,
 }
 
+local function BuyForPlayer(player, upgradeName)
+	local cheats = Shared.GetCheatsEnabled()
+	local upgrade = player:GetUpgradeByName(upgradeName)
+	if upgrade then
+		// if it's cheats 1 you just get the upgrade without paying
+		player:BuyUpgrade(upgrade:GetId(), cheats)
+	end
+end
+
 local originalStartSoundEffectOnEntity = StartSoundEffectOnEntity
 function StartSoundEffectOnEntity(soundName, player, volume, player2)
 	local soundEffectEntity = originalStartSoundEffectOnEntity(soundName, player, volume, player2)
@@ -37,20 +46,17 @@ function StartSoundEffectOnEntity(soundName, player, volume, player2)
 			
 			// Now check whether the player has taunted recently and fire taunt abilities.
 			//onEntity:ProcessTauntAbilities()
-			
-		end
 		
-		// Check whether the sound is a taunt sound
-		if (tauntSoundType == kFactionsTriggerSoundType.Health) then
+		// Check whether the sound is a health request sound
+		else if (tauntSoundType == kFactionsTriggerSoundType.Health or tauntSoundType == kFactionsTriggerSoundType.Ammo) then
 			
-			// Xenoswarm: Fire the health pack upgrade buy logic
+			// Xenoswarm: Fire the buy logic for health/ammo
+			if GetGamerulesInfo():GetGameType() == kFactionsGameType.Xenoswarm and player:isa("Marine") then
 			
-		end
-		
-		// Check whether the sound is a taunt sound
-		if (tauntSoundType == kFactionsTriggerSoundType.Ammo) then
-			
-			// Xenoswarm: Fire the ammo pack upgrade buy logic
+				local upgradeName = ConditionalValue(tauntSoundType == kFactionsTriggerSoundType.Health, "medpack", "ammo")
+				BuyForPlayer(player, upgradeName)
+				
+			end
 			
 		end
 		

@@ -11,7 +11,7 @@
 						
 class 'WelderUpgrade' (FactionsWeaponUpgrade)
 
-WelderUpgrade.cost			= { 50 }                           						// Cost of the upgrade in xp
+WelderUpgrade.cost			= { 100 }                           						// Cost of the upgrade in xp
 WelderUpgrade.upgradeName 	= "welder"                       						// Text code of the upgrade if using it via console
 WelderUpgrade.upgradeTitle	= "Welder"               								// Title of the upgrade, e.g. Submachine Gun
 WelderUpgrade.upgradeDesc 	= "Weld stuff"											// Description of the upgrade
