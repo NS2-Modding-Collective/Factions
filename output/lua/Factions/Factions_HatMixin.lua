@@ -25,9 +25,9 @@ end
 
 HatMixin.AddHatModel("Cyst", { model = Cyst.kModelName,
 							  animationGraph = Cyst.kAnimationGraph,
-							  offset = Vector(0,0,0),
-							  baseScale = Vector(1,1,1),
-							  baseAangles = Vector(0,0,0), })
+							  baseOffset = Vector(0.5,0,0),
+							  baseScale = Vector(0.4,0.4,0.4),
+							  baseAngles = Angles(0,0,-90), })
 
 HatMixin.expectedMixins =
 {
@@ -35,14 +35,14 @@ HatMixin.expectedMixins =
 
 HatMixin.expectedCallbacks =
 {
-	GetHatAttachPoint = "Gets the attach point for hats",
-	GetHatScale = "Gets the scale of the hat using Marine scale as a baseline",
-	GetHatOffset = "Gets the offset of the hat using Marine scale as a baseline",
-	GetHatAngles = "Gets the angle of the hat using Marine scale as a baseline",
 }
 
 HatMixin.expectedConstants =
 {
+	kAttachPoint = "The attach point for hats",
+	kOffset = "The offset of the hat using Marine scale as a baseline",
+	kScale = "The scale of the hat using Marine scale as a baseline",
+	kAngles = "The angle of the hat using Marine scale as a baseline",
 }
 
 HatMixin.networkVars =
@@ -62,6 +62,7 @@ function HatMixin:CopyPlayerDataFrom(player)
 
 	if Server then
 		self.hatType = player.hatType
+		self:SetupHat()
 	end
 
 end
@@ -70,15 +71,41 @@ function HatMixin:GetHatModelParams()
 	return kHatModels[self.hatType]
 end
 
-function HatMixin:SetHatType(hatType)
-	self.hatType = hatType
-end
+if Server then
+	function HatMixin:SetHatType(hatType)
+		self.hatType = hatType
+		self:SetupHat()
+	end
 
-function HatMixin:SetupHat()
-	local attachPointName = self:GetHatAttachPoint()
+	function HatMixin:SetupHat()
+		local hatParams = self:GetHatModelParams()
+		local mixinConstants = self:GetMixinConstants()
 	
+		if hatParams then
+			local attachPointName = mixinConstants.kAttachPoint
+			local model = hatParams.model
+			local animationGraph = hatParams.animationGraph
+			local offset = hatParams.baseOffset + mixinConstants.kOffset
+			local scale = hatParams.baseScale * mixinConstants.kScale
+			local angles = hatParams.baseAngles + mixinConstants.kAngles
+		
+			self:AddAttachedModel(model, animationGraph, attachPointName, offset, scale, angles)
+			self.hatModel = lastAttachedModel
+		else
+			self:RemoveHat()
+		end
+		
+	end
 end
 
 function HatMixin:RemoveHat()
+	self.hatType = HatType.None
+	if self.hatModel then
+		DestroyEntity(self.hatModel)
+		self.hatModel = nil
+	end
+end
 
+// TODO: Allow hats to fall off!
+function HatMixin:CreateDroppedHat()
 end
