@@ -140,7 +140,7 @@ end
 
 if Client then     
         
-    function DevouredPlayer:OnInitLocalClient()    
+    function InjuredPlayer:OnInitLocalClient()    
         if self:GetTeamNumber() ~=  kTeamReadyRoom then
             Marine.OnInitLocalClient(self)
             
@@ -148,7 +148,7 @@ if Client then
         end
     end
   
-    function DevouredPlayer:UpdateClientEffects(deltaTime, isLocal)
+    function InjuredPlayer:UpdateClientEffects(deltaTime, isLocal)
     
         Marine.UpdateClientEffects(self, deltaTime, isLocal)
         
