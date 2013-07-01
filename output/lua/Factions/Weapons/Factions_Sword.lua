@@ -13,10 +13,10 @@ Script.Load("lua/Weapons/Marine/Axe.lua")
 
 class 'Sword' (Axe)
 
-Sword.kMapName = "knife"
+Sword.kMapName = "sword"
 
 Sword.kModelName = PrecacheAsset("models/marine/axe/axe.model")
-local kViewModelName = PrecacheAsset("models/marine/knife/knife_view.model")
+local kViewModelName = PrecacheAsset("models/marine/axe/axe_view.model")
 local kAnimationGraph = PrecacheAsset("models/marine/axe/axe_view.animation_graph")
 
 // 4 degrees in NS1
@@ -40,6 +40,7 @@ function Sword:OnTag(tagName)
     elseif tagName == "attack_end" then
         self.sprintAllowed = true
     end
+    
 end
 
 function Sword:GetAnimationGraphName()
