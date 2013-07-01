@@ -20,7 +20,7 @@ JetpackMarine.kVerticalFlyAccelerationMod = 1.6
 JetpackMarine.kJetpackAcceleration = 20
 JetpackMarine.kFlySpeed = 10
 
-function JetpackMarine:GetAirFrictionForce()
+function JetpackMarine:GetAirFriction()
     return 0.2
 end
 
