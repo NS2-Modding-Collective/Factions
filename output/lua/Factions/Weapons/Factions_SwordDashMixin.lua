@@ -33,6 +33,13 @@ SwordDashMixin.expectedConstants =
 {
 }
 
+SwordDashMixin.overrideFunctions =
+{
+    "GetHasSecondary",
+	"OnSecondaryAttack",
+	"OnSecondaryAttackEnd",
+}
+
 SwordDashMixin.networkVars =
 {
 	swordDashing = "boolean",
@@ -45,16 +52,36 @@ function SwordDashMixin:__initmixin()
 		self.swordDashing = false
 	end
 	
-	self.shadowStepAttackCooldowns = {}
+	self.swordDashAttackCooldowns = {}
 
 end
 
 function SwordDashMixin:GetSwordDashLevel()
-	return self.swordDashLevel
+
+	local dashLevel
+	local player = self:GetOwner()
+	if player and HasMixin(player, "SwordHolder") then
+		dashLevel = player:GetIsSwordDashAvailable()
+	else
+		dashLevel = 0
+	end
+	
+	return dashLevel
+	
 end
 
-function SwordDashMixin:SetSwordDashLevel(newValue)
-	self.swordDashLevel = newValue
+function SwordDashMixin:GetIsSwordDashAvailable()
+
+	local isAvailable
+	local player = self:GetOwner()
+	if player and HasMixin(player, "SwordHolder") then
+		isAvailable = player:GetIsSwordDashAvailable()
+	else
+		isAvailable = false
+	end
+	
+	return isAvailable
+	
 end
 
 function SwordDashMixin:GetIsSwordDashing()
@@ -63,12 +90,22 @@ end
 
 function SwordDashMixin:SetIsSwordDashing(newValue)
 	self.swordDashing = newValue
+	local player = self:GetOwner()
+	if player and HasMixin(player, "SwordHolder") then
+		player:SetIsSwordDashing(newValue)
+	end
 end
 
 function SwordDashMixin:GetTimeBetweenAutoAttacks()
 
 	return SwordDashMixin.kBaseTimeBetweenAttacks - SwordDashMixin.kTimeBetweenAttacksDecrease * self:GetShadowStepLevel()
 
+end
+
+function SwordDashMixin:GetHasSecondary(player)
+
+    return self:GetIsSwordDashAvailable()
+    
 end
 
 function SwordDashMixin:OnSecondaryAttack()
@@ -95,14 +132,14 @@ end
 function SwordDashMixin:OnUpdateRender(deltaTime)
 	// Update visual effect
 	if self:GetIsSwordDashing() then
-		// Show blink effect, slightly toned down
 	end
 end
 
 function SwordDashMixin:OnUpdate(deltaTime)
-	// Update sprint bar
-
 	// Detect nearby enemies
+	// Trace a box in front of the player's velocity vector.
 	
 	// Hit them and play swing animation!
+	if trace > 0 then
+	end
 end

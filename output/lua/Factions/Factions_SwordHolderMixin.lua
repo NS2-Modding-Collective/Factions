@@ -73,6 +73,12 @@ function SwordHolderMixin:SetIsSwordDashing(newValue)
 	self.swordDashing = newValue
 end
 
+function SwordHolderMixin:GetIsSwordDashAvailable()
+
+	return self:GetSwordDashLevel() > 0
+
+end
+
 function SwordHolderMixin:GetTimeBetweenAutoAttacks()
 
 	return SwordHolderMixin.kBaseTimeBetweenAttacks - SwordHolderMixin.kTimeBetweenAttacksDecrease * self:GetShadowStepLevel()
@@ -91,22 +97,6 @@ function SwordHolderMixin:GetStaminaDrainRate()
 
 end
 
-function SwordHolderMixin:OnSecondaryAttack()
-	// Copy Shadow Step code here
-	if self:GetShadowStepLevel() > 0 then
-		self:SetIsShadowStepping(true)
-		self.shadowStepStartTime = Shared.GetTime()
-	end
-end
-
-function SwordHolderMixin:OnSecondaryAttackEnd()
-	self:SetIsShadowStepping(false)
-	self.shadowStepStartTime = nil
-end
-
-function SwordHolderMixin:OnHolster()
-end
-
 function SwordHolderMixin:OnUpdateRender(deltaTime)
 	// Update visual effect
 	if self:GetIsSwordDashing() then
@@ -116,8 +106,4 @@ end
 
 function SwordHolderMixin:OnUpdate(deltaTime)
 	// Update sprint bar
-
-	// Detect nearby enemies
-	
-	// Hit them and play swing animation!
 end
