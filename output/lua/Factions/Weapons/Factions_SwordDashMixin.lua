@@ -136,10 +136,24 @@ function SwordDashMixin:OnUpdateRender(deltaTime)
 end
 
 function SwordDashMixin:OnUpdate(deltaTime)
+	// Remove any cooled down enemies from the list
+	local timeNow = Shared.GetTime() 
+	local entitiesToRemoveFromCooldown = {}
+	for entity, cooldown in pairs(self.swordDashAttackCooldowns) do
+		if timeNow > cooldownTime then
+			table.insert(entitiesToRemoveFromCooldown, entity)
+		end
+	end
+	
+	for index, entity in ipairs(entitiesToRemoveFromCooldown) do
+		self.swordDashAttackCooldowns[entity] = nil
+	end
+
 	// Detect nearby enemies
 	// Trace a box in front of the player's velocity vector.
 	
 	// Hit them and play swing animation!
-	if trace > 0 then
+	if hitEntity then
+		self.swordDashAttackCooldowns[hitEntity] = timeNow + self:GetTimeBetweenAutoAttacks()
 	end
 end
