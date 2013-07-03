@@ -29,7 +29,7 @@ FactionsMovementMixin.expectedCallbacks =
 	GetUpgradedMaxSpeed = "The speed that the player walks",
 	GetUpgradedAcceleration = "The speed that the player walks",
 	
-	GetAirFrictionForce = "The force of Air Friction for this entity",
+	GetAirFriction = "The force of Air Friction for this entity",
 }
 
 /*
@@ -89,7 +89,6 @@ FactionsMovementMixin.overrideFunctions =
 {
 	"GetAcceleration",
 	"GetAirMoveScalar",
-	"GetIsJumping",
 	"GetMoveSpeedIs2D",
 	"GetRecentlyWallJumped",
 	"GetCanWallJump",
@@ -174,13 +173,6 @@ function FactionsMovementMixin:GetAirMoveScalar()
 	
 end
 
-// required to trigger wall walking animation
-function FactionsMovementMixin:GetIsJumping()
-
-	return Player.GetIsJumping(self) and not self.wallWalking	
-	
-end
-
 // The movement should factor in the vertical velocity
 // only when wall walking.
 function FactionsMovementMixin:GetMoveSpeedIs2D()
@@ -207,7 +199,7 @@ function FactionsMovementMixin:GetIsOnLadder()
 	if self:GetHasMagnoBoots() then
 		return false
 	else
-		return Player.GetIsOnLadder(self)
+		return GroundMoveMixin.GetIsOnLadder(self)
 	end
 
 end
@@ -436,7 +428,7 @@ function FactionsMovementMixin:ModifyVelocity(input, velocity)
 		end
 
 
-		Player.ModifyVelocity(self, input, velocity)
+		GroundMoveMixin.ModifyVelocity(self, input, velocity)
 
 
 		if not self:GetIsOnSurface() and input.move:GetLength() ~= 0 then
@@ -539,7 +531,7 @@ end
 
 function FactionsMovementMixin:GetFrictionForce(input, velocity)
 
-	local friction = Player.GetFrictionForce(self, input, velocity)
+	local friction = GroundMoveMixin.GetFrictionForce(self, input, velocity)
 	if self:GetIsWallWalking() then
 		friction.y = -self:GetVelocity().y * self:GetGroundFrictionForce()
 	end
@@ -556,7 +548,7 @@ end
 
 function FactionsMovementMixin:GetIsOnSurface()
 
-	return Player.GetIsOnSurface(self) or self:GetIsWallWalking()
+	return GroundMoveMixin.GetIsOnSurface(self) or self:GetIsWallWalking()
 	
 end
 
@@ -586,7 +578,7 @@ function FactionsMovementMixin:GetMoveDirection(moveVelocity)
 		return GetNormalizedVector(moveVelocity)
 	end
 	
-	return Player.GetMoveDirection(self, moveVelocity)
+	return GroundMoveMixin.GetMoveDirection(self, moveVelocity)
 	
 end
 
@@ -596,7 +588,7 @@ function FactionsMovementMixin:GetIsCloseToGround(distanceToGround)
 		return false
 	end
 	
-	return Player.GetIsCloseToGround(self, distanceToGround)
+	return GroundMoveMixin.GetIsCloseToGround(self, distanceToGround)
 	
 end
 
@@ -609,7 +601,7 @@ end
 
 function FactionsMovementMixin:GetIsOnGround()
 
-	return Player.GetIsOnGround(self) and not self:GetIsWallWalking()    
+	return GroundMoveMixin.GetIsOnGround(self) and not self:GetIsWallWalking()    
 	
 end
 
@@ -680,7 +672,7 @@ end
 
 function FactionsMovementMixin:HandleJump(input, velocity)
 
-	local success = Player.HandleJump(self, input, velocity)
+	local success = GroundMoveMixin.HandleJump(self, input, velocity)
 	
 	if success then
 	
@@ -810,8 +802,8 @@ function FactionsMovementMixin:GetPitchSmoothRate()
 	return 3
 end
 
-function FactionsMovementMixin:GetAirFrictionForce()
-	return 0.2
+function FactionsMovementMixin:GetAirFriction()
+	return 0.1
 end 
 
 function FactionsMovementMixin:GetJumpHeight()

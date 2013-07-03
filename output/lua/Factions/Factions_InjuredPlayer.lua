@@ -21,7 +21,7 @@ AddMixinNetworkVars(ConstructMixin, networkVars)
 
 function InjuredPlayer:OnCreate()
 
-    InjuredPlayer.OnCreate(self)
+    Marine.OnCreate(self)
     InitMixin(self, ConstructMixin)
     
     assert(HasMixin(self, "Construct"))
@@ -142,7 +142,7 @@ if Server then
 	function InjuredPlayer:OnUpdate(deltaTime)
 		local timeNow = Shared.GetTime()
 		// Do this in a while loop so laggy servers don't slow the drain rate
-		while timeNow - self.lastAutoDamageTime > kInjuredPlayerHealthDrainInterval then
+		while timeNow - self.lastAutoDamageTime > kInjuredPlayerHealthDrainInterval do
 			self:Damage(kInjuredPlayerHealthDrainRate * kInjuredPlayerHealthDrainInterval)
 			self.lastAutoDamageTime = self.lastAutoDamageTime + kInjuredPlayerHealthDrainInterval
 		end
@@ -151,7 +151,7 @@ end
 
 if Client then     
         
-    function DevouredPlayer:OnInitLocalClient()    
+    function InjuredPlayer:OnInitLocalClient()    
         if self:GetTeamNumber() ~=  kTeamReadyRoom then
             Marine.OnInitLocalClient(self)
             
@@ -159,7 +159,7 @@ if Client then
         end
     end
   
-    function DevouredPlayer:UpdateClientEffects(deltaTime, isLocal)
+    function InjuredPlayer:UpdateClientEffects(deltaTime, isLocal)
     
         Marine.UpdateClientEffects(self, deltaTime, isLocal)
         

@@ -15,7 +15,7 @@ InkUpgrade.levels = 3																// How many levels are there to this upgrad
 InkUpgrade.upgradeName = "ink"                     							// Text code of the upgrade if using it via console
 InkUpgrade.upgradeTitle = "Ink"               								// Title of the upgrade, e.g. Submachine Gun
 InkUpgrade.upgradeDesc = "Blind the enemy with an inky burst"				// Description of the upgrade
-InkUpgrade.upgradeTechId = kTechId.Ink										// TechId of the upgrade, default is kTechId.Move cause its the first entry
+InkUpgrade.upgradeTechId = kTechId.ShadeInk										// TechId of the upgrade, default is kTechId.Move cause its the first entry
 InkUpgrade.triggerInterval	= { 12, 10, 8 } 										// Specify the timer interval (in seconds) per level.
 InkUpgrade.teamType	 	= kFactionsUpgradeTeamType.AlienTeam					// Team Type
 
