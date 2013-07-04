@@ -199,7 +199,7 @@ function FactionsMovementMixin:GetIsOnLadder()
 	if self:GetHasMagnoBoots() then
 		return false
 	else
-		return GroundMoveMixin.GetIsOnLadder(self)
+		return LadderMoveMixin.GetIsOnLadder(self)
 	end
 
 end
@@ -289,12 +289,13 @@ function FactionsMovementMixin:GetSmoothAngles()
 end
 
 local kUpVector = Vector(0, 1, 0)
-function FactionsMovementMixin:UpdatePosition(velocity, time)
+function FactionsMovementMixin:UpdatePosition(input, velocity, time)
 
 	PROFILE("Marine:UpdatePosition")
 
 	local yAxis = self.wallWalkingNormalGoal
-	local requestedVelocity = Vector(velocity)
+	// Unpack the velocity vector into a lua structure.
+	local requestedVelocity = Vector(velocity.x, velocity.y, velocity.z)
 	local moveDirection = GetNormalizedVector(velocity)
 	local storeSpeed = false
 	local hitEntities = nil
@@ -307,7 +308,7 @@ function FactionsMovementMixin:UpdatePosition(velocity, time)
 	local wasOnSurface = self:GetIsOnSurface()
 	local oldSpeed = velocity:GetLengthXZ()
 	
-	velocity, hitEntities, self.averageSurfaceNormal = Player.UpdatePosition(self, velocity, time)
+	velocity, hitEntities, self.averageSurfaceNormal = GroundMoveMixin.UpdatePosition(self, input, velocity, time)
 	local newSpeed = velocity:GetLengthXZ()
 
 	if not self.wallWalkingEnabled then
