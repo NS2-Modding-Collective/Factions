@@ -227,6 +227,8 @@ function FactionsMovementMixin:PreUpdateMove(input, runningPrediction)
 
 	PROFILE("Marine:PreUpdateMove")
 	
+	GroundMoveMixin.PreUpdateMove(self, input, runningPrediction)
+	
 	self.moveButtonPressed = input.move:GetLength() ~= 0
 	
 	if not self.wallWalkingEnabled or not self:GetIsWallWalkingPossible() then
@@ -288,6 +290,182 @@ function FactionsMovementMixin:GetSmoothAngles()
 	
 end
 
+local function GetIsCloseToGround(self, distance)
+
+    local onGround = false
+    local normal = Vector()
+    local completedMove, hitEntities = nil
+    
+    if self.controller == nil then
+        onGround = true
+    
+    elseif self.timeGroundAllowed <= Shared.GetTime() then
+    
+        // Try to move the controller downward a small amount to determine if
+        // we're on the ground.
+        local offset = Vector(0, -distance, 0)
+        // need to do multiple slides here to not get traped in V shaped spaces
+        completedMove, hitEntities, normal = self:PerformMovement(offset, 3, nil, false)
+        
+        if normal and normal.y >= 0.5 then
+            onGround = true
+        end
+    
+    end
+    
+    return onGround, normal
+    
+end
+
+/* **** CODE FROM GROUNDMOVEMIXIN **** */
+
+local kDownSlopeFactor = math.tan(math.rad(60))
+local kStepHeight = 0.5
+local kAirGroundTransistionTime = 0.2
+
+local function FlushCollisionCallbacks(self, velocity)
+
+    if not self.onGround and self.storedNormal then
+
+        local onGround, normal = GetIsCloseToGround(self, 0.15)
+        
+        if self.OverrideUpdateOnGround then
+            onGround = self:OverrideUpdateOnGround(onGround)
+        end
+
+        if onGround then
+        
+            self.onGround = true
+            
+            // dont transistion for only short in air durations
+            if self.timeGroundTouched + kAirGroundTransistionTime <= Shared.GetTime() then
+                self.timeGroundTouched = Shared.GetTime()
+            end
+
+            if self.OnGroundChanged then
+                self:OnGroundChanged(self.onGround, self.storedImpactForce, normal, velocity)
+            end
+            
+        end
+    
+    end
+    
+    self.storedNormal = nil
+    self.storedImpactForce = nil
+
+end
+
+local function DoStepMove(self, input, velocity, deltaTime)
+    
+    local oldOrigin = Vector(self:GetOrigin())
+    local oldVelocity = Vector(velocity)
+    local success = false
+    local stepAmount = 0
+    local slowDownFraction = self.GetCollisionSlowdownFraction and self:GetCollisionSlowdownFraction() or 1
+    local deflectMove = self.GetDeflectMove and self:GetDeflectMove() or false
+    
+    // step up at first
+    self:PerformMovement(Vector(0, kStepHeight, 0), 1)
+    stepAmount = self:GetOrigin().y - oldOrigin.y
+    // do the normal move
+    local startOrigin = Vector(self:GetOrigin())
+    local completedMove, hitEntities, averageSurfaceNormal = self:PerformMovement(velocity * deltaTime, 3, velocity, true, slowDownFraction, deflectMove)
+    local horizMoveAmount = (startOrigin - self:GetOrigin()):GetLengthXZ()
+    
+    if completedMove then
+        // step down again
+        local completedMove, hitEntities, averageSurfaceNormal = self:PerformMovement(Vector(0, -stepAmount - horizMoveAmount * kDownSlopeFactor, 0), 1)
+        
+        local onGround, normal = GetIsCloseToGround(self, 0.15)
+        
+        if onGround then
+            success = true
+        end
+
+    end    
+        
+    // not succesful. fall back to normal move
+    if not success then
+    
+        self:SetOrigin(oldOrigin)
+        VectorCopy(oldVelocity, velocity)
+        self:PerformMovement(velocity * deltaTime, 3, velocity, true, slowDownFraction, deflectMove)
+        
+    end
+
+    return success
+
+end
+
+local function GroundMoveUpdatePosition(self, input, velocity, deltaTime)
+
+    PROFILE("GroundMoveUpdatePosition")
+    
+    if self.controller then
+    
+        local oldVelocity = Vector(velocity)
+        
+        local stepAllowed = self.onGround and self:GetCanStep()
+        local didStep = false
+        local stepAmount = 0
+        local hitObstacle = false
+    
+        // check if we are allowed to step:
+        local completedMove, hitEntities, averageSurfaceNormal = self:PerformMovement(velocity * deltaTime * 2.5, 3, nil, false)
+  
+        if stepAllowed and hitEntities then
+        
+            for i = 1, #hitEntities do
+                if not self:GetCanStepOver(hitEntities[i]) then
+                
+                    hitObstacle = true
+                    stepAllowed = false
+                    break
+                    
+                end
+            end
+        
+        end
+        
+        if not stepAllowed then
+        
+            if hitObstacle then
+
+                if self.onGround then
+                    velocity:Scale(0.22)    
+                else
+                    velocity:Scale(0.5)  
+                end
+    
+                velocity.y = oldVelocity.y
+                
+            end
+            
+            local slowDownFraction = self.GetCollisionSlowdownFraction and self:GetCollisionSlowdownFraction() or 1
+            local deflectMove = self.GetDeflectMove and self:GetDeflectMove() or false
+            
+            self:PerformMovement(velocity * deltaTime, 3, velocity, true, slowDownFraction, deflectMove)
+            
+        else        
+            didStep, stepAmount = DoStepMove(self, input, velocity, deltaTime)            
+        end
+        
+        FlushCollisionCallbacks(self, velocity)
+        
+        if self.OnPositionUpdated then
+            self:OnPositionUpdated(self:GetOrigin() - self.prevOrigin, stepAllowed, input, velocity)
+        end
+        
+    end
+    
+    SetSpeedDebugText("onGround %s", ToString(self.onGround))
+	
+	return velocity, hitEntities, averageSurfaceNormal
+
+end
+
+/* **** END CODE FROM GROUNDMOVEMIXIN **** */
+
 local kUpVector = Vector(0, 1, 0)
 function FactionsMovementMixin:UpdatePosition(input, velocity, time)
 
@@ -308,7 +486,7 @@ function FactionsMovementMixin:UpdatePosition(input, velocity, time)
 	local wasOnSurface = self:GetIsOnSurface()
 	local oldSpeed = velocity:GetLengthXZ()
 	
-	velocity, hitEntities, self.averageSurfaceNormal = GroundMoveMixin.UpdatePosition(self, input, velocity, time)
+	velocity, hitEntities, self.averageSurfaceNormal = GroundMoveUpdatePosition(self, input, velocity, time)
 	local newSpeed = velocity:GetLengthXZ()
 
 	if not self.wallWalkingEnabled then
