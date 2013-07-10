@@ -467,7 +467,7 @@ end
 /* **** END CODE FROM GROUNDMOVEMIXIN **** */
 
 local kUpVector = Vector(0, 1, 0)
-function FactionsMovementMixin:UpdatePosition(input, velocity, deltaTime)
+function FactionsMovementMixin:UpdatePosition(input, velocity, time)
 
 	PROFILE("Marine:UpdatePosition")
 
@@ -578,11 +578,11 @@ function FactionsMovementMixin:GetRecentlyJumped()
 	
 end
 
-function FactionsMovementMixin:ModifyVelocity(input, velocity)
+function FactionsMovementMixin:ModifyVelocity(input, velocity, deltaTime)
 
 	if self:isa("JetpackMarine") then
 	
-		JetpackMarine.ModifyVelocity(self, input, velocity)
+		JetpackMarine.ModifyVelocity(self, input, velocity, deltaTime)
 		
 	else
 
@@ -607,7 +607,7 @@ function FactionsMovementMixin:ModifyVelocity(input, velocity)
 		end
 
 
-		GroundMoveMixin.ModifyVelocity(self, input, velocity)
+		GroundMoveMixin.ModifyVelocity(self, input, velocity, deltaTime)
 
 
 		if not self:GetIsOnSurface() and input.move:GetLength() ~= 0 then
@@ -632,13 +632,13 @@ function FactionsMovementMixin:ModifyVelocity(input, velocity)
 						local xzVelocity = Vector(velocity)
 						xzVelocity.y = 0
 						
-						VectorCopy(velocity - (xzVelocity * input.time * 2), velocity)
+						VectorCopy(velocity - (xzVelocity * deltaTime * 2), velocity)
 						
 					end
 					
 				else
 				
-					redirectedVelocityZ = redirectedVelocityZ * input.time * Marine.kAirZMoveWeight + GetNormalizedVectorXZ(velocity)
+					redirectedVelocityZ = redirectedVelocityZ * deltaTime * Marine.kAirZMoveWeight + GetNormalizedVectorXZ(velocity)
 					redirectedVelocityZ:Normalize()                
 					redirectedVelocityZ:Scale(moveLengthXZ)
 					redirectedVelocityZ.y = previousY
@@ -657,7 +657,7 @@ function FactionsMovementMixin:ModifyVelocity(input, velocity)
 				redirectedVelocityX.y = 0
 				redirectedVelocityX:Normalize()
 				
-				redirectedVelocityX = redirectedVelocityX * input.time * Marine.kAirStrafeWeight + GetNormalizedVectorXZ(velocity)
+				redirectedVelocityX = redirectedVelocityX * deltaTime * Marine.kAirStrafeWeight + GetNormalizedVectorXZ(velocity)
 				
 				redirectedVelocityX:Normalize()            
 				redirectedVelocityX:Scale(moveLengthXZ)
@@ -674,7 +674,7 @@ function FactionsMovementMixin:ModifyVelocity(input, velocity)
 			local acceleration = Marine.kVerticalAcceleration
 			local accelFraction = Clamp( (-velocity.y - 3.5) / 7, 0, 1)
 			
-			local addAccel = GetNormalizedVectorXZ(velocity) * accelFraction * input.time * acceleration
+			local addAccel = GetNormalizedVectorXZ(velocity) * accelFraction * deltaTime * acceleration
 
 			velocity.x = velocity.x + addAccel.x
 			velocity.z = velocity.z + addAccel.z
