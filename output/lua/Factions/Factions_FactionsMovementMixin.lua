@@ -88,7 +88,7 @@ FactionsMovementMixin.networkVars =
 FactionsMovementMixin.overrideFunctions =
 {
 	"GetAcceleration",
-	"GetAirMoveScalar",
+	"GetAirAcceleration",
 	"GetMoveSpeedIs2D",
 	"GetRecentlyWallJumped",
 	"GetCanWallJump",
@@ -98,23 +98,26 @@ FactionsMovementMixin.overrideFunctions =
 	"GetIsWallWalkingPossible",
 	"PreUpdateMove",
 	"GetDesiredAngles",
+	"GetHeadAngles",
+	"GetAngleSmoothingMode",
+	"GetIsUsingBodyYaw",
 	"GetSmoothAngles",
 	"UpdatePosition",
 	"GetMaxSpeed",
+	"OverrideUpdateOnGround",
 	"GetRecentlyJumped",
 	"ModifyVelocity",
 	"ConstrainMoveVelocity",
-	"GetGroundFrictionForce",
-	"GetFrictionForce",
-	"GetGravityAllowed",
+	"GetGroundFriction",
+	"GetCanStep",
+	"ModifyGravityForce",
 	"GetIsOnSurface",
-	"GetIsAffectedByAirFriction",
 	"AdjustGravityForce",
 	"GetMoveDirection",
 	"GetIsCloseToGround",
 	"GetPlayFootsteps",
 	"GetIsOnGround",
-	"PerformsVerticalMove",
+	"GetPerformsVerticalMove",
 	"GetJumpVelocity",
 	"GetPlayJumpSound",
 	"HandleJump",
@@ -129,6 +132,12 @@ function FactionsMovementMixin:__initmixin()
 	self.wallWalking = false
     self.wallWalkingNormalCurrent = Vector.yAxis
     self.wallWalkingNormalGoal = Vector.yAxis
+	
+    // Note: This needs to be initialized BEFORE calling SetModel() below
+    // as SetModel() will call GetHeadAngles() through SetPlayerPoseParameters()
+    // which will cause a script error if the Skulk is wall walking BEFORE
+    // the Skulk is initialized on the client.
+    self.currentWallWalkingAngles = Angles(0.0, 0.0, 0.0)
     
     if Client then
     
@@ -163,12 +172,12 @@ function FactionsMovementMixin:GetAcceleration()
 
 end
 
-function FactionsMovementMixin:GetAirMoveScalar()
+function FactionsMovementMixin:GetAirAcceleration()
 
-	if self:GetVelocityLength() < self.kAirMoveMinVelocity then
-		return 1.0
+	if self:GetHasMagnoBoots() then
+		return 9
 	else
-		return 0
+		return 6
 	end
 	
 end
@@ -272,17 +281,43 @@ function FactionsMovementMixin:PreUpdateMove(input, runningPrediction)
 	
 	local fraction = input.time * Marine.kWallWalkNormalSmoothRate
 	self.wallWalkingNormalCurrent = self:SmoothWallNormal(self.wallWalkingNormalCurrent, self.wallWalkingNormalGoal, fraction)
+    self.currentWallWalkingAngles = self:GetAnglesFromWallNormal(self.wallWalkingNormalCurrent, 1) or self.currentWallWalkingAngles
+	
 end
 
 function FactionsMovementMixin:GetDesiredAngles(deltaTime)
 
 	if self:GetIsWallWalking() then    
-		return self:GetAnglesFromWallNormal(self.wallWalkingNormalCurrent, 1)        
+		return self.currentWallWalkingAngles      
 	end
 	
 	return Player.GetDesiredAngles(self)
 	
 end 
+
+function FactionsMovementMixin:GetHeadAngles()
+
+    if self:GetIsWallWalking() then
+        return self.currentWallWalkingAngles
+    else
+        return self:GetViewAngles()
+    end
+
+end
+
+function FactionsMovementMixin:GetAngleSmoothingMode()
+
+    if self:GetIsWallWalking() then
+        return "quatlerp"
+    else
+        return "euler"
+    end
+
+end
+
+function FactionsMovementMixin:GetIsUsingBodyYaw()
+    return not self:GetIsWallWalking()
+end
 
 function FactionsMovementMixin:GetSmoothAngles()
 
@@ -412,6 +447,11 @@ local function GroundMoveUpdatePosition(self, input, velocity, deltaTime)
     
         // check if we are allowed to step:
         local completedMove, hitEntities, averageSurfaceNormal = self:PerformMovement(velocity * deltaTime * 2.5, 3, nil, false)
+		if (averageSurfaceNormal) then
+			self.averageSurfaceNormal = Vector(averageSurfaceNormal.x, averageSurfaceNormal.y, averageSurfaceNormal.z)
+		else
+			self.averageSurfaceNormal = nil
+		end
   
         if stepAllowed and hitEntities then
         
@@ -460,7 +500,7 @@ local function GroundMoveUpdatePosition(self, input, velocity, deltaTime)
     
     SetSpeedDebugText("onGround %s", ToString(self.onGround))
 	
-	return velocity, hitEntities, averageSurfaceNormal
+	return velocity, hitEntities, self.averageSurfaceNormal
 
 end
 
@@ -572,6 +612,16 @@ function FactionsMovementMixin:GetMaxSpeed(possible)
 	
 end
 
+function FactionsMovementMixin:OverrideUpdateOnGround(onGround)
+    local isOnGround = onGround or self:GetIsWallWalking()
+	if self:isa("JetpackMarine") then
+		isOnGround = isOnGround and not self:GetIsJetpacking()
+	end
+	
+	return isOnGround
+end
+
+
 function FactionsMovementMixin:GetRecentlyJumped()
 
 	return not (self.timeOfLastJump == nil or (Shared.GetTime() > (self.timeOfLastJump + Marine.kJumpRepeatTime)))
@@ -583,6 +633,8 @@ function FactionsMovementMixin:ModifyVelocity(input, velocity, deltaTime)
 	if self:isa("JetpackMarine") then
 	
 		JetpackMarine.ModifyVelocity(self, input, velocity, deltaTime)
+		GroundMoveMixin.ModifyVelocity(self, input, velocity, deltaTime)
+		JumpMoveMixin.ModifyVelocity(self, input, velocity, deltaTime)
 		
 	else
 
@@ -608,6 +660,7 @@ function FactionsMovementMixin:ModifyVelocity(input, velocity, deltaTime)
 
 
 		GroundMoveMixin.ModifyVelocity(self, input, velocity, deltaTime)
+		JumpMoveMixin.ModifyVelocity(self, input, velocity, deltaTime)
 
 
 		if not self:GetIsOnSurface() and input.move:GetLength() ~= 0 then
@@ -702,37 +755,39 @@ function FactionsMovementMixin:ConstrainMoveVelocity(moveVelocity)
 
 end
 
-function FactionsMovementMixin:GetGroundFrictionForce()   
+function FactionsMovementMixin:GetGroundFriction()   
 
 	return ConditionalValue(self.crouching or self.isUsing, Marine.kGroundWalkFriction, Marine.kGroundFriction) 
 
 end
 
-function FactionsMovementMixin:GetFrictionForce(input, velocity)
-
-	local friction = GroundMoveMixin.GetFrictionForce(self, input, velocity)
-	if self:GetIsWallWalking() then
-		friction.y = -self:GetVelocity().y * self:GetGroundFrictionForce()
-	end
-	
-	return friction
-
+function FactionsMovementMixin:GetCanStep()
+    return not self:GetIsWallWalking()
 end
 
-function FactionsMovementMixin:GetGravityAllowed()
+function FactionsMovementMixin:ModifyGravityForce(gravityTable)
 
-	return not self:GetIsOnLadder() and not self:GetIsOnGround() and not self:GetIsWallWalking()
-	
+	if self:isa("JetpackMarine") then 
+		gravityTable.gravity = JetpackMarine.kJetpackGravity
+	end
+
+    if self:GetIsWallWalking() and not self:GetCrouching() then
+        gravityTable.gravity = 0
+
+    elseif self:GetIsOnGround() then
+        gravityTable.gravity = 0
+    
+	elseif self:GetIsOnLadder() then
+		gravityTable.gravity = 0
+		
+    end
+
 end
 
 function FactionsMovementMixin:GetIsOnSurface()
 
 	return GroundMoveMixin.GetIsOnSurface(self) or self:GetIsWallWalking()
 	
-end
-
-function FactionsMovementMixin:GetIsAffectedByAirFriction()
-	return not self:GetIsOnSurface()
 end
 
 function FactionsMovementMixin:AdjustGravityForce(input, gravity)
@@ -784,7 +839,7 @@ function FactionsMovementMixin:GetIsOnGround()
 	
 end
 
-function FactionsMovementMixin:PerformsVerticalMove()
+function FactionsMovementMixin:GetPerformsVerticalMove()
 
 	return self:GetIsWallWalking()
 	
@@ -875,7 +930,7 @@ function FactionsMovementMixin:OnClampSpeed(input, velocity)
         return velocity
     end
     
-    if self:PerformsVerticalMove() then
+    if self:GetPerformsVerticalMove() then
         moveSpeed = velocity:GetLength()   
     else
         moveSpeed = velocity:GetLengthXZ()   
@@ -895,7 +950,7 @@ function FactionsMovementMixin:OnClampSpeed(input, velocity)
         local velocityY = velocity.y
         velocity:Scale(maxSpeed / moveSpeed)
         
-        if not self:PerformsVerticalMove() then
+        if not self:GetPerformsVerticalMove() then
             velocity.y = velocityY
         end
         
@@ -948,7 +1003,7 @@ function FactionsMovementMixin:ComputeForwardVelocity(input)
     
     local pushVelocity = Vector( self.pushImpulse * ( 1 - Clamp( (Shared.GetTime() - self.pushTime) / Player.kPushDuration, 0, 1) ) )
     
-    return forwardVelocity + pushVelocity * (self:GetGroundFrictionForce()/7)
+    return forwardVelocity + pushVelocity * (self:GetGroundFriction()/7)
 
 end
 
