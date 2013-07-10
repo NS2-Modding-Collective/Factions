@@ -99,7 +99,7 @@ FactionsMovementMixin.overrideFunctions =
 	"PreUpdateMove",
 	"GetDesiredAngles",
 	"GetSmoothAngles",
-	"UpdatePosition",
+	//"UpdatePosition",
 	"GetMaxSpeed",
 	"GetRecentlyJumped",
 	"ModifyVelocity",
@@ -226,7 +226,8 @@ end
 function FactionsMovementMixin:PreUpdateMove(input, runningPrediction)
 
 	PROFILE("Marine:PreUpdateMove")
-	
+
+	GroundMoveMixin.PreUpdateMove(self, input, runningPrediction)	
 	self.moveButtonPressed = input.move:GetLength() ~= 0
 	
 	if not self.wallWalkingEnabled or not self:GetIsWallWalkingPossible() then
@@ -288,8 +289,9 @@ function FactionsMovementMixin:GetSmoothAngles()
 	
 end
 
+/*
 local kUpVector = Vector(0, 1, 0)
-function FactionsMovementMixin:UpdatePosition(input, velocity, time)
+function FactionsMovementMixin:UpdatePosition(input, velocity, deltaTime)
 
 	PROFILE("Marine:UpdatePosition")
 
@@ -305,10 +307,11 @@ function FactionsMovementMixin:UpdatePosition(input, velocity, time)
 		self.adjustToGround = false
 	end
 	
+	velocity = Vector(velocity.x, velocity.y, velocity.z)
 	local wasOnSurface = self:GetIsOnSurface()
 	local oldSpeed = velocity:GetLengthXZ()
 	
-	velocity, hitEntities, self.averageSurfaceNormal = GroundMoveMixin.UpdatePosition(self, input, velocity, time)
+	velocity, hitEntities, self.averageSurfaceNormal = GroundMoveMixin.UpdatePosition(self, input, velocity, deltaTime)
 	local newSpeed = velocity:GetLengthXZ()
 
 	if not self.wallWalkingEnabled then
@@ -354,6 +357,7 @@ function FactionsMovementMixin:UpdatePosition(input, velocity, time)
 	end
 
 end
+*/
 
 function FactionsMovementMixin:GetMaxSpeed(possible)
 
