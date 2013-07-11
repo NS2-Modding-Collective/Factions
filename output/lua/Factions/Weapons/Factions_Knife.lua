@@ -27,26 +27,6 @@ local networkVars =
 }
 
 function Knife:OnTag(tagName)
-
-    PROFILE("Axe:OnTag")
-
-    if tagName == "swipe_sound" then
-        self:TriggerEffects("axe_attack")
-    elseif tagName == "hit" then
-    
-        local player = self:GetParent()
-        if player then
-            AttackMeleeCapsule(self, player, kKnifeDamage, self:GetRange())
-        end
-        
-    elseif tagName == "attack_end" then
-        self.sprintAllowed = true
-    end
-    
-end
-
-/*
-function Knife:OnTag(tagName)
 	
 	if tagName == "swipe_sound" then
         self:TriggerEffects("axe_attack")
@@ -60,8 +40,8 @@ function Knife:OnTag(tagName)
     elseif tagName == "attack_end" then
         self.sprintAllowed = true
     end
+	
 end
-*/
 
 function Knife:GetAnimationGraphName()
     return kAnimationGraph
