@@ -68,7 +68,7 @@ function LayLaserMines:GetDropMapName()
 end
 
 function LayLaserMines:GetHUDSlot()
-    return 4
+    return kMinesHUDSlot
 end
 local function DropStructure(self, player)
 

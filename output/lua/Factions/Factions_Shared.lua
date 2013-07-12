@@ -21,6 +21,26 @@ Script.Load("lua/Factions/Factions_GamerulesInfo.lua")
 // Effects
 Script.Load("lua/Factions/Effects/Factions_DamageEffects.lua")
 
+// Classes, upgrades etc.
+Script.Load("lua/Factions/Factions_FactionsClassMixin.lua")
+Script.Load("lua/Factions/Factions_XpMixin.lua")
+Script.Load("lua/Factions/Factions_UpgradeMixin.lua")
+
+// Weapons
+Script.Load("lua/Factions/Weapons/Factions_ClipWeapon.lua")
+Script.Load("lua/Factions/Weapons/Factions_Pistol.lua")
+Script.Load("lua/Factions/Weapons/Factions_Rifle.lua")
+Script.Load("lua/Factions/Weapons/Factions_Shotgun.lua")
+Script.Load("lua/Factions/Weapons/Factions_GrenadeLauncher.lua")
+Script.Load("lua/Factions/Weapons/Factions_Flamethrower.lua")
+Script.Load("lua/Factions/Weapons/Factions_Axe.lua")
+Script.Load("lua/Factions/Weapons/Factions_Welder.lua")
+Script.Load("lua/Factions/Factions_Mine.lua")
+Script.Load("lua/Factions/Weapons/Factions_LayMines.lua")
+Script.Load("lua/Factions/Weapons/Factions_LayLaserMines.lua")
+Script.Load("lua/Factions/Factions_LaserMine.lua")
+Script.Load("lua/Factions/Weapons/Factions_MarineStructureAbility.lua")
+
 // Class overrides here
 Script.Load("lua/Factions/Factions_NS2Gamerules.lua")
 Script.Load("lua/Factions/Factions_TechTree.lua")
@@ -50,18 +70,6 @@ Script.Load("lua/Factions/Factions_InfantryPortal.lua")
 Script.Load("lua/Factions/Factions_CommandStation.lua")
 Script.Load("lua/Factions/Factions_Hive.lua")
 Script.Load("lua/Factions/Factions_Extractor.lua")
-
-// Weapons
-Script.Load("lua/Factions/Weapons/Factions_ClipWeapon.lua")
-Script.Load("lua/Factions/Weapons/Factions_Pistol.lua")
-Script.Load("lua/Factions/Weapons/Factions_Rifle.lua")
-Script.Load("lua/Factions/Weapons/Factions_Shotgun.lua")
-Script.Load("lua/Factions/Weapons/Factions_GrenadeLauncher.lua")
-Script.Load("lua/Factions/Weapons/Factions_Flamethrower.lua")
-Script.Load("lua/Factions/Factions_Mine.lua")
-Script.Load("lua/Factions/Weapons/Factions_LayLaserMines.lua")
-Script.Load("lua/Factions/Factions_LaserMine.lua")
-Script.Load("lua/Factions/Weapons/Factions_MarineStructureAbility.lua")
 
 // New classes here
 Script.Load("lua/Factions/Factions_GenericGamerules.lua")

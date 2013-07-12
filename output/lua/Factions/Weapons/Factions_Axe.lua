@@ -7,12 +7,13 @@
 //  Licensed under LGPL v3.0
 //________________________________
 
-// Factions_Globals.lua
+// Factions_Axe.lua
 
-// HUD Slots
-kAxeHUDSlot = 3
-kWelderHUDSlot = 4
-kMinesHUDSlot = 5
+local networkVars = {
+}
 
-// Version number
-kFactionsVersion = "12"
+function Axe:GetHUDSlot()
+    return kAxeHUDSlot
+end
+
+Class_Reload("Axe", networkVars)

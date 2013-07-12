@@ -14,7 +14,7 @@ MinesUpgrade.upgradeName		= "mines"	                        // text code of the 
 MinesUpgrade.upgradeTitle 		= "Mines"       					// Title of the upgrade, e.g. Submachine Gun
 MinesUpgrade.upgradeDesc 		= "Get some Mines"             		// Description of the upgrade
 MinesUpgrade.upgradeTechId 		= kTechId.LayMines  				// techId of the upgrade, default is kTechId.Move cause its the first entry
-MinesUpgrade.hudSlot	 		= 4									// Is this a primary weapon?
+MinesUpgrade.hudSlot	 		= kMinesHUDSlot						// Is this a primary weapon?
 MinesUpgrade.permanent			= false
 
 function MinesUpgrade:Initialize()

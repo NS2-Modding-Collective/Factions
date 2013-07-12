@@ -16,15 +16,18 @@ class 'ScoutClass' (FactionsClass)
 ScoutClass.type 					= "Scout"						     								// the type of the FactionsClass
 ScoutClass.name 					= "Scout"     														// the friendly name of the FactionsClass
 ScoutClass.description				= "Attacks faster and can cloak"						     		// the description of the FactionsClass
-ScoutClass.baseHealth 				= kMarineHealth								     		// the base health value of this class
-ScoutClass.baseArmor 				= kMarineArmor									     		// the base armor value of this class
+ScoutClass.baseHealth 				= kMarineHealth								     					// the base health value of this class
+ScoutClass.baseArmor 				= kMarineArmor									     				// the base armor value of this class
 ScoutClass.baseWalkSpeed 			= 7.5                												// the initial walk speed of this class
 ScoutClass.baseRunSpeed 			= 10.5             													// the initial run speed of this class
 ScoutClass.baseDropCount 			= 1	                												// how many packs get dropped when you drop health/ammo
 ScoutClass.maxBackwardSpeedScalar 	= 0.9																// the scalar for walking backwards
 ScoutClass.icon						= "ui/Factions/badges/badge_assault.dds"							// the badge for this class
 ScoutClass.picture					= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
-ScoutClass.initialUpgrades			= { "SMGUpgrade", "KnifeUpgrade" }												// the upgrades that you start the game with
+ScoutClass.initialUpgrades			= { "SMGUpgrade", 													// the upgrades that you start the game with
+										"KnifeUpgrade", 
+										"WelderUpgrade",
+										"ResupplyUpgrade", }
 ScoutClass.disallowedUpgrades		= { "BuilderUpgrade", 												// the upgrades that you are not allowed to buy
 										"UnlockGrenadeLauncherUpgrade", 
 										"UnlockFlamethrowerUpgrade", }										
