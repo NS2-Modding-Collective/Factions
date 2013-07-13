@@ -107,8 +107,7 @@ function Armory:ResupplyPlayer(player)
 	   (player:GetArmor() < player:GetMaxArmor()) then
 
         // third param true = ignore armor
-		Shared.Message("Got to healing stage")
-        player:AddHealth(Armory.kHealAmount, true, true)
+        player:AddHealth(Armory.kHealAmount, false, false)
 
         self:TriggerEffects("armory_health", {effecthostcoords = Coords.GetTranslation(player:GetOrigin())})
         
