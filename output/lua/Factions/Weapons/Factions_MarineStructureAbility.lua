@@ -31,7 +31,6 @@ kMaxStructures[kTechId.MiniArmory] = 1
 kMaxStructures[kTechId.PhaseGate] = 2
 kMaxStructures[kTechId.Observatory] = 1
 local kDropCooldown = 3
-kBuilderHUDSlot = 6
 
 local kViewModelName = PrecacheAsset("models/marine/welder/welder_view.model")
 local kAnimationGraph = PrecacheAsset("models/marine/welder/welder_view.animation_graph")

@@ -12,7 +12,8 @@
 // HUD Slots
 kAxeHUDSlot = 3
 kWelderHUDSlot = 4
-kMinesHUDSlot = 5
+kMinesHUDSlot = 4
+kBuilderHUDSlot = 5
 
 // Version number
 kFactionsVersion = "12"
