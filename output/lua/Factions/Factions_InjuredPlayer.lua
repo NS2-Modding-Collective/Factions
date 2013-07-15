@@ -32,8 +32,6 @@ end
 function InjuredPlayer:OnInitialized()
 
     Marine.OnInitialized(self)
-    
-    self:SetIsVisible(false)       
   
     // Remove physics
     self:DestroyController()
@@ -130,7 +128,7 @@ function InjuredPlayer:OnEntityChange(oldEntityId, newEntityId)
 end
 
 function InjuredPlayer:GetPlayerStatusDesc()
-    return kPlayerStatus.Player
+    return kPlayerStatus.Rifle
 end
 
 function InjuredPlayer:GetTechId()
@@ -152,10 +150,10 @@ end
 if Client then     
         
     function InjuredPlayer:OnInitLocalClient()    
-        if self:GetTeamNumber() ~=  kTeamReadyRoom then
+        if self:GetTeamNumber() ~= kTeamReadyRoom then
             Marine.OnInitLocalClient(self)
             
-            // TODO: Third person camera
+            self:SetCameraDistance(kGestateCameraDistance)
         end
     end
   
