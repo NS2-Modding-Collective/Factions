@@ -16,7 +16,7 @@ class 'Knife' (Axe)
 Knife.kMapName = "knife"
 
 Knife.kModelName = PrecacheAsset("models/marine/axe/axe.model")
-local kViewModelName = PrecacheAsset("models/marine/axe/axe_view.model")
+local kViewModelName = PrecacheAsset("models/marine/knife/knife_view.model")
 local kAnimationGraph = PrecacheAsset("models/marine/axe/axe_view.animation_graph")
 
 // 4 degrees in NS1
