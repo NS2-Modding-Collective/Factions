@@ -55,7 +55,7 @@ function Rifle:GetSpread()
 end
 
 function Rifle:GetNumStartClips()
-	return 7
+	return 4
 end
 
 Class_Reload("Rifle", networkVars)
