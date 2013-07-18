@@ -24,7 +24,9 @@ AssaultClass.baseDropCount 			= 2	                												// how many packs 
 AssaultClass.maxBackwardSpeedScalar = 0.75																// the scalar for walking backwards
 AssaultClass.icon					= "ui/Factions/badges/badge_assault.dds"							// the badge for this class
 AssaultClass.picture				= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
-AssaultClass.initialUpgrades		= { }																// the upgrades that you start the game with
+AssaultClass.initialUpgrades		= { "ResupplyUpgrade",
+										"AxeUpgrade",
+										"WelderUpgrade", }																// the upgrades that you start the game with
 AssaultClass.disallowedUpgrades		= { "SpeedUpgrade", 												// the upgrades that you are not allowed to buy
 										"BuilderUpgrade",
 										"DropMedpackUpgrade", }

@@ -203,7 +203,7 @@ function MarineStructureAbility:GetDamageType()
 end
 
 function MarineStructureAbility:GetHUDSlot()
-    return 5
+    return kBuilderHUDSlot
 end
 
 function MarineStructureAbility:GetHasSecondary(player)
@@ -645,7 +645,7 @@ if Client then
             else
 
                 // If player wants to switch to this, open build menu immediately
-                local weaponSwitchCommands = { Move.Weapon1, Move.Weapon2, Move.Weapon3, Move.Weapon4, Move.Weapon5 }
+                local weaponSwitchCommands = { Move.Weapon1, Move.Weapon2, Move.Weapon3, Move.Weapon4, Move.Weapon5, Move.Weapon6 }
                 local thisCommand = weaponSwitchCommands[ self:GetHUDSlot() ]
 
                 if bit.band( input.commands, thisCommand ) ~= 0 then

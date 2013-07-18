@@ -36,6 +36,8 @@ function FactionsWeaponUpgrade:Initialize()
 	self.hudSlot = FactionsWeaponUpgrade.hudSlot
 	self.teamType = FactionsWeaponUpgrade.teamType
 	
+	assert(self.hudSlot)
+	
 end
 
 function FactionsWeaponUpgrade:GetClassName()
@@ -60,6 +62,8 @@ function FactionsWeaponUpgrade:GetUniqueSlot()
 			self.uniqueSlot = kUpgradeUniqueSlot.Weapon4
 		elseif self.hudSlot == 5 then
 			self.uniqueSlot = kUpgradeUniqueSlot.Weapon5
+		elseif self.hudSlot == 6 then
+			self.uniqueSlot = kUpgradeUniqueSlot.Weapon6
 		end
 	end
 	

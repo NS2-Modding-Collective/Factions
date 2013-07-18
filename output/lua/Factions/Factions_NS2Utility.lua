@@ -212,6 +212,7 @@ function AttackMeleeCapsuleMulti(weapon, player, damage, range, optionalCoords, 
     
     if didHit then
     	for i, target in ipairs(targets) do
+			Shared.Message("Bashed " .. target:GetClassName() .. " " .. i .. " for " .. damage .. " damage!")
 			weapon:DoDamage(damage, target, endPoints[i], directions[i], surfaces[i], altMode)
     	end
     end

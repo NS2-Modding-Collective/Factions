@@ -50,7 +50,7 @@ function Pistol:OnCreate()
 	
 end
 
-function Rifle:GetSpread()
+function Pistol:GetSpread()
 	return ClipWeapon.kCone5Degrees
 end
 
@@ -59,7 +59,7 @@ function Pistol:GetClipSize()
 end
 
 function Pistol:GetNumStartClips()
-	return 6
+	return 4
 end
 
 Class_Reload("Pistol", networkVars)
