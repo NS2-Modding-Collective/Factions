@@ -66,7 +66,7 @@ function InjuredPlayer:OverrideInput(input)
     input.move.z = 0
     
     // Only allow some actions like going to menu, chatting and Scoreboard (not jump, use, etc.)
-    input.commands = bit.band(input.commands, Move.Exit) + bit.band(input.commands, Move.TeamChat) + bit.band(input.commands, Move.TextChat) + bit.band(input.commands, Move.Scoreboard) + bit.band(input.commands, Move.ShowMap)
+    input.commands = bit.band(input.commands, Move.Exit) + bit.band(input.commands, Move.TeamChat) + bit.band(input.commands, Move.TextChat) + bit.band(input.commands, Move.Scoreboard) + bit.band(input.commands, Move.Minimap)
     
     return input
     
