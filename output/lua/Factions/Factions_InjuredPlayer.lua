@@ -7,7 +7,7 @@
 //
 // ========= For more information, visit us at http://www.unknownworlds.com =====================
 
-Script.Load("lua/Player.lua")
+Script.Load("lua/Factions/Factions_TimerMixin.lua")
 
 class 'InjuredPlayer' (Marine)
 
@@ -18,6 +18,7 @@ local networkVars =
 }
 
 AddMixinNetworkVars(ConstructMixin, networkVars)
+AddMixinNetworkVars(TimerMixin, networkVars)
 
 function InjuredPlayer:OnCreate()
 
@@ -52,6 +53,9 @@ function InjuredPlayer:OnInitialized()
     if Server then
     	self.lastAutoDamageTime = Shared.GetTime()
     end
+	
+	self:SetDesiredCamera(1.1, { follow = true, tweening = kTweeningFunctions.easeout7 })
+	self:SetCameraDistance(kGestateCameraDistance)
     
 end
 
@@ -135,28 +139,29 @@ function InjuredPlayer:GetTechId()
     return kTechId.Marine
 end
 
-if Server then
-	// Every so often, damage the player!
-	function InjuredPlayer:OnUpdate(deltaTime)
+// Every so often, damage the player!
+function InjuredPlayer:OnUpdatePlayer(deltaTime)
+
+	Player.OnUpdatePlayer(self, deltaTime)
+
+	if Server then
 		local timeNow = Shared.GetTime()
 		// Do this in a while loop so laggy servers don't slow the drain rate
 		while timeNow - self.lastAutoDamageTime > kInjuredPlayerHealthDrainInterval do
-			self:Damage(kInjuredPlayerHealthDrainRate * kInjuredPlayerHealthDrainInterval)
+			local damage = kInjuredPlayerHealthDrainRate * kInjuredPlayerHealthDrainInterval
+			self:TakeDamage(damage, nil, nil, nil, nil, 0, damage, kDamageType.Normal)
 			self.lastAutoDamageTime = self.lastAutoDamageTime + kInjuredPlayerHealthDrainInterval
 		end
 	end
+	
 end
 
-if Client then     
-        
-    function InjuredPlayer:OnInitLocalClient()    
-        if self:GetTeamNumber() ~= kTeamReadyRoom then
-            Marine.OnInitLocalClient(self)
-            
-            self:SetCameraDistance(kGestateCameraDistance)
-        end
-    end
-  
+function InjuredPlayer:GetMaxViewOffsetHeight()
+	return .2
+end
+
+if Client then
+
     function InjuredPlayer:UpdateClientEffects(deltaTime, isLocal)
     
         Marine.UpdateClientEffects(self, deltaTime, isLocal)
