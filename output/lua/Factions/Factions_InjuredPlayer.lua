@@ -160,6 +160,10 @@ function InjuredPlayer:GetMaxViewOffsetHeight()
 	return .2
 end
 
+function InjuredPlayer:OnConstructionComplete()
+	self:Replace(Marine.kMapName, self:GetTeamNumber(), false, self:GetOrigin())
+end
+
 if Client then
 
     function InjuredPlayer:UpdateClientEffects(deltaTime, isLocal)

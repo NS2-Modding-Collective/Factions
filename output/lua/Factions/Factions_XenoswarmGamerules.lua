@@ -40,6 +40,7 @@ if Server then
 		self.powerPointsTakeDamage = false
 		self.startWithArmory = true
 		self.startWithPhaseGate = true
+		self.injuredMarines = true
 		self.factionsGameType = kFactionsGameType.Xenoswarm
 	
 		GenericGamerules.OnCreate(self)

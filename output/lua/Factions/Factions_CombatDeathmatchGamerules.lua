@@ -36,6 +36,7 @@ if Server then
 		self.powerPointsTakeDamage = true
 		self.startWithArmory = true
 		self.startWithPhaseGate = false
+		self.injuredMarines = false
 		self.factionsGameType = kFactionsGameType.CombatDeathmatch
 	
 		GenericGamerules.OnCreate(self)

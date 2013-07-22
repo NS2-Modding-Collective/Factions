@@ -42,6 +42,7 @@ Script.Load("lua/Factions/Factions_LaserMine.lua")
 Script.Load("lua/Factions/Weapons/Factions_MarineStructureAbility.lua")
 
 // Class overrides here
+Script.Load("lua/Factions/Factions_LiveMixin.lua")
 Script.Load("lua/Factions/Factions_NS2Gamerules.lua")
 Script.Load("lua/Factions/Factions_TechTree.lua")
 Script.Load("lua/Factions/Factions_PlayingTeam.lua")
