@@ -150,6 +150,15 @@ function Marine:OnCreate()
 	
 end
 
+// Needed to support the injured player construct mechanic.
+function Marine:GetIsBuilt()
+	if self:isa("InjuredPlayer") then 
+		return ConstructMixin.GetIsBuilt(self)
+	else
+		return true
+	end
+end
+
 // Dont' drop weapons after getting killed, but destroy them!
 local originalOnKill = Marine.OnKill
 function Marine:OnKill(damage, attacker, doer, point, direction)

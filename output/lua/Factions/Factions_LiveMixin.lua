@@ -13,9 +13,10 @@ local originalKill = LiveMixin.Kill
 function LiveMixin:Kill(attacker, doer, point, direction)
 	
 	if GetGamerulesInfo():GetMarinesBecomeInjured() and self:isa("Marine") and not self:isa("InjuredPlayer") and not self:isa("MarineSpectator") then
+		self:SendDirectMessage("You are injured! Call for your teammates to help!")
 		self:Replace(InjuredPlayer.kMapName, self:GetTeamNumber(), false, self:GetOrigin())
 	else
-		LiveMixin.Kill(self, attacker, doer, point, direction)
+		originalKill(self, attacker, doer, point, direction)
 	end
 
 end
