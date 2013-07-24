@@ -39,6 +39,8 @@ end
 function JetpackUpgrade:CanApplyUpgrade(player)
 	if player:isa("JetpackMarine") then
 		return "Player already has jetpack!"
+	elseif player:isa("InjuredPlayer") then
+		return "Player is injured... wait for them to come back!"		
 	else
 		return ""
 	end

@@ -10,9 +10,9 @@
 // Factions_LiveMixin.lua
 
 local originalKill = LiveMixin.Kill
-function LiveMixin:Kill(attacker, doer, point, direction)
+function LiveMixin:Kill(attacker, doer, point, direction, force)
 	
-	if GetGamerulesInfo():GetMarinesBecomeInjured() and self:isa("Marine") and not self:isa("InjuredPlayer") and not self:isa("MarineSpectator") then
+	if GetGamerulesInfo():GetMarinesBecomeInjured() and self:isa("Marine") and not self:isa("InjuredPlayer") and not self:isa("MarineSpectator") and not force then
 		self:SendDirectMessage("You are injured! Call for your teammates to help!")
 		self:Replace(InjuredPlayer.kMapName, self:GetTeamNumber(), false, self:GetOrigin())
 	else

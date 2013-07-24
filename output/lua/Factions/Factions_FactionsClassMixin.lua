@@ -225,7 +225,7 @@ function FactionsClassMixin:ChangeFactionsClass(newClass)
 			if Server then
 				// Kill the player if they do this while playing.
 				if self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
-					self:Kill(nil, nil, self:GetOrigin())
+					self:Kill(nil, nil, self:GetOrigin(), nil, true)
 				end
 			end
 		end
