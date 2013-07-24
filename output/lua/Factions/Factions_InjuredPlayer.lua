@@ -12,6 +12,7 @@ Script.Load("lua/Factions/Factions_TimerMixin.lua")
 class 'InjuredPlayer' (Marine)
 
 InjuredPlayer.kMapName = "injured_player"
+local kAnimationGraph = PrecacheAsset("models/marine/injuredplayer/injuredplayer.animation_graph")
 
 local networkVars =
 {
@@ -33,6 +34,9 @@ end
 function InjuredPlayer:OnInitialized()
 
     Marine.OnInitialized(self)
+  
+	// Set the model
+	self:SetModel(Marine.kModelName, kAnimationGraph)
   
     // Remove physics
     self:DestroyController()

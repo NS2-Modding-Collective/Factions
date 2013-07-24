@@ -159,6 +159,17 @@ function Marine:GetIsBuilt()
 	end
 end
 
+local overrideOnInitialized = Marine.OnInitialized
+function Marine:OnInitialized()
+	overrideOnInitialized(self)
+	
+	// Set the camera up.
+	if not self:isa("InjuredPlayer") then
+		self:SetDesiredCamera(0.3, { follow = false } )
+		self:SetDesiredCameraDistance(0)
+	end
+end
+
 // Dont' drop weapons after getting killed, but destroy them!
 local originalOnKill = Marine.OnKill
 function Marine:OnKill(damage, attacker, doer, point, direction)
