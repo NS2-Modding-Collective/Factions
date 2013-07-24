@@ -16,6 +16,7 @@ local kAnimationGraph = PrecacheAsset("models/marine/injuredplayer/injuredplayer
 
 local networkVars =
 {
+	isGettingUp = "boolean",
 }
 
 AddMixinNetworkVars(ConstructMixin, networkVars)
@@ -58,9 +59,34 @@ function InjuredPlayer:OnInitialized()
     	self.lastAutoDamageTime = Shared.GetTime()
     end
 	
-	self:SetDesiredCamera(1.1, { follow = true, tweening = kTweeningFunctions.easeout7 })
-	self:SetCameraDistance(kGestateCameraDistance)
+	self:SetIsThirdPerson(3)
+	
+	self.isGettingUp = false
     
+end
+
+function InjuredPlayer:OnUpdateAnimationInput(modelMixin)
+	local getUp = "false"
+	local aliveNum = 0.0
+	if self.isGettingUp then
+		getUp = "true"
+		aliveNum = 1.0
+	end
+	//Shared.Message("IsGettingUp: " .. getUp)
+	modelMixin:SetAnimationInput("alive", self.isGettingUp)
+	modelMixin:SetAnimationInput("aliveNum", aliveNum)
+end
+
+function InjuredPlayer:MakeSpecialEdition()
+    self:SetModel(Marine.kBlackArmorModelName, kAnimationGraph)
+end
+
+function InjuredPlayer:MakeDeluxeEdition()
+    self:SetModel(Marine.kSpecialEditionModelName, kAnimationGraph)
+end
+
+function InjuredPlayer:GetCanGiveDamageOverride()
+	return false
 end
 
 // let the player chat, but but nove
@@ -164,8 +190,18 @@ function InjuredPlayer:GetMaxViewOffsetHeight()
 	return .2
 end
 
+function InjuredPlayer:OnTag(tagName)
+	// Actually make the player alive when they have got up.
+	if tagName == "alive" then
+		self:Replace(Marine.kMapName, self:GetTeamNumber(), false, self:GetOrigin())
+	end
+end
+
 function InjuredPlayer:OnConstructionComplete()
+	self.isGettingUp = true
+	// Until we can fix animation inputs, do this.
 	self:Replace(Marine.kMapName, self:GetTeamNumber(), false, self:GetOrigin())
+	self:SetIsThirdPerson(0)
 end
 
 if Client then

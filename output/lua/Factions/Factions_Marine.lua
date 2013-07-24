@@ -159,14 +159,19 @@ function Marine:GetIsBuilt()
 	end
 end
 
+local function ResetCamera(self)
+	// Set the camera up.
+	self:SetIsThirdPerson(0)
+	return false
+end
+
 local overrideOnInitialized = Marine.OnInitialized
 function Marine:OnInitialized()
 	overrideOnInitialized(self)
 	
 	// Set the camera up.
 	if not self:isa("InjuredPlayer") then
-		self:SetDesiredCamera(0.3, { follow = false } )
-		self:SetDesiredCameraDistance(0)
+		self:AddTimedCallback(ResetCamera, 0.3)            
 	end
 end
 
