@@ -40,6 +40,7 @@ Script.Load("lua/Factions/Weapons/Factions_LayMines.lua")
 Script.Load("lua/Factions/Weapons/Factions_LayLaserMines.lua")
 Script.Load("lua/Factions/Factions_LaserMine.lua")
 Script.Load("lua/Factions/Weapons/Factions_MarineStructureAbility.lua")
+Script.Load("lua/Factions/Weapons/Factions_HandheldRailgun.lua")
 
 // Class overrides here
 Script.Load("lua/Factions/Factions_LiveMixin.lua")

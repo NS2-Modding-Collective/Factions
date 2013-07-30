@@ -15,7 +15,7 @@ RailgunUpgrade.cost 			= { 1 }                           											// Cost of t
 RailgunUpgrade.upgradeName 		= "railgun"                       											// Text code of the upgrade if using it via console
 RailgunUpgrade.upgradeTitle 	= "Railgun"               													// Title of the upgrade, e.g. Submachine Gun
 RailgunUpgrade.upgradeDesc 		= "Kapow!"																	// Description of the upgrade
-RailgunUpgrade.upgradeTechId 	= kTechId.Railgun 	    													// TechId of the upgrade, default is kTechId.Move cause its the first entry
+RailgunUpgrade.upgradeTechId 	= kTechId.HandheldRailgun  													// TechId of the upgrade, default is kTechId.Move cause its the first entry
 RailgunUpgrade.hudSlot		 	= kPrimaryWeaponSlot														// Is this a primary weapon?
 
 function RailgunUpgrade:Initialize()

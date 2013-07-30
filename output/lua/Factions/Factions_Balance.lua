@@ -98,6 +98,12 @@ kRailgunDamage = 50
 kRailgunChargeDamage = 100
 kRailgunDamageType = kDamageType.Puncture
 
+kHandheldRailgunDamage = 50
+kHandheldRailgunChargeDamage = 100
+kHandheldRailgunDamageType = kDamageType.Puncture
+kHandheldRailgunCost = 20
+kHandheldRailgunWeight = kRifleWeight
+
 kMineDamage = 150
 
 // Player Health values
@@ -133,6 +139,9 @@ kNumArmoriesPerPlayer = 1
 kObservatoryCost = 100
 kObservatoryBuildTime = 7
 kNumObservatoriesPerPlayer = 1
+
+// Resupply
+kResupplyInterval = 10
 
 kWeapons1DamageScalar = 1.1
 kWeapons2DamageScalar = 1.2

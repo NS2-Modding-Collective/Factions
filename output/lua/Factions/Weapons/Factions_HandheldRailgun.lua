@@ -41,6 +41,10 @@ local kHandheldRailgunRange = 400
 local kHandheldRailgunSpread = Math.Radians(0)
 local kBulletSize = 0.3
 
+HandheldRailgun.kModelName = PrecacheAsset("models/marine/rifle/rifle.model")
+local kViewModelName = PrecacheAsset("models/marine/rifle/rifle_view.model")
+local kAnimationGraph = PrecacheAsset("models/marine/rifle/rifle_view.animation_graph")
+
 local kChargeSound = PrecacheAsset("sound/NS2.fev/marine/heavy/railgun_charge")
 
 Shared.PrecacheSurfaceShader("cinematics/vfx_materials/alien_frag.surface_shader")
@@ -58,9 +62,6 @@ function HandheldRailgun:OnCreate()
 
     Weapon.OnCreate(self)
     
-    InitMixin(self, TechMixin)
-    InitMixin(self, TeamMixin)
-    InitMixin(self, DamageMixin)
     InitMixin(self, BulletsMixin)
     
     self.timeChargeStarted = 0
@@ -154,9 +155,22 @@ function HandheldRailgun:GetBarrelPoint()
     
 end
 
+function HandheldRailgun:GetIsLeftSlot()
+	return false
+end
+
 function HandheldRailgun:GetExoWeaponSlotName()
 	return "right"
 end
+
+function HandheldRailgun:GetAnimationGraphName()
+    return kAnimationGraph
+end
+
+function HandheldRailgun:GetViewModelName()
+    return kViewModelName
+end
+
 
 function HandheldRailgun:GetTracerEffectName()
     return kRailgunTracerEffectName
@@ -367,23 +381,11 @@ function HandheldRailgun:OnTag(tagName)
 
     PROFILE("HandheldRailgun:OnTag")
     
-    if self:GetIsLeftSlot() then
-    
-        if tagName == "l_shoot" then
-            Shoot(self, true)
-        elseif tagName == "l_shoot_end" then
-            self.lockCharging = false
-        end
-        
-    elseif not self:GetIsLeftSlot() then
-    
-        if tagName == "r_shoot" then
-            Shoot(self, false)
-        elseif tagName == "r_shoot_end" then
-            self.lockCharging = false
-        end
-        
-    end
+    if tagName == "r_shoot" then
+		Shoot(self, false)
+	elseif tagName == "r_shoot_end" then
+		self.lockCharging = false
+	end
     
 end
 
@@ -399,10 +401,18 @@ end
 
 function HandheldRailgun:UpdateViewModelPoseParameters(viewModel)
 
-    local chargeParam = "charge_" .. (self:GetIsLeftSlot() and "l" or "r")
+    local chargeParam = "charge_r" .. (self:GetIsLeftSlot() and "l" or "r")
     local chargeAmount = self:GetChargeAmount()
     viewModel:SetPoseParam(chargeParam, chargeAmount)
     
+end
+
+function HandheldRailgun:OverrideWeaponName()
+    return "railgun"
+end
+
+function HandheldRailgun:GetHUDSlot()
+    return 1
 end
 
 if Client then
