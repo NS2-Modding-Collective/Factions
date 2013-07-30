@@ -15,7 +15,7 @@ ResupplyUpgrade.upgradeName = "resupply"                     					// Text code o
 ResupplyUpgrade.upgradeTitle = "Resupply"               						// Title of the upgrade, e.g. Submachine Gun
 ResupplyUpgrade.upgradeDesc = "Periodically stock up on health and ammo"		// Description of the upgrade
 ResupplyUpgrade.upgradeTechId = kTechId.Resupply								// TechId of the upgrade, default is kTechId.Move cause its the first entry
-ResupplyUpgrade.triggerInterval	= { 15 } 										// Specify the timer interval (in seconds) per level.
+ResupplyUpgrade.triggerInterval	= { kResupplyInterval } 						// Specify the timer interval (in seconds) per level.
 ResupplyUpgrade.teamType = kFactionsUpgradeTeamType.MarineTeam					// Team Type
 
 function ResupplyUpgrade:Initialize()
@@ -78,7 +78,7 @@ local function GiveAmmoToEveryWeapon(player)
 		if child:isa("ClipWeapon") then
 			
 			if child:GetNeedsAmmo(false) then
-				child:GiveAmmo(AmmoPack.kNumClips, false)
+				child:GiveAmmo(1, false)
 			end
 				
 		end

@@ -21,6 +21,7 @@ function DropMedpackUpgrade:Initialize()
 
 	FactionsWeaponUpgrade.Initialize(self)
 	
+	self.hideUpgrade = true
 	self.upgradeType = DropMedpackUpgrade.upgradeType
 	self.cost = DropMedpackUpgrade.cost
 	self.upgradeName = DropMedpackUpgrade.upgradeName

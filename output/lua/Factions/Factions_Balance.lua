@@ -113,20 +113,25 @@ kPowerPointHealth = 1000
 kPowerPointArmor = 400	
 kPowerPointPointValue = 0
 
+// Sentries
 kSentryAttackBaseROF = .15
 kSentryAttackRandROF = 0.0
 kSentryAttackBulletsPerSalvo = 1
 kConfusedSentryBaseROF = 2.0
+kSentryDamage = 15
 
 // Building
 kNumSentriesPerPlayer = 2
 kSentryCost = 100
-kSentryDamage = 15
+kSentryBuildTime = 3
 kPhaseGateCost = 350
+kPhaseGateBuildTime = 6
 kNumPhasegatesPerPlayer = 1
 kArmoryCost = 200
+kArmoryBuildTime = 5
 kNumArmoriesPerPlayer = 1
 kObservatoryCost = 100
+kObservatoryBuildTime = 7
 kNumObservatoriesPerPlayer = 1
 
 kWeapons1DamageScalar = 1.1
