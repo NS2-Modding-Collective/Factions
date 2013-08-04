@@ -31,6 +31,8 @@ MagnoBootsWearerMixin.expectedConstants =
 MagnoBootsWearerMixin.overrideFunctions =
 {
 	"GetFuel",
+	"HandleJetpackStart",
+	"HandleJetpackEnd",
 }
 
 MagnoBootsWearerMixin.networkVars =
@@ -53,8 +55,8 @@ function MagnoBootsWearerMixin:__initmixin()
 		self.hasMagnoBoots = false
 	end
 	
-	self.magnoBootsFuelRate = kJetpackUseFuelRate
     self.magnoBootsFuelOnChange = 1
+	self.timeMagnoBootsChanged = Shared.GetTime()
 	self.lastWallWalkingState = false
 
 end
@@ -77,27 +79,70 @@ function MagnoBootsWearerMixin:OnUpdate()
 	if Server then
 		local wallWalking = self:GetIsWallWalking()
 		if wallWalking ~= self.lastWallWalkingState then
+			local wallWalkingMessage = "False"
+			if wallWalking then 
+				wallWalkingMessage = "True"
+			end
+			Shared.Message("Changed state! Now " .. wallWalking)
+			self.magnoBootsFuelOnChange = self:GetFuel()
 			self.timeMagnoBootsChanged = Shared.GetTime()
 			self.lastWallWalkingState = wallWalking
-			self.magnoBootsFuelOnChange = self:GetFuel()
 		end
 	end
 end
 
+function MagnoBootsWearerMixin:HandleJetpackStart()
+
+	self.magnoBootsFuelOnChange = self:GetFuel()
+	self.timeMagnoBootsChanged = Shared.GetTime()
+	
+	JetpackMarine.HandleJetpackStart(self)
+    
+end
+
+function MagnoBootsWearerMixin:HandleJetPackEnd()
+
+	self.magnoBootsFuelOnChange = self:GetFuel()
+	self.timeMagnoBootsChanged = Shared.GetTime()
+    
+	JetpackMarine.HandleJetPackEnd(self)
+    
+end
+
 function MagnoBootsWearerMixin:GetFuel()
 	
-	local originalFuel = self.magnoBootsFuelOnChange
 	// Magno boots and jetpack fuel stacks!
-	if self:isa("JetpackMarine") then
-		originalFuel = originalFuel - (1 - JetpackMarine.GetFuel(self))
+	local newFuel = 1
+	
+    local jetpackRate = self.hasFuelUpgrade and -kUpgradedJetpackUseFuelRate or -kJetpackUseFuelRate
+	local magnoBootsRate = self.hasFuelUpgrade and -kUpgradedJetpackUseFuelRate or -kJetpackUseFuelRate
+	local timeChanged = self.timeMagnoBootsChanged
+	local totalRate = 0
+	local dt = Shared.GetTime() - self.timeMagnoBootsChanged
+	local fuelOnChange = self.magnoBootsFuelOnChange 
+	
+    if not self.jetpacking then
+		jetpackRate = 0
 	end
 	
-    local dt = Shared.GetTime() - self.timeMagnoBootsChanged
-    local rate = -self.magnoBootsFuelRate
-    if not self:GetIsWallWalking() then
-        rate = kJetpackReplenishFuelRate
+	if not self.lastWallWalkingState then
+		magnoBootsRate = 0
+		totalRate = jetpackRate + magnoBootsRate
+	end
+	
+	// Replenish if we are not jetpacking or wall walking
+	totalRate = jetpackRate + magnoBootsRate
+	if not self.jetpacking and not self.lastWallWalkingState then
+        totalRate = kJetpackReplenishFuelRate
         dt = math.max(0, dt - JetpackMarine.kJetpackFuelReplenishDelay)
-    end
-    return Clamp(originalFuel + rate * dt, 0, 1)
+	end
+	
+    local newFuel = Clamp(fuelOnChange + totalRate * dt, 0, 1)
+	
+	if newFuel < 1.0 then
+		Shared.Message("Fuel:" .. newFuel)
+	end
+	
+    return newFuel
     
 end

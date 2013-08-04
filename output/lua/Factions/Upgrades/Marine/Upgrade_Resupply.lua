@@ -22,6 +22,7 @@ function ResupplyUpgrade:Initialize()
 
 	FactionsUpgrade.Initialize(self)
 
+	self.hideUpgrade = true
 	self.cost = ResupplyUpgrade.cost
 	self.upgradeName = ResupplyUpgrade.upgradeName
 	self.upgradeTitle = ResupplyUpgrade.upgradeTitle
