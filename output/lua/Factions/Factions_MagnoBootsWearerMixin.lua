@@ -76,18 +76,16 @@ function MagnoBootsWearerMixin:GetHasMagnoBoots()
 end
 
 function MagnoBootsWearerMixin:OnUpdate()
-	if Server then
-		local wallWalking = self:GetIsWallWalking()
-		if wallWalking ~= self.lastWallWalkingState then
-			local wallWalkingMessage = "False"
-			if wallWalking then 
-				wallWalkingMessage = "True"
-			end
-			Shared.Message("Changed state! Now " .. wallWalking)
-			self.magnoBootsFuelOnChange = self:GetFuel()
-			self.timeMagnoBootsChanged = Shared.GetTime()
-			self.lastWallWalkingState = wallWalking
+	local wallWalking = self:GetIsWallWalking()
+	if wallWalking ~= self.lastWallWalkingState then
+		local wallWalkingMessage = "False"
+		if wallWalking then 
+			wallWalkingMessage = "True"
 		end
+		Shared.Message("Changed state! Now " .. wallWalking)
+		self.magnoBootsFuelOnChange = self:GetFuel()
+		self.timeMagnoBootsChanged = Shared.GetTime()
+		self.lastWallWalkingState = wallWalking
 	end
 end
 
@@ -116,7 +114,6 @@ function MagnoBootsWearerMixin:GetFuel()
 	
     local jetpackRate = self.hasFuelUpgrade and -kUpgradedJetpackUseFuelRate or -kJetpackUseFuelRate
 	local magnoBootsRate = self.hasFuelUpgrade and -kUpgradedJetpackUseFuelRate or -kJetpackUseFuelRate
-	local timeChanged = self.timeMagnoBootsChanged
 	local totalRate = 0
 	local dt = Shared.GetTime() - self.timeMagnoBootsChanged
 	local fuelOnChange = self.magnoBootsFuelOnChange 
@@ -138,10 +135,6 @@ function MagnoBootsWearerMixin:GetFuel()
 	end
 	
     local newFuel = Clamp(fuelOnChange + totalRate * dt, 0, 1)
-	
-	if newFuel < 1.0 then
-		Shared.Message("Fuel:" .. newFuel)
-	end
 	
     return newFuel
     
