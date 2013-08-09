@@ -10,7 +10,7 @@
 class 'ClipSizeUpgrade' (FactionsUpgrade)
 
 // Define these statically so we can easily access them without instantiating too.
-ClipSizeUpgrade.cost = { 100, 200, 400, 600, 600 }                              		// Cost of the upgrade in xp
+ClipSizeUpgrade.cost = { 200, 400, 600, 600, 600 }                              		// Cost of the upgrade in xp
 ClipSizeUpgrade.upgradeName = "clipsize"                     							// Text code of the upgrade if using it via console
 ClipSizeUpgrade.upgradeTitle = "Clip Size Upgrade"               						// Title of the upgrade, e.g. Submachine Gun
 ClipSizeUpgrade.upgradeDesc = "Upgrade your clip size"									// Description of the upgrade
