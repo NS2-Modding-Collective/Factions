@@ -201,10 +201,15 @@ end
 
 function XpMixin:CheckLvlUp()    
     local xp = self:GetXp()
-    local diffLevels = self:GetLvlForXp(xp) - self:GetLvl()
+	local lvlForXp = self:GetLvlForXp(xp)
+	local oldLvl = self:GetLvl()
+	if oldLvl == nil then
+		oldLvl = 0
+	end
+    local diffLevels = lvlForXp - oldLvl
     if diffLevels > 0 then
         //Lvl UP
-        self.level = self:GetLvlForXp(xp)        
+        self.level = lvlForXp
 		
         // Trigger sound on level up
         //StartSoundEffectAtOrigin(CombatEffects.kMarineLvlUpSound, self:GetOrigin())        
@@ -242,7 +247,9 @@ function XpMixin:GetLvlForXp(xp)
 
 	// Look up the level of this amount of Xp
 	if xp >= kMaxXp then 
-		return maxLvl
+		return kMaxLvl
+	elseif xp <= 0 then
+		return 0
 	end
 	
 	// ToDo: Do a faster search instead. We're going to be here a lot!
