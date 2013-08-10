@@ -32,4 +32,4 @@ kMinesHUDSlot = 4
 kBuilderHUDSlot = 5
 
 // Version number
-kFactionsVersion = "15"
+kFactionsVersion = "16 (Sturdy Skulk)"

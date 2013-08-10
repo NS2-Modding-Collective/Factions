@@ -579,7 +579,7 @@ function FactionsMovementMixin:GetMaxSpeed(possible)
 	local maxWalkSpeed = self:GetUpgradedMaxSpeed()
 	if possible then
 		// Sanity check
-		if maxRunSpeed = nil then
+		if maxRunSpeed == nil then
 			maxRunSpeed = Marine.kRunMaxSpeed
 		end
 		return maxRunSpeed
@@ -613,7 +613,7 @@ function FactionsMovementMixin:GetMaxSpeed(possible)
     end
 	
 	// Sanity check
-	if adjustedMaxSpeed = nil then
+	if adjustedMaxSpeed == nil then
 		adjustedMaxSpeed = Marine.kWalkMaxSpeed
 	end
 	
