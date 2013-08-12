@@ -207,6 +207,18 @@ if Server then
 		
 	end
 	
+	function PlayingTeam:GetPlayersWithAnyClass()
+		local players = GetEntitiesWithMixinForTeam("FactionsClass", self:GetTeamNumber())
+		local output = {}
+		for index, player in ipairs(players) do
+			if player:GetHasFactionsClass() then
+				table.insert(output, player)
+			end
+		end
+		
+		return output
+	end
+	
 	function PlayingTeam:GetNumPlayersWithAnyClass()
 		local playerCount = 0
 		local players = GetEntitiesWithMixinForTeam("FactionsClass", self:GetTeamNumber())

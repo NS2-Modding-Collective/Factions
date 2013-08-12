@@ -12,7 +12,7 @@
 class 'GrenadeLauncherUpgrade' (FactionsWeaponUpgrade)
 
 // Define these statically so we can easily access them without instantiating.
-GrenadeLauncherUpgrade.cost				= { 300 }                          							// cost of the upgrade in xp
+GrenadeLauncherUpgrade.cost				= { 800 }                          							// cost of the upgrade in xp
 GrenadeLauncherUpgrade.upgradeName 		= "gl"	                        							// text code of the upgrade if using it via console
 GrenadeLauncherUpgrade.upgradeTitle 	= "Grenade Launcher"       									// Title of the upgrade, e.g. Submachine Gun
 GrenadeLauncherUpgrade.upgradeDesc 		= "Launches grenades... What more do you need to know?"  	// Description of the upgrade

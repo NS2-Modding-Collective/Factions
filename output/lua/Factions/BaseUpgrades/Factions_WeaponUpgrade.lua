@@ -70,6 +70,16 @@ function FactionsWeaponUpgrade:GetUniqueSlot()
 	return self.uniqueSlot
 end
 
+function FactionsWeaponUpgrade:GetHideUpgrade()
+	local hideUpgrade = FactionsUpgrade.GetHideUpgrade(self)
+	if self:GetIsAtMaxLevel() then
+		hideUpgrade = true
+	end
+	
+	return hideUpgrade
+end
+
+
 // Give the weapon to the player when they buy the upgrade.
 function FactionsWeaponUpgrade:OnAdd(player)
 

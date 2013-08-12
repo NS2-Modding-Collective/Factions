@@ -18,15 +18,16 @@ AssaultClass.name 					= "Assault"     													// the friendly name of the 
 AssaultClass.description 			= "A regular dude"										     		// the description of the FactionsClass
 AssaultClass.baseHealth 			= kMarineHealth	+ 20										     	// the base health value of this class
 AssaultClass.baseArmor 				= kMarineArmor + 20										     		// the base armor value of this class
-AssaultClass.baseWalkSpeed 			= 5.0                												// the initial walk speed of this class
-AssaultClass.baseRunSpeed 			= 9.0                												// the initial run speed of this class
+AssaultClass.baseWalkSpeed 			= 4.5                												// the initial walk speed of this class
+AssaultClass.baseRunSpeed 			= 8.0                												// the initial run speed of this class
 AssaultClass.baseDropCount 			= 2	                												// how many packs get dropped when you drop health/ammo
-AssaultClass.maxBackwardSpeedScalar = 0.75																// the scalar for walking backwards
+AssaultClass.maxBackwardSpeedScalar = 0.6																// the scalar for walking backwards
 AssaultClass.icon					= "ui/Factions/badges/badge_assault.dds"							// the badge for this class
 AssaultClass.picture				= "ui/Factions/badges/badge_assault.dds"							// the big picture for this class, used on the select screen
 AssaultClass.initialUpgrades		= { "ResupplyUpgrade",
 										"AxeUpgrade",
-										"WelderUpgrade", }																// the upgrades that you start the game with
+										"WelderUpgrade",
+										"RifleUpgrade", }																// the upgrades that you start the game with
 AssaultClass.disallowedUpgrades		= { "SpeedUpgrade", 												// the upgrades that you are not allowed to buy
 										"BuilderUpgrade",
 										"DropMedpackUpgrade", }
