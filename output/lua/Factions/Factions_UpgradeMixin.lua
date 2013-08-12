@@ -27,8 +27,27 @@ UpgradeMixin.expectedCallbacks =
 {
 }
 
+local function SendUpgradeUpdates(self)
+
+	if Server then
+		if #self.upgradeUpdateQueue > 0 then
+			for index, upgrade in ipairs(self.upgradeUpdateQueue) do
+				Server.SendNetworkMessage(self, "UpdateUpgrade",  BuildUpdateUpgradeMessage(upgrade:GetId(), upgrade:GetCurrentLevel()), true)
+			end
+
+			self.upgradeUpdateQueue = {}
+				
+		end
+	end
+
+end
+
+
 function UpgradeMixin:__initmixin()
 	self:BuildNewUpgradeList()
+	if Server then
+		self:AddTimedCallback(SendUpgradeUpdates, 0.2)
+	end
 end
 
 function UpgradeMixin:Reset()
@@ -42,6 +61,7 @@ end
 function UpgradeMixin:BuildNewUpgradeList()
 	self.UpgradeList = UpgradeList()
 	self.UpgradeList:Initialize()
+	self.upgradeUpdateQueue = {}
 end
 
 local function ReapplyUpgrades(self)
@@ -138,7 +158,7 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
         	local upgradeCost = upgrade:GetCostForNextLevel()
 			if upgrade:GetIsPermanent() then
 				upgrade:AddLevel()
-				Server.SendNetworkMessage(self, "UpdateUpgrade",  BuildUpdateUpgradeMessage(upgradeId, upgrade:GetCurrentLevel()), true)
+				self:QueueUpgradeUpdate(upgrade)
 			end		
 			
 			if not freeUpgrade then
@@ -155,6 +175,18 @@ function UpgradeMixin:BuyUpgrade(upgradeId, freeUpgrade)
         // Send buy message to server
         Client.SendNetworkMessage("BuyUpgrade", BuildBuyUpgradeMessage(upgrade), true)
     end
+end
+
+/*function UpgradeMixin:OnUpdatePlayer()
+	if Server then
+		self:SendUpgradeUpdates()
+	end
+end*/
+
+function UpgradeMixin:QueueUpgradeUpdate(upgrade)
+	if Server then
+		table.insert(self.upgradeUpdateQueue, upgrade)
+	end
 end
 
 // Refunds any upgrades that are no longer available because of team restrictions.
