@@ -82,7 +82,7 @@ function MagnoBootsWearerMixin:OnUpdate()
 		if wallWalking then 
 			wallWalkingMessage = "True"
 		end
-		Shared.Message("Changed state! Now " .. wallWalking)
+		Shared.Message("Changed state! Now " .. ToString(wallWalking))
 		self.magnoBootsFuelOnChange = self:GetFuel()
 		self.timeMagnoBootsChanged = Shared.GetTime()
 		self.lastWallWalkingState = wallWalking
