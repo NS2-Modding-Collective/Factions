@@ -57,8 +57,31 @@ if Server then
 		return "Xenoswarm"
 	end
 	
+	function XenoswarmGamerules:GetGameHintText(isSupport)
+	
+		local gameHintText = { "To change your class type 'class' in the console.", 
+								"To buy upgrades press the Evolve key.", }
+		
+		if isSupport then
+			table.insert(gameHintText, "As a support, build structures with the weapon in slot " .. kBuilderHUDSlot)
+		end
+		
+		return gameHintText
+				 
+	end
+				 
+	
 	function XenoswarmGamerules:GetGameModeText()
-		return { "Defend your command station against waves of marauding enemies!" }
+
+		local gameModeText =  { "Defend your command station against waves of marauding enemies!",
+								"-------", }
+								
+		for index, text in ipairs(self:GetGameHintText(false)) do
+			table.insert(gameModeText, text)
+		end
+		
+		return gameModeText
+				 
 	end
 
 	local overrideResetGame = GenericGamerules.ResetGame

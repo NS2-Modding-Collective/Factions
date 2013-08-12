@@ -9,6 +9,7 @@
 
 // Factions_Marine.lua
 
+Script.Load("lua/Factions/Factions_XenoGameHintsMixin.lua")
 Script.Load("lua/Factions/Factions_MagnoBootsWearerMixin.lua")
 Script.Load("lua/Factions/Factions_TimerMixin.lua")
 Script.Load("lua/Factions/Factions_SpeedUpgradeMixin.lua")
@@ -25,6 +26,7 @@ Script.Load("lua/Factions/Factions_BuyMenuMixin.lua")
 local networkVars = {
 }
 
+AddMixinNetworkVars(XenoGameHintsMixin, networkVars)
 AddMixinNetworkVars(MagnoBootsWearerMixin, networkVars)
 AddMixinNetworkVars(SpeedUpgradeMixin, networkVars)
 AddMixinNetworkVars(WeaponUpgradeMixin, networkVars)
@@ -146,6 +148,11 @@ function Marine:OnCreate()
 	if GetGamerulesInfo():GetUsesMarineColours() then
 		InitMixin(self, TeamColoursMixin)
 		assert(HasMixin(self, "TeamColours"))
+	end
+	
+	if Server then
+		InitMixin(self, XenoGameHintsMixin)
+		assert(HasMixin(self, "XenoGameHints"))
 	end
 	
 end

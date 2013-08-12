@@ -65,6 +65,7 @@ function SpawnProtectMixin:OnUpdatePlayer()
 					self:ActivateSpawnProtect()
 				end
 			end
+			
 		end
 		
 	end
