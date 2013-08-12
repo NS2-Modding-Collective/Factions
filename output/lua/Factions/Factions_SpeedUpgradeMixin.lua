@@ -98,10 +98,17 @@ end
 
 function SpeedUpgradeMixin:GetMaxSpeed(possible)
 
+	local maxSpeed = Marine.kWalkMaxSpeed
 	if HasMixin(self, "FactionsMovement") then
-		return FactionsMovement.GetMaxSpeed(self, possible)
+		maxSpeed = FactionsMovement.GetMaxSpeed(self, possible)
 	else
-		return self:GetUpgradedMaxSpeed()
+		maxSpeed = self:GetUpgradedMaxSpeed()
 	end
+	
+	if maxSpeed == nil then
+		maxSpeed = Marine.kWalkMaxSpeed
+	end
+	
+	return maxSpeed
 	
 end

@@ -14,7 +14,7 @@ Script.Load("lua/ExtraEntitiesMod/npc/NpcMixin.lua")
 if Server then
 
 	function NpcMixin:SetBaseDifficulty()
-		local baseDifficulty = 0
+		local baseDifficulty = 2
 		if self.baseDifficulty then 
 			baseDifficulty = self.baseDifficulty
 		end
