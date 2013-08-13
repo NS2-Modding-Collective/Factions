@@ -93,6 +93,9 @@ function Marine:SetupFactionsMovement()
 
 	Marine.kAirMoveMinVelocity = 8
 	
+	// Also setup the jetpack marine.
+	SetupFactionsMovementJetpackMarine()
+	
 	// Set up the Combat Movement mixin
 	InitMixin(self, FactionsMovementMixin)
 	assert(HasMixin(self, "FactionsMovement"))
