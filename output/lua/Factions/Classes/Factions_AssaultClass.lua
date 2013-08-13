@@ -30,7 +30,7 @@ AssaultClass.initialUpgrades		= { "ResupplyUpgrade",
 										"RifleUpgrade", }																// the upgrades that you start the game with
 AssaultClass.disallowedUpgrades		= { "SpeedUpgrade", 												// the upgrades that you are not allowed to buy
 										"BuilderUpgrade",
-										"DropMedpackUpgrade", }
+										"ScanUpgrade", }
 
 function AssaultClass:Initialize()
 	self.type = AssaultClass.type

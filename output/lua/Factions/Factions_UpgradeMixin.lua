@@ -46,7 +46,7 @@ end
 function UpgradeMixin:__initmixin()
 	self:BuildNewUpgradeList()
 	if Server then
-		self:AddTimedCallback(SendUpgradeUpdates, 0.2)
+		self:AddTimedCallback(SendUpgradeUpdates, 0.3)
 	end
 end
 
