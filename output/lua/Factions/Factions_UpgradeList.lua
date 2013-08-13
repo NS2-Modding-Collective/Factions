@@ -225,7 +225,6 @@ function UpgradeList:GetLevelTiedUpgrades(playerClass, playerTeamNumber)
 		
 	end
 	
-	// TODO: Order these correctly by priority before returning to the user
 	return levelTiedUpgrades
 end
 

@@ -11,7 +11,7 @@
 						
 class 'SMGUpgrade' (FactionsWeaponUpgrade)
 
-SMGUpgrade.cost 			= { 300 }                           										// Cost of the upgrade in xp
+SMGUpgrade.cost 			= { 500 }                           									// Cost of the upgrade in xp
 SMGUpgrade.upgradeName 		= "smg"                       											// Text code of the upgrade if using it via console
 SMGUpgrade.upgradeTitle 	= "Submachine Gun"               										// Title of the upgrade, e.g. Submachine Gun
 SMGUpgrade.upgradeDesc 		= "Rapid firing, mini version of the rifle. Great at medium range."		// Description of the upgrade
