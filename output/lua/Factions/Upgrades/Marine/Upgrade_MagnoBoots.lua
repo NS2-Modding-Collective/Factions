@@ -18,7 +18,7 @@ MagnoBootsUpgrade.upgradeDesc = "Allows you to walk on walls"							// Descripti
 MagnoBootsUpgrade.upgradeTechId = kTechId.Speed1										// TechId of the upgrade, default is kTechId.Move cause its the first entry
 MagnoBootsUpgrade.teamType = kFactionsUpgradeTeamType.MarineTeam						// Team Type
 MagnoBootsUpgrade.disallowedGameModes = { kFactionsGameType.CombatDeathmatch }			// Controls which game modes this applies to
-MagnoBootsUpgrade.minPlayerLvl = 6															// Controls whether this upgrade requires the recipient to be a minimum level
+MagnoBootsUpgrade.minPlayerLvl = 8														// Controls whether this upgrade requires the recipient to be a minimum level
 
 function MagnoBootsUpgrade:Initialize()
 

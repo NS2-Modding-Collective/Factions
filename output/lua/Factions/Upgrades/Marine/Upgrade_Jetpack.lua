@@ -17,7 +17,7 @@ JetpackUpgrade.upgradeTitle = "Jetpack"               								// Title of the up
 JetpackUpgrade.upgradeDesc = "Allows you to fly like an eagle"						// Description of the upgrade
 JetpackUpgrade.upgradeTechId = kTechId.Jetpack										// TechId of the upgrade, default is kTechId.Move cause its the first entry
 JetpackUpgrade.teamType = kFactionsUpgradeTeamType.MarineTeam						// Team Type
-JetpackUpgrade.minPlayerLvl = 8														// Controls whether this upgrade requires the recipient to be a minimum level
+JetpackUpgrade.minPlayerLvl = 10													// Controls whether this upgrade requires the recipient to be a minimum level
 
 function JetpackUpgrade:Initialize()
 
