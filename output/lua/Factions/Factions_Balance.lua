@@ -107,10 +107,10 @@ kHandheldRailgunWeight = kRifleWeight
 kMineDamage = 150
 
 // Player Health values
-kInjuredPlayerMaxHealth = 5000
-kInjuredPlayerMaxArmor = 100
-kInjuredPlayerInitialHealth = 4000
-kInjuredPlayerInitialArmor = 0
+kInjuredPlayerMaxHealth = 3000
+kInjuredPlayerMaxArmor = 1000
+kInjuredPlayerInitialHealth = 2000
+kInjuredPlayerInitialArmor = 500
 kInjuredPlayerHealthDrainRate = 30
 kInjuredPlayerHealthDrainInterval = 1.0
 
@@ -141,7 +141,7 @@ kObservatoryBuildTime = 7
 kNumObservatoriesPerPlayer = 1
 
 // Resupply
-kResupplyInterval = 10
+kResupplyInterval = 14
 
 kWeapons1DamageScalar = 1.1
 kWeapons2DamageScalar = 1.2
