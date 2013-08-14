@@ -86,31 +86,33 @@ function TeamColoursMixin:OnUpdateRender()
 		end
 		
 		// Set the colours
-		local teamColours = nil
-		if entity.factionsBadassColour then
-			teamColours = Color(math.random(), math.random(), math.random())
-		elseif entity.factionsArmorColour ~= nil and (entity.factionsArmorColour.x > 0 or entity.factionsArmorColour.y > 0 or entity.factionsArmorColour.z > 0) then
-			teamColours = Color(entity.factionsArmorColour.x, entity.factionsArmorColour.y, entity.factionsArmorColour.z)
-		else
-			if entity:GetTeamNumber() == kTeam2Index then
-				teamColours = kAlienTeamColorFloat
+		if entity ~= nil then
+			local teamColours = nil
+			if entity.factionsBadassColour then
+				teamColours = Color(math.random(), math.random(), math.random())
+			elseif entity.factionsArmorColour ~= nil and (entity.factionsArmorColour.x > 0 or entity.factionsArmorColour.y > 0 or entity.factionsArmorColour.z > 0) then
+				teamColours = Color(entity.factionsArmorColour.x, entity.factionsArmorColour.y, entity.factionsArmorColour.z)
 			else
-				teamColours = kMarineTeamColorFloat
+				if entity:GetTeamNumber() == kTeam2Index then
+					teamColours = kAlienTeamColorFloat
+				else
+					teamColours = kMarineTeamColorFloat
+				end
 			end
-		end
-		
-		if not self.teamColourMaterial then
-			self.teamColourMaterial = AddMaterial(model, "materials/team_colours.material")
-		end
-		
-		self.teamColourMaterial:SetParameter("colourR", teamColours.r)
-		self.teamColourMaterial:SetParameter("colourG", teamColours.g)
-		self.teamColourMaterial:SetParameter("colourB", teamColours.b)
-		self.teamColourMaterial:SetParameter("intensity", TeamColoursMixin.intensity)
-		
-		if not self:GetIsAlive() and self.teamColourMaterial then
-			if RemoveMaterial(model, self.teamColourMaterial) then
-				self.teamColourMaterial = nil
+			
+			if not self.teamColourMaterial then
+				self.teamColourMaterial = AddMaterial(model, "materials/team_colours.material")
+			end
+			
+			self.teamColourMaterial:SetParameter("colourR", teamColours.r)
+			self.teamColourMaterial:SetParameter("colourG", teamColours.g)
+			self.teamColourMaterial:SetParameter("colourB", teamColours.b)
+			self.teamColourMaterial:SetParameter("intensity", TeamColoursMixin.intensity)
+			
+			if not self:GetIsAlive() and self.teamColourMaterial then
+				if RemoveMaterial(model, self.teamColourMaterial) then
+					self.teamColourMaterial = nil
+				end
 			end
 		end
 			
