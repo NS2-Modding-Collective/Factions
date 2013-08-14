@@ -64,7 +64,7 @@ if Server then
             if not amount then
                 amount = 10
             end	        
-            player:AddResources(amount)
+            player:AddScore(amount)
         end
 
     end
