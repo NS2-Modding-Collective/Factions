@@ -197,8 +197,10 @@ end
 // Weapons can't be dropped anymore
 function Marine:Drop(weapon, ignoreDropTimeLimit, ignoreReplacementWeapon)
 
-	// Just do nothing
-	// Drop code for replacement weapons is handled in our upgrade system.
+	// Just destroy the weapon and return success
+	self:RemoveWeapon(weapon)
+	DestroyEntity(weapon)
+	return true
 
 end
 
