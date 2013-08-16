@@ -30,8 +30,16 @@ UpgradeMixin.expectedCallbacks =
 local function SendUpgradeUpdates(self)
 
 	if Server then
+		// At this point we have enough info to give the player their starting equipment
+		if self.factionsClassInitialised and self.factionsUpgradesInitialised and not self.startingUpgradesGiven then
+			self.startingUpgradesGiven = true
+			self:GiveStartingUpgrades()
+		end
+	
 		if #self.upgradeUpdateQueue > 0 then
+			Shared.Message(#self.upgradeUpdateQueue .. " updates to send...")
 			for index, upgrade in ipairs(self.upgradeUpdateQueue) do
+				Shared.Message("Sending update for upgrade " .. upgrade:GetUpgradeTitle())
 				Server.SendNetworkMessage(self, "UpdateUpgrade",  BuildUpdateUpgradeMessage(upgrade:GetId(), upgrade:GetCurrentLevel()), true)
 			end
 
@@ -39,11 +47,14 @@ local function SendUpgradeUpdates(self)
 				
 		end
 	end
+	
+	return true
 
 end
 
 
 function UpgradeMixin:__initmixin()
+	self.factionsUpgradesInitialised = true
 	self:BuildNewUpgradeList()
 	if Server then
 		self:AddTimedCallback(SendUpgradeUpdates, 0.3)
@@ -51,6 +62,7 @@ function UpgradeMixin:__initmixin()
 end
 
 function UpgradeMixin:Reset()
+	startingUpgradesGiven = false
     self:BuildNewUpgradeList()
 end
 
@@ -185,7 +197,18 @@ end*/
 
 function UpgradeMixin:QueueUpgradeUpdate(upgrade)
 	if Server then
-		table.insert(self.upgradeUpdateQueue, upgrade)
+		// Detect duplicates here to save bandwidth
+		local addToQueue = true
+		for index, queuedUpgrade in ipairs(self.upgradeUpdateQueue) do
+			if upgrade:GetId() ~= queuedUpgrade:GetId() then
+				addToQueue = false
+				break
+			end
+		end
+		
+		if addToQueue then 
+			table.insert(self.upgradeUpdateQueue, upgrade)
+		end
 	end
 end
 
@@ -225,6 +248,7 @@ function UpgradeMixin:RefundUpgradeComplete(upgradeId)
 	local refundAmount = upgrade:GetCompleteRefundAmount()
 	self:AddResources(upgrade:GetCompleteRefundAmount())
 	upgrade:SetLevel(0)
+	self:QueueUpgradeUpdate(upgrade)
 	return refundAmount
 	
 end
