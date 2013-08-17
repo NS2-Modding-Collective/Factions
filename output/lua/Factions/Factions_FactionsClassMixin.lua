@@ -119,7 +119,9 @@ function FactionsClassMixin:GiveStartingUpgrades()
 		for index, upgradeClassName in ipairs(self.factionsClass:GetInitialUpgrades()) do
 			local upgrade = self:GetUpgradeByClassName(upgradeClassName)
 			if upgrade then
-				self:BuyUpgrade(upgrade:GetId(), true)
+				if #self:GetActiveUpgradesBySlot(upgrade:GetUniqueSlot(), upgrade:GetId()) == 0 then
+					self:BuyUpgrade(upgrade:GetId(), true)
+				end
 			else
 				Shared.Message("Could not find initial upgrade " .. upgradeClassName .. " for player " .. self:GetName())
 			end
