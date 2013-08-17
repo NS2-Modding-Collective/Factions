@@ -109,9 +109,21 @@ XpMixin.networkVars =
 }
 
 function XpMixin:__initmixin()
+    self:ResetXp()
+end
+
+// gives res back when rejoining
+function XpMixin:Reset()
+	self:ResetXp()
+end
+
+function XpMixin:ResetXp()
     self.level = kStartLevel
 	self.permanentXpAvailable = kStartXPAvailable
 	self:ResetSpentUpgradePoints()
+	if self.ApplyLevelTiedUpgrades then
+		self:ApplyLevelTiedUpgrades()
+	end
 end
 
 function XpMixin:CopyPlayerDataFrom(player)
@@ -120,6 +132,7 @@ function XpMixin:CopyPlayerDataFrom(player)
 		self.level = player.level
 		self.permanentXpAvailable = player.permanentXpAvailable
 		self.upgradePointsSpent = player.upgradePointsSpent
+		self:ApplyLevelTiedUpgrades()
 	end
 
 end

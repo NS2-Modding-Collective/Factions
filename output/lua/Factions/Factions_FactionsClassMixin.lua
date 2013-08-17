@@ -86,7 +86,8 @@ FactionsClassMixin.overrideFunctions =
 
 FactionsClassMixin.networkVars =
 {
-	factionsClassType = "enum kFactionsClassType"
+	factionsClassType = "enum kFactionsClassType",
+	backwardSpeedScalar = "float"
 }
 
 // Conversion functions for ease of output/input
@@ -114,7 +115,6 @@ end
 
 function FactionsClassMixin:GiveStartingUpgrades()
 
-	// TODO: Reenable when this is fixed.
 	if self.GetHasFactionsClass and self:GetHasFactionsClass() and self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
 		for index, upgradeClassName in ipairs(self.factionsClass:GetInitialUpgrades()) do
 			local upgrade = self:GetUpgradeByClassName(upgradeClassName)
@@ -300,15 +300,25 @@ end
 
 function FactionsClassMixin:GetMaxBackwardSpeedScalar()
 
-	if self:GetHasFactionsClass() then
-		return self.factionsClass:GetMaxBackwardSpeedScalar()
-	else
-		if _G[self:GetClassName()].GetMaxBackwardSpeedScalar then
-			return _G[self:GetClassName()].GetMaxBackwardSpeedScalar(self)
+	if Server then
+		// Set the backward speed scalar at the server, just read it as a client
+		local speedScalar = Player.kWalkBackwardSpeedScalar
+		if self:GetHasFactionsClass() then
+			speedScalar = self.factionsClass:GetMaxBackwardSpeedScalar()
 		else
-			return Player.kWalkBackwardSpeedScalar
+			if _G[self:GetClassName()].GetMaxBackwardSpeedScalar then
+				speedScalar = _G[self:GetClassName()].GetMaxBackwardSpeedScalar(self)
+			else
+				speedScalar = Player.kWalkBackwardSpeedScalar
+			end
+		end
+
+		if speedScalar ~= self.backwardSpeedScalar then
+			self.backwardSpeedScalar = speedScalar
 		end
 	end
+	
+	return self.backwardSpeedScalar
 
 end
 
