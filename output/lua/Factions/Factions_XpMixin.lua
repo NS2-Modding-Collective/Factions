@@ -121,7 +121,9 @@ function XpMixin:ResetXp()
     self.level = kStartLevel
 	self.permanentXpAvailable = kStartXPAvailable
 	self:ResetSpentUpgradePoints()
-	self:ApplyLevelTiedUpgrades()
+	if self.ApplyLevelTiedUpgrades then
+		self:ApplyLevelTiedUpgrades()
+	end
 end
 
 function XpMixin:CopyPlayerDataFrom(player)
