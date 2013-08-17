@@ -96,7 +96,7 @@ function FactionsWeaponUpgrade:OnAdd(player)
 		// Refund the old upgrade if we have it
 		for index, upgrade in ipairs(player:GetUpgradesBySlot(self:GetUniqueSlot())) do
 			if upgrade ~= self then
-				player:RefundUpgradeComplete(upgrade:GetId())
+				player:ResetUpgrade(upgrade:GetId())
 			end
 		end
 	

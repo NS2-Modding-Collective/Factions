@@ -242,6 +242,11 @@ function UpgradeMixin:RefundAllUpgrades()
 	end
 end
 
+function UpgradeMixin:ResetUpgrade(upgradeId)
+	upgrade:SetLevel(0)
+	self:QueueUpgradeUpdate(upgrade)
+end
+
 function UpgradeMixin:RefundUpgradeComplete(upgradeId)
 
 	local upgrade = self:GetUpgradeById(upgradeId)

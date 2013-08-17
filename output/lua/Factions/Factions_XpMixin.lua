@@ -205,6 +205,11 @@ function XpMixin:AddScore(points, res, noNearbyXp)
     end    
 end
 
+// gives res back when rejoining
+function XpMixin:Reset()
+	self:ApplyLevelTiedUpgrades()
+end
+
 function XpMixin:CheckLvlUp()    
     local xp = self:GetXp()
 	local lvlForXp = self:GetLvlForXp(xp)
