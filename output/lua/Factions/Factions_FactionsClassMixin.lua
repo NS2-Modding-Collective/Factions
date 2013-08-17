@@ -299,6 +299,7 @@ end
 function FactionsClassMixin:GetMaxBackwardSpeedScalar()
 
 	if Server then
+		// Set the backward speed scalar at the server, just read it as a client
 		local speedScalar = Player.kWalkBackwardSpeedScalar
 		if self:GetHasFactionsClass() then
 			speedScalar = self.factionsClass:GetMaxBackwardSpeedScalar()
@@ -309,12 +310,13 @@ function FactionsClassMixin:GetMaxBackwardSpeedScalar()
 				speedScalar = Player.kWalkBackwardSpeedScalar
 			end
 		end
+
 		if speedScalar ~= self.backwardSpeedScalar then
 			self.backwardSpeedScalar = speedScalar
 		end
-	else
-		return self.backwardSpeedScalar
 	end
+	
+	return self.backwardSpeedScalar
 
 end
 
