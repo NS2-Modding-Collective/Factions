@@ -323,9 +323,18 @@ function XpMixin:GetNextLevelXP()
 end
 
 function XpMixin:SetLevel(newLevel)
+
+	// Fix any dodgy values here.
+	if newLevel < 0 then 
+		newLevel = 0
+	elseif newLevel > kMaxLvl then
+		newLevel = kMaxLvl
+	end
+	
 	local XpNeeded = self:XpForLvl(newLevel)
 	self.score = XpNeeded
 	self.level = newLevel
+	
 end
 
 // Return the proportion of this level that we've progressed.

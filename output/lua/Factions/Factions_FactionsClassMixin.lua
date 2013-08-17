@@ -134,10 +134,11 @@ function FactionsClassMixin:CopyPlayerDataFrom(player)
 		self.factionsClassType = player.factionsClassType
 		self.factionsClassLocalType = player.factionsClassLocalType
 		self.factionsClass = self:GetClassByType(player.factionsClassType)
+		self.factionsClassInitialised = true
 	end
 	
 	// At this point we have enough info to give the player their starting equipment
-	if Server then
+	if Server and self.factionsClassInitialised and self.factionsUpgradesInitialised then
 		self:GiveStartingUpgrades()
     end
 
