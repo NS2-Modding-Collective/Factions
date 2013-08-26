@@ -119,7 +119,9 @@ function FactionsClassMixin:GiveStartingUpgrades()
 		for index, upgradeClassName in ipairs(self.factionsClass:GetInitialUpgrades()) do
 			local upgrade = self:GetUpgradeByClassName(upgradeClassName)
 			if upgrade then
-				self:BuyUpgrade(upgrade:GetId(), true)
+				if #self:GetActiveUpgradesBySlot(upgrade:GetUniqueSlot(), upgrade:GetId()) == 0 then
+					self:BuyUpgrade(upgrade:GetId(), true)
+				end
 			else
 				Shared.Message("Could not find initial upgrade " .. upgradeClassName .. " for player " .. self:GetName())
 			end
@@ -136,11 +138,6 @@ function FactionsClassMixin:CopyPlayerDataFrom(player)
 		self.factionsClass = self:GetClassByType(player.factionsClassType)
 		self.factionsClassInitialised = true
 	end
-	
-	// At this point we have enough info to give the player their starting equipment
-	if Server and self.factionsClassInitialised and self.factionsUpgradesInitialised then
-		self:GiveStartingUpgrades()
-    end
 
 end
 
