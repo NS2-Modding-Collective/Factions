@@ -54,6 +54,7 @@ end
 
 
 function UpgradeMixin:__initmixin()
+	self.startingUpgradesGiven = false
 	self.factionsUpgradesInitialised = true
 	self:BuildNewUpgradeList()
 	if Server then
@@ -109,6 +110,12 @@ end
 
 function UpgradeMixin:CopyPlayerDataFrom(player)
 	if HasMixin(player, "FactionsUpgrade") then
+		// Copy over the startingUpgradesGiven flag.
+		self.startingUpgradesGiven = player.startingUpgradesGiven
+		if not self.startingUpgradesGiven then
+			self.startingUpgradesGiven = false
+		end
+		
 		if player.UpgradeList then 
 			self.UpgradeList:CopyUpgradeDataFrom(player.UpgradeList)
 			self:AddTimedCallback(ReapplyUpgrades, 0.2)

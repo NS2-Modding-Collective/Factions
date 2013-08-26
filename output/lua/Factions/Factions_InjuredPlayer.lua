@@ -31,6 +31,10 @@ function InjuredPlayer:OnCreate()
     
 end
 
+local function Resuscitate(self)
+	self:Replace(Marine.kMapName, self:GetTeamNumber(), false, self:GetOrigin())
+	self:SetIsThirdPerson(0)
+end
 
 function InjuredPlayer:OnInitialized()
 
@@ -62,6 +66,12 @@ function InjuredPlayer:OnInitialized()
 	self:SetIsThirdPerson(3)
 	
 	self.isGettingUp = false
+	
+	// Resuscitate the player if they get injured then go to ready room.
+	if self:GetTeamNumber() ~= kTeam1Index and self:GetTeamNumber() ~= kTeam2Index then
+		self:AddTimedCallback(Resuscitate, 0.2)
+	end
+
     
 end
 
@@ -193,15 +203,14 @@ end
 function InjuredPlayer:OnTag(tagName)
 	// Actually make the player alive when they have got up.
 	if tagName == "alive" then
-		self:Replace(Marine.kMapName, self:GetTeamNumber(), false, self:GetOrigin())
+		Resuscitate(self)
 	end
 end
 
 function InjuredPlayer:OnConstructionComplete()
 	self.isGettingUp = true
 	// Until we can fix animation inputs, do this.
-	self:Replace(Marine.kMapName, self:GetTeamNumber(), false, self:GetOrigin())
-	self:SetIsThirdPerson(0)
+	Resuscitate(self)
 end
 
 if Client then
