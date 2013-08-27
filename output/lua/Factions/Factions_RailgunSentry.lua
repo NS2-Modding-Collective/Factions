@@ -10,6 +10,7 @@
 // Factions_RailgunSentry.lua
 
 Script.Load("lua/Sentry.lua")
+Script.Load("lua/ExtraEntitiesMod/ScaledModelMixin.lua")
 
 class 'RailgunSentry' (Sentry)
 
@@ -27,3 +28,36 @@ end
 
 RailgunSentry.kModelName = kModelName
 local kAnimationGraph = PrecacheAsset("models/marine/sentry/sentry.animation_graph")
+RailgunSentry.kScale = Vector(1.0, 1.0, 1.0)
+
+local networkVars = 
+{
+}
+
+AddMixinNetworkVars(ScaledModelMixin, networkVars)
+
+function RailgunSentry:OnInitialized()
+	Sentry.OnInitialized(self)
+
+	InitMixin(self, ScaledModelMixin)
+	
+	self.scale = MiniArmory.kScale
+	
+	self:SetScaledModel(MiniArmory.kModelName, MiniArmory.kAnimationGraph)
+end
+
+if Server then
+	function RailgunSentry:GetAcquireTime()
+    	return Sentry.kTargetAcquireTime * 2
+    end
+    
+    function RailgunSentry:GetBaseRateOfFire()
+    	return kRailgunSentryAttackBaseROF
+    end
+    
+    function RailgunSentry:GetRandomRateOfFire()
+    	return kRailgunSentryAttackRandROF
+    end
+end
+
+Shared.LinkClassToMap("RailgunSentry", RailgunSentry.kMapName, networkVars)

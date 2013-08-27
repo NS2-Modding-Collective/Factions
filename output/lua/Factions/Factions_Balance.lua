@@ -126,6 +126,14 @@ kSentryAttackBulletsPerSalvo = 1
 kConfusedSentryBaseROF = 2.0
 kSentryDamage = 15
 
+// Railgun Sentries
+kRailgunSentryAttackBaseROF = 1.0
+kRailgunSentryAttackRandROF = 0.0
+kRailgunSentryAttackBulletsPerSalvo = 1
+kConfusedSentryBaseROF = 2.0
+kRailgunSentryDamage = 100
+kNumRailgunSentriesPerPlayer = 1
+
 // Building
 kNumSentriesPerPlayer = 2
 kSentryCost = 100

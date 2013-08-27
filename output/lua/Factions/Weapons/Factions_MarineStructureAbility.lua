@@ -22,6 +22,7 @@ Script.Load("lua/Factions/Weapons/Factions_SentryAbility.lua")
 Script.Load("lua/Factions/Weapons/Factions_ArmoryAbility.lua")
 Script.Load("lua/Factions/Weapons/Factions_PhaseGateAbility.lua")
 Script.Load("lua/Factions/Weapons/Factions_ObservatoryAbility.lua")
+Script.Load("lua/Factions/Weapons/Factions_RailgunSentryAbility.lua")
 
 class 'MarineStructureAbility' (Weapon)
 
@@ -30,6 +31,7 @@ kMaxStructures[kTechId.Sentry] = 2
 kMaxStructures[kTechId.MiniArmory] = 1
 kMaxStructures[kTechId.PhaseGate] = 2
 kMaxStructures[kTechId.Observatory] = 1
+kMaxStructures[kTechId.RailgunSentry] = 1
 local kDropCooldown = 3
 
 local kViewModelName = PrecacheAsset("models/marine/welder/welder_view.model")
@@ -39,7 +41,7 @@ MarineStructureAbility.kMapName = "marine_drop_structure_ability"
 
 local kCreateFailSound = PrecacheAsset("sound/NS2.fev/alien/gorge/create_fail")
 
-MarineStructureAbility.kSupportedStructures = { SentryAbility, ArmoryAbility, PhaseGateAbility, ObservatoryAbility }
+MarineStructureAbility.kSupportedStructures = { SentryAbility, ArmoryAbility, PhaseGateAbility, ObservatoryAbility, RailgunSentryAbility }
 
 local networkVars =
 {
@@ -47,6 +49,7 @@ local networkVars =
     numMiniArmoriesLeft = string.format("private integer (0 to %d)", kMaxStructures[kTechId.MiniArmory]),
 	numPhaseGatesLeft = string.format("private integer (0 to %d)", kMaxStructures[kTechId.PhaseGate]),
 	numObservatoriesLeft = string.format("private integer (0 to %d)", kMaxStructures[kTechId.Observatory]),
+	numRailgunSentriesLeft = string.format("private integer (0 to %d)", kMaxStructures[kTechId.RailgunSentry]),
 }
 
 function MarineStructureAbility:GetAnimationGraphName()
@@ -80,6 +83,7 @@ function MarineStructureAbility:OnCreate()
     self.numMiniArmoriesLeft = 0
 	self.numPhaseGatesLeft = 0
     self.numObservatoriesLeft = 0
+    self.numRailgunSentriesLeft = 0
     self.lastClickedPosition = nil
     
 end
@@ -147,6 +151,10 @@ function MarineStructureAbility:GetNumStructuresBuilt(techId)
 
     if techId == kTechId.Observatory then
         return self.numObservatoriesLeft
+    end
+    
+    if techId == kTechId.RailgunSentry then
+        return self.numRailgunSentriesLeft
     end
 
     // unlimited
@@ -496,6 +504,7 @@ function MarineStructureAbility:ProcessMoveOnWeapon(input)
             local numAllowedMiniArmories = LookupTechData(kTechId.MiniArmory, kTechDataMaxAmount, -1) 
             local numAllowedPhaseGates = LookupTechData(kTechId.PhaseGate, kTechDataMaxAmount, -1) 
             local numAllowedObservatories = LookupTechData(kTechId.Observatory, kTechDataMaxAmount, -1) 
+            local numAllowedRailgunSentries = LookupTechData(kTechId.RailgunSentry, kTechDataMaxAmount, -1) 
 
             if numAllowedSentries >= 0 then     
                 self.numSentriesLeft = team:GetNumDroppedMarineStructures(player, kTechId.Sentry)           
@@ -511,6 +520,10 @@ function MarineStructureAbility:ProcessMoveOnWeapon(input)
             
             if numAllowedObservatories >= 0 then     
                 self.numObservatoriesLeft = team:GetNumDroppedMarineStructures(player, kTechId.Observatory)           
+            end
+            
+            if numAllowedRailgunSentries >= 0 then     
+                self.numRailgunSentriesLeft = team:GetNumDroppedMarineStructures(player, kTechId.RailgunSentry)           
             end
             
         end

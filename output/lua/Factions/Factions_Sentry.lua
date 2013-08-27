@@ -91,6 +91,18 @@ if Server then
         end
 
     end
+    
+    function Sentry:GetAcquireTime()
+    	return Sentry.kTargetAcquireTime
+    end
+    
+    function Sentry:GetBaseRateOfFire()
+    	return Sentry.kBaseROF
+    end
+    
+    function Sentry:GetRandomRateOfFire()
+    	return Sentry.kRandROF
+    end
 
 	function Sentry:OnUpdate(deltaTime)
     
@@ -157,9 +169,9 @@ if Server then
             // Random rate of fire so it can't be gamed
 
             if initialAttack and self.target then
-                self.timeNextAttack = Shared.GetTime() + Sentry.kTargetAcquireTime
+                self.timeNextAttack = Shared.GetTime() + self:GetAcquireTime()
             else
-                self.timeNextAttack = confusedTime + Shared.GetTime() + Sentry.kBaseROF + math.random() * Sentry.kRandROF
+                self.timeNextAttack = confusedTime + Shared.GetTime() + self:GetBaseRateOfFire() + math.random() * self:GetRandomRateOfFire()
             end    
             
             if not GetIsUnitActive() or self.confused or not self.attacking or not self.attachedToBattery then

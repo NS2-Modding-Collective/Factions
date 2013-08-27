@@ -157,6 +157,7 @@ local function GetRowForTechId(techId)
         rowTable[kTechId.MiniArmory] = 2
 		rowTable[kTechId.PhaseGate] = 3
 		rowTable[kTechId.Observatory] = 4
+		rowTable[kTechId.RailgunSentry] = 5
     
     end
     
@@ -219,7 +220,8 @@ local function UpdateButton(button, index)
     
     local row = GetRowForTechId(button.techId)
    
-    button.graphicItem:SetTexturePixelCoordinates(GUIGetSprite(col, row, Factions_GUIMarineBuildMenu.kPixelSize, Factions_GUIMarineBuildMenu.kPixelSize))
+    local spriteRow = math.min(row, 4)
+    button.graphicItem:SetTexturePixelCoordinates(GUIGetSprite(col, spriteRow, Factions_GUIMarineBuildMenu.kPixelSize, Factions_GUIMarineBuildMenu.kPixelSize))
     button.description:SetColor(color)
     button.costIcon:SetColor(color)
     button.costText:SetColor(color)
