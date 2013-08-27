@@ -21,6 +21,7 @@ function DropCountUpgrade:Initialize()
 
 	FactionsUpgrade.Initialize(self)
 
+	self.hideUpgrade = true
 	self.upgradeType = DropCountUpgrade.upgradeType
 	self.cost = DropCountUpgrade.cost
 	self.upgradeName = DropCountUpgrade.upgradeName

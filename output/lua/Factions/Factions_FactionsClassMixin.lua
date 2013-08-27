@@ -86,7 +86,8 @@ FactionsClassMixin.overrideFunctions =
 
 FactionsClassMixin.networkVars =
 {
-	factionsClassType = "enum kFactionsClassType"
+	factionsClassType = "enum kFactionsClassType",
+	backwardSpeedScalar = "float"
 }
 
 // Conversion functions for ease of output/input
@@ -114,12 +115,13 @@ end
 
 function FactionsClassMixin:GiveStartingUpgrades()
 
-	// TODO: Reenable when this is fixed.
 	if self.GetHasFactionsClass and self:GetHasFactionsClass() and self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
 		for index, upgradeClassName in ipairs(self.factionsClass:GetInitialUpgrades()) do
 			local upgrade = self:GetUpgradeByClassName(upgradeClassName)
 			if upgrade then
-				self:BuyUpgrade(upgrade:GetId(), true)
+				if #self:GetActiveUpgradesBySlot(upgrade:GetUniqueSlot(), upgrade:GetId()) == 0 then
+					self:BuyUpgrade(upgrade:GetId(), true)
+				end
 			else
 				Shared.Message("Could not find initial upgrade " .. upgradeClassName .. " for player " .. self:GetName())
 			end
@@ -134,10 +136,11 @@ function FactionsClassMixin:CopyPlayerDataFrom(player)
 		self.factionsClassType = player.factionsClassType
 		self.factionsClassLocalType = player.factionsClassLocalType
 		self.factionsClass = self:GetClassByType(player.factionsClassType)
+		self.factionsClassInitialised = true
 	end
 	
 	// At this point we have enough info to give the player their starting equipment
-	if Server then
+	if Server and self.factionsClassInitialised and self.factionsUpgradesInitialised then
 		self:GiveStartingUpgrades()
     end
 
@@ -225,7 +228,7 @@ function FactionsClassMixin:ChangeFactionsClass(newClass)
 			if Server then
 				// Kill the player if they do this while playing.
 				if self:GetIsAlive() and (self:GetTeamNumber() == kTeam1Index or self:GetTeamNumber() == kTeam2Index) then
-					self:Kill(nil, nil, self:GetOrigin())
+					self:Kill(nil, nil, self:GetOrigin(), nil, true)
 				end
 			end
 		end
@@ -297,15 +300,25 @@ end
 
 function FactionsClassMixin:GetMaxBackwardSpeedScalar()
 
-	if self:GetHasFactionsClass() then
-		return self.factionsClass:GetMaxBackwardSpeedScalar()
-	else
-		if _G[self:GetClassName()].GetMaxBackwardSpeedScalar then
-			return _G[self:GetClassName()].GetMaxBackwardSpeedScalar(self)
+	if Server then
+		// Set the backward speed scalar at the server, just read it as a client
+		local speedScalar = Player.kWalkBackwardSpeedScalar
+		if self:GetHasFactionsClass() then
+			speedScalar = self.factionsClass:GetMaxBackwardSpeedScalar()
 		else
-			return Player.kWalkBackwardSpeedScalar
+			if _G[self:GetClassName()].GetMaxBackwardSpeedScalar then
+				speedScalar = _G[self:GetClassName()].GetMaxBackwardSpeedScalar(self)
+			else
+				speedScalar = Player.kWalkBackwardSpeedScalar
+			end
+		end
+
+		if speedScalar ~= self.backwardSpeedScalar then
+			self.backwardSpeedScalar = speedScalar
 		end
 	end
+	
+	return self.backwardSpeedScalar
 
 end
 

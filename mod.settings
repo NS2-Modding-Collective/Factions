@@ -1,6 +1,6 @@
-name        = "Project Titan Movement Test"
+name        = "Xenoswarm"
 source_dir  = "source"
 output_dir  = "output"
-description = [=[Xenoswarm Playtest Mod]=]
+description = [=[This is Xenoswarm. Enjoy!]=]
 image       = "preview.jpg"
 publish_id = "7e64c1a"

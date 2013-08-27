@@ -13,6 +13,7 @@ function OnCommandUpdateUpgrade(msg)
     // The server will send us this message to tell us an ability succeded.
     player = Client.GetLocalPlayer()
     local success = player:SetUpgradeLevel(msg.upgradeId, msg.upgradeLevel)
+	//Shared.Message("Received upgrade update for " .. player:GetUpgradeById(msg.upgradeId):GetUpgradeTitle() .. " to level " .. msg.upgradeLevel)
 	if not success then
 		Shared.Message("FAILED TO UPGRADE! " .. msg.upgradeId .. " id and level " .. msg.upgradeLevel)
 	end

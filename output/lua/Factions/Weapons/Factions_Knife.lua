@@ -16,7 +16,15 @@ class 'Knife' (Axe)
 Knife.kMapName = "knife"
 
 Knife.kModelName = PrecacheAsset("models/marine/axe/axe.model")
-local kViewModelName = PrecacheAsset("models/marine/knife/knife_view.model")
+// Load the best model that we can (some servers may not have Assets2)
+local kViewModelName = Axe.kViewModelName
+local kBestViewModelName = "models/marine/knife/knife_view.model"
+local f=io.open(kBestViewModelName,"r")
+if f ~= nil then
+	io.close(f)
+	f = nil
+	kViewModelName = PrecacheAsset(kBestViewModelName)
+end
 local kAnimationGraph = PrecacheAsset("models/marine/axe/axe_view.animation_graph")
 
 // 4 degrees in NS1

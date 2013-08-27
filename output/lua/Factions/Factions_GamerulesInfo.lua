@@ -55,6 +55,7 @@ local networkVars =
 	startWithPhaseGate = "boolean",
 	usesMarineColours = "boolean",
 	usesAlienColours = "boolean",
+	injuredMarines = "boolean",
 	timeLimit = "time",
 }
 
@@ -121,6 +122,10 @@ if Server then
 	function FactionsGamerulesInfo:SetStartWithPhaseGate(value)
 		self.startWithPhaseGate = value
 	end
+	
+	function FactionsGamerulesInfo:SetMarinesBecomeInjured(value)
+		self.injuredMarines = value
+	end
 end
 
 function FactionsGamerulesInfo:GetGameType()
@@ -179,12 +184,16 @@ function FactionsGamerulesInfo:GetPowerPointsTakeDamage()
 	return self.powerPointsTakeDamage
 end
 
-function FactionsGamerulesInfo:GetStartWithArmory(value)
+function FactionsGamerulesInfo:GetStartWithArmory()
 	return self.startWithArmory
 end
 
-function FactionsGamerulesInfo:GetStartWithPhaseGate(value)
+function FactionsGamerulesInfo:GetStartWithPhaseGate()
 	return self.startWithPhaseGate
+end
+
+function FactionsGamerulesInfo:GetMarinesBecomeInjured()
+	return self.injuredMarines
 end
 
 function FactionsGamerulesInfo:GetTimeRemaining()

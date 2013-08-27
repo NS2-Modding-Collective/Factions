@@ -70,6 +70,16 @@ function FactionsWeaponUpgrade:GetUniqueSlot()
 	return self.uniqueSlot
 end
 
+function FactionsWeaponUpgrade:GetHideUpgrade()
+	local hideUpgrade = FactionsUpgrade.GetHideUpgrade(self)
+	if self:GetIsAtMaxLevel() then
+		hideUpgrade = true
+	end
+	
+	return hideUpgrade
+end
+
+
 // Give the weapon to the player when they buy the upgrade.
 function FactionsWeaponUpgrade:OnAdd(player)
 
@@ -77,9 +87,17 @@ function FactionsWeaponUpgrade:OnAdd(player)
 	if mapName then
 		// Destroy the old weapon in this slot.
 		local weapon = player:GetWeaponInHUDSlot(self:GetHUDSlot())
-		if (weapon) then
+		// Remove the old weapon
+		if weapon then
 			player:RemoveWeapon(weapon)
 			DestroyEntity(weapon)
+		end
+		
+		// Refund the old upgrade if we have it
+		for index, upgrade in ipairs(player:GetUpgradesBySlot(self:GetUniqueSlot())) do
+			if upgrade ~= self then
+				player:ResetUpgrade(upgrade:GetId())
+			end
 		end
 	
 		player:GiveItem(mapName)

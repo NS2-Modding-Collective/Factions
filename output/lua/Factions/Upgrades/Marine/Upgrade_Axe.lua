@@ -22,6 +22,7 @@ function AxeUpgrade:Initialize()
 
 	FactionsWeaponUpgrade.Initialize(self)
 	
+	self.hideUpgrade = true
 	self.cost = AxeUpgrade.cost
 	self.upgradeName = AxeUpgrade.upgradeName
 	self.upgradeTitle = AxeUpgrade.upgradeTitle

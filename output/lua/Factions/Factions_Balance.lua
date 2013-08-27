@@ -98,13 +98,19 @@ kRailgunDamage = 50
 kRailgunChargeDamage = 100
 kRailgunDamageType = kDamageType.Puncture
 
+kHandheldRailgunDamage = 50
+kHandheldRailgunChargeDamage = 100
+kHandheldRailgunDamageType = kDamageType.Puncture
+kHandheldRailgunCost = 20
+kHandheldRailgunWeight = kRifleWeight
+
 kMineDamage = 150
 
 // Player Health values
-kInjuredPlayerMaxHealth = 5000
-kInjuredPlayerMaxArmor = 100
-kInjuredPlayerInitialHealth = 4000
-kInjuredPlayerInitialArmor = 0
+kInjuredPlayerMaxHealth = 3000
+kInjuredPlayerMaxArmor = 1000
+kInjuredPlayerInitialHealth = 2000
+kInjuredPlayerInitialArmor = 500
 kInjuredPlayerHealthDrainRate = 30
 kInjuredPlayerHealthDrainInterval = 1.0
 
@@ -113,21 +119,29 @@ kPowerPointHealth = 1000
 kPowerPointArmor = 400	
 kPowerPointPointValue = 0
 
+// Sentries
 kSentryAttackBaseROF = .15
 kSentryAttackRandROF = 0.0
 kSentryAttackBulletsPerSalvo = 1
 kConfusedSentryBaseROF = 2.0
+kSentryDamage = 15
 
 // Building
 kNumSentriesPerPlayer = 2
 kSentryCost = 100
-kSentryDamage = 15
+kSentryBuildTime = 3
 kPhaseGateCost = 350
+kPhaseGateBuildTime = 6
 kNumPhasegatesPerPlayer = 1
 kArmoryCost = 200
+kArmoryBuildTime = 5
 kNumArmoriesPerPlayer = 1
 kObservatoryCost = 100
+kObservatoryBuildTime = 7
 kNumObservatoriesPerPlayer = 1
+
+// Resupply
+kResupplyInterval = 14
 
 kWeapons1DamageScalar = 1.1
 kWeapons2DamageScalar = 1.2
@@ -142,5 +156,5 @@ kPlayerHealXpRate = 0
 
 // Xenoswarm-specific stuff
 Hive.kDefenseNpcClass = Lerk.kMapName
-Hive.kDefenseNpcAmount = 5
-Hive.kDefenseNpcBaseDifficulty = 2
+Hive.kDefenseNpcAmount = 3
+Hive.kDefenseNpcBaseDifficulty = 6

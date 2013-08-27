@@ -22,7 +22,7 @@ kSkulkPointValue = 30
 kGorgePointValue = 90
 kLerkPointValue = 70
 kFadePointValue = 150
-kOnosPointValue = 400
+kOnosPointValue = 300
 kMarinePointValue = 60
 kJetpackPointValue = 80
 kExosuitPointValue = 120
@@ -109,9 +109,21 @@ XpMixin.networkVars =
 }
 
 function XpMixin:__initmixin()
+    self:ResetXp()
+end
+
+// gives res back when rejoining
+function XpMixin:Reset()
+	self:ResetXp()
+end
+
+function XpMixin:ResetXp()
     self.level = kStartLevel
 	self.permanentXpAvailable = kStartXPAvailable
 	self:ResetSpentUpgradePoints()
+	if self.ApplyLevelTiedUpgrades then
+		self:ApplyLevelTiedUpgrades()
+	end
 end
 
 function XpMixin:CopyPlayerDataFrom(player)
@@ -120,6 +132,7 @@ function XpMixin:CopyPlayerDataFrom(player)
 		self.level = player.level
 		self.permanentXpAvailable = player.permanentXpAvailable
 		self.upgradePointsSpent = player.upgradePointsSpent
+		self:ApplyLevelTiedUpgrades()
 	end
 
 end
@@ -201,10 +214,15 @@ end
 
 function XpMixin:CheckLvlUp()    
     local xp = self:GetXp()
-    local diffLevels = self:GetLvlForXp(xp) - self:GetLvl()
+	local lvlForXp = self:GetLvlForXp(xp)
+	local oldLvl = self:GetLvl()
+	if oldLvl == nil then
+		oldLvl = 0
+	end
+    local diffLevels = lvlForXp - oldLvl
     if diffLevels > 0 then
         //Lvl UP
-        self.level = self:GetLvlForXp(xp)        
+        self.level = lvlForXp
 		
         // Trigger sound on level up
         //StartSoundEffectAtOrigin(CombatEffects.kMarineLvlUpSound, self:GetOrigin())        
@@ -242,7 +260,9 @@ function XpMixin:GetLvlForXp(xp)
 
 	// Look up the level of this amount of Xp
 	if xp >= kMaxXp then 
-		return maxLvl
+		return kMaxLvl
+	elseif xp <= 0 then
+		return 0
 	end
 	
 	// ToDo: Do a faster search instead. We're going to be here a lot!
@@ -310,9 +330,18 @@ function XpMixin:GetNextLevelXP()
 end
 
 function XpMixin:SetLevel(newLevel)
+
+	// Fix any dodgy values here.
+	if newLevel < 0 then 
+		newLevel = 0
+	elseif newLevel > kMaxLvl then
+		newLevel = kMaxLvl
+	end
+	
 	local XpNeeded = self:XpForLvl(newLevel)
 	self.score = XpNeeded
 	self.level = newLevel
+	
 end
 
 // Return the proportion of this level that we've progressed.

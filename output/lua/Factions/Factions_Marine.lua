@@ -9,6 +9,7 @@
 
 // Factions_Marine.lua
 
+Script.Load("lua/Factions/Factions_XenoGameHintsMixin.lua")
 Script.Load("lua/Factions/Factions_MagnoBootsWearerMixin.lua")
 Script.Load("lua/Factions/Factions_TimerMixin.lua")
 Script.Load("lua/Factions/Factions_SpeedUpgradeMixin.lua")
@@ -25,6 +26,7 @@ Script.Load("lua/Factions/Factions_BuyMenuMixin.lua")
 local networkVars = {
 }
 
+AddMixinNetworkVars(XenoGameHintsMixin, networkVars)
 AddMixinNetworkVars(MagnoBootsWearerMixin, networkVars)
 AddMixinNetworkVars(SpeedUpgradeMixin, networkVars)
 AddMixinNetworkVars(WeaponUpgradeMixin, networkVars)
@@ -91,6 +93,9 @@ function Marine:SetupFactionsMovement()
 
 	Marine.kAirMoveMinVelocity = 8
 	
+	// Also setup the jetpack marine.
+	SetupFactionsMovementJetpackMarine()
+	
 	// Set up the Combat Movement mixin
 	InitMixin(self, FactionsMovementMixin)
 	assert(HasMixin(self, "FactionsMovement"))
@@ -148,6 +153,36 @@ function Marine:OnCreate()
 		assert(HasMixin(self, "TeamColours"))
 	end
 	
+	if Server then
+		InitMixin(self, XenoGameHintsMixin)
+		assert(HasMixin(self, "XenoGameHints"))
+	end
+	
+end
+
+// Needed to support the injured player construct mechanic.
+function Marine:GetIsBuilt()
+	if self:isa("InjuredPlayer") then 
+		return ConstructMixin.GetIsBuilt(self)
+	else
+		return true
+	end
+end
+
+local function ResetCamera(self)
+	// Set the camera up.
+	self:SetIsThirdPerson(0)
+	return false
+end
+
+local overrideOnInitialized = Marine.OnInitialized
+function Marine:OnInitialized()
+	overrideOnInitialized(self)
+	
+	// Set the camera up.
+	if not self:isa("InjuredPlayer") then
+		self:AddTimedCallback(ResetCamera, 0.3)            
+	end
 end
 
 // Dont' drop weapons after getting killed, but destroy them!
@@ -162,8 +197,10 @@ end
 // Weapons can't be dropped anymore
 function Marine:Drop(weapon, ignoreDropTimeLimit, ignoreReplacementWeapon)
 
-	// Just do nothing
-	// Drop code for replacement weapons is handled in our upgrade system.
+	// Just destroy the weapon and return success
+	self:RemoveWeapon(weapon)
+	DestroyEntity(weapon)
+	return true
 
 end
 

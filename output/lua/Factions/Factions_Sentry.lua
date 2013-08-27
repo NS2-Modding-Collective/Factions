@@ -181,4 +181,8 @@ if Server then
     end
 end
 
+function Sentry:GetCanGiveDamageOverride()
+	return true
+end
+
 Class_Reload("Sentry", networkVars)

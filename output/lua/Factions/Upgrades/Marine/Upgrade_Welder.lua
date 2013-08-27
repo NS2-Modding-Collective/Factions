@@ -22,6 +22,7 @@ function WelderUpgrade:Initialize()
 
 	FactionsWeaponUpgrade.Initialize(self)
 	
+	self.hideUpgrade = true
 	self.cost = WelderUpgrade.cost
 	self.upgradeName = WelderUpgrade.upgradeName
 	self.upgradeTitle = WelderUpgrade.upgradeTitle

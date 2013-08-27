@@ -35,6 +35,7 @@ if Server then
 		if self.powerPointsTakeDamage == nil then self.powerPointsTakeDamage = false end
 		if self.startWithArmory == nil then self.startWithArmory = false end
 		if self.startWithPhaseGate == nil then self.startWithPhaseGate = false end
+		if self.injuredMarines == nil then self.injuredMarines = false end
 		
 		local gameInfo = GetGamerulesInfo()
 		gameInfo:SetIsMarinevsMarine(self.isMarinevsMarine)
@@ -48,6 +49,7 @@ if Server then
 		gameInfo:SetPowerPointsTakeDamage(self.powerPointsTakeDamage)
 		gameInfo:SetStartWithArmory(self.startWithArmory)
 		gameInfo:SetStartWithPhaseGate(self.startWithPhaseGate)
+		gameInfo:SetMarinesBecomeInjured(self.injuredMarines)
 		gameInfo:SetIsInSuddenDeath(false)
 		
 		Shared.Message("******************")
@@ -267,11 +269,18 @@ if Server then
 		NS2Gamerules.OnClientConnect(self, client)
 		local player = client:GetControllingPlayer()
 		
+		self:SendGameInfoMessage(player)
+		
+	end
+	
+	function GenericGamerules:SendGameInfoMessage(player)
+	
 		player:BuildAndSendDirectMessage("Server is running Xenoswarm build " .. kFactionsVersion .. "!")
 		player:BuildAndSendDirectMessage("Current Game Mode: " .. self:GetGameModeName())
 		for index, message in ipairs(self:GetGameModeText()) do
 			player:BuildAndSendDirectMessage(message)
 		end
+		player:BuildAndSendDirectMessage("Note, this game is still in BETA. Expect the unexpected!")
 		
 	end
 	

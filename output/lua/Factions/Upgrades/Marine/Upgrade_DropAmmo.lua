@@ -21,6 +21,7 @@ function DropAmmoUpgrade:Initialize()
 
 	FactionsDropUpgrade.Initialize(self)
 	
+	self.hideUpgrade = true
 	self.upgradeType = DropAmmoUpgrade.upgradeType
 	self.cost = DropAmmoUpgrade.cost
 	self.upgradeName = DropAmmoUpgrade.upgradeName

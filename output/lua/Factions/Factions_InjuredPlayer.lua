@@ -7,17 +7,20 @@
 //
 // ========= For more information, visit us at http://www.unknownworlds.com =====================
 
-Script.Load("lua/Player.lua")
+Script.Load("lua/Factions/Factions_TimerMixin.lua")
 
 class 'InjuredPlayer' (Marine)
 
 InjuredPlayer.kMapName = "injured_player"
+local kAnimationGraph = PrecacheAsset("models/marine/injuredplayer/injuredplayer.animation_graph")
 
 local networkVars =
 {
+	isGettingUp = "boolean",
 }
 
 AddMixinNetworkVars(ConstructMixin, networkVars)
+AddMixinNetworkVars(TimerMixin, networkVars)
 
 function InjuredPlayer:OnCreate()
 
@@ -28,10 +31,17 @@ function InjuredPlayer:OnCreate()
     
 end
 
+local function Resuscitate(self)
+	self:Replace(Marine.kMapName, self:GetTeamNumber(), false, self:GetOrigin())
+	self:SetIsThirdPerson(0)
+end
 
 function InjuredPlayer:OnInitialized()
 
     Marine.OnInitialized(self)
+  
+	// Set the model
+	self:SetModel(Marine.kModelName, kAnimationGraph)
   
     // Remove physics
     self:DestroyController()
@@ -52,7 +62,41 @@ function InjuredPlayer:OnInitialized()
     if Server then
     	self.lastAutoDamageTime = Shared.GetTime()
     end
+	
+	self:SetIsThirdPerson(3)
+	
+	self.isGettingUp = false
+	
+	// Resuscitate the player if they get injured then go to ready room.
+	if self:GetTeamNumber() ~= kTeam1Index and self:GetTeamNumber() ~= kTeam2Index then
+		self:AddTimedCallback(Resuscitate, 0.2)
+	end
+
     
+end
+
+function InjuredPlayer:OnUpdateAnimationInput(modelMixin)
+	local getUp = "false"
+	local aliveNum = 0.0
+	if self.isGettingUp then
+		getUp = "true"
+		aliveNum = 1.0
+	end
+	//Shared.Message("IsGettingUp: " .. getUp)
+	modelMixin:SetAnimationInput("alive", self.isGettingUp)
+	modelMixin:SetAnimationInput("aliveNum", aliveNum)
+end
+
+function InjuredPlayer:MakeSpecialEdition()
+    self:SetModel(Marine.kBlackArmorModelName, kAnimationGraph)
+end
+
+function InjuredPlayer:MakeDeluxeEdition()
+    self:SetModel(Marine.kSpecialEditionModelName, kAnimationGraph)
+end
+
+function InjuredPlayer:GetCanGiveDamageOverride()
+	return false
 end
 
 // let the player chat, but but nove
@@ -66,7 +110,7 @@ function InjuredPlayer:OverrideInput(input)
     input.move.z = 0
     
     // Only allow some actions like going to menu, chatting and Scoreboard (not jump, use, etc.)
-    input.commands = bit.band(input.commands, Move.Exit) + bit.band(input.commands, Move.TeamChat) + bit.band(input.commands, Move.TextChat) + bit.band(input.commands, Move.Scoreboard) + bit.band(input.commands, Move.ShowMap)
+    input.commands = bit.band(input.commands, Move.Exit) + bit.band(input.commands, Move.TeamChat) + bit.band(input.commands, Move.TextChat) + bit.band(input.commands, Move.Scoreboard) + bit.band(input.commands, Move.Minimap)
     
     return input
     
@@ -135,28 +179,42 @@ function InjuredPlayer:GetTechId()
     return kTechId.Marine
 end
 
-if Server then
-	// Every so often, damage the player!
-	function InjuredPlayer:OnUpdate(deltaTime)
+// Every so often, damage the player!
+function InjuredPlayer:OnUpdatePlayer(deltaTime)
+
+	Player.OnUpdatePlayer(self, deltaTime)
+
+	if Server then
 		local timeNow = Shared.GetTime()
 		// Do this in a while loop so laggy servers don't slow the drain rate
 		while timeNow - self.lastAutoDamageTime > kInjuredPlayerHealthDrainInterval do
-			self:Damage(kInjuredPlayerHealthDrainRate * kInjuredPlayerHealthDrainInterval)
+			local damage = kInjuredPlayerHealthDrainRate * kInjuredPlayerHealthDrainInterval
+			self:TakeDamage(damage, nil, nil, nil, nil, 0, damage, kDamageType.Normal)
 			self.lastAutoDamageTime = self.lastAutoDamageTime + kInjuredPlayerHealthDrainInterval
 		end
 	end
+	
 end
 
-if Client then     
-        
-    function InjuredPlayer:OnInitLocalClient()    
-        if self:GetTeamNumber() ~= kTeamReadyRoom then
-            Marine.OnInitLocalClient(self)
-            
-            self:SetCameraDistance(kGestateCameraDistance)
-        end
-    end
-  
+function InjuredPlayer:GetMaxViewOffsetHeight()
+	return .2
+end
+
+function InjuredPlayer:OnTag(tagName)
+	// Actually make the player alive when they have got up.
+	if tagName == "alive" then
+		Resuscitate(self)
+	end
+end
+
+function InjuredPlayer:OnConstructionComplete()
+	self.isGettingUp = true
+	// Until we can fix animation inputs, do this.
+	Resuscitate(self)
+end
+
+if Client then
+
     function InjuredPlayer:UpdateClientEffects(deltaTime, isLocal)
     
         Marine.UpdateClientEffects(self, deltaTime, isLocal)

@@ -24,6 +24,8 @@ local function AddMinimapBlipType(blipType)
 end
 
 AddMinimapBlipType("InjuredPlayer")
+AddMinimapBlipType("MiniArmory")
+AddMinimapBlipType("RailgunSentry")
 
 // HUD Slots
 kAxeHUDSlot = 3
@@ -32,4 +34,4 @@ kMinesHUDSlot = 4
 kBuilderHUDSlot = 5
 
 // Version number
-kFactionsVersion = "12"
+kFactionsVersion = "BETA 18 (Sturdier Skulk)"

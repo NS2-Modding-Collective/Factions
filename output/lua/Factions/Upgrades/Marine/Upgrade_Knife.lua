@@ -22,6 +22,7 @@ function KnifeUpgrade:Initialize()
 
 	FactionsWeaponUpgrade.Initialize(self)
 	
+	self.hideUpgrade = true
 	self.cost = KnifeUpgrade.cost
 	self.upgradeName = KnifeUpgrade.upgradeName
 	self.upgradeTitle = KnifeUpgrade.upgradeTitle

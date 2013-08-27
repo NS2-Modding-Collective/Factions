@@ -90,6 +90,25 @@ function UpgradeList:Initialize()
 		newUpgrade:Initialize()
 		self.UpgradeTable[newUpgrade:GetId()] = newUpgrade
     end
+	
+	// Build caches
+	self.UpgradeNameCache = {}
+	self.UpgradeClassNameCache = {}
+	self.UpgradeSlotCache = {}
+	for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
+		// These are simple caches
+		self.UpgradeClassNameCache[upgrade:GetClassName()] = upgrade
+		self.UpgradeNameCache[upgrade:GetUpgradeName()] = upgrade
+		
+		// This is a cache of value->table pairs
+		if upgrade:GetUniqueSlot() then
+			if self.UpgradeSlotCache[upgrade:GetUniqueSlot()] == nil then
+				self.UpgradeSlotCache[upgrade:GetUniqueSlot()] = {}
+			end
+			
+			table.insert(self.UpgradeSlotCache[upgrade:GetUniqueSlot()], upgrade)
+		end
+	end
 end
 
 function UpgradeList:GetUpgradeById(upgradeId)
@@ -98,25 +117,16 @@ function UpgradeList:GetUpgradeById(upgradeId)
     end
 end
 
-// TODO: Implement a cache here.
 function UpgradeList:GetUpgradeByClassName(upgradeClassName)
     if upgradeClassName then
-        for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
-            if upgrade:GetClassName() == upgradeClassName then
-                return upgrade
-            end
-        end
+        return self.UpgradeClassNameCache[upgradeClassName]
     end
 end
 
 // TODO: Implement a cache here.
 function UpgradeList:GetUpgradeByName(upgradeName)
     if upgradeName then
-        for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
-            if upgrade:GetUpgradeName() == upgradeName then
-                return upgrade
-            end
-        end
+        return self.UpgradeNameCache[upgradeName]
     end
 end
 
@@ -125,11 +135,7 @@ function UpgradeList:GetUpgradesBySlot(upgradeSlot)
 	local upgradeSlotList = {}
 
     if upgradeSlot then
-        for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
-            if upgradeSlot == upgrade:GetUniqueSlot() then
-                table.insert(upgradeSlotList, upgrade)
-            end
-        end
+        return self.UpgradeSlotCache[upgradeSlot]
     end
 	
 	return upgradeSlotList
@@ -195,38 +201,68 @@ function UpgradeList:GetHasPrerequisites(upgrade)
 	return true
 end
 
+// Cache these values as they don't change during the game.
+local kAvailableUpgradesCache = {}
 function UpgradeList:GetAvailableUpgrades(playerClass, playerTeamNumber)
-	local availableUpgrades = {}
-	for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
-		if  (playerClass and playerClass:GetIsUpgradeAllowed(upgrade)
-		    or
-			(playerClass == nil))
-			and self:GetHasPrerequisites(upgrade)
-			and upgrade:GetIsAllowedForTeam(playerTeamNumber) then
-			
-			table.insert(availableUpgrades, upgrade)
+
+	local playerClassName = "None"
+	if playerClass ~= nil then
+		playerClassName = playerClass:GetName()
+	end
+	
+	local lookupKey = playerClassName.."Team"..playerTeamNumber
+	
+	if kAvailableUpgradesCache[lookupKey] == nil then
+	
+		local availableUpgrades = {}
+		
+		for upgradeId, upgrade in pairs(self:GetAllUpgrades()) do
+			if  (playerClass and playerClass:GetIsUpgradeAllowed(upgrade)
+				or
+				(playerClass == nil))
+				and self:GetHasPrerequisites(upgrade)
+				and upgrade:GetIsAllowedForTeam(playerTeamNumber) then
+				
+				table.insert(availableUpgrades, upgrade)
+			end
 		end
+		
+		kAvailableUpgradesCache[lookupKey] = availableUpgrades
 	end
 	
 	// TODO: Order these correctly by priority before returning to the user
-	return availableUpgrades
+	return kAvailableUpgradesCache[lookupKey]
 end
 
 // Get all the upgrades which are tied to the player's level and automatically increase.
+// Cache these values as they don't change during the game.
+local kLevelTiedUpgradesCache = {}
 function UpgradeList:GetLevelTiedUpgrades(playerClass, playerTeamNumber)
-	local levelTiedUpgrades = {}
-	for upgradeId, upgrade in pairs(self:GetAvailableUpgrades(playerClass, playerTeamNumber)) do
 	
-		if  upgrade:GetIsTiedToPlayerLvl() then
-			
-			table.insert(levelTiedUpgrades, upgrade)
+	local playerClassName = "None"
+	if playerClass ~= nil then
+		playerClassName = playerClass:GetName()
+	end
+	
+	local lookupKey = playerClassName.."Team"..playerTeamNumber
+	
+	if kLevelTiedUpgradesCache[lookupKey] == nil then
+		local levelTiedUpgrades = {}
+		
+		for upgradeId, upgrade in pairs(self:GetAvailableUpgrades(playerClass, playerTeamNumber)) do
+		
+			if  upgrade:GetIsTiedToPlayerLvl() then
+				
+				table.insert(levelTiedUpgrades, upgrade)
+				
+			end
 			
 		end
 		
+		kLevelTiedUpgradesCache[lookupKey] = levelTiedUpgrades
 	end
 	
-	// TODO: Order these correctly by priority before returning to the user
-	return levelTiedUpgrades
+	return kLevelTiedUpgradesCache[lookupKey]
 end
 
 function UpgradeList:GetActiveUpgrades()

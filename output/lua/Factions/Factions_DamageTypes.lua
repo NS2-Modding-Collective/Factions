@@ -17,7 +17,7 @@ local function ApplyFactionsUpgradedDamageModifiers(target, attacker, doer, dama
     if attacker ~= nil then
     
         // Damage upgrades only affect weapons, not ARCs, Sentries, MACs, Mines, etc.
-        if doer:isa("Weapon") or doer:isa("Grenade") then
+        if doer:isa("Weapon") or doer:isa("Grenade") or doer:isa("Sentry") or doer:isa("Hydra") then
         
             if HasMixin(attacker, "WeaponUpgrade") then
             
