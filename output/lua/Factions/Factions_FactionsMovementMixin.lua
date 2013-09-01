@@ -168,7 +168,11 @@ function FactionsMovementMixin:GetAcceleration()
     end
     */
 
-    return acceleration * self:GetCatalystMoveSpeedModifier()
+	if self.GetCatalystMoveSpeedModifier then
+	    return acceleration * self:GetCatalystMoveSpeedModifier()
+	else
+		return acceleration 
+	end
 
 end
 
@@ -603,7 +607,10 @@ function FactionsMovementMixin:GetMaxSpeed(possible)
 		maxSpeed = ( 1 - self:GetWallWalkSpeedScalar() ) * maxSpeed
 	end
 
-	local adjustedMaxSpeed = maxSpeed * self:GetCatalystMoveSpeedModifier() * inventorySpeedScalar 
+	local adjustedMaxSpeed = maxSpeed * inventorySpeedScalar 
+	if self.GetCatalystMoveSpeedModifier then
+	    adjustedMaxSpeed = adjustedMaxSpeed * self:GetCatalystMoveSpeedModifier()
+	end
 	
 	// Proper speed for jetpack users
 	if self:isa("JetpackMarine") then

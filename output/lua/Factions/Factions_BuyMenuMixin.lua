@@ -44,6 +44,9 @@ function BuyMenuMixin:__initmixin()
 end
 
 if Client then
+
+	local g_MarineBuyMenu = nil
+
     // starting the custom buy menu for marines
     function BuyMenuMixin:Buy()
 
@@ -51,16 +54,16 @@ if Client then
        if Client.GetLocalPlayer() == self then
             if self:GetTeamNumber() ~= 0 then
             
-                if not self.buyMenu then
-                    // open the buy menu
-                    self.combatBuy = true
-                    self.buyMenu = GetGUIManager():CreateGUIScript("Factions/Hud/Factions_GUIMarineBuyMenu")
-                    self.combatBuyMenu = self.buyMenu
-                    MouseTracker_SetIsVisible(true, "ui/Cursor_MenuDefault.dds", true)
-                else
-                    self.combatBuy = false
-                    self:CloseMenu()
-                end               
+			if not self.buyMenu and not self:isa("DevouredPlayer") then
+                // open the buy menu
+                self.combatBuy = true
+                self.buyMenu = GetGUIManager():CreateGUIScript("Factions/Hud/Factions_GUIMarineBuyMenu")
+				g_MarineBuyMenu = self.buyMenu
+                MouseTracker_SetIsVisible(true, "ui/Cursor_MenuDefault.dds", true)
+            else
+                self.combatBuy = false
+                self:CloseMenu()
+            end
 
             end            
         end
@@ -68,9 +71,18 @@ if Client then
     
     // dont close the menu
     local overrideCloseMenu = Marine.CloseMenu
-    function BuyMenuMixin:CloseMenu(buyMenu) 
-        if buyMenu then
-            overrideCloseMenu(self)
-        end
+    function BuyMenuMixin:CloseMenu(closeCombatBuy) 
+	
+        if self:GetIsLocalPlayer() then
+			// only close it if its not the combatBuy
+			if closeCombatBuy or not self.combatBuy then    
+				GetGUIManager():DestroyGUIScript(g_MarineBuyMenu)
+				g_MarineBuyMenu = nil
+				self.buyMenu = nil
+				MouseTracker_SetIsVisible(false)
+				return true
+			end        
+		end
+		
     end
 end
