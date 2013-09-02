@@ -41,7 +41,7 @@ MarineStructureAbility.kMapName = "marine_drop_structure_ability"
 
 local kCreateFailSound = PrecacheAsset("sound/NS2.fev/alien/gorge/create_fail")
 
-MarineStructureAbility.kSupportedStructures = { SentryAbility, ArmoryAbility, PhaseGateAbility, ObservatoryAbility, RailgunSentryAbility }
+MarineStructureAbility.kSupportedStructures = { SentryAbility, ArmoryAbility, PhaseGateAbility, ObservatoryAbility, /*RailgunSentryAbility*/ }
 
 local networkVars =
 {

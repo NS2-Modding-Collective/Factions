@@ -157,7 +157,7 @@ local function GetRowForTechId(techId)
         rowTable[kTechId.MiniArmory] = 2
 		rowTable[kTechId.PhaseGate] = 3
 		rowTable[kTechId.Observatory] = 4
-		rowTable[kTechId.RailgunSentry] = 5
+		//rowTable[kTechId.RailgunSentry] = 5
     
     end
     

@@ -27,7 +27,8 @@ ScoutClass.picture					= "ui/Factions/badges/badge_assault.dds"							// the big
 ScoutClass.initialUpgrades			= { "SMGUpgrade", 													// the upgrades that you start the game with
 										"KnifeUpgrade", 
 										"WelderUpgrade",
-										"ResupplyUpgrade", }
+										"ResupplyUpgrade",
+										"ScanUpgrade", }
 ScoutClass.disallowedUpgrades		= { "BuilderUpgrade", 												// the upgrades that you are not allowed to buy
 										"UnlockGrenadeLauncherUpgrade", 
 										"UnlockFlamethrowerUpgrade", }										

@@ -27,12 +27,12 @@ SupportClass.picture				= "ui/Factions/badges/badge_assault.dds"							// the bi
 SupportClass.initialUpgrades		= { "ShotgunUpgrade", 												// the upgrades that you start the game with
 										"BuilderUpgrade", 
 										"WelderUpgrade",
-										"ResupplyUpgrade",
-										"ScanUpgrade", }			
+										"ResupplyUpgrade", }			
 SupportClass.disallowedUpgrades		= { "SpeedUpgrade", 												// the upgrades that you are not allowed to buy
 										"UnlockGrenadeLauncherUpgrade", 
 										"UnlockFlamethrowerUpgrade",
-										"DropAmmoUpgrade", }	
+										"DropAmmoUpgrade",
+										"ScanUpgrade", }	
 
 function SupportClass:Initialize()
 	self.type = SupportClass.type
