@@ -130,6 +130,10 @@ function PlayerUI_GetPlayerJetpackFuel()
     
 end
 
+local function LocalIsFriendlyCommander(player, unit)
+    return player:isa("Commander") and ( unit:isa("Player") or (HasMixin(unit, "Selectable") and unit:GetIsSelected(player:GetTeamNumber())) )
+end
+
 local kUnitStatusDisplayRange = 13
 local kUnitStatusCommanderDisplayRange = 50
 local kDefaultHealthOffset = 1.2
@@ -168,7 +172,7 @@ function PlayerUI_GetUnitStatusInfo()
                 else
                     origin = unit:GetOrigin()
                 end
-				origin = Vector(origin)
+				origin = Vector(origin.x, origin.y, origin.z)
                 
                 local normToEntityVec = GetNormalizedVector(origin - eyePos)
                 local normViewVec = player:GetViewAngles():GetCoords().zAxis
@@ -190,9 +194,10 @@ function PlayerUI_GetUnitStatusInfo()
                         healthBarOffset = getHealthbarOffset(unit)
                     end
                     
-                    local healthBarOrigin = origin + healthOffsetDirection * healthBarOffset
+					healthBarOffset = Vector(healthBarOffset.x, healthBarOffset.y, healthBarOffset.z)
+                    local healthBarOrigin = Vector(origin.x, origin.y, origin.z) + Vector(healthOffsetDirection.x, healthOffsetDirection.y, healthOffsetDirection.z) * Vector(healthBarOffset.x, healthBarOffset.y, healthBarOffset.z)
                     
-                    local worldOrigin = Vector(origin)
+                    local worldOrigin = Vector(origin.x, origin.y, origin.z)
                     origin = Client.WorldToScreen(origin)
                     healthBarOrigin = Client.WorldToScreen(healthBarOrigin)
                     
