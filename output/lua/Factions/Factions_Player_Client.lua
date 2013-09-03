@@ -156,7 +156,7 @@ function PlayerUI_GetUnitStatusInfo()
         end
         
         local healthOffsetDirection = player:isa("Commander") and Vector.xAxis or Vector.yAxis
-    
+		healthOffsetDirection = Vector(healthOffsetDirection.x, healthOffsetDirection.y, healthOffsetDirection.z)
         for index, unit in ipairs(GetEntitiesWithMixinWithinRange("UnitStatus", eyePos, range)) do
         
             // checks here if the model was rendered previous frame as well
@@ -190,12 +190,14 @@ function PlayerUI_GetUnitStatusInfo()
                     local healthBarOffset = kDefaultHealthOffset
                     
                     local getHealthbarOffset = unit.GetHealthbarOffset
-                    if getHealthbarOffset then
+					// Fix for NpcManagerTunnel
+					if unit:isa("NpcManagerTunnel") then
+						healthBarOffset = 1
+                    elseif getHealthbarOffset then
                         healthBarOffset = getHealthbarOffset(unit)
-                    end
+					end
                     
-					healthBarOffset = Vector(healthBarOffset.x, healthBarOffset.y, healthBarOffset.z)
-                    local healthBarOrigin = Vector(origin.x, origin.y, origin.z) + Vector(healthOffsetDirection.x, healthOffsetDirection.y, healthOffsetDirection.z) * Vector(healthBarOffset.x, healthBarOffset.y, healthBarOffset.z)
+                    local healthBarOrigin = origin + healthOffsetDirection * healthBarOffset
                     
                     local worldOrigin = Vector(origin.x, origin.y, origin.z)
                     origin = Client.WorldToScreen(origin)
