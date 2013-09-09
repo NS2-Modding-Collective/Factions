@@ -238,10 +238,10 @@ function PlayerUI_GetUnitStatusInfo()
 
                     end
                     
-                    local badge = ""
+                    local badgeTextures = ""
                     
                     if HasMixin(unit, "Badge") then
-                        badge = unit:GetBadgeIcon() or ""
+                        badgeTextures = unit:GetBadgeTextures("unitstatus") or {}
                     end
                     
                     local hasWelder = false 
@@ -264,7 +264,7 @@ function PlayerUI_GetUnitStatusInfo()
                         IsCrossHairTarget = (unit == crossHairTarget and visibleToPlayer) or LocalIsFriendlyCommander(player, unit),
                         TeamType = kNeutralTeamType,
                         ForceName = unit:isa("Player") and not GetAreEnemies(player, unit),
-                        BadgeTexture = badge,
+                        BadgeTextures = badgeTextures,
                         HasWelder = hasWelder
                     
                     }
