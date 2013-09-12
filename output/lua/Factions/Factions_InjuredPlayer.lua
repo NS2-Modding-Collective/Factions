@@ -12,11 +12,22 @@ Script.Load("lua/Factions/Factions_TimerMixin.lua")
 class 'InjuredPlayer' (Marine)
 
 InjuredPlayer.kMapName = "injured_player"
-local kAnimationGraph = PrecacheAsset("models/marine/injuredplayer/injuredplayer.animation_graph")
+
+InjuredPlayer.kMarineAnimationGraph = PrecacheAsset("models/marine/injuredplayer/injuredplayer.animation_graph")
+
+-- Generate 3rd person models.
+Marine.kModelNames = { male = { }, female = { } }
+local kModelTemplates = { green = ".model", special = "_special.model", deluxe = "_special_v1.model" }
+for name, suffix in pairs(kModelTemplates) do
+    Marine.kModelNames.male[name] = PrecacheAsset("models/marine/male/male" .. suffix)
+end
+for name, suffix in pairs(kModelTemplates) do
+    Marine.kModelNames.female[name] = PrecacheAsset("models/marine/female/female" .. suffix)
+end
+
 
 local networkVars =
 {
-	isGettingUp = "boolean",
 }
 
 AddMixinNetworkVars(ConstructMixin, networkVars)
@@ -41,7 +52,7 @@ function InjuredPlayer:OnInitialized()
     Marine.OnInitialized(self)
   
 	// Set the model
-	self:SetModel(Marine.kModelName, kAnimationGraph)
+	self:SetModel(self:GetVariantModel(), InjuredPlayer.kMarineAnimationGraph)
   
     // Remove physics
     self:DestroyController()
@@ -65,8 +76,6 @@ function InjuredPlayer:OnInitialized()
 	
 	self:SetIsThirdPerson(3)
 	
-	self.isGettingUp = false
-	
 	// Resuscitate the player if they get injured then go to ready room.
 	if self:GetTeamNumber() ~= kTeam1Index and self:GetTeamNumber() ~= kTeam2Index then
 		self:AddTimedCallback(Resuscitate, 0.2)
@@ -76,15 +85,7 @@ function InjuredPlayer:OnInitialized()
 end
 
 function InjuredPlayer:OnUpdateAnimationInput(modelMixin)
-	local getUp = "false"
-	local aliveNum = 0.0
-	if self.isGettingUp then
-		getUp = "true"
-		aliveNum = 1.0
-	end
-	//Shared.Message("IsGettingUp: " .. getUp)
-	modelMixin:SetAnimationInput("alive", self.isGettingUp)
-	modelMixin:SetAnimationInput("aliveNum", aliveNum)
+	
 end
 
 function InjuredPlayer:MakeSpecialEdition()
@@ -208,7 +209,6 @@ function InjuredPlayer:OnTag(tagName)
 end
 
 function InjuredPlayer:OnConstructionComplete()
-	self.isGettingUp = true
 	// Until we can fix animation inputs, do this.
 	Resuscitate(self)
 end
