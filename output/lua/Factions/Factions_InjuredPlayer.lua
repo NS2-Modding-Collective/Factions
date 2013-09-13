@@ -50,8 +50,7 @@ end
 function InjuredPlayer:OnInitialized()
 
     Marine.OnInitialized(self)
-  
-	// Set the model
+	
 	self:SetModel(self:GetVariantModel(), InjuredPlayer.kMarineAnimationGraph)
   
     // Remove physics
@@ -86,14 +85,6 @@ end
 
 function InjuredPlayer:OnUpdateAnimationInput(modelMixin)
 	
-end
-
-function InjuredPlayer:MakeSpecialEdition()
-    self:SetModel(Marine.kBlackArmorModelName, kAnimationGraph)
-end
-
-function InjuredPlayer:MakeDeluxeEdition()
-    self:SetModel(Marine.kSpecialEditionModelName, kAnimationGraph)
 end
 
 function InjuredPlayer:GetCanGiveDamageOverride()

@@ -44,6 +44,7 @@ Script.Load("lua/Factions/Weapons/Factions_HandheldRailgun.lua")
 
 // Class overrides here
 Script.Load("lua/Factions/Factions_LiveMixin.lua")
+Script.Load("lua/Factions/Factions_MarineVariantMixin.lua")
 Script.Load("lua/Factions/Factions_NS2Gamerules.lua")
 Script.Load("lua/Factions/Factions_TechTree.lua")
 Script.Load("lua/Factions/Factions_PlayingTeam.lua")
