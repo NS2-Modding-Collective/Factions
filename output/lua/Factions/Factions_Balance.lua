@@ -166,3 +166,7 @@ kPlayerHealXpRate = 0
 Hive.kDefenseNpcClass = Lerk.kMapName
 Hive.kDefenseNpcAmount = 3
 Hive.kDefenseNpcBaseDifficulty = 6
+
+// EEM overrides here
+kBaseNpcDamage = 0.1
+kNpcDamageDifficultyIncrease = 0.025

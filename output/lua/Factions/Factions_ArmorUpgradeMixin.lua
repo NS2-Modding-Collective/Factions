@@ -15,7 +15,7 @@ ArmorUpgradeMixin = CreateMixin( ArmorUpgradeMixin )
 ArmorUpgradeMixin.type = "ArmorUpgrade"
 
 ArmorUpgrade.armorBoostPerLevel = 0.07
-ArmorUpgrade.botArmorBoostPerLevel = 0.12
+ArmorUpgrade.botArmorBoostPerLevel = 0.10
 
 ArmorUpgradeMixin.expectedMixins =
 {

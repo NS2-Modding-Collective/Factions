@@ -12,7 +12,13 @@
 local originalKill = LiveMixin.Kill
 function LiveMixin:Kill(attacker, doer, point, direction, force)
 	
-	if GetGamerulesInfo():GetMarinesBecomeInjured() and self:isa("Marine") and not self:isa("InjuredPlayer") and not self:isa("MarineSpectator") and not force then
+	if GetGamerulesInfo():GetMarinesBecomeInjured() 
+		and self:isa("Marine") 
+		and not HasMixin(self, "Npc") 
+		and not self:isa("InjuredPlayer") 
+		and not self:isa("MarineSpectator") 
+		and not force then
+		
 		local killStraightAway = true
 		local team = self:GetTeam()
 		local teammates = team:GetPlayers()

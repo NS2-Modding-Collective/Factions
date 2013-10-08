@@ -15,7 +15,7 @@ HealthUpgradeMixin = CreateMixin( HealthUpgradeMixin )
 HealthUpgradeMixin.type = "HealthUpgrade"
 
 HealthUpgrade.healthBoostPerLevel = 0.07
-HealthUpgrade.botHealthBoostPerLevel = 0.12
+HealthUpgrade.botHealthBoostPerLevel = 0.10
 
 HealthUpgradeMixin.expectedMixins =
 {
