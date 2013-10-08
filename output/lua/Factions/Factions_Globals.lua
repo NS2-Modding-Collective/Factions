@@ -34,4 +34,4 @@ kMinesHUDSlot = 4
 kBuilderHUDSlot = 5
 
 // Version number
-kFactionsVersion = "BETA 19 (Stupid Gorge)"
+kFactionsVersion = "BETA 20 (Crazy Crag)"
