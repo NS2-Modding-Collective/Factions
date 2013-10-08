@@ -40,6 +40,7 @@ kPickupTextureYOffsets["AmmoPack"] = 0
 kPickupTextureYOffsets["CatPack"] = 11
 kPickupTextureYOffsets["MedPack"] = 1
 kPickupTextureYOffsets["Rifle"] = 2
+kPickupTextureYOffsets["HeavyRifle"] = 2
 kPickupTextureYOffsets["PortalGun"] = 2
 kPickupTextureYOffsets["LightMachineGun"] = 2
 kPickupTextureYOffsets["Shotgun"] = 3
@@ -52,6 +53,7 @@ kPickupTextureYOffsets["Jetpack"] = 8
 kPickupTextureYOffsets["NadeLauncher"] = 6
 kPickupTextureYOffsets["LayMines"] = 9
 kPickupTextureYOffsets["Exosuit"] = 10
+kPickupTextureYOffsets["CatPack"] = 11
 
 local kPickupIconHeight = 64
 local kPickupIconWidth = 64

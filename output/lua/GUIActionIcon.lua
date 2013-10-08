@@ -27,6 +27,7 @@ local kCommanderBarTextureName = PrecacheAsset("ui/commanderbar.dds")
 
 local kIconOffsets = { }
 kIconOffsets["Rifle"] = 0
+kIconOffsets["HeavyRifle"] = 0
 kIconOffsets["Shotgun"] = 1
 kIconOffsets["Pistol"] = 2
 kIconOffsets["Flamethrower"] = 3

@@ -240,8 +240,12 @@ function PlayerUI_GetUnitStatusInfo()
                     
                     local badgeTextures = ""
                     
-                    if HasMixin(unit, "Badge") then
-                        badgeTextures = unit:GetBadgeTextures("unitstatus") or {}
+                    if HasMixin(unit, "Player") then
+                        if unit.GetShowBadgeOverride and not unit:GetShowBadgeOverride() then
+                            badgeTextures = {}
+                        else
+                            badgeTextures = Badges_GetBadgeTextures(unit:GetClientIndex(), "unitstatus") or {}
+                        end
                     end
                     
                     local hasWelder = false 
